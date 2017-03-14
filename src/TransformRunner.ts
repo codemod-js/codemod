@@ -107,6 +107,6 @@ export default class TransformRunner {
         generator: print
       },
       plugins: this.plugins
-    }).code as string;
+    } as any).code as string;
   }
 }
