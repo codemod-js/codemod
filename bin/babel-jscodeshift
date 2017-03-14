@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+require('ts-node/register');
+const run = require('../').default;
+
+run(process.argv.slice(2))
+  .catch(err => {
+    console.error(err.stack);
+    process.exit(1);
+  });
