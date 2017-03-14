@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-require('ts-node/register');
 const run = require('../').default;
 
 run(process.argv.slice(2))

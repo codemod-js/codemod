@@ -2,10 +2,19 @@
   "name": "babel-jscodeshift",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "scripts": {
+    "prepublish": "./script/build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "babel-jscodeshift": "./bin/babel-jscodeshift"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -13,12 +22,12 @@
     "@types/babel-traverse": "^6.7.16",
     "@types/babylon": "^6.7.15",
     "@types/node": "^7.0.5",
-    "babel-core": "^6.23.1",
-    "recast": "^0.11.22",
     "ts-node": "^2.1.0",
     "typescript": "^2.2.1"
   },
   "dependencies": {
-    "mz": "^2.6.0"
+    "babel-core": "^6.23.1",
+    "mz": "^2.6.0",
+    "recast": "^0.11.22"
   }
 }

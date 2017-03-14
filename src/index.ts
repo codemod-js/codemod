@@ -3,8 +3,8 @@ import { transform } from 'babel-core';
 import { existsSync, writeFileSync } from 'fs';
 import { basename, extname, join, resolve } from 'path';
 import * as babylon from 'babylon';
-import TransformRunner, { Plugin, Source, SourceTransformResult } from './src/TransformRunner';
-import iterateSources, { PathPredicate } from './src/iterateSources';
+import TransformRunner, { Plugin, Source, SourceTransformResult } from './TransformRunner';
+import iterateSources, { PathPredicate } from './iterateSources';
 
 const DEFAULT_EXTENSIONS = new Set(['.js', '.jsx']);
 
