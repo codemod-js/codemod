@@ -25,6 +25,9 @@ EXAMPLES
   # Run with a relative plugin on all files in \`src/\`.
   $ ${$0} -p ./typecheck.js src/
 
+  # Run with multiple plugins
+  $ ${$0} -p ./a.js -p ./b.js some-file.js
+
   # Run with a plugin in \`node_modules\` on stdin.
   $ ${$0} -s -p babel-plugin-typecheck <<EOS
   function add(a: number, b: number): number {
