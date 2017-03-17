@@ -36,9 +36,7 @@ export default class TransformRunner {
     private readonly delegate: TransformRunnerDelegate = {},
   ) {}
 
-  run(): Array<SourceTransformResult> {
-    let result: Array<SourceTransformResult> = [];
-
+  *run(): IterableIterator<SourceTransformResult> {
     if (this.delegate.transformStart) {
       this.delegate.transformStart(this);
     }
@@ -57,7 +55,7 @@ export default class TransformRunner {
         transformed = new SourceTransformResult(source, null, err);
       }
 
-      result.push(transformed);
+      yield transformed;
 
       if (this.delegate.transformSourceEnd) {
         this.delegate.transformSourceEnd(this, transformed);
@@ -67,8 +65,6 @@ export default class TransformRunner {
     if (this.delegate && this.delegate.transformEnd) {
       this.delegate.transformEnd(this);
     }
-
-    return result;
   }
 
   private transformSource(source: Source): string {

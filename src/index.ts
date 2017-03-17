@@ -88,11 +88,15 @@ export default async function run(args: Array<string>) {
     });
   }
 
-  let results = runner.run();
-  let hasErrors = results.some(result => result.error !== null);
-  let exitStatus = hasErrors ? 1 : 0;
+  let hasErrors = false;
 
-  process.exit(exitStatus);
+  for (let result of runner.run()) {
+    if (result.error !== null) {
+      hasErrors = true;
+    }
+  }
+
+  process.exit(hasErrors ? 1 : 0);
 }
 
 type ParseOptionsResult = Options | Error;

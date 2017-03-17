@@ -8,7 +8,7 @@ describe('TransformRunner', function() {
   it('passes source through as-is when there are no plugins', function() {
     let source = new Source('a.js', 'a + b;');
     let runner = new TransformRunner([source], []);
-    let result = runner.run();
+    let result = Array.from(runner.run());
 
     deepEqual(
       result,
@@ -28,7 +28,7 @@ describe('TransformRunner', function() {
       };
     };
     let runner = new TransformRunner([source], [plugin]);
-    let result = runner.run();
+    let result = Array.from(runner.run());
 
     deepEqual(
       result,
