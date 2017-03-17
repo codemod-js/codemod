@@ -25,7 +25,7 @@ describe('TransformRunner', function() {
             path.node.value++;
           }
         }
-      }
+      };
     };
     let runner = new TransformRunner([source], [plugin]);
     let result = runner.run();

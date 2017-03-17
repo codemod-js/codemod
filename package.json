@@ -5,7 +5,9 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "scripts": {
-    "prepublish": "./script/build",
+    "prepublish": "npm run lint && npm test && ./script/build",
+    "lint": "tslint --project .",
+    "lint-fix": "tslint --project . --fix",
     "test": "mocha"
   },
   "bin": {

@@ -1,6 +1,6 @@
 import * as Babel from 'babel-core';
-import { CallExpression, Node, ObjectProperty, ReturnStatement } from 'babel-types';
 import { NodePath, Visitor } from 'babel-traverse';
+import { CallExpression, FunctionExpression, Node, ObjectProperty, ReturnStatement } from 'babel-types';
 
 const PATTERN = /Translation$/;
 
@@ -36,7 +36,7 @@ class TranslatedComputedProperty {
   returns: Array<NodePath<ReturnStatement>> = [];
 
   constructor(
-    readonly objectProperty: any,
+    readonly objectProperty: ObjectProperty,
   ) {}
 
   addReturnIfMatching(t: typeof Babel.types, returnStatementPath: NodePath<ReturnStatement>) {
@@ -67,6 +67,10 @@ class TranslatedComputedProperty {
 
   rewrite(t: typeof Babel.types): boolean {
     if (this.returns.length === 0) {
+      return false;
+    }
+
+    if (this.objectProperty.computed || !t.isIdentifier(this.objectProperty.key)) {
       return false;
     }
 
@@ -106,7 +110,7 @@ class TranslatedComputedProperty {
 
 export default function rewriteTranslationSuffixedComputedProperties(babel: typeof Babel): { visitor: Visitor } {
   let t = babel.types;
-  let enclosingFunctions: Array<any> = [];
+  let enclosingFunctions: Array<FunctionExpression> = [];
   let enclosingFunction = null;
   let translatedComputedPropertyStack: Array<TranslatedComputedProperty> = [];
 
