@@ -1,5 +1,6 @@
 import { existsSync, writeFileSync } from 'fs';
 import { basename, resolve } from 'path';
+import { sync as resolveSync } from 'resolve';
 import iterateSources, { PathPredicate } from './iterateSources';
 import TransformRunner, { Plugin, Source, SourceTransformResult } from './TransformRunner';
 
@@ -213,7 +214,7 @@ function getRequirableModulePath(modulePath: string): string {
   if (existsSync(modulePath) || existsSync(modulePath + '.js')) {
     return resolve(modulePath);
   } else {
-    return modulePath;
+    return resolveSync(modulePath, { basedir: process.cwd() });
   }
 }
 
