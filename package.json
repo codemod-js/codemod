@@ -1,5 +1,5 @@
 {
-  "name": "babel-jscodeshift",
+  "name": "babel-codemod",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "babel-jscodeshift": "./bin/babel-jscodeshift"
+    "codemod": "./bin/codemod"
   },
   "files": [
     "bin",
@@ -23,6 +23,7 @@
     "@types/babylon": "^6.7.15",
     "@types/node": "^7.0.5",
     "ts-node": "^2.1.0",
+    "tslint": "^4.5.1",
     "typescript": "^2.2.1"
   },
   "dependencies": {

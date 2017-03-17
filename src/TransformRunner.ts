@@ -1,9 +1,9 @@
-import { parse, print } from 'recast';
 import * as Babel from 'babel-core';
 import { transform } from 'babel-core';
 import { Visitor } from 'babel-traverse';
 import * as babylon from 'babylon';
 import { BabylonOptions } from 'babylon';
+import { parse, print } from 'recast';
 
 export class Source {
   constructor(
@@ -78,7 +78,7 @@ export default class TransformRunner {
           return parse(
             code, {
               parser: {
-                parse(code) {
+                parse(code: string) {
                   return babylon.parse(code, {
                     sourceType: 'module',
                     allowImportExportEverywhere: false, // consistent with espree
@@ -107,6 +107,6 @@ export default class TransformRunner {
         generator: print
       },
       plugins: this.plugins
-    } as any).code as string;
+    } as {}).code as string;
   }
 }

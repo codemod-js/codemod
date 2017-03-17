@@ -1,10 +1,7 @@
-import { parse, print } from 'recast';
-import { transform } from 'babel-core';
 import { existsSync, writeFileSync } from 'fs';
-import { basename, extname, join, resolve } from 'path';
-import * as babylon from 'babylon';
-import TransformRunner, { Plugin, Source, SourceTransformResult } from './TransformRunner';
+import { basename, resolve } from 'path';
 import iterateSources, { PathPredicate } from './iterateSources';
+import TransformRunner, { Plugin, Source, SourceTransformResult } from './TransformRunner';
 
 const DEFAULT_EXTENSIONS = new Set(['.js', '.jsx']);
 

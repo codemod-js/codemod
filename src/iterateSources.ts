@@ -1,6 +1,6 @@
-import { Source } from './TransformRunner';
 import { readdirSync, readFileSync, statSync, Stats } from 'fs';
 import { extname, join } from 'path';
+import { Source } from './TransformRunner';
 
 export type PathPredicate = (path: string, basename: string, root: string, stat: Stats) => boolean;
 
