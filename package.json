@@ -6,7 +6,7 @@
   "module": "dist/index.mjs",
   "scripts": {
     "prepublish": "./script/build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "bin": {
     "codemod": "./bin/codemod"
@@ -21,7 +21,9 @@
     "@types/babel-core": "^6.7.14",
     "@types/babel-traverse": "^6.7.16",
     "@types/babylon": "^6.7.15",
+    "@types/mocha": "^2.2.40",
     "@types/node": "^7.0.5",
+    "mocha": "^3.2.0",
     "ts-node": "^2.1.0",
     "tslint": "^4.5.1",
     "typescript": "^2.2.1"

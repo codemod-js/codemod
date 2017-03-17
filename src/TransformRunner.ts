@@ -31,7 +31,7 @@ export type TransformRunnerDelegate = {
 
 export default class TransformRunner {
   constructor(
-    readonly sources: IterableIterator<Source>,
+    readonly sources: IterableIterator<Source> | Array<Source>,
     readonly plugins: Array<Plugin>,
     private readonly delegate: TransformRunnerDelegate = {},
   ) {}
