@@ -39,3 +39,7 @@ $ codemod --require babel-register --plugin ./my-plugin.js src/
 # Run a local plugin written with TypeScript.
 $ codemod --require ts-node/register --plugin ./my-plugin.ts src/
 ```
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for information on setting up the project for development and on contributing to the project.
