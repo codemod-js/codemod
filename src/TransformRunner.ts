@@ -20,7 +20,9 @@ export class SourceTransformResult {
   ) {}
 }
 
-export type Plugin = (babel: typeof Babel) => { visitor: Visitor };
+export type Plugin =
+  ((babel: typeof Babel) => { visitor: Visitor }) |
+  [(babel: typeof Babel) => { visitor: Visitor }, object];
 
 export type TransformRunnerDelegate = {
   transformStart?: (runner: TransformRunner) => void;

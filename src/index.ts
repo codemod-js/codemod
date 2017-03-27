@@ -1,5 +1,5 @@
-import { existsSync, writeFileSync } from 'fs';
-import { basename, resolve } from 'path';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { basename, extname, resolve } from 'path';
 import { sync as resolveSync } from 'resolve';
 import iterateSources, { PathPredicate } from './iterateSources';
 import TransformRunner, { Plugin, Source, SourceTransformResult } from './TransformRunner';
@@ -13,11 +13,12 @@ function printHelp(out: NodeJS.WritableStream) {
 ${$0} [OPTIONS] [PATH … | --stdio]
 
 OPTIONS
-  -p, --plugin PLUGIN     Transform sources with PLUGIN (allows multiple).
-  -r, --require PATH      Require PATH before transform (allows multiple).
-      --extensions EXTS   Comma-separated extensions to process (default: "${Array.from(DEFAULT_EXTENSIONS).join(',')}").
-  -s, --stdio             Read source from stdin and print to stdout.
-  -h, --help              Show this help message.
+  -p, --plugin PLUGIN               Transform sources with PLUGIN (allows multiple).
+  -o, --plugin-options PLUGIN=OPTS  JSON-encoded OPTS for PLUGIN (allows multiple).
+  -r, --require PATH                Require PATH before transform (allows multiple).
+      --extensions EXTS             Comma-separated extensions to process (default: "${Array.from(DEFAULT_EXTENSIONS).join(',')}").
+  -s, --stdio                       Read source from stdin and print to stdout.
+  -h, --help                        Show this help message.
 
 EXAMPLES
   # Run with a relative plugin on all files in \`src/\`.
@@ -32,6 +33,12 @@ EXAMPLES
     return a + b;
   }
   EOS
+
+  # Pass options to a plugin.
+  $ ${$0} -p ./a.js -o a='{"foo":true}' src/
+
+  # Pass options from a config file to a plugin.
+  $ ${$0} -p ./a.js -o a=@opts.json src/
 
   # Run with a plugin which itself is transpiled using babel.
   $ ${$0} -r babel-register -p ./some-plugin.js src/
@@ -108,6 +115,7 @@ class Options {
   constructor(
     readonly sourcePaths: Array<string>,
     readonly pluginFilePaths: Array<string>,
+    readonly pluginOptions: Map<string, object>,
     readonly extensions: Set<string>,
     readonly requires: Array<string>,
     readonly ignore: PathPredicate,
@@ -131,12 +139,21 @@ class Options {
 
   private loadPlugins(): Array<Plugin> {
     return this.pluginFilePaths.map(pluginFilePath => {
+      let name = basename(pluginFilePath, extname(pluginFilePath));
+      let options = this.pluginOptions.get(name);
       let exports = require(pluginFilePath);
+      let plugin;
 
       if (exports.default) {
-        return exports.default;
+        plugin = exports.default;
       } else {
-        return exports;
+        plugin = exports;
+      }
+
+      if (options) {
+        return [plugin, options];
+      } else {
+        return plugin;
       }
     });
   }
@@ -144,6 +161,7 @@ class Options {
   static parse(args: Array<string>): ParseOptionsResult {
     let sourcePaths: Array<string> = [];
     let pluginFilePaths: Array<string> = [];
+    let pluginOptions: Map<string, object> = new Map();
     let extensions = DEFAULT_EXTENSIONS;
     let ignore = (path: string, basename: string, root: string) => basename[0] === '.';
     let requires: Array<string> = [];
@@ -158,6 +176,25 @@ class Options {
         case '--plugin':
           i++;
           pluginFilePaths.push(getRequirableModulePath(args[i]));
+          break;
+
+        case '-o':
+        case '--plugin-options':
+          i++;
+          let nameAndOptions = args[i].split('=');
+          let name = nameAndOptions[0];
+          let optionsRaw = nameAndOptions[1];
+
+          if (optionsRaw && optionsRaw[0] === '@') {
+            optionsRaw = readFileSync(args[i].slice(1), { encoding: 'utf8' });
+            pluginOptions.set(name, JSON.parse(optionsRaw));
+          }
+
+          try {
+            pluginOptions.set(name, JSON.parse(optionsRaw));
+          } catch (err) {
+            throw new Error(`unable to parse JSON config for ${name}: ${optionsRaw}`);
+          }
           break;
 
         case '-r':
@@ -198,6 +235,7 @@ class Options {
     return new Options(
       sourcePaths,
       pluginFilePaths,
+      pluginOptions,
       extensions,
       requires,
       ignore,
