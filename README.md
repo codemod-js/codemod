@@ -10,7 +10,7 @@ Install from npm:
 $ npm install -g babel-codemod
 ```
 
-This will install the runner as `codemod`.
+This will install the runner as `codemod`. This package requires node v6 or higher.
 
 ## Usage
 
