@@ -1,4 +1,4 @@
-# babel-codemod
+# babel-codemod [![Build Status](https://travis-ci.org/square/babel-codemod.svg?branch=master)](https://travis-ci.org/square/babel-codemod) [![dependencies Status](https://david-dm.org/square/babel-codemod/status.svg)](https://david-dm.org/square/babel-codemod)
 
 babel-codemod rewrites JavaScript using babel plugins.
 
