@@ -2,7 +2,6 @@ import * as Babel from 'babel-core';
 import { transform } from 'babel-core';
 import { Visitor } from 'babel-traverse';
 import * as babylon from 'babylon';
-import { BabylonOptions } from 'babylon';
 import { parse, print } from 'recast';
 
 export class Source {
