@@ -32,6 +32,11 @@ describe('Options', function() {
     deepEqual(options.sourcePaths, ['src/', 'a.js']);
   });
 
+  it('treats sources as globs', function() {
+    let options = assertOptionsParsed(Options.parse(['test/fixtures/glob-test/**/*.js']));
+    deepEqual(options.sourcePaths, ['test/fixtures/glob-test/abc.js', 'test/fixtures/glob-test/subdir/def.js']);
+  });
+
   it('interprets `--stdio` as reading/writing stdin/stdout', function() {
     let options = assertOptionsParsed(Options.parse(['--stdio']));
     strictEqual(options.stdio, true);
