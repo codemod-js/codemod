@@ -4,11 +4,13 @@ babel-codemod rewrites JavaScript using babel plugins.
 
 ## Install
 
-Install from npm:
+Install from yarn:
 
 ```
-$ npm install -g babel-codemod
+$ yarn global add babel-codemod
 ```
+
+> NOTE: You can also install using `npm install -g babel-codemod`.
 
 This will install the runner as `codemod`. This package requires node v6 or higher.
 
@@ -28,7 +30,7 @@ For more detailed options, run `codemod --help`.
 
 ## Writing a Plugin
 
-There are [many, many existing plugins](https://www.npmjs.com/browse/keyword/babel-plugin) that you can use. However, if you need to write your own you should consult the [babel handbook](https://github.com/thejameskyle/babel-handbook). If you publish a plugin intended specifically as a codemod, consider using both the [`babel-plugin`](https://www.npmjs.com/browse/keyword/babel-plugin) and [`babel-codemod`](https://www.npmjs.com/browse/keyword/babel-codemod) keywords.
+There are [many, many existing plugins](https://yarnpkg.com/en/packages?q=babel-plugin) that you can use. However, if you need to write your own you should consult the [babel handbook](https://github.com/thejameskyle/babel-handbook). If you publish a plugin intended specifically as a codemod, consider using both the [`babel-plugin`](https://yarnpkg.com/en/packages?q=babel-plugin) and [`babel-codemod`](https://yarnpkg.com/en/packages?q=babel-codemod) keywords.
 
 While testing out your plugin, you may find it useful to use the `--require` option when running `codemod` if your plugin is written using JavaScript syntax not supported by the current version of node. For example:
 
