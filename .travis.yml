@@ -1,5 +1,6 @@
 language: node_js
 cache:
+  yarn: true
   directories:
     - node_modules
 notifications:
@@ -7,10 +8,8 @@ notifications:
 node_js:
   - '7'
   - '6'
-before_script:
-  - npm prune
 after_success:
-  - npm run semantic-release
+  - yarn run semantic-release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/

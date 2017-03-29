@@ -10,26 +10,26 @@ This project is written with [TypeScript](https://www.typescriptlang.org/), a su
 
 ## Developing
 
-babel-codemod expects at least node 6 and npm 3. You can check each of these with `node -v` and `npm -v`. Look for instructions on installing node and npm [here](https://nodejs.org).
+babel-codemod expects at least node 6 and yarn. You can check each of these with `node -v` and `yarn --version`. Look for instructions on installing node [here](https://nodejs.org) and yarn [here](https://yarnpkg.com/).
 
 ### Setup
 
 ```
 $ git clone https://github.com/square/babel-codemod
 $ cd babel-codemod
-$ npm install
+$ yarn
 ```
 
 Then make sure the tests pass:
 
 ```
-$ npm test
+$ yarn test
 ```
 
 To build a distributable version (in `dist`):
 
 ```
-$ npm run prepublish
+$ yarn prepublish
 ```
 
 ### Running linting/testing
@@ -37,19 +37,19 @@ $ npm run prepublish
 Because this project is written in TypeScript, we use [TSLint](https://palantir.github.io/tslint/) rather than [ESLint](http://eslint.org/). It provides similar functionality but with rules explicitly catering to TypeScript. To run TSLint on the project, run:
 
 ```
-$ npm run lint
+$ yarn lint
 ```
 
 To automatically fix some of the issues TSLint finds:
 
 ```
-$ npm run lint-fix
+$ yarn lint-fix
 ```
 
 The tests in this project are written using the [Mocha](https://mochajs.org/) test framework and, like the non-test code, are also written in TypeScript. To run the tests:
 
 ```
-$ npm test
+$ yarn test
 ```
 
 ## Submitting Changes
