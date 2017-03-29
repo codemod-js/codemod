@@ -1,11 +1,12 @@
 import { deepEqual, strictEqual } from 'assert';
+import { inspect } from 'util';
 import Options, { ParseOptionsResult } from '../src/Options';
 
 describe('Options', function() {
   it('has sensible defaults', function() {
     let options = assertOptionsParsed(Options.parse([]));
     deepEqual(options.extensions, new Set(['.js', '.jsx']));
-    deepEqual(options.pluginFilePaths, []);
+    deepEqual(options.plugins, []);
     deepEqual(options.sourcePaths, []);
     deepEqual(options.requires, []);
     strictEqual(options.pluginOptions.size, 0);
@@ -20,11 +21,6 @@ describe('Options', function() {
   it('fails to parse unknown options', function() {
     let error = assertParseFailed(Options.parse(['--wtf']));
     strictEqual(error.message, 'unexpected option: --wtf');
-  });
-
-  it('allows existing file paths as plugins', function() {
-    let options = assertOptionsParsed(Options.parse(['--plugin', __filename]));
-    deepEqual(options.pluginFilePaths, [__filename]);
   });
 
   it('interprets non-option arguments as paths', function() {
@@ -45,6 +41,46 @@ describe('Options', function() {
   it('can parse inline plugin options as JSON', function() {
     let options = assertOptionsParsed(Options.parse(['-o', 'my-plugin={"foo": true}']));
     deepEqual(options.pluginOptions.get('my-plugin'), { foo: true });
+  });
+
+  it('associates plugin options based on declared name', function() {
+    let options = assertOptionsParsed(Options.parse([
+      '--plugin',
+      './test/fixtures/plugin/index.js',
+      '--plugin-options',
+      'basic-plugin={"a": true}'
+    ]));
+
+    // "basic-plugin" is declared in the plugin file
+    deepEqual(options.pluginOptions.get('basic-plugin'), { a: true });
+
+    let babelPlugin = options.getBabelPlugin('basic-plugin');
+
+    if (!Array.isArray(babelPlugin)) {
+      throw new Error(`expected plugin to be [plugin, options] tuple: ${inspect(babelPlugin)}`);
+    }
+
+    deepEqual(babelPlugin[1], { a: true });
+  });
+
+  it('associates plugin options based on inferred name', function() {
+    let options = assertOptionsParsed(Options.parse([
+      '--plugin',
+      './test/fixtures/plugin/index.js',
+      '--plugin-options',
+      'index={"a": true}'
+    ]));
+
+    // "index" is the name of the file
+    deepEqual(options.pluginOptions.get('index'), { a: true });
+
+    let babelPlugin = options.getBabelPlugin('index');
+
+    if (!Array.isArray(babelPlugin)) {
+      throw new Error(`expected plugin to be [plugin, options] tuple: ${inspect(babelPlugin)}`);
+    }
+
+    deepEqual(babelPlugin[1], { a: true });
   });
 
   it('can parse a JSON file for plugin options', function() {

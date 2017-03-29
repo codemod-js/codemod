@@ -19,9 +19,9 @@ export class SourceTransformResult {
   ) {}
 }
 
-export type Plugin =
-  ((babel: typeof Babel) => { visitor: Visitor }) |
-  [(babel: typeof Babel) => { visitor: Visitor }, object];
+export type RawBabelPlugin = (babel: typeof Babel) => { name?: string, visitor: Visitor };
+export type RawBabelPluginWithOptions = [RawBabelPlugin, object];
+export type BabelPlugin = RawBabelPlugin | RawBabelPluginWithOptions;
 
 export type TransformRunnerDelegate = {
   transformStart?: (runner: TransformRunner) => void;
@@ -33,7 +33,7 @@ export type TransformRunnerDelegate = {
 export default class TransformRunner {
   constructor(
     readonly sources: IterableIterator<Source> | Array<Source>,
-    readonly plugins: Array<Plugin>,
+    readonly plugins: Array<BabelPlugin>,
     private readonly delegate: TransformRunnerDelegate = {},
   ) {}
 
