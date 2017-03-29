@@ -1,4 +1,5 @@
 import { existsSync, readFileSync } from 'fs';
+import { hasMagic as hasGlob, sync as globSync } from 'glob';
 import { basename, extname, resolve } from 'path';
 import { sync as resolveSync } from 'resolve';
 import { PathPredicate } from './iterateSources';
@@ -124,7 +125,11 @@ export default class Options {
           if (arg[0] === '-') {
             return new Error(`unexpected option: ${arg}`);
           } else {
-            sourcePaths.push(arg);
+            if (hasGlob(arg)) {
+              sourcePaths.push(...globSync(arg));
+            } else {
+              sourcePaths.push(arg);
+            }
           }
           break;
       }
