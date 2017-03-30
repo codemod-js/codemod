@@ -65,7 +65,7 @@ export default async function run(args: Array<string>) {
 
   options.loadRequires();
 
-  let plugins = options.getPlugins();
+  let plugins = options.getBabelPlugins();
   let runner: TransformRunner;
 
   if (options.stdio) {

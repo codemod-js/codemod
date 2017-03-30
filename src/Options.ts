@@ -1,19 +1,53 @@
+import * as Babel from 'babel-core';
 import { existsSync, readFileSync } from 'fs';
 import { hasMagic as hasGlob, sync as globSync } from 'glob';
 import { basename, extname, resolve } from 'path';
 import { sync as resolveSync } from 'resolve';
 import { PathPredicate } from './iterateSources';
-import { Plugin } from './TransformRunner';
+import { BabelPlugin, RawBabelPlugin } from './TransformRunner';
 
 export const DEFAULT_EXTENSIONS = new Set(['.js', '.jsx']);
 export type ParseOptionsResult = Options | Error;
 
-export default class Options {
-  private plugins?: Array<Plugin>;
+export class Plugin {
+  readonly declaredName?: string;
 
   constructor(
+    readonly rawPlugin: RawBabelPlugin,
+    readonly inferredName: string,
+    readonly path?: string,
+  ) {
+    let instance = rawPlugin(Babel);
+
+    if (instance.name) {
+      this.declaredName = instance.name;
+    }
+  }
+
+  static load(path: string, inferredName: string) {
+    let exports = require(path);
+    let plugin;
+
+    if (exports.default) {
+      plugin = exports.default;
+    } else {
+      plugin = exports;
+    }
+
+    let rawPlugin = plugin;
+
+    return new Plugin(
+      rawPlugin,
+      inferredName,
+      path
+    );
+  }
+}
+
+export default class Options {
+  constructor(
     readonly sourcePaths: Array<string>,
-    readonly pluginFilePaths: Array<string>,
+    readonly plugins: Array<Plugin>,
     readonly pluginOptions: Map<string, object>,
     readonly extensions: Set<string>,
     readonly requires: Array<string>,
@@ -23,10 +57,6 @@ export default class Options {
   ) {}
 
   getPlugins(): Array<Plugin> {
-    if (!this.plugins) {
-      this.plugins = this.loadPlugins();
-    }
-
     return this.plugins;
   }
 
@@ -36,30 +66,53 @@ export default class Options {
     }
   }
 
-  private loadPlugins(): Array<Plugin> {
-    return this.pluginFilePaths.map(pluginFilePath => {
-      let name = basename(pluginFilePath, extname(pluginFilePath));
-      let options = this.pluginOptions.get(name);
-      let exports = require(pluginFilePath);
-      let plugin;
-
-      if (exports.default) {
-        plugin = exports.default;
-      } else {
-        plugin = exports;
-      }
-
-      if (options) {
-        return [plugin, options];
-      } else {
+  getPlugin(name: string): Plugin | null {
+    for (let plugin of this.plugins) {
+      if (plugin.declaredName === name || plugin.inferredName === name) {
         return plugin;
       }
-    });
+    }
+
+    return null;
+  }
+
+  getBabelPlugins(): Array<BabelPlugin> {
+    let result: Array<BabelPlugin> = [];
+
+    for (let plugin of this.plugins) {
+      let options = plugin.declaredName &&
+        this.pluginOptions.get(plugin.declaredName) ||
+        this.pluginOptions.get(plugin.inferredName);
+
+      if (options) {
+        result.push([plugin.rawPlugin, options]);
+      } else {
+        result.push(plugin.rawPlugin);
+      }
+    }
+
+    return result;
+  }
+
+  getBabelPlugin(name: string): BabelPlugin | null {
+    let plugin = this.getPlugin(name);
+
+    if (!plugin) {
+      return null;
+    }
+
+    let options = this.pluginOptions.get(name);
+
+    if (options) {
+      return [plugin.rawPlugin, options];
+    } else {
+      return plugin.rawPlugin;
+    }
   }
 
   static parse(args: Array<string>): ParseOptionsResult {
     let sourcePaths: Array<string> = [];
-    let pluginFilePaths: Array<string> = [];
+    let plugins: Array<Plugin> = [];
     let pluginOptions: Map<string, object> = new Map();
     let extensions = DEFAULT_EXTENSIONS;
     let ignore = (path: string, basename: string, root: string) => basename[0] === '.';
@@ -74,7 +127,8 @@ export default class Options {
         case '-p':
         case '--plugin':
           i++;
-          pluginFilePaths.push(getRequirableModulePath(args[i]));
+          let path = args[i];
+          plugins.push(Plugin.load(getRequirableModulePath(path), basename(path, extname(path))));
           break;
 
         case '-o':
@@ -137,7 +191,7 @@ export default class Options {
 
     return new Options(
       sourcePaths,
-      pluginFilePaths,
+      plugins,
       pluginOptions,
       extensions,
       requires,
