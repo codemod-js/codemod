@@ -44,10 +44,26 @@ export class Plugin {
   }
 }
 
+export class DeferredPlugin {
+  private loaded?: Plugin;
+
+  constructor(
+    readonly path: string,
+    readonly inferredName: string,
+  ) {}
+
+  load(): Plugin {
+    if (!this.loaded) {
+      this.loaded = Plugin.load(this.path, this.inferredName);
+    }
+    return this.loaded;
+  }
+}
+
 export default class Options {
   constructor(
     readonly sourcePaths: Array<string>,
-    readonly plugins: Array<Plugin>,
+    readonly plugins: Array<DeferredPlugin>,
     readonly pluginOptions: Map<string, object>,
     readonly extensions: Set<string>,
     readonly requires: Array<string>,
@@ -57,7 +73,7 @@ export default class Options {
   ) {}
 
   getPlugins(): Array<Plugin> {
-    return this.plugins;
+    return this.plugins.map(plugin => plugin.load());
   }
 
   loadRequires() {
@@ -67,7 +83,7 @@ export default class Options {
   }
 
   getPlugin(name: string): Plugin | null {
-    for (let plugin of this.plugins) {
+    for (let plugin of this.getPlugins()) {
       if (plugin.declaredName === name || plugin.inferredName === name) {
         return plugin;
       }
@@ -79,7 +95,7 @@ export default class Options {
   getBabelPlugins(): Array<BabelPlugin> {
     let result: Array<BabelPlugin> = [];
 
-    for (let plugin of this.plugins) {
+    for (let plugin of this.getPlugins()) {
       let options = plugin.declaredName &&
         this.pluginOptions.get(plugin.declaredName) ||
         this.pluginOptions.get(plugin.inferredName);
@@ -112,7 +128,7 @@ export default class Options {
 
   static parse(args: Array<string>): ParseOptionsResult {
     let sourcePaths: Array<string> = [];
-    let plugins: Array<Plugin> = [];
+    let plugins: Array<DeferredPlugin> = [];
     let pluginOptions: Map<string, object> = new Map();
     let extensions = DEFAULT_EXTENSIONS;
     let ignore = (path: string, basename: string, root: string) => basename[0] === '.';
@@ -128,7 +144,10 @@ export default class Options {
         case '--plugin':
           i++;
           let path = args[i];
-          plugins.push(Plugin.load(getRequirableModulePath(path), basename(path, extname(path))));
+          plugins.push(new DeferredPlugin(
+            getRequirableModulePath(path),
+            basename(path, extname(path))
+          ));
           break;
 
         case '-o':

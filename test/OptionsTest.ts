@@ -63,6 +63,11 @@ describe('Options', function() {
     deepEqual(babelPlugin[1], { a: true });
   });
 
+  it('interprets `--require` as expected', function() {
+    let options = assertOptionsParsed(Options.parse(['--require', 'ts-node/register']));
+    deepEqual(options.requires, ['ts-node/register'].map(require.resolve));
+  });
+
   it('associates plugin options based on inferred name', function() {
     let options = assertOptionsParsed(Options.parse([
       '--plugin',
