@@ -8,3 +8,8 @@ node_modules
 # ignore vim dotfiles
 *.swp
 *.swo
+
+# TypeScript build files
+*.js
+*.d.ts
+*.js.map

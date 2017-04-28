@@ -64,8 +64,8 @@ describe('Options', function() {
   });
 
   it('interprets `--require` as expected', function() {
-    let options = assertOptionsParsed(Options.parse(['--require', 'ts-node/register']));
-    deepEqual(options.requires, ['ts-node/register'].map(require.resolve));
+    let options = assertOptionsParsed(Options.parse(['--require', 'mz']));
+    deepEqual(options.requires, ['mz'].map(require.resolve));
   });
 
   it('associates plugin options based on inferred name', function() {

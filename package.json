@@ -2,12 +2,12 @@
   "name": "babel-codemod",
   "version": "0.0.0-development",
   "description": "babel-codemod rewrites JavaScript using babel plugins.",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
+  "main": "src/index.js",
   "scripts": {
-    "prepublish": "yarn lint && yarn test && ./script/build",
+    "prepublish": "yarn test",
     "lint": "tslint --project .",
     "lint-fix": "tslint --project . --fix",
+    "pretest": "yarn lint && tsc --project .",
     "test": "mocha",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
@@ -16,7 +16,9 @@
   },
   "files": [
     "bin",
-    "dist"
+    "src/**/*.js",
+    "src/**/*.d.ts",
+    "src/**/*.js.map"
   ],
   "author": "Brian Donovan <donovan@squareup.com>",
   "license": "Apache-2.0",
@@ -29,7 +31,6 @@
     "@types/node": "^7.0.5",
     "mocha": "^3.2.0",
     "semantic-release": "^6.3.2",
-    "ts-node": "^2.1.0",
     "tslint": "^4.5.1",
     "typescript": "^2.2.1"
   },
