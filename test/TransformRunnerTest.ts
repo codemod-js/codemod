@@ -1,7 +1,7 @@
-import { deepEqual } from 'assert';
+import { deepEqual, strictEqual } from 'assert';
 import * as Babel from 'babel-core';
 import { NodePath } from 'babel-traverse';
-import { NumericLiteral } from 'babel-types';
+import { NumericLiteral, Program } from 'babel-types';
 import TransformRunner, { Source, SourceTransformResult } from '../src/TransformRunner';
 
 describe('TransformRunner', function() {
@@ -56,5 +56,27 @@ describe('TransformRunner', function() {
       result,
       [new SourceTransformResult(source, '4 + 4;', null)]
     );
+  });
+
+  it('passes the filename', function() {
+    let source = new Source('a.js', '');
+    let filename;
+    let filenameRelative;
+    let plugin = function(babel: typeof Babel) {
+      return {
+        visitor: {
+          Program(path: NodePath<Program>, state: { file: { opts: { filename: string, filenameRelative: string } } }) {
+            filename = state.file.opts.filename;
+            filenameRelative = state.file.opts.filenameRelative;
+          }
+        }
+      };
+    };
+
+    // Consume all results, but ignore them.
+    Array.from(new TransformRunner([source], [plugin]).run());
+
+    strictEqual(filename, 'a.js');
+    strictEqual(filenameRelative, 'a.js');
   });
 });
