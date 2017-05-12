@@ -36,6 +36,17 @@ describe('TransformRunner', function() {
     );
   });
 
+  it('does not include any plugins not specified explicitly', function() {
+    let source = new Source('a.js', 'export default 0;\n');
+    let runner = new TransformRunner([source], []);
+    let result = Array.from(runner.run());
+
+    deepEqual(
+      result,
+      [new SourceTransformResult(source, 'export default 0;\n', null)]
+    );
+  });
+
   it('allows running plugins with options', function() {
     let source = new Source('a.js', '3 + 4;');
     let plugin = function(babel: typeof Babel) {

@@ -71,6 +71,7 @@ export default class TransformRunner {
   private transformSource(source: Source): string {
     return transform(source.content, {
       filename: source.path,
+      babelrc: false,
       parserOpts: {
         parser(code: string) {
           return parse(
