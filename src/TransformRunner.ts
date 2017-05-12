@@ -70,6 +70,7 @@ export default class TransformRunner {
 
   private transformSource(source: Source): string {
     return transform(source.content, {
+      filename: source.path,
       parserOpts: {
         parser(code: string) {
           return parse(
