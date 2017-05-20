@@ -70,6 +70,7 @@ export default class Options {
     readonly ignore: PathPredicate,
     readonly stdio: boolean,
     readonly help: boolean,
+    readonly dry: boolean
   ) {}
 
   getPlugins(): Array<Plugin> {
@@ -135,6 +136,7 @@ export default class Options {
     let requires: Array<string> = [];
     let stdio = false;
     let help = false;
+    let dry = false;
 
     for (let i = 0; i < args.length; i++) {
       let arg = args[i];
@@ -193,6 +195,11 @@ export default class Options {
         case '--help':
           help = true;
           break;
+          
+        case '-d':
+        case '--dry':
+          dry = true;
+          break;
 
         default:
           if (arg[0] === '-') {
@@ -216,7 +223,8 @@ export default class Options {
       requires,
       ignore,
       stdio,
-      help
+      help,
+      dry
     );
   }
 }
