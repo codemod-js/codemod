@@ -17,6 +17,7 @@ OPTIONS
       --extensions EXTS             Comma-separated extensions to process (default: "${Array.from(DEFAULT_EXTENSIONS).join(',')}").
   -s, --stdio                       Read source from stdin and print to stdout.
   -h, --help                        Show this help message.
+  -d, --dry                         Run plugins without modifying files on disk
 
 EXAMPLES
   # Run with a relative plugin on all files in \`src/\`.
@@ -67,6 +68,12 @@ export default async function run(args: Array<string>) {
 
   let plugins = options.getBabelPlugins();
   let runner: TransformRunner;
+  let transformCount = {
+    affected: 0,
+    total: 0,
+    errors: 0
+  };
+  let dryRun = options.dry;
 
   if (options.stdio) {
     runner = new TransformRunner([new Source('<stdin>', await readStdin())][Symbol.iterator](), plugins, {
@@ -83,8 +90,11 @@ export default async function run(args: Array<string>) {
       transformSourceEnd(runner: TransformRunner, transformed: SourceTransformResult) {
         if (transformed.output) {
           if (transformed.output !== transformed.source.content) {
+            transformCount.affected++;
             console.log(transformed.source.path);
-            writeFileSync(transformed.source.path, transformed.output);
+            if (!dryRun) {
+              writeFileSync(transformed.source.path, transformed.output);
+            }
           }
         } else if (transformed.error) {
           console.error(`Encountered an error while processing ${transformed.source.path}:`);
@@ -98,9 +108,18 @@ export default async function run(args: Array<string>) {
 
   for (let result of runner.run()) {
     if (result.error !== null) {
+      transformCount.errors++;
       hasErrors = true;
     }
+    transformCount.total++;
   }
+
+  if(dryRun) {
+    console.log('DRY RUN: no files affected');
+  }
+  console.log(`Total files processed: ${transformCount.total}`);
+  console.log(`Total files affected: ${transformCount.affected}`);
+  console.log(`Total files with errors: ${transformCount.errors}`);
 
   process.exit(hasErrors ? 1 : 0);
 }
