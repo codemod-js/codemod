@@ -17,7 +17,7 @@ OPTIONS
       --extensions EXTS             Comma-separated extensions to process (default: "${Array.from(DEFAULT_EXTENSIONS).join(',')}").
   -s, --stdio                       Read source from stdin and print to stdout.
   -h, --help                        Show this help message.
-  -d, --dry                         Run plugins without modifying files on disk
+  -d, --dry                         Run plugins without modifying files on disk.
 
 EXAMPLES
   # Run with a relative plugin on all files in \`src/\`.
@@ -114,7 +114,7 @@ export default async function run(args: Array<string>) {
     transformCount.total++;
   }
 
-  if(dryRun) {
+  if (dryRun) {
     console.log('DRY RUN: no files affected');
   }
   console.log(`Total files processed: ${transformCount.total}`);
