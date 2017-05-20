@@ -1,11 +1,11 @@
-import { writeFileSync } from 'fs';
+import * as realFs from 'fs';
 import { basename } from 'path';
 import iterateSources from './iterateSources';
 import Options, { DEFAULT_EXTENSIONS } from './Options';
 import TransformRunner, { Source, SourceTransformResult } from './TransformRunner';
 
-function printHelp(out: NodeJS.WritableStream) {
-  let $0 = basename(process.argv[1]);
+function printHelp(argv: Array<string>, out: NodeJS.WritableStream) {
+  let $0 = basename(argv[1]);
 
   out.write(`
 ${$0} [OPTIONS] [PATH … | --stdio]
@@ -48,57 +48,70 @@ EXAMPLES
   out.write('\n');
 }
 
-export default async function run(args: Array<string>) {
-  let options = Options.parse(args);
+export default async function run(
+  argv: Array<string>,
+  stdin: NodeJS.ReadableStream,
+  stdout: NodeJS.WritableStream,
+  stderr: NodeJS.WritableStream,
+  fs: typeof realFs = realFs
+): Promise<number> {
+  let options = Options.parse(argv.slice(2));
 
   if (options instanceof Error) {
-    process.stderr.write(`ERROR: ${options.message}\n`);
-    printHelp(process.stderr);
-    process.exit(1);
-    return;
+    stderr.write(`ERROR: ${options.message}\n`);
+    printHelp(argv, stderr);
+    return 1;
   }
 
   if (options.help) {
-    printHelp(process.stdout);
-    process.exit(0);
-    return;
+    printHelp(argv, stdout);
+    return 0;
   }
 
   options.loadRequires();
 
   let plugins = options.getBabelPlugins();
   let runner: TransformRunner;
-  let transformCount = {
-    affected: 0,
+  let stats = {
+    modified: 0,
     total: 0,
     errors: 0
   };
   let dryRun = options.dry;
 
   if (options.stdio) {
-    runner = new TransformRunner([new Source('<stdin>', await readStdin())][Symbol.iterator](), plugins, {
+    runner = new TransformRunner([new Source('<stdin>', await readStream(stdin))][Symbol.iterator](), plugins, {
       transformSourceEnd(runner: TransformRunner, transformed: SourceTransformResult) {
         if (transformed.output) {
-          process.stdout.write(transformed.output);
+          stdout.write(`${transformed.output}\n`);
         } else if (transformed.error) {
-          console.error(transformed.error.stack);
+          stderr.write(`${transformed.error.stack}\n`);
         }
       }
     });
   } else {
-    runner = new TransformRunner(iterateSources(options.sourcePaths, options.extensions, options.ignore), plugins, {
+    let sourcesIterator = iterateSources(
+      options.sourcePaths,
+      options.extensions,
+      options.ignore,
+      fs.statSync,
+      fs.readdirSync,
+      fs.readFileSync,
+    );
+
+    runner = new TransformRunner(sourcesIterator, plugins, {
       transformSourceEnd(runner: TransformRunner, transformed: SourceTransformResult) {
         if (transformed.output) {
           if (transformed.output !== transformed.source.content) {
-            transformCount.affected++;
-            console.log(transformed.source.path);
+            stats.modified++;
+            stdout.write(`${transformed.source.path}\n`);
             if (!dryRun) {
-              writeFileSync(transformed.source.path, transformed.output);
+              fs.writeFileSync(transformed.source.path, transformed.output);
             }
           }
         } else if (transformed.error) {
-          console.error(`Encountered an error while processing ${transformed.source.path}:`);
-          console.error(transformed.error.stack);
+          stderr.write(`Encountered an error while processing ${transformed.source.path}:\n`);
+          stderr.write(`${transformed.error.stack}\n`);
         }
       }
     });
@@ -108,34 +121,36 @@ export default async function run(args: Array<string>) {
 
   for (let result of runner.run()) {
     if (result.error !== null) {
-      transformCount.errors++;
+      stats.errors++;
       hasErrors = true;
     }
-    transformCount.total++;
+    stats.total++;
   }
 
-  if (dryRun) {
-    console.log('DRY RUN: no files affected');
-  }
-  console.log(`Total files processed: ${transformCount.total}`);
-  console.log(`Total files affected: ${transformCount.affected}`);
-  console.log(`Total files with errors: ${transformCount.errors}`);
+  if (!options.stdio) {
+    if (dryRun) {
+      stdout.write('DRY RUN: no files affected\n');
+    }
 
-  process.exit(hasErrors ? 1 : 0);
+    stdout.write(`${stats.total} file(s), ${stats.modified} modified, ${stats.errors} errors\n`);
+  }
+
+  // exit status is number of errors up to byte max value
+  return Math.min(stats.errors, 255);
 }
 
 /**
  * Reads stdin and resolves to the read string.
  */
-async function readStdin(): Promise<string> {
+async function readStream(stream: NodeJS.ReadableStream): Promise<string> {
   return new Promise<string>(resolve => {
     let code = '';
 
-    process.stdin.on('data', data => {
+    stream.on('data', data => {
       code += data;
     });
 
-    process.stdin.on('end', () => {
+    stream.on('end', () => {
       resolve(code);
     });
   });
