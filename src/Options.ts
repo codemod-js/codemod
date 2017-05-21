@@ -195,7 +195,7 @@ export default class Options {
         case '--help':
           help = true;
           break;
-          
+
         case '-d':
         case '--dry':
           dry = true;

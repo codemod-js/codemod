@@ -80,7 +80,10 @@ export default async function run(
   let dryRun = options.dry;
 
   if (options.stdio) {
-    runner = new TransformRunner([new Source('<stdin>', await readStream(stdin))][Symbol.iterator](), plugins, {
+    let stdinData = await readStream(stdin);
+    let stdinSource = new Source('<stdin>', stdinData);
+
+    runner = new TransformRunner([stdinSource][Symbol.iterator](), plugins, {
       transformSourceEnd(runner: TransformRunner, transformed: SourceTransformResult) {
         if (transformed.output) {
           stdout.write(`${transformed.output}\n`);
@@ -140,18 +143,28 @@ export default async function run(
 }
 
 /**
- * Reads stdin and resolves to the read string.
+ * Reads a stream and resolves to the read string.
  */
 async function readStream(stream: NodeJS.ReadableStream): Promise<string> {
-  return new Promise<string>(resolve => {
-    let code = '';
+  return new Promise<string>((resolve, reject) => {
+    let result = '';
 
-    stream.on('data', data => {
-      code += data;
+    stream.on('readable', () => {
+      let chunk = stream.read();
+
+      if (chunk instanceof Buffer) {
+        result += chunk.toString('utf8');
+      } else if (typeof chunk === 'string') {
+        result += chunk;
+      }
     });
 
     stream.on('end', () => {
-      resolve(code);
+      resolve(result);
+    });
+
+    stream.on('error', error => {
+      reject(error);
     });
   });
 }
