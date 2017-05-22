@@ -13,3 +13,9 @@ node_modules
 *.js
 *.d.ts
 *.js.map
+
+# allow fixtures
+!test/fixtures/**/*.js
+
+# ignore tmp directory
+tmp

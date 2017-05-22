@@ -95,6 +95,11 @@ describe('Options', function() {
     strictEqual(pluginOpts && pluginOpts['name'], 'babel-codemod');
   });
 
+  it('should set dry option', function() {
+    let options = assertOptionsParsed(Options.parse(['--dry']));
+    strictEqual(options.dry, true);
+  });
+
   function assertOptionsParsed(result: ParseOptionsResult): Options {
     if (result instanceof Options) {
       return result;
