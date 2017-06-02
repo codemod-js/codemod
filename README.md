@@ -1,4 +1,4 @@
-# babel-codemod [![Build Status](https://travis-ci.org/square/babel-codemod.svg?branch=master)](https://travis-ci.org/square/babel-codemod) [![dependencies Status](https://david-dm.org/square/babel-codemod/status.svg)](https://david-dm.org/square/babel-codemod)
+# babel-codemod
 
 babel-codemod rewrites JavaScript using babel plugins.
 
@@ -45,6 +45,10 @@ $ codemod --require ts-node/register --plugin ./my-plugin.ts src/
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for information on setting up the project for development and on contributing to the project.
+
+## Status
+
+[![Build Status](https://travis-ci.org/square/babel-codemod.svg?branch=master)](https://travis-ci.org/square/babel-codemod) [![dependencies Status](https://david-dm.org/square/babel-codemod/status.svg)](https://david-dm.org/square/babel-codemod) [![Greenkeeper badge](https://badges.greenkeeper.io/square/babel-codemod.svg)](https://greenkeeper.io/)
 
 ## License
 Copyright 2017 Square, Inc.
