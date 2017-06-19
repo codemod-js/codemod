@@ -29,7 +29,7 @@
     "@types/glob": "^5.0.30",
     "@types/mocha": "^2.2.40",
     "@types/mz": "0.0.31",
-    "@types/node": "^7.0.5",
+    "@types/node": "^8.0.0",
     "@types/rimraf": "0.0.28",
     "mocha": "^3.2.0",
     "rimraf": "2.6.1",
