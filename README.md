@@ -36,6 +36,7 @@ While testing out your plugin, you may find it useful to use the `--require` opt
 
 ```
 # Run a local plugin written with newer JavaScript syntax.
+$ yarn global add babel-register
 $ codemod --require babel-register --plugin ./my-plugin.js src/
 
 # Run a local plugin written with TypeScript.
