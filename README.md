@@ -42,6 +42,8 @@ $ codemod --require babel-register --plugin ./my-plugin.js src/
 $ codemod --require ts-node/register --plugin ./my-plugin.ts src/
 ```
 
+Note: You'll need to [setup `babel-register`](https://github.com/square/babel-codemod/pull/25#issuecomment-309607661) if you're using `--require`.
+
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for information on setting up the project for development and on contributing to the project.
