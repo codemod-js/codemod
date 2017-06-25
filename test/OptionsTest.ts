@@ -100,6 +100,11 @@ describe('Options', function() {
     strictEqual(options.dry, true);
   });
 
+  it('should set useLocalBabel', function() {
+    let options = assertOptionsParsed(Options.parse(['--find-babel-config']));
+    strictEqual(options.findBabelConfig, true);
+  });
+
   function assertOptionsParsed(result: ParseOptionsResult): Options {
     if (result instanceof Options) {
       return result;
