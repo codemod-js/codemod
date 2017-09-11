@@ -32,7 +32,7 @@
     "@types/node": "^8.0.0",
     "@types/rimraf": "2.0.2",
     "mocha": "^3.2.0",
-    "rimraf": "2.6.1",
+    "rimraf": "2.6.2",
     "semantic-release": "^6.3.2",
     "tslint": "^5.4.2",
     "typescript": "^2.2.1"
