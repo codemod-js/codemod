@@ -36,7 +36,7 @@
     "@types/rimraf": "2.0.2",
     "commitlint": "^5.2.6",
     "husky": "^0.14.3",
-    "mocha": "^3.2.0",
+    "mocha": "^4.0.1",
     "rimraf": "2.6.2",
     "semantic-release": "^8.0.3",
     "tslint": "^5.4.2",
