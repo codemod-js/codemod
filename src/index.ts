@@ -120,12 +120,9 @@ export default async function run(
     });
   }
 
-  let hasErrors = false;
-
   for (let result of runner.run()) {
     if (result.error !== null) {
       stats.errors++;
-      hasErrors = true;
     }
     stats.total++;
   }
