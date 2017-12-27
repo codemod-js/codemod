@@ -93,7 +93,8 @@ export default class TransformRunner {
                       "functionBind",
                       "functionSent",
                       "objectRestSpread",
-                      "dynamicImport"
+                      "dynamicImport",
+                      "decorators"
                     ]
                   });
                 }
