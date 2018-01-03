@@ -5,5 +5,5 @@ module.exports = function() {
         path.node.value += 1;
       }
     }
-  }
+  };
 };

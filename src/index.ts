@@ -13,6 +13,7 @@ ${$0} [OPTIONS] [PATH … | --stdio]
 
 OPTIONS
   -p, --plugin PLUGIN               Transform sources with PLUGIN (allows multiple).
+      --remote-plugin URL           Fetch a plugin from URL (allows multiple).
   -o, --plugin-options PLUGIN=OPTS  JSON-encoded OPTS for PLUGIN (allows multiple).
   -r, --require PATH                Require PATH before transform (allows multiple).
       --extensions EXTS             Comma-separated extensions to process (default: "${Array.from(
@@ -25,9 +26,15 @@ OPTIONS
   -h, --help                        Show this help message.
   -d, --dry                         Run plugins without modifying files on disk.
 
+  NOTE: \`--remote-plugin\` should only be used as a convenience to load code that you or someone
+        you trust wrote. It will run with your full user privileges, so please exercise caution!
+
 EXAMPLES
   # Run with a relative plugin on all files in \`src/\`.
   $ ${$0} -p ./typecheck.js src/
+
+  # Run with a remote plugin from astexplorer.net on all files in \`src/\`.
+  $ ${$0} --remote-plugin 'https://astexplorer.net/#/gist/688274…' src/
 
   # Run with multiple plugins.
   $ ${$0} -p ./a.js -p ./b.js some-file.js
@@ -76,7 +83,7 @@ export default async function run(
 
   options.loadRequires();
 
-  let plugins = options.getBabelPlugins();
+  let plugins = await options.getBabelPlugins();
   let runner: TransformRunner;
   let stats = {
     modified: 0,

@@ -3,9 +3,10 @@ import { execFile } from 'child_process';
 import { mkdir, readFile, writeFile } from 'mz/fs';
 import { basename, dirname, join } from 'path';
 import { sync as rimraf } from 'rimraf';
+import { startServer } from '../unit/TestServer';
 
 function plugin(name: string): string {
-  return join(__dirname, `fixtures/plugin/${name}.js`);
+  return join(__dirname, `../fixtures/plugin/${name}.js`);
 }
 
 type CLIResult = { status: number; stdout: string; stderr: string };
@@ -16,7 +17,7 @@ async function runCodemodCLI(
 ): Promise<CLIResult> {
   return new Promise(
     (resolve: (result: CLIResult) => void, reject: (error: Error) => void) => {
-      let child = execFile(join(__dirname, '../bin/codemod'), args);
+      let child = execFile(join(__dirname, '../../bin/codemod'), args);
       let stdout = '';
       let stderr = '';
 
@@ -56,9 +57,10 @@ async function mkdirp(path: string): Promise<void> {
 }
 
 function getTemporaryFilePath(path: string): string {
-  return join(__dirname, '../tmp', path);
+  return join(__dirname, '../../tmp', path);
 }
 
+// TODO: Use `tmp` to generate a temporary directory?
 async function createTemporaryFile(
   path: string,
   content: string
@@ -225,14 +227,10 @@ describe('CLI', function() {
 
   it('can load plugins with multiple files with ES modules by default`', async function() {
     let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let pluginFile = join(
-      __dirname,
-      `fixtures/plugin/increment-export-default-multiple/increment-export-default.js`
-    );
     let { status, stdout, stderr } = await runCodemodCLI([
       afile,
       '-p',
-      pluginFile
+      plugin('increment-export-default-multiple/increment-export-default')
     ]);
 
     deepEqual(
@@ -261,5 +259,39 @@ describe('CLI', function() {
     );
     strictEqual(stdout, '');
     strictEqual(status, 255);
+  });
+
+  it('can load and run with a remote plugin', async function() {
+    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    let server = await startServer((req, res) => {
+      strictEqual(req.url, '/plugin.js');
+
+      readFile(plugin('increment-export-default'), { encoding: 'utf8' }).then(
+        content => {
+          res.end(content);
+        }
+      );
+    });
+
+    try {
+      let { status, stdout, stderr } = await runCodemodCLI([
+        afile,
+        '--remote-plugin',
+        server.requestURL('/plugin.js').toString()
+      ]);
+
+      deepEqual(
+        { status, stdout, stderr },
+        {
+          status: 0,
+          stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+          stderr: ''
+        }
+      );
+
+      strictEqual(await readFile(afile, 'utf8'), '4 + 5;');
+    } finally {
+      await server.stop();
+    }
   });
 });

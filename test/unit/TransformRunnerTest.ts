@@ -5,7 +5,7 @@ import { NumericLiteral, Program } from 'babel-types';
 import TransformRunner, {
   Source,
   SourceTransformResult
-} from '../src/TransformRunner';
+} from '../../src/TransformRunner';
 
 describe('TransformRunner', function() {
   it('passes source through as-is when there are no plugins', function() {
