@@ -4,6 +4,11 @@ import { hasMagic as hasGlob, sync as globSync } from 'glob';
 import { basename, extname, resolve } from 'path';
 import { sync as resolveSync } from 'resolve';
 import { PathPredicate } from './iterateSources';
+import PluginLoader from './PluginLoader';
+import AstExplorerResolver from './resolvers/AstExplorerResolver';
+import FileSystemResolver from './resolvers/FileSystemResolver';
+import NetworkResolver from './resolvers/NetworkResolver';
+import PackageResolver from './resolvers/PackageResolver';
 import { BabelPlugin, RawBabelPlugin } from './TransformRunner';
 
 export const DEFAULT_EXTENSIONS = new Set(['.js', '.jsx']);
@@ -15,7 +20,7 @@ export class Plugin {
   constructor(
     readonly rawPlugin: RawBabelPlugin,
     readonly inferredName: string,
-    readonly path?: string,
+    readonly source?: string,
     readonly resolvedPath?: string
   ) {
     let instance = rawPlugin(Babel);
@@ -24,41 +29,13 @@ export class Plugin {
       this.declaredName = instance.name;
     }
   }
-
-  static load(path: string, inferredName: string) {
-    let resolvedPath = require.resolve(path);
-    let exports = require(path);
-    let plugin;
-
-    if (exports.default) {
-      plugin = exports.default;
-    } else {
-      plugin = exports;
-    }
-
-    let rawPlugin = plugin;
-
-    return new Plugin(rawPlugin, inferredName, path, resolvedPath);
-  }
-}
-
-export class DeferredPlugin {
-  private loaded?: Plugin;
-
-  constructor(readonly path: string, readonly inferredName: string) {}
-
-  load(): Plugin {
-    if (!this.loaded) {
-      this.loaded = Plugin.load(this.path, this.inferredName);
-    }
-    return this.loaded;
-  }
 }
 
 export default class Options {
   constructor(
     readonly sourcePaths: Array<string>,
-    readonly plugins: Array<DeferredPlugin>,
+    readonly localPlugins: Array<string>,
+    readonly remotePlugins: Array<string>,
     readonly pluginOptions: Map<string, object>,
     readonly extensions: Set<string>,
     readonly requires: Array<string>,
@@ -70,12 +47,47 @@ export default class Options {
     readonly dry: boolean
   ) {}
 
+  private pluginLoader = new PluginLoader([
+    new FileSystemResolver(),
+    new PackageResolver()
+  ]);
+
+  private remotePluginLoader = new PluginLoader([
+    new AstExplorerResolver(),
+    new NetworkResolver()
+  ]);
+
   private _pluginCache?: Array<Plugin>;
 
-  getPlugins(): Array<Plugin> {
+  async getPlugins(): Promise<Array<Plugin>> {
     if (!this._pluginCache) {
-      this._pluginCache = this.plugins.map(plugin => plugin.load());
+      let localPlugins = Promise.all(
+        this.localPlugins.map(async localPlugin => {
+          let pluginExports = await this.pluginLoader.load(localPlugin);
+          let defaultExport = pluginExports['default'] || pluginExports;
+
+          return new Plugin(
+            defaultExport,
+            basename(localPlugin, extname(localPlugin))
+          );
+        })
+      );
+
+      let remotePlugins = Promise.all(
+        this.remotePlugins.map(async remotePlugin => {
+          let pluginExports = await this.remotePluginLoader.load(remotePlugin);
+          let defaultExport = pluginExports['default'] || pluginExports;
+
+          return new Plugin(
+            defaultExport,
+            basename(remotePlugin, extname(remotePlugin))
+          );
+        })
+      );
+
+      this._pluginCache = [...(await localPlugins), ...(await remotePlugins)];
     }
+
     return this._pluginCache;
   }
 
@@ -97,8 +109,8 @@ export default class Options {
     }
   }
 
-  getPlugin(name: string): Plugin | null {
-    for (let plugin of this.getPlugins()) {
+  async getPlugin(name: string): Promise<Plugin | null> {
+    for (let plugin of await this.getPlugins()) {
       if (plugin.declaredName === name || plugin.inferredName === name) {
         return plugin;
       }
@@ -107,10 +119,10 @@ export default class Options {
     return null;
   }
 
-  getBabelPlugins(): Array<BabelPlugin> {
+  async getBabelPlugins(): Promise<Array<BabelPlugin>> {
     let result: Array<BabelPlugin> = [];
 
-    for (let plugin of this.getPlugins()) {
+    for (let plugin of await this.getPlugins()) {
       let options =
         (plugin.declaredName && this.pluginOptions.get(plugin.declaredName)) ||
         this.pluginOptions.get(plugin.inferredName);
@@ -125,8 +137,8 @@ export default class Options {
     return result;
   }
 
-  getBabelPlugin(name: string): BabelPlugin | null {
-    let plugin = this.getPlugin(name);
+  async getBabelPlugin(name: string): Promise<BabelPlugin | null> {
+    let plugin = await this.getPlugin(name);
 
     if (!plugin) {
       return null;
@@ -143,7 +155,8 @@ export default class Options {
 
   static parse(args: Array<string>): ParseOptionsResult {
     let sourcePaths: Array<string> = [];
-    let plugins: Array<DeferredPlugin> = [];
+    let localPlugins: Array<string> = [];
+    let remotePlugins: Array<string> = [];
     let pluginOptions: Map<string, object> = new Map();
     let extensions = DEFAULT_EXTENSIONS;
     let ignore = (path: string, basename: string, root: string) =>
@@ -162,13 +175,12 @@ export default class Options {
         case '-p':
         case '--plugin':
           i++;
-          let path = args[i];
-          plugins.push(
-            new DeferredPlugin(
-              getRequirableModulePath(path),
-              basename(path, extname(path))
-            )
-          );
+          localPlugins.push(args[i]);
+          break;
+
+        case '--remote-plugin':
+          i++;
+          remotePlugins.push(args[i]);
           break;
 
         case '-o':
@@ -248,7 +260,8 @@ export default class Options {
 
     return new Options(
       sourcePaths,
-      plugins,
+      localPlugins,
+      remotePlugins,
       pluginOptions,
       extensions,
       requires,

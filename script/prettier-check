@@ -4,7 +4,7 @@ const globby = require('globby');
 const { join } = require('path');
 const check = require('prettier-check');
 
-let pathsPromise = globby(['{src,test}/**/*.ts'], {
+let pathsPromise = globby(['{src,test}/**/*.ts', '*.md'], {
   cwd: join(__dirname, '..'),
   gitignore: true
 });

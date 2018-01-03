@@ -1,12 +1,12 @@
 import { deepEqual, strictEqual } from 'assert';
 import { inspect } from 'util';
-import Options, { ParseOptionsResult } from '../src/Options';
+import Options, { ParseOptionsResult } from '../../src/Options';
 
 describe('Options', function() {
   it('has sensible defaults', function() {
     let options = assertOptionsParsed(Options.parse([]));
     deepEqual(options.extensions, new Set(['.js', '.jsx']));
-    deepEqual(options.plugins, []);
+    deepEqual(options.localPlugins, []);
     deepEqual(options.sourcePaths, []);
     deepEqual(options.requires, []);
     strictEqual(options.pluginOptions.size, 0);
@@ -52,7 +52,7 @@ describe('Options', function() {
     deepEqual(options.pluginOptions.get('my-plugin'), { foo: true });
   });
 
-  it('associates plugin options based on declared name', function() {
+  it('associates plugin options based on declared name', async function() {
     let options = assertOptionsParsed(
       Options.parse([
         '--plugin',
@@ -65,7 +65,7 @@ describe('Options', function() {
     // "basic-plugin" is declared in the plugin file
     deepEqual(options.pluginOptions.get('basic-plugin'), { a: true });
 
-    let babelPlugin = options.getBabelPlugin('basic-plugin');
+    let babelPlugin = await options.getBabelPlugin('basic-plugin');
 
     if (!Array.isArray(babelPlugin)) {
       throw new Error(
@@ -81,7 +81,7 @@ describe('Options', function() {
     deepEqual(options.requires, ['mz'].map(require.resolve));
   });
 
-  it('associates plugin options based on inferred name', function() {
+  it('associates plugin options based on inferred name', async function() {
     let options = assertOptionsParsed(
       Options.parse([
         '--plugin',
@@ -94,7 +94,7 @@ describe('Options', function() {
     // "index" is the name of the file
     deepEqual(options.pluginOptions.get('index'), { a: true });
 
-    let babelPlugin = options.getBabelPlugin('index');
+    let babelPlugin = await options.getBabelPlugin('index');
 
     if (!Array.isArray(babelPlugin)) {
       throw new Error(

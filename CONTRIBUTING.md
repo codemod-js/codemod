@@ -3,6 +3,7 @@
 > Before contributing, please read our [code of conduct](http://corner.squareup.com/codeofconduct.html).
 
 Much of the [prelude of the Babel contribution guide](https://github.com/babel/babel/blob/7.0/CONTRIBUTING.md#not-sure-where-to-start) also applies for this project, since it operates on and with Babel plugins. In particular:
+
 * [AST Explorer](http://astexplorer.net/#/scUfOmVOG5) is a very useful tool for examining ASTs and prototyping plugins.
 * [The Babel Plugin handbook](https://github.com/thejameskyle/babel-handbook/blob/master/translations/en/plugin-handbook.md#babel-plugin-handbook) is a great resource for understanding Babel plugins.
 
