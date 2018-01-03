@@ -15,6 +15,9 @@ OPTIONS
   -o, --plugin-options PLUGIN=OPTS  JSON-encoded OPTS for PLUGIN (allows multiple).
   -r, --require PATH                Require PATH before transform (allows multiple).
       --extensions EXTS             Comma-separated extensions to process (default: "${Array.from(DEFAULT_EXTENSIONS).join(',')}").
+      --[no-]transpile-plugins      Transpile plugins to enable future syntax (default: on).
+      --[no-]find-babel-config      Run plugins through babel plugins/presets specified in local
+                                    .babelrc file instead of babel-preset-env (default: off).
   -s, --stdio                       Read source from stdin and print to stdout.
   -h, --help                        Show this help message.
   -d, --dry                         Run plugins without modifying files on disk.
@@ -38,9 +41,6 @@ EXAMPLES
 
   # Pass options from a config file to a plugin.
   $ ${$0} -p ./a.js -o a=@opts.json src/
-
-  # Run with a plugin which itself is transpiled using babel.
-  $ ${$0} -r babel-register -p ./some-plugin.js src/
 
   # Run with a plugin written in TypeScript.
   $ ${$0} -r ts-node/register -p ./some-plugin.ts src/
@@ -67,6 +67,8 @@ export default async function run(
     printHelp(argv, stdout);
     return 0;
   }
+
+  options.loadBabelTranspile();
 
   options.loadRequires();
 

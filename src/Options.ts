@@ -16,6 +16,7 @@ export class Plugin {
     readonly rawPlugin: RawBabelPlugin,
     readonly inferredName: string,
     readonly path?: string,
+    readonly resolvedPath?: string,
   ) {
     let instance = rawPlugin(Babel);
 
@@ -25,6 +26,7 @@ export class Plugin {
   }
 
   static load(path: string, inferredName: string) {
+    let resolvedPath = require.resolve(path);
     let exports = require(path);
     let plugin;
 
@@ -39,7 +41,8 @@ export class Plugin {
     return new Plugin(
       rawPlugin,
       inferredName,
-      path
+      path,
+      resolvedPath
     );
   }
 }
@@ -67,20 +70,37 @@ export default class Options {
     readonly pluginOptions: Map<string, object>,
     readonly extensions: Set<string>,
     readonly requires: Array<string>,
+    readonly transpilePlugins: boolean,
+    readonly findBabelConfig: boolean,
     readonly ignore: PathPredicate,
     readonly stdio: boolean,
     readonly help: boolean,
     readonly dry: boolean
   ) {}
 
+  private _pluginCache?: Array<Plugin>;
+
   getPlugins(): Array<Plugin> {
-    return this.plugins.map(plugin => plugin.load());
+    if (!this._pluginCache) {
+      this._pluginCache = this.plugins.map(plugin => plugin.load());
+    }
+    return this._pluginCache;
   }
 
   loadRequires() {
     for (let modulePath of this.requires) {
       require(modulePath);
     }
+  }
+
+  loadBabelTranspile() {
+    let pluginOptions;
+    if (!this.findBabelConfig) {
+      pluginOptions = require('babel-preset-env').default();
+      pluginOptions.babelrc = false; // ignore babelrc file if present
+    }
+
+    require('babel-register')(pluginOptions);
   }
 
   getPlugin(name: string): Plugin | null {
@@ -134,6 +154,8 @@ export default class Options {
     let extensions = DEFAULT_EXTENSIONS;
     let ignore = (path: string, basename: string, root: string) => basename[0] === '.';
     let requires: Array<string> = [];
+    let findBabelConfig = false;
+    let transpilePlugins = true;
     let stdio = false;
     let help = false;
     let dry = false;
@@ -175,6 +197,16 @@ export default class Options {
         case '--require':
           i++;
           requires.push(getRequirableModulePath(args[i]));
+          break;
+
+        case '--transpile-plugins':
+        case '--no-transpile-plugins':
+          transpilePlugins = arg === '--transpile-plugins';
+          break;
+
+        case '--find-babel-config':
+        case '--no-find-babel-config':
+          findBabelConfig = arg === '--find-babel-config';
           break;
 
         case '--extensions':
@@ -221,6 +253,8 @@ export default class Options {
       pluginOptions,
       extensions,
       requires,
+      transpilePlugins,
+      findBabelConfig,
       ignore,
       stdio,
       help,

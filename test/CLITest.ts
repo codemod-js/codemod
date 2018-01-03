@@ -187,4 +187,53 @@ describe('CLI', function() {
       '3 + 4;'
     );
   });
+
+  it('can load plugins written with ES modules by default', async function() {
+    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    let { status, stdout, stderr } = await runCodemodCLI([afile, '-p', plugin('increment-export-default')]);
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+        stderr: ''
+      }
+    );
+    strictEqual(
+      await readFile(afile, 'utf8'),
+      '4 + 5;'
+    );
+  });
+
+  it('can load plugins with multiple files with ES modules by default`', async function() {
+    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    let pluginFile = join(__dirname, `fixtures/plugin/increment-export-default-multiple/increment-export-default.js`);
+    let { status, stdout, stderr } = await runCodemodCLI([afile, '-p', pluginFile]);
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+        stderr: ''
+      }
+    );
+    strictEqual(
+      await readFile(afile, 'utf8'),
+      '4 + 5;'
+    );
+  });
+
+  it('fails when specifying --find-babel-config as there are no plugins loaded', async function() {
+    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    let { status, stdout, stderr } = await runCodemodCLI([afile, '-p', plugin('increment-export-default'), '--find-babel-config']);
+
+    ok(
+      /SyntaxError: Unexpected token export/.test(stderr),
+      `error should reference invalid syntax: ${stderr}`
+    );
+    strictEqual(stdout, '');
+    strictEqual(status, 255);
+  });
 });
