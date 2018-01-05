@@ -232,7 +232,7 @@ describe('CLI', function() {
 
   it('can load plugins written in Typescript', async function() {
     let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let pluginFile = join(__dirname, 'fixtures/plugin/typescript/index.ts');
+    let pluginFile = join(__dirname, 'fixtures/plugin/typescript/increment-typescript.ts');
     let { status, stdout, stderr } = await runCodemodCLI([afile, '-p', pluginFile, '--transpile-ts-plugins']);
 
     deepEqual(
