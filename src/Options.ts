@@ -41,6 +41,7 @@ export default class Options {
     readonly requires: Array<string>,
     readonly transpilePlugins: boolean,
     readonly findBabelConfig: boolean,
+    readonly transpilePluginsWithTypescript: boolean,
     readonly ignore: PathPredicate,
     readonly stdio: boolean,
     readonly help: boolean,
@@ -109,6 +110,19 @@ export default class Options {
     }
   }
 
+  
+  loadTypescriptTranspile() {
+    try{
+      require.resolve('typescript');
+    } catch (e) {
+      throw new Error('Typescript is not installed locally. You must installed Typescript locally in order to transpile plugins written in Typescript');
+    }
+
+    //TODO: what about options????
+
+    require('ts-node').register();
+  }
+
   async getPlugin(name: string): Promise<Plugin | null> {
     for (let plugin of await this.getPlugins()) {
       if (plugin.declaredName === name || plugin.inferredName === name) {
@@ -164,6 +178,7 @@ export default class Options {
     let requires: Array<string> = [];
     let findBabelConfig = false;
     let transpilePlugins = true;
+    let transpilePluginsWithTypescript = false;
     let stdio = false;
     let help = false;
     let dry = false;
@@ -222,6 +237,10 @@ export default class Options {
           findBabelConfig = arg === '--find-babel-config';
           break;
 
+        case '--transpile-ts-plugins':
+          transpilePluginsWithTypescript = true;
+          break;
+
         case '--extensions':
           i++;
           extensions = new Set(
@@ -267,6 +286,7 @@ export default class Options {
       requires,
       transpilePlugins,
       findBabelConfig,
+      transpilePluginsWithTypescript,
       ignore,
       stdio,
       help,
