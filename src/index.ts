@@ -2,19 +2,25 @@ import * as realFs from 'fs';
 import { basename } from 'path';
 import iterateSources from './iterateSources';
 import Options, { DEFAULT_EXTENSIONS } from './Options';
-import TransformRunner, { Source, SourceTransformResult } from './TransformRunner';
+import TransformRunner, {
+  Source,
+  SourceTransformResult
+} from './TransformRunner';
 
 function printHelp(argv: Array<string>, out: NodeJS.WritableStream) {
   let $0 = basename(argv[1]);
 
-  out.write(`
+  out.write(
+    `
 ${$0} [OPTIONS] [PATH … | --stdio]
 
 OPTIONS
   -p, --plugin PLUGIN               Transform sources with PLUGIN (allows multiple).
   -o, --plugin-options PLUGIN=OPTS  JSON-encoded OPTS for PLUGIN (allows multiple).
   -r, --require PATH                Require PATH before transform (allows multiple).
-      --extensions EXTS             Comma-separated extensions to process (default: "${Array.from(DEFAULT_EXTENSIONS).join(',')}").
+      --extensions EXTS             Comma-separated extensions to process (default: "${Array.from(
+        DEFAULT_EXTENSIONS
+      ).join(',')}").
       --[no-]transpile-plugins      Transpile plugins to enable future syntax (default: on).
       --[no-]find-babel-config      Run plugins through babel plugins/presets specified in local
                                     .babelrc file instead of babel-preset-env (default: off).
@@ -44,7 +50,8 @@ EXAMPLES
 
   # Run with a plugin written in TypeScript.
   $ ${$0} -r ts-node/register -p ./some-plugin.ts src/
-  `.trim());
+  `.trim()
+  );
   out.write('\n');
 }
 
@@ -86,7 +93,10 @@ export default async function run(
     let stdinSource = new Source('<stdin>', stdinData);
 
     runner = new TransformRunner([stdinSource][Symbol.iterator](), plugins, {
-      transformSourceEnd(runner: TransformRunner, transformed: SourceTransformResult) {
+      transformSourceEnd(
+        runner: TransformRunner,
+        transformed: SourceTransformResult
+      ) {
         if (transformed.output) {
           stdout.write(`${transformed.output}\n`);
         } else if (transformed.error) {
@@ -101,11 +111,14 @@ export default async function run(
       options.ignore,
       fs.statSync,
       fs.readdirSync,
-      fs.readFileSync,
+      fs.readFileSync
     );
 
     runner = new TransformRunner(sourcesIterator, plugins, {
-      transformSourceEnd(runner: TransformRunner, transformed: SourceTransformResult) {
+      transformSourceEnd(
+        runner: TransformRunner,
+        transformed: SourceTransformResult
+      ) {
         if (transformed.output) {
           if (transformed.output !== transformed.source.content) {
             stats.modified++;
@@ -115,7 +128,11 @@ export default async function run(
             }
           }
         } else if (transformed.error) {
-          stderr.write(`Encountered an error while processing ${transformed.source.path}:\n`);
+          stderr.write(
+            `Encountered an error while processing ${
+              transformed.source.path
+            }:\n`
+          );
           stderr.write(`${transformed.error.stack}\n`);
         }
       }
@@ -134,7 +151,11 @@ export default async function run(
       stdout.write('DRY RUN: no files affected\n');
     }
 
-    stdout.write(`${stats.total} file(s), ${stats.modified} modified, ${stats.errors} errors\n`);
+    stdout.write(
+      `${stats.total} file(s), ${stats.modified} modified, ${
+        stats.errors
+      } errors\n`
+    );
   }
 
   // exit status is number of errors up to byte max value
