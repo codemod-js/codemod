@@ -5,21 +5,20 @@ import * as babylon from 'babylon';
 import { parse, print } from 'recast';
 
 export class Source {
-  constructor(
-    readonly path: string,
-    readonly content: string,
-  ) {}
+  constructor(readonly path: string, readonly content: string) {}
 }
 
 export class SourceTransformResult {
   constructor(
     readonly source: Source,
     readonly output: string | null,
-    readonly error: Error | null,
+    readonly error: Error | null
   ) {}
 }
 
-export type RawBabelPlugin = (babel: typeof Babel) => { name?: string, visitor: Visitor };
+export type RawBabelPlugin = (
+  babel: typeof Babel
+) => { name?: string; visitor: Visitor };
 export type RawBabelPluginWithOptions = [RawBabelPlugin, object];
 export type BabelPlugin = RawBabelPlugin | RawBabelPluginWithOptions;
 
@@ -27,14 +26,17 @@ export type TransformRunnerDelegate = {
   transformStart?: (runner: TransformRunner) => void;
   transformEnd?: (runner: TransformRunner) => void;
   transformSourceStart?: (runner: TransformRunner, source: Source) => void;
-  transformSourceEnd?: (runner: TransformRunner, transformed: SourceTransformResult) => void;
+  transformSourceEnd?: (
+    runner: TransformRunner,
+    transformed: SourceTransformResult
+  ) => void;
 };
 
 export default class TransformRunner {
   constructor(
     readonly sources: IterableIterator<Source> | Array<Source>,
     readonly plugins: Array<BabelPlugin>,
-    private readonly delegate: TransformRunnerDelegate = {},
+    private readonly delegate: TransformRunnerDelegate = {}
   ) {}
 
   *run(): IterableIterator<SourceTransformResult> {
@@ -74,33 +76,31 @@ export default class TransformRunner {
       babelrc: false,
       parserOpts: {
         parser(code: string) {
-          return parse(
-            code, {
-              parser: {
-                parse(code: string) {
-                  return babylon.parse(code, {
-                    sourceType: 'module',
-                    allowImportExportEverywhere: false, // consistent with espree
-                    allowReturnOutsideFunction: true,
-                    allowSuperOutsideMethod: true,
-                    plugins: [
-                      "flow",
-                      "jsx",
-                      "asyncGenerators",
-                      "classProperties",
-                      "doExpressions",
-                      "exportExtensions",
-                      "functionBind",
-                      "functionSent",
-                      "objectRestSpread",
-                      "dynamicImport",
-                      "decorators"
-                    ]
-                  });
-                }
+          return parse(code, {
+            parser: {
+              parse(code: string) {
+                return babylon.parse(code, {
+                  sourceType: 'module',
+                  allowImportExportEverywhere: false, // consistent with espree
+                  allowReturnOutsideFunction: true,
+                  allowSuperOutsideMethod: true,
+                  plugins: [
+                    'flow',
+                    'jsx',
+                    'asyncGenerators',
+                    'classProperties',
+                    'doExpressions',
+                    'exportExtensions',
+                    'functionBind',
+                    'functionSent',
+                    'objectRestSpread',
+                    'dynamicImport',
+                    'decorators'
+                  ]
+                });
               }
             }
-          );
+          });
         }
       },
       generatorOpts: {

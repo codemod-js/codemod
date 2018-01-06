@@ -16,7 +16,7 @@ export class Plugin {
     readonly rawPlugin: RawBabelPlugin,
     readonly inferredName: string,
     readonly path?: string,
-    readonly resolvedPath?: string,
+    readonly resolvedPath?: string
   ) {
     let instance = rawPlugin(Babel);
 
@@ -38,22 +38,14 @@ export class Plugin {
 
     let rawPlugin = plugin;
 
-    return new Plugin(
-      rawPlugin,
-      inferredName,
-      path,
-      resolvedPath
-    );
+    return new Plugin(rawPlugin, inferredName, path, resolvedPath);
   }
 }
 
 export class DeferredPlugin {
   private loaded?: Plugin;
 
-  constructor(
-    readonly path: string,
-    readonly inferredName: string,
-  ) {}
+  constructor(readonly path: string, readonly inferredName: string) {}
 
   load(): Plugin {
     if (!this.loaded) {
@@ -117,8 +109,8 @@ export default class Options {
     let result: Array<BabelPlugin> = [];
 
     for (let plugin of this.getPlugins()) {
-      let options = plugin.declaredName &&
-        this.pluginOptions.get(plugin.declaredName) ||
+      let options =
+        (plugin.declaredName && this.pluginOptions.get(plugin.declaredName)) ||
         this.pluginOptions.get(plugin.inferredName);
 
       if (options) {
@@ -152,7 +144,8 @@ export default class Options {
     let plugins: Array<DeferredPlugin> = [];
     let pluginOptions: Map<string, object> = new Map();
     let extensions = DEFAULT_EXTENSIONS;
-    let ignore = (path: string, basename: string, root: string) => basename[0] === '.';
+    let ignore = (path: string, basename: string, root: string) =>
+      basename[0] === '.';
     let requires: Array<string> = [];
     let findBabelConfig = false;
     let transpilePlugins = true;
@@ -168,10 +161,12 @@ export default class Options {
         case '--plugin':
           i++;
           let path = args[i];
-          plugins.push(new DeferredPlugin(
-            getRequirableModulePath(path),
-            basename(path, extname(path))
-          ));
+          plugins.push(
+            new DeferredPlugin(
+              getRequirableModulePath(path),
+              basename(path, extname(path))
+            )
+          );
           break;
 
         case '-o':
@@ -182,14 +177,18 @@ export default class Options {
           let optionsRaw = nameAndOptions[1];
 
           if (optionsRaw && optionsRaw[0] === '@') {
-            optionsRaw = readFileSync(optionsRaw.slice(1), { encoding: 'utf8' });
+            optionsRaw = readFileSync(optionsRaw.slice(1), {
+              encoding: 'utf8'
+            });
             pluginOptions.set(name, JSON.parse(optionsRaw));
           }
 
           try {
             pluginOptions.set(name, JSON.parse(optionsRaw));
           } catch (err) {
-            return new Error(`unable to parse JSON config for ${name}: ${optionsRaw}`);
+            return new Error(
+              `unable to parse JSON config for ${name}: ${optionsRaw}`
+            );
           }
           break;
 
@@ -212,9 +211,7 @@ export default class Options {
         case '--extensions':
           i++;
           extensions = new Set(
-            args[i]
-              .split(',')
-              .map(ext => ext[0] === '.' ? ext : `.${ext}`)
+            args[i].split(',').map(ext => (ext[0] === '.' ? ext : `.${ext}`))
           );
           break;
 

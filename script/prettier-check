@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+
+const globby = require('globby');
+const { join } = require('path');
+const check = require('prettier-check');
+
+let pathsPromise = globby(['{src,test}/**/*.ts'], {
+  cwd: join(__dirname, '..'),
+  gitignore: true
+});
+
+pathsPromise
+  .then(paths => check(paths))
+  .then(status => process.exit(status))
+  .catch(error => {
+    console.error(error.stack);
+    process.exit(1);
+  });

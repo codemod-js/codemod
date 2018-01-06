@@ -14,7 +14,9 @@ describe('Options', function() {
   });
 
   it('interprets `--extensions` as expected', function() {
-    let options = assertOptionsParsed(Options.parse(['--extensions', '.js,.jsx,.ts']));
+    let options = assertOptionsParsed(
+      Options.parse(['--extensions', '.js,.jsx,.ts'])
+    );
     deepEqual(options.extensions, new Set(['.js', '.jsx', '.ts']));
   });
 
@@ -29,8 +31,13 @@ describe('Options', function() {
   });
 
   it('treats sources as globs', function() {
-    let options = assertOptionsParsed(Options.parse(['test/fixtures/glob-test/**/*.js']));
-    deepEqual(options.sourcePaths, ['test/fixtures/glob-test/abc.js', 'test/fixtures/glob-test/subdir/def.js']);
+    let options = assertOptionsParsed(
+      Options.parse(['test/fixtures/glob-test/**/*.js'])
+    );
+    deepEqual(options.sourcePaths, [
+      'test/fixtures/glob-test/abc.js',
+      'test/fixtures/glob-test/subdir/def.js'
+    ]);
   });
 
   it('interprets `--stdio` as reading/writing stdin/stdout', function() {
@@ -39,17 +46,21 @@ describe('Options', function() {
   });
 
   it('can parse inline plugin options as JSON', function() {
-    let options = assertOptionsParsed(Options.parse(['-o', 'my-plugin={"foo": true}']));
+    let options = assertOptionsParsed(
+      Options.parse(['-o', 'my-plugin={"foo": true}'])
+    );
     deepEqual(options.pluginOptions.get('my-plugin'), { foo: true });
   });
 
   it('associates plugin options based on declared name', function() {
-    let options = assertOptionsParsed(Options.parse([
-      '--plugin',
-      './test/fixtures/plugin/index.js',
-      '--plugin-options',
-      'basic-plugin={"a": true}'
-    ]));
+    let options = assertOptionsParsed(
+      Options.parse([
+        '--plugin',
+        './test/fixtures/plugin/index.js',
+        '--plugin-options',
+        'basic-plugin={"a": true}'
+      ])
+    );
 
     // "basic-plugin" is declared in the plugin file
     deepEqual(options.pluginOptions.get('basic-plugin'), { a: true });
@@ -57,7 +68,9 @@ describe('Options', function() {
     let babelPlugin = options.getBabelPlugin('basic-plugin');
 
     if (!Array.isArray(babelPlugin)) {
-      throw new Error(`expected plugin to be [plugin, options] tuple: ${inspect(babelPlugin)}`);
+      throw new Error(
+        `expected plugin to be [plugin, options] tuple: ${inspect(babelPlugin)}`
+      );
     }
 
     deepEqual(babelPlugin[1], { a: true });
@@ -69,12 +82,14 @@ describe('Options', function() {
   });
 
   it('associates plugin options based on inferred name', function() {
-    let options = assertOptionsParsed(Options.parse([
-      '--plugin',
-      './test/fixtures/plugin/index.js',
-      '--plugin-options',
-      'index={"a": true}'
-    ]));
+    let options = assertOptionsParsed(
+      Options.parse([
+        '--plugin',
+        './test/fixtures/plugin/index.js',
+        '--plugin-options',
+        'index={"a": true}'
+      ])
+    );
 
     // "index" is the name of the file
     deepEqual(options.pluginOptions.get('index'), { a: true });
@@ -82,7 +97,9 @@ describe('Options', function() {
     let babelPlugin = options.getBabelPlugin('index');
 
     if (!Array.isArray(babelPlugin)) {
-      throw new Error(`expected plugin to be [plugin, options] tuple: ${inspect(babelPlugin)}`);
+      throw new Error(
+        `expected plugin to be [plugin, options] tuple: ${inspect(babelPlugin)}`
+      );
     }
 
     deepEqual(babelPlugin[1], { a: true });
@@ -90,7 +107,9 @@ describe('Options', function() {
 
   it('can parse a JSON file for plugin options', function() {
     // You wouldn't actually use package.json, but it's a convenient JSON file.
-    let options = assertOptionsParsed(Options.parse(['-o', 'my-plugin=@package.json']));
+    let options = assertOptionsParsed(
+      Options.parse(['-o', 'my-plugin=@package.json'])
+    );
     let pluginOpts = options.pluginOptions.get('my-plugin');
     strictEqual(pluginOpts && pluginOpts['name'], 'babel-codemod');
   });

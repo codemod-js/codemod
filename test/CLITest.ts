@@ -8,30 +8,35 @@ function plugin(name: string): string {
   return join(__dirname, `fixtures/plugin/${name}.js`);
 }
 
-type CLIResult = { status: number, stdout: string, stderr: string };
+type CLIResult = { status: number; stdout: string; stderr: string };
 
-async function runCodemodCLI(args: Array<string>, stdin?: string): Promise<CLIResult> {
-  return new Promise((resolve: (result: CLIResult) => void, reject: (error: Error) => void) => {
-    let child = execFile(join(__dirname, '../bin/codemod'), args);
-    let stdout = '';
-    let stderr = '';
+async function runCodemodCLI(
+  args: Array<string>,
+  stdin?: string
+): Promise<CLIResult> {
+  return new Promise(
+    (resolve: (result: CLIResult) => void, reject: (error: Error) => void) => {
+      let child = execFile(join(__dirname, '../bin/codemod'), args);
+      let stdout = '';
+      let stderr = '';
 
-    child.stdin.end(stdin);
+      child.stdin.end(stdin);
 
-    child.on('close', status => {
-      resolve({ status, stdout, stderr });
-    });
+      child.on('close', status => {
+        resolve({ status, stdout, stderr });
+      });
 
-    child.stdout.on('data', chunk => {
-      stdout += chunk;
-    });
+      child.stdout.on('data', chunk => {
+        stdout += chunk;
+      });
 
-    child.stderr.on('data', chunk => {
-      stderr += chunk;
-    });
+      child.stderr.on('data', chunk => {
+        stderr += chunk;
+      });
 
-    child.on('error', reject);
-  });
+      child.on('error', reject);
+    }
+  );
 }
 
 async function mkdirp(path: string): Promise<void> {
@@ -54,7 +59,10 @@ function getTemporaryFilePath(path: string): string {
   return join(__dirname, '../tmp', path);
 }
 
-async function createTemporaryFile(path: string, content: string): Promise<string> {
+async function createTemporaryFile(
+  path: string,
+  content: string
+): Promise<string> {
   let fullPath = getTemporaryFilePath(path);
 
   await mkdirp(dirname(fullPath));
@@ -77,7 +85,9 @@ describe('CLI', function() {
   });
 
   it('fails with an error when passing an invalid option', async function() {
-    let { status, stdout, stderr } = await runCodemodCLI(['--not-a-real-option']);
+    let { status, stdout, stderr } = await runCodemodCLI([
+      '--not-a-real-option'
+    ]);
 
     strictEqual(status, 1);
     strictEqual(stdout, '');
@@ -97,7 +107,11 @@ describe('CLI', function() {
 
   it('reads from a file, processes with plugins, then writes to that file', async function() {
     let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let { status, stdout, stderr } = await runCodemodCLI([afile, '-p', plugin('increment')]);
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      '-p',
+      plugin('increment')
+    ]);
 
     deepEqual(
       { status, stdout, stderr },
@@ -115,7 +129,11 @@ describe('CLI', function() {
     let file2 = await createTemporaryFile('a-dir/file2.js', '0;');
     let file3 = await createTemporaryFile('a-dir/sub-dir/file3.jsx', '99;');
     let ignored = await createTemporaryFile('a-dir/ignored.es6', '8;');
-    let { status, stdout, stderr } = await runCodemodCLI([dirname(file1), '-p', plugin('increment')]);
+    let { status, stdout, stderr } = await runCodemodCLI([
+      dirname(file1),
+      '-p',
+      plugin('increment')
+    ]);
 
     deepEqual(
       { status, stdout, stderr },
@@ -130,11 +148,7 @@ describe('CLI', function() {
       '4 + 5;',
       'file1.js is processed'
     );
-    strictEqual(
-      await readFile(file2, 'utf8'),
-      '1;',
-      'file2.js is processed'
-    );
+    strictEqual(await readFile(file2, 'utf8'), '1;', 'file2.js is processed');
     strictEqual(
       await readFile(file3, 'utf8'),
       '100;',
@@ -150,7 +164,13 @@ describe('CLI', function() {
   it('processes all matching files in a directory with custom extensions', async function() {
     let ignored = await createTemporaryFile('a-dir/ignored.js', '3 + 4;');
     let processed = await createTemporaryFile('a-dir/processed.es6', '0;');
-    let { status, stdout, stderr } = await runCodemodCLI([dirname(ignored), '-p', plugin('increment'), '--extensions', '.es6']);
+    let { status, stdout, stderr } = await runCodemodCLI([
+      dirname(ignored),
+      '-p',
+      plugin('increment'),
+      '--extensions',
+      '.es6'
+    ]);
 
     deepEqual(
       { status, stdout, stderr },
@@ -160,19 +180,18 @@ describe('CLI', function() {
         stderr: ''
       }
     );
-    strictEqual(
-      await readFile(ignored, 'utf8'),
-      '3 + 4;'
-    );
-    strictEqual(
-      await readFile(processed, 'utf8'),
-      '1;'
-    );
+    strictEqual(await readFile(ignored, 'utf8'), '3 + 4;');
+    strictEqual(await readFile(processed, 'utf8'), '1;');
   });
 
   it('processes files but does not replace their contents when using --dry', async function() {
     let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let { status, stdout, stderr } = await runCodemodCLI([afile, '-p', plugin('increment'), '--dry']);
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      '-p',
+      plugin('increment'),
+      '--dry'
+    ]);
 
     deepEqual(
       { status, stdout, stderr },
@@ -182,15 +201,16 @@ describe('CLI', function() {
         stderr: ''
       }
     );
-    strictEqual(
-      await readFile(afile, 'utf8'),
-      '3 + 4;'
-    );
+    strictEqual(await readFile(afile, 'utf8'), '3 + 4;');
   });
 
   it('can load plugins written with ES modules by default', async function() {
     let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let { status, stdout, stderr } = await runCodemodCLI([afile, '-p', plugin('increment-export-default')]);
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      '-p',
+      plugin('increment-export-default')
+    ]);
 
     deepEqual(
       { status, stdout, stderr },
@@ -200,16 +220,20 @@ describe('CLI', function() {
         stderr: ''
       }
     );
-    strictEqual(
-      await readFile(afile, 'utf8'),
-      '4 + 5;'
-    );
+    strictEqual(await readFile(afile, 'utf8'), '4 + 5;');
   });
 
   it('can load plugins with multiple files with ES modules by default`', async function() {
     let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let pluginFile = join(__dirname, `fixtures/plugin/increment-export-default-multiple/increment-export-default.js`);
-    let { status, stdout, stderr } = await runCodemodCLI([afile, '-p', pluginFile]);
+    let pluginFile = join(
+      __dirname,
+      `fixtures/plugin/increment-export-default-multiple/increment-export-default.js`
+    );
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      '-p',
+      pluginFile
+    ]);
 
     deepEqual(
       { status, stdout, stderr },
@@ -219,15 +243,17 @@ describe('CLI', function() {
         stderr: ''
       }
     );
-    strictEqual(
-      await readFile(afile, 'utf8'),
-      '4 + 5;'
-    );
+    strictEqual(await readFile(afile, 'utf8'), '4 + 5;');
   });
 
   it('fails when specifying --find-babel-config as there are no plugins loaded', async function() {
     let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let { status, stdout, stderr } = await runCodemodCLI([afile, '-p', plugin('increment-export-default'), '--find-babel-config']);
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      '-p',
+      plugin('increment-export-default'),
+      '--find-babel-config'
+    ]);
 
     ok(
       /SyntaxError: Unexpected token export/.test(stderr),
