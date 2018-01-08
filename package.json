@@ -32,7 +32,7 @@
     "@types/glob": "^5.0.30",
     "@types/mocha": "^2.2.45",
     "@types/mz": "0.0.32",
-    "@types/node": "^8.0.0",
+    "@types/node": "^9.3.0",
     "@types/rimraf": "2.0.2",
     "commitlint": "^5.2.8",
     "husky": "^0.14.3",
