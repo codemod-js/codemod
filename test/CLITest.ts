@@ -45,14 +45,14 @@ async function createTemporaryFile(path: string, content: string): Promise<strin
   await mkdirp(dirname(fullPath));
   await new Promise(resolve => {
     setTimeout(resolve);
-}); //for some reason, if we dont wait another tick we get an ENOENT on windows
+  }); //for some reason, if we dont wait another tick we get an ENOENT on windows
   await writeFile(fullPath, content, 'utf8');
 
   return fullPath;
 }
 
 describe('CLI', function() {
-  beforeEach(function() {
+  afterEach(function() {
     rimraf(getTemporaryFilePath('.'));
   });
 
