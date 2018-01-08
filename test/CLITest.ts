@@ -222,6 +222,9 @@ describe('CLI', function() {
       `error should reference invalid syntax: ${stderr}`
     );
     strictEqual(stdout, '');
-    strictEqual(status, 255);
+
+    let windowsSyntaxErrorCode = 4294967295;
+    let nonWindowsSyntaxErrorCode = 255;
+    ok(status === windowsSyntaxErrorCode || status === nonWindowsSyntaxErrorCode,'status code should indicate SyntaxError');
   });
 });
