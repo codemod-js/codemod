@@ -1,5 +1,5 @@
 import { deepEqual, ok, strictEqual } from 'assert';
-import { execFile } from 'child_process';
+import {spawn} from 'cross-spawn';
 import { mkdir, readFile, writeFile } from 'mz/fs';
 import { basename, dirname, join } from 'path';
 import { sync as rimraf } from 'rimraf';
@@ -12,7 +12,7 @@ type CLIResult = { status: number, stdout: string, stderr: string };
 
 async function runCodemodCLI(args: Array<string>, stdin?: string): Promise<CLIResult> {
   return new Promise((resolve: (result: CLIResult) => void, reject: (error: Error) => void) => {
-    let child = execFile(join(__dirname, '../bin/codemod'), args);
+    let child = spawn(join(__dirname, '../bin/codemod'), args);
     let stdout = '';
     let stderr = '';
 

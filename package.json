@@ -35,6 +35,7 @@
     "@types/node": "^8.0.0",
     "@types/rimraf": "2.0.2",
     "commitlint": "^5.2.8",
+    "cross-spawn": "^5.1.0",
     "husky": "^0.14.3",
     "mocha": "^4.1.0",
     "rimraf": "2.6.2",
