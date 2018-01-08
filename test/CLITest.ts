@@ -1,5 +1,5 @@
 import { deepEqual, ok, strictEqual } from 'assert';
-import {spawn} from 'cross-spawn';
+import { spawn } from 'cross-spawn';
 import { mkdirp } from 'mkdirp';
 import { readFile, writeFile } from 'mz/fs';
 import { dirname, join } from 'path';
