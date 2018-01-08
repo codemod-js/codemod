@@ -37,6 +37,7 @@
     "commitlint": "^5.2.8",
     "cross-spawn": "^5.1.0",
     "husky": "^0.14.3",
+    "mkdirp": "^0.5.1",
     "mocha": "^4.1.0",
     "rimraf": "2.6.2",
     "semantic-release": "^11.0.2",
