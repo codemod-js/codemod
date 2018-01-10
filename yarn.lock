@@ -2,6 +2,18 @@
 # yarn lockfile v1
 
 
+"@commitlint/cli@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.npmjs.org/@commitlint/cli/-/cli-6.0.1.tgz#6a78d91dbfbb1330f42a3c1373f79e0c69a6dc9d"
+  dependencies:
+    "@commitlint/core" "^6.0.1"
+    babel-polyfill "6.26.0"
+    chalk "2.3.0"
+    get-stdin "5.0.1"
+    lodash.merge "4.6.0"
+    lodash.pick "4.4.0"
+    meow "3.7.0"
+
 "@commitlint/cli@^5.2.8":
   version "5.2.8"
   resolved "https://registry.npmjs.org/@commitlint/cli/-/cli-5.2.8.tgz#593e0d16d1d6ebba9994893a4cc933d1b212ae0c"
