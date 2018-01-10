@@ -1,7 +1,8 @@
 import { deepEqual, ok, strictEqual } from 'assert';
-import { execFile } from 'child_process';
-import { mkdir, readFile, writeFile } from 'mz/fs';
-import { basename, dirname, join } from 'path';
+import { spawn } from 'cross-spawn';
+import { mkdirp } from 'mkdirp';
+import { readFile, writeFile } from 'mz/fs';
+import { dirname, join } from 'path';
 import { sync as rimraf } from 'rimraf';
 
 function plugin(name: string): string {
@@ -16,7 +17,7 @@ async function runCodemodCLI(
 ): Promise<CLIResult> {
   return new Promise(
     (resolve: (result: CLIResult) => void, reject: (error: Error) => void) => {
-      let child = execFile(join(__dirname, '../bin/codemod'), args);
+      let child = spawn(join(__dirname, '../bin/codemod'), args);
       let stdout = '';
       let stderr = '';
 
@@ -39,22 +40,6 @@ async function runCodemodCLI(
   );
 }
 
-async function mkdirp(path: string): Promise<void> {
-  let parent = dirname(path);
-  let name = basename(path);
-
-  if (parent === '.' || parent === '/') {
-    try {
-      await mkdir(name);
-    } catch (err) {}
-  } else {
-    await mkdirp(parent);
-    try {
-      await mkdir(path);
-    } catch (err) {}
-  }
-}
-
 function getTemporaryFilePath(path: string): string {
   return join(__dirname, '../tmp', path);
 }
@@ -66,13 +51,16 @@ async function createTemporaryFile(
   let fullPath = getTemporaryFilePath(path);
 
   await mkdirp(dirname(fullPath));
+  await new Promise(resolve => {
+    setTimeout(resolve);
+  }); //for some reason, if we dont wait another tick we get an ENOENT on windows
   await writeFile(fullPath, content, 'utf8');
 
   return fullPath;
 }
 
 describe('CLI', function() {
-  beforeEach(function() {
+  afterEach(function() {
     rimraf(getTemporaryFilePath('.'));
   });
 
@@ -260,6 +248,12 @@ describe('CLI', function() {
       `error should reference invalid syntax: ${stderr}`
     );
     strictEqual(stdout, '');
-    strictEqual(status, 255);
+
+    let windowsSyntaxErrorCode = 4294967295;
+    let nonWindowsSyntaxErrorCode = 255;
+    ok(
+      status === windowsSyntaxErrorCode || status === nonWindowsSyntaxErrorCode,
+      'status code should indicate SyntaxError'
+    );
   });
 });
