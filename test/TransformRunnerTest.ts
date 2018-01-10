@@ -3,7 +3,10 @@ import * as Babel from 'babel-core';
 import { NodePath } from 'babel-traverse';
 import { NumericLiteral, Program } from 'babel-types';
 import { EOL } from 'os';
-import TransformRunner, { Source, SourceTransformResult } from '../src/TransformRunner';
+import TransformRunner, {
+  Source,
+  SourceTransformResult
+} from '../src/TransformRunner';
 
 describe('TransformRunner', function() {
   it('passes source through as-is when there are no plugins', function() {
@@ -11,10 +14,9 @@ describe('TransformRunner', function() {
     let runner = new TransformRunner([source], []);
     let result = Array.from(runner.run());
 
-    deepEqual(
-      result,
-      [new SourceTransformResult(source, source.content, null)]
-    );
+    deepEqual(result, [
+      new SourceTransformResult(source, source.content, null)
+    ]);
   });
 
   it('transforms source using plugins', function() {
@@ -31,10 +33,7 @@ describe('TransformRunner', function() {
     let runner = new TransformRunner([source], [plugin]);
     let result = Array.from(runner.run());
 
-    deepEqual(
-      result,
-      [new SourceTransformResult(source, '4 + 5;', null)]
-    );
+    deepEqual(result, [new SourceTransformResult(source, '4 + 5;', null)]);
   });
 
   it('does not include any plugins not specified explicitly', function() {
@@ -42,10 +41,9 @@ describe('TransformRunner', function() {
     let runner = new TransformRunner([source], []);
     let result = Array.from(runner.run());
 
-    deepEqual(
-      result,
-      [new SourceTransformResult(source, `export default 0;${EOL}`, null)]
-    );
+    deepEqual(result, [
+      new SourceTransformResult(source, `export default 0;${EOL}`, null)
+    ]);
   });
 
   it('allows running plugins with options', function() {
@@ -53,7 +51,10 @@ describe('TransformRunner', function() {
     let plugin = function(babel: typeof Babel) {
       return {
         visitor: {
-          NumericLiteral(path: NodePath<NumericLiteral>, state: { opts: { value?: number } }) {
+          NumericLiteral(
+            path: NodePath<NumericLiteral>,
+            state: { opts: { value?: number } }
+          ) {
             if (state.opts.value === path.node.value) {
               path.node.value++;
             }
@@ -64,10 +65,7 @@ describe('TransformRunner', function() {
     let runner = new TransformRunner([source], [[plugin, { value: 3 }]]);
     let result = Array.from(runner.run());
 
-    deepEqual(
-      result,
-      [new SourceTransformResult(source, '4 + 4;', null)]
-    );
+    deepEqual(result, [new SourceTransformResult(source, '4 + 4;', null)]);
   });
 
   it('passes the filename', function() {
@@ -77,7 +75,12 @@ describe('TransformRunner', function() {
     let plugin = function(babel: typeof Babel) {
       return {
         visitor: {
-          Program(path: NodePath<Program>, state: { file: { opts: { filename: string, filenameRelative: string } } }) {
+          Program(
+            path: NodePath<Program>,
+            state: {
+              file: { opts: { filename: string; filenameRelative: string } };
+            }
+          ) {
             filename = state.file.opts.filename;
             filenameRelative = state.file.opts.filenameRelative;
           }
