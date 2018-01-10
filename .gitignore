@@ -20,5 +20,8 @@ node_modules
 # allow fixtures
 !test/fixtures/**/*.js
 
+# allow JS config files
+!*.config.js
+
 # ignore tmp directory
 tmp
