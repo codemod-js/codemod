@@ -22,33 +22,14 @@ export type RawBabelPlugin = (
 export type RawBabelPluginWithOptions = [RawBabelPlugin, object];
 export type BabelPlugin = RawBabelPlugin | RawBabelPluginWithOptions;
 
-export type TransformRunnerDelegate = {
-  transformStart?: (runner: TransformRunner) => void;
-  transformEnd?: (runner: TransformRunner) => void;
-  transformSourceStart?: (runner: TransformRunner, source: Source) => void;
-  transformSourceEnd?: (
-    runner: TransformRunner,
-    transformed: SourceTransformResult
-  ) => void;
-};
-
 export default class TransformRunner {
   constructor(
     readonly sources: IterableIterator<Source> | Array<Source>,
-    readonly plugins: Array<BabelPlugin>,
-    private readonly delegate: TransformRunnerDelegate = {}
+    readonly plugins: Array<BabelPlugin>
   ) {}
 
   *run(): IterableIterator<SourceTransformResult> {
-    if (this.delegate.transformStart) {
-      this.delegate.transformStart(this);
-    }
-
     for (let source of this.sources) {
-      if (this.delegate.transformSourceStart) {
-        this.delegate.transformSourceStart(this, source);
-      }
-
       let transformed: SourceTransformResult;
 
       try {
@@ -59,14 +40,6 @@ export default class TransformRunner {
       }
 
       yield transformed;
-
-      if (this.delegate.transformSourceEnd) {
-        this.delegate.transformSourceEnd(this, transformed);
-      }
-    }
-
-    if (this.delegate && this.delegate.transformEnd) {
-      this.delegate.transformEnd(this);
     }
   }
 
