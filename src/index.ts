@@ -2,10 +2,7 @@ import * as realFs from 'fs';
 import { basename } from 'path';
 import iterateSources from './iterateSources';
 import Options, { DEFAULT_EXTENSIONS } from './Options';
-import TransformRunner, {
-  Source,
-  SourceTransformResult
-} from './TransformRunner';
+import TransformRunner, { Source } from './TransformRunner';
 
 function printHelp(argv: Array<string>, out: NodeJS.WritableStream) {
   let $0 = basename(argv[1]);
@@ -87,25 +84,14 @@ export default async function run(
     errors: 0
   };
   let dryRun = options.dry;
+  let sourcesIterator: IterableIterator<Source>;
 
   if (options.stdio) {
-    let stdinData = await readStream(stdin);
-    let stdinSource = new Source('<stdin>', stdinData);
-
-    runner = new TransformRunner([stdinSource][Symbol.iterator](), plugins, {
-      transformSourceEnd(
-        runner: TransformRunner,
-        transformed: SourceTransformResult
-      ) {
-        if (transformed.output) {
-          stdout.write(`${transformed.output}\n`);
-        } else if (transformed.error) {
-          stderr.write(`${transformed.error.stack}\n`);
-        }
-      }
-    });
+    sourcesIterator = [new Source('<stdin>', await readStream(stdin))][
+      Symbol.iterator
+    ]();
   } else {
-    let sourcesIterator = iterateSources(
+    sourcesIterator = iterateSources(
       options.sourcePaths,
       options.extensions,
       options.ignore,
@@ -113,36 +99,35 @@ export default async function run(
       fs.readdirSync,
       fs.readFileSync
     );
-
-    runner = new TransformRunner(sourcesIterator, plugins, {
-      transformSourceEnd(
-        runner: TransformRunner,
-        transformed: SourceTransformResult
-      ) {
-        if (transformed.output) {
-          if (transformed.output !== transformed.source.content) {
-            stats.modified++;
-            stdout.write(`${transformed.source.path}\n`);
-            if (!dryRun) {
-              fs.writeFileSync(transformed.source.path, transformed.output);
-            }
-          }
-        } else if (transformed.error) {
-          stderr.write(
-            `Encountered an error while processing ${
-              transformed.source.path
-            }:\n`
-          );
-          stderr.write(`${transformed.error.stack}\n`);
-        }
-      }
-    });
   }
 
+  runner = new TransformRunner(sourcesIterator, plugins);
+
   for (let result of runner.run()) {
-    if (result.error !== null) {
+    if (result.output) {
+      if (options.stdio) {
+        stdout.write(`${result.output}\n`);
+      } else {
+        if (result.output !== result.source.content) {
+          stats.modified++;
+          stdout.write(`${result.source.path}\n`);
+          if (!dryRun) {
+            fs.writeFileSync(result.source.path, result.output);
+          }
+        }
+      }
+    } else if (result.error) {
       stats.errors++;
+
+      if (!options.stdio) {
+        stderr.write(
+          `Encountered an error while processing ${result.source.path}:\n`
+        );
+      }
+
+      stderr.write(`${result.error.stack}\n`);
     }
+
     stats.total++;
   }
 
