@@ -31,7 +31,7 @@
   "author": "Brian Donovan <donovan@squareup.com>",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@commitlint/cli": "^5.2.8",
+    "@commitlint/cli": "^6.0.0",
     "@commitlint/config-conventional": "^5.2.3",
     "@types/babel-core": "^6.7.14",
     "@types/babel-traverse": "^6.7.16",
