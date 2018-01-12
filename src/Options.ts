@@ -86,13 +86,15 @@ export default class Options {
   }
 
   loadBabelTranspile() {
-    let pluginOptions;
-    if (!this.findBabelConfig) {
-      pluginOptions = require('babel-preset-env').default();
-      pluginOptions.babelrc = false; // ignore babelrc file if present
-    }
+    if (this.transpilePlugins) {
+      let pluginOptions;
+      if (!this.findBabelConfig) {
+        pluginOptions = require('babel-preset-env').default();
+        pluginOptions.babelrc = false; // ignore babelrc file if present
+      }
 
-    require('babel-register')(pluginOptions);
+      require('babel-register')(pluginOptions);
+    }
   }
 
   getPlugin(name: string): Plugin | null {
