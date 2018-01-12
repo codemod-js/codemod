@@ -36,7 +36,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@commitlint/cli": "^6.0.1",
-    "@commitlint/config-conventional": "^5.2.3",
+    "@commitlint/config-conventional": "^6.0.2",
     "@types/babel-core": "^6.7.14",
     "@types/babel-traverse": "^6.7.16",
     "@types/babylon": "^6.7.15",
