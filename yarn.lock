@@ -14,9 +14,9 @@
     lodash.pick "4.4.0"
     meow "3.7.0"
 
-"@commitlint/config-conventional@^5.2.3":
-  version "5.2.3"
-  resolved "https://registry.npmjs.org/@commitlint/config-conventional/-/config-conventional-5.2.3.tgz#63671b32b65cb68e7b238405403194b558ff559a"
+"@commitlint/config-conventional@6.0.2":
+  version "6.0.2"
+  resolved "https://registry.npmjs.org/@commitlint/config-conventional/-/config-conventional-6.0.2.tgz#8ef87a6facb75b3377b2760b0e91097f8ec64db4"
 
 "@commitlint/core@^6.0.1":
   version "6.0.1"
