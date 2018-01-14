@@ -2,7 +2,7 @@ import { ok, strictEqual } from 'assert';
 import { readFile } from 'mz/fs';
 import { join } from 'path';
 import AstExplorerResolver from '../../../src/resolvers/AstExplorerResolver';
-import { startServer } from '../TestServer';
+import { startServer } from '../../helpers/TestServer';
 
 describe('AstExplorerResolver', function() {
   it('normalizes a gist+commit editor URL into an API URL', async function() {
