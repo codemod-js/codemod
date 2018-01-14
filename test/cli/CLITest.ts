@@ -1,77 +1,12 @@
 import { deepEqual, ok, strictEqual } from 'assert';
-import { execFile } from 'child_process';
-import { mkdir, readFile, writeFile } from 'mz/fs';
-import { basename, dirname, join } from 'path';
+import { readFile } from 'mz/fs';
+import { dirname } from 'path';
 import { sync as rimraf } from 'rimraf';
-import { startServer } from '../unit/TestServer';
-
-function plugin(name: string): string {
-  return join(__dirname, `../fixtures/plugin/${name}.js`);
-}
-
-type CLIResult = { status: number; stdout: string; stderr: string };
-
-async function runCodemodCLI(
-  args: Array<string>,
-  stdin?: string
-): Promise<CLIResult> {
-  return new Promise(
-    (resolve: (result: CLIResult) => void, reject: (error: Error) => void) => {
-      let child = execFile(join(__dirname, '../../bin/codemod'), args);
-      let stdout = '';
-      let stderr = '';
-
-      child.stdin.end(stdin);
-
-      child.on('close', status => {
-        resolve({ status, stdout, stderr });
-      });
-
-      child.stdout.on('data', chunk => {
-        stdout += chunk;
-      });
-
-      child.stderr.on('data', chunk => {
-        stderr += chunk;
-      });
-
-      child.on('error', reject);
-    }
-  );
-}
-
-async function mkdirp(path: string): Promise<void> {
-  let parent = dirname(path);
-  let name = basename(path);
-
-  if (parent === '.' || parent === '/') {
-    try {
-      await mkdir(name);
-    } catch (err) {}
-  } else {
-    await mkdirp(parent);
-    try {
-      await mkdir(path);
-    } catch (err) {}
-  }
-}
-
-function getTemporaryFilePath(path: string): string {
-  return join(__dirname, '../../tmp', path);
-}
-
-// TODO: Use `tmp` to generate a temporary directory?
-async function createTemporaryFile(
-  path: string,
-  content: string
-): Promise<string> {
-  let fullPath = getTemporaryFilePath(path);
-
-  await mkdirp(dirname(fullPath));
-  await writeFile(fullPath, content, 'utf8');
-
-  return fullPath;
-}
+import createTemporaryFile from '../helpers/createTemporaryFile';
+import getTemporaryFilePath from '../helpers/getTemporaryFilePath';
+import plugin from '../helpers/plugin';
+import runCodemodCLI from '../helpers/runCodemodCLI';
+import { startServer } from '../helpers/TestServer';
 
 describe('CLI', function() {
   beforeEach(function() {

@@ -1,7 +1,7 @@
 import { ok, strictEqual } from 'assert';
 import { readFile } from 'mz/fs';
 import NetworkResolver from '../../../src/resolvers/NetworkResolver';
-import { startServer } from '../TestServer';
+import { startServer } from '../../helpers/TestServer';
 
 describe('NetworkResolver', function() {
   it('can load data from a URL', async function() {
