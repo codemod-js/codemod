@@ -63,9 +63,9 @@ EXAMPLES
 
 export default async function run(
   argv: Array<string>,
-  stdin: NodeJS.ReadableStream,
-  stdout: NodeJS.WritableStream,
-  stderr: NodeJS.WritableStream,
+  stdin: NodeJS.ReadStream,
+  stdout: NodeJS.WriteStream,
+  stderr: NodeJS.WriteStream,
   fs: typeof realFs = realFs
 ): Promise<number> {
   let options = Options.parse(argv.slice(2));
@@ -119,12 +119,17 @@ export default async function run(
 
   runner = new TransformRunner(sourcesIterator, plugins);
 
+  let dim = stdout.isTTY ? '\x1b[2m' : '';
+  let reset = stdout.isTTY ? '\x1b[0m' : '';
+
   for (let result of runner.run()) {
     if (result.output) {
       if (options.stdio) {
         stdout.write(`${result.output}\n`);
       } else {
-        if (result.output !== result.source.content) {
+        if (result.output === result.source.content) {
+          stdout.write(`${dim}${result.source.path}${reset}\n`);
+        } else {
           stats.modified++;
           stdout.write(`${result.source.path}\n`);
           if (!dryRun) {

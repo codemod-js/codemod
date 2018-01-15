@@ -141,6 +141,21 @@ describe('CLI', function() {
     strictEqual(await readFile(afile, 'utf8'), '3 + 4;');
   });
 
+  it('prints files not processed in dim colors', async function() {
+    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    let { status, stdout, stderr } = await runCodemodCLI([afile]);
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${afile}\n1 file(s), 0 modified, 0 errors\n`,
+        stderr: ''
+      }
+    );
+    strictEqual(await readFile(afile, 'utf8'), '3 + 4;');
+  });
+
   it('can load plugins written with ES modules by default', async function() {
     let afile = await createTemporaryFile('a-file.js', '3 + 4;');
     let { status, stdout, stderr } = await runCodemodCLI([
