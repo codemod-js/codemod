@@ -46,12 +46,21 @@ export default class Options {
     readonly stdio: boolean,
     readonly help: boolean,
     readonly dry: boolean
-  ) {}
+  ) {
+    const defaultFileSystemExtensions = new Set(['.js']);
+    if (transpilePluginsWithTypescript) {
+      {
+        defaultFileSystemExtensions.add('.ts');
+      }
+    }
 
-  private pluginLoader = new PluginLoader([
-    new FileSystemResolver(),
-    new PackageResolver()
-  ]);
+    this.pluginLoader = new PluginLoader([
+      new FileSystemResolver(defaultFileSystemExtensions),
+      new PackageResolver()
+    ]);
+  }
+
+  private pluginLoader: PluginLoader;
 
   private remotePluginLoader = new PluginLoader([
     new AstExplorerResolver(),
@@ -110,15 +119,14 @@ export default class Options {
     }
   }
 
-  
   loadTypescriptTranspile() {
-    try{
+    try {
       require.resolve('typescript');
     } catch (e) {
-      throw new Error('Typescript is not installed locally. You must installed Typescript locally in order to transpile plugins written in Typescript');
+      throw new Error(
+        'Typescript is not installed locally. You must installed Typescript locally in order to transpile plugins written in Typescript'
+      );
     }
-
-    //TODO: what about options????
 
     require('ts-node').register();
   }

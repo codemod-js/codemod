@@ -254,11 +254,59 @@ describe('CLI', function() {
     strictEqual(await readFile(afile, 'utf8'), '4 + 5;');
   });
 
+  it('can load plugins written in Typescript without ts extension', async function() {
+    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    let pluginFile = join(
+      __dirname,
+      '../fixtures/plugin/typescript/increment-typescript'
+    );
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      '-p',
+      pluginFile,
+      '--transpile-ts-plugins'
+    ]);
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+        stderr: ''
+      }
+    );
+    strictEqual(await readFile(afile, 'utf8'), '4 + 5;');
+  });
+
   it('can load plugins with multiple files written in Typescript', async function() {
     let afile = await createTemporaryFile('a-file.js', '3 + 4;');
     let pluginFile = join(
       __dirname,
       '../fixtures/plugin/typescript/increment-export-default-multiple/index.ts'
+    );
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      '-p',
+      pluginFile,
+      '--transpile-ts-plugins'
+    ]);
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+        stderr: ''
+      }
+    );
+    strictEqual(await readFile(afile, 'utf8'), '4 + 5;');
+  });
+
+  it('can load plugins with multiple files written in Typescript and Javascript', async function() {
+    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    let pluginFile = join(
+      __dirname,
+      '../fixtures/plugin/typescript/increment-export-default-multiple/increment-export-index.ts'
     );
     let { status, stdout, stderr } = await runCodemodCLI([
       afile,
