@@ -52,14 +52,17 @@ $ codemod --find-babel-config --plugin ./my-plugin.js src/
 This requires that all babel plugins and presets be installed locally and are listed in your `.babelrc` file. `babel-codemod` uses `babel-register` under the hood too accomplish this and all `.babelrc` [lookup rules apply](https://babeljs.io/docs/usage/babelrc/#lookup-behavior).
 
 ### Transpiling using TypeScript
+`babel-codemod` supports plugins written in TypeScript.  
 
-There is currently an [open issue](https://github.com/square/babel-codemod/issues/51) for supporting plugins written in typescript. In the interim, you can take the same approach using `--require` along with `ts-node/register`.
+Unlike babel transpilation described above, this feature is off by default and **requires that TypeScript be installed locally**.  This feature uses `ts-node/register` under the hood so [all rules](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) regarding existence and placement of `tsconfig.json` apply.
+
+To opt-in to TypeScript transpilation of your plugins, simply pass the `--transpile-ts-plugins` option.
 
 For example:
 
 ```sh
 # Run a local plugin written with TypeScript.
-$ codemod --require ts-node/register --plugin ./my-plugin.ts src/
+$ codemod --transpile-ts-plugins --plugin ./my-plugin.ts src/
 ```
 
 ## Contributing

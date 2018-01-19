@@ -22,6 +22,7 @@ OPTIONS
       --[no-]transpile-plugins      Transpile plugins to enable future syntax (default: on).
       --[no-]find-babel-config      Run plugins through babel plugins/presets specified in local
                                     .babelrc file instead of babel-preset-env (default: off).
+      --transpile-ts-plugins        Transpile plugins to enable typescript syntax. Requires typescript to be installed local to project. (default: off).
   -s, --stdio                       Read source from stdin and print to stdout.
   -h, --help                        Show this help message.
   -d, --dry                         Run plugins without modifying files on disk.
@@ -79,8 +80,14 @@ export default async function run(
     return 0;
   }
 
+  if(options.transpilePluginsWithTypescript){
+    options.loadTypescriptTranspile();
+  }
+
+
   options.loadBabelTranspile();
 
+ 
   options.loadRequires();
 
   let plugins = await options.getBabelPlugins();

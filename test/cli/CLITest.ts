@@ -229,4 +229,87 @@ describe('CLI', function() {
       await server.stop();
     }
   });
+
+  it('can load plugins written in Typescript', async function() {
+    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      '-p',
+      plugin('typescript/increment-typescript', '.ts'),
+      '--transpile-ts-plugins'
+    ]);
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+        stderr: ''
+      }
+    );
+    strictEqual(await readFile(afile, 'utf8'), '4 + 5;');
+  });
+
+  it('can load plugins written in Typescript without ts extension', async function() {
+    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      '-p',
+      plugin('typescript/increment-typescript', ''),
+      '--transpile-ts-plugins'
+    ]);
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+        stderr: ''
+      }
+    );
+    strictEqual(await readFile(afile, 'utf8'), '4 + 5;');
+  });
+
+  it('can load plugins with multiple files written in Typescript', async function() {
+    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      '-p',
+      plugin('typescript/increment-export-default-multiple/index', '.ts'),
+      '--transpile-ts-plugins'
+    ]);
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+        stderr: ''
+      }
+    );
+    strictEqual(await readFile(afile, 'utf8'), '4 + 5;');
+  });
+
+  it('can load plugins with multiple files written in Typescript and Javascript', async function() {
+    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      '-p',
+      plugin(
+        'typescript/increment-export-default-multiple/increment-export-index',
+        '.ts'
+      ),
+      '--transpile-ts-plugins'
+    ]);
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+        stderr: ''
+      }
+    );
+    strictEqual(await readFile(afile, 'utf8'), '4 + 5;');
+  });
 });
