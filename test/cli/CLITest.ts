@@ -1,6 +1,6 @@
 import { deepEqual, ok, strictEqual } from 'assert';
 import { readFile } from 'mz/fs';
-import { dirname, join } from 'path';
+import { dirname } from 'path';
 import { sync as rimraf } from 'rimraf';
 import createTemporaryFile from '../helpers/createTemporaryFile';
 import getTemporaryFilePath from '../helpers/getTemporaryFilePath';
@@ -232,14 +232,10 @@ describe('CLI', function() {
 
   it('can load plugins written in Typescript', async function() {
     let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let pluginFile = join(
-      __dirname,
-      '../fixtures/plugin/typescript/increment-typescript.ts'
-    );
     let { status, stdout, stderr } = await runCodemodCLI([
       afile,
       '-p',
-      pluginFile,
+      plugin('typescript/increment-typescript', '.ts'),
       '--transpile-ts-plugins'
     ]);
 
@@ -256,14 +252,10 @@ describe('CLI', function() {
 
   it('can load plugins written in Typescript without ts extension', async function() {
     let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let pluginFile = join(
-      __dirname,
-      '../fixtures/plugin/typescript/increment-typescript'
-    );
     let { status, stdout, stderr } = await runCodemodCLI([
       afile,
       '-p',
-      pluginFile,
+      plugin('typescript/increment-typescript', ''),
       '--transpile-ts-plugins'
     ]);
 
@@ -280,14 +272,10 @@ describe('CLI', function() {
 
   it('can load plugins with multiple files written in Typescript', async function() {
     let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let pluginFile = join(
-      __dirname,
-      '../fixtures/plugin/typescript/increment-export-default-multiple/index.ts'
-    );
     let { status, stdout, stderr } = await runCodemodCLI([
       afile,
       '-p',
-      pluginFile,
+      plugin('typescript/increment-export-default-multiple/index', '.ts'),
       '--transpile-ts-plugins'
     ]);
 
@@ -304,14 +292,13 @@ describe('CLI', function() {
 
   it('can load plugins with multiple files written in Typescript and Javascript', async function() {
     let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let pluginFile = join(
-      __dirname,
-      '../fixtures/plugin/typescript/increment-export-default-multiple/increment-export-index.ts'
-    );
     let { status, stdout, stderr } = await runCodemodCLI([
       afile,
       '-p',
-      pluginFile,
+      plugin(
+        'typescript/increment-export-default-multiple/increment-export-index',
+        '.ts'
+      ),
       '--transpile-ts-plugins'
     ]);
 
