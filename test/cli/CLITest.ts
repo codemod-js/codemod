@@ -228,12 +228,20 @@ describe('CLI', function() {
     } finally {
       await server.stop();
     }
-  })
+  });
 
   it('can load plugins written in Typescript', async function() {
     let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let pluginFile = join(__dirname, 'fixtures/plugin/typescript/increment-typescript.ts');
-    let { status, stdout, stderr } = await runCodemodCLI([afile, '-p', pluginFile, '--transpile-ts-plugins']);
+    let pluginFile = join(
+      __dirname,
+      '../fixtures/plugin/typescript/increment-typescript.ts'
+    );
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      '-p',
+      pluginFile,
+      '--transpile-ts-plugins'
+    ]);
 
     deepEqual(
       { status, stdout, stderr },
@@ -243,16 +251,21 @@ describe('CLI', function() {
         stderr: ''
       }
     );
-    strictEqual(
-      await readFile(afile, 'utf8'),
-      '4 + 5;'
-    );
+    strictEqual(await readFile(afile, 'utf8'), '4 + 5;');
   });
 
   it('can load plugins with multiple files written in Typescript', async function() {
     let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let pluginFile = join(__dirname, 'fixtures/plugin/typescript/increment-export-default-multiple/index.ts');
-    let { status, stdout, stderr } = await runCodemodCLI([afile, '-p', pluginFile, '--transpile-ts-plugins']);
+    let pluginFile = join(
+      __dirname,
+      '../fixtures/plugin/typescript/increment-export-default-multiple/index.ts'
+    );
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      '-p',
+      pluginFile,
+      '--transpile-ts-plugins'
+    ]);
 
     deepEqual(
       { status, stdout, stderr },
@@ -262,9 +275,6 @@ describe('CLI', function() {
         stderr: ''
       }
     );
-    strictEqual(
-      await readFile(afile, 'utf8'),
-      '4 + 5;'
-    );
+    strictEqual(await readFile(afile, 'utf8'), '4 + 5;');
   });
 });
