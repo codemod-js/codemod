@@ -1,33 +1,27 @@
-import { execFile } from 'child_process';
-import { join } from 'path';
+import getStream = require('get-stream');
+import { PassThrough } from 'stream';
+import run from '../../src/index';
 
 export type CLIResult = { status: number; stdout: string; stderr: string };
 
 export default async function runCodemodCLI(
   args: Array<string>,
-  stdin?: string
+  stdin: string = ''
 ): Promise<CLIResult> {
-  return new Promise(
-    (resolve: (result: CLIResult) => void, reject: (error: Error) => void) => {
-      let child = execFile(join(__dirname, '../../bin/codemod'), args);
-      let stdout = '';
-      let stderr = '';
+  let stdinStream = new PassThrough();
+  let stdoutStream = new PassThrough();
+  let stderrStream = new PassThrough();
 
-      child.stdin.end(stdin);
+  stdinStream.end(new Buffer(stdin));
 
-      child.on('close', status => {
-        resolve({ status, stdout, stderr });
-      });
+  let argv = [process.argv[0], require.resolve('../../bin/codemod'), ...args];
+  let status = await run(argv, stdinStream, stdoutStream, stderrStream);
 
-      child.stdout.on('data', chunk => {
-        stdout += chunk;
-      });
+  stdoutStream.end();
+  stderrStream.end();
 
-      child.stderr.on('data', chunk => {
-        stderr += chunk;
-      });
+  let stdout = await getStream(stdoutStream);
+  let stderr = await getStream(stderrStream);
 
-      child.on('error', reject);
-    }
-  );
+  return { status, stdout, stderr };
 }

@@ -2,7 +2,8 @@ import * as realFs from 'fs';
 import { basename } from 'path';
 import iterateSources from './iterateSources';
 import Options, { DEFAULT_EXTENSIONS } from './Options';
-import TransformRunner, { Source } from './TransformRunner';
+import RequireSnapshot from './RequireSnapshot';
+import TransformRunner, { BabelPlugin, Source } from './TransformRunner';
 
 function printHelp(argv: Array<string>, out: NodeJS.WritableStream) {
   let $0 = basename(argv[1]);
@@ -79,11 +80,17 @@ export default async function run(
     return 0;
   }
 
-  options.loadBabelTranspile();
+  let snapshot = new RequireSnapshot();
+  let plugins: Array<BabelPlugin>;
 
-  options.loadRequires();
+  try {
+    options.loadBabelTranspile();
+    options.loadRequires();
+    plugins = await options.getBabelPlugins();
+  } finally {
+    snapshot.restore();
+  }
 
-  let plugins = await options.getBabelPlugins();
   let runner: TransformRunner;
   let stats = {
     modified: 0,

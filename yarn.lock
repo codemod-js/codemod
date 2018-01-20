@@ -228,6 +228,12 @@
   version "3.2.0"
   resolved "https://registry.npmjs.org/@types/get-port/-/get-port-3.2.0.tgz#f9e0a11443cc21336470185eae3dfba4495d29bc"
 
+"@types/get-stream@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.npmjs.org/@types/get-stream/-/get-stream-3.0.1.tgz#ee41cb3da49936124a4be4d301c52d11b692ead6"
+  dependencies:
+    "@types/node" "*"
+
 "@types/glob@*", "@types/glob@^5.0.30":
   version "5.0.34"
   resolved "https://registry.npmjs.org/@types/glob/-/glob-5.0.34.tgz#ee626c9be3da877d717911c6101eee0a9871bbf4"
@@ -2279,7 +2285,7 @@ mkdirp@0.5.1, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
-mocha@5.0.0:
+mocha@^5.0.0:
   version "5.0.0"
   resolved "https://registry.npmjs.org/mocha/-/mocha-5.0.0.tgz#cccac988b0bc5477119cba0e43de7af6d6ad8f4e"
   dependencies:
