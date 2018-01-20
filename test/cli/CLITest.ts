@@ -181,19 +181,20 @@ describe('CLI', function() {
 
   it('fails when specifying --find-babel-config as there are no plugins loaded', async function() {
     let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let { status, stdout, stderr } = await runCodemodCLI([
-      afile,
-      '-p',
-      plugin('increment-export-default'),
-      '--find-babel-config'
-    ]);
-
-    ok(
-      /SyntaxError: Unexpected token export/.test(stderr),
-      `error should reference invalid syntax: ${stderr}`
-    );
-    strictEqual(stdout, '');
-    strictEqual(status, 255);
+    try {
+      await runCodemodCLI([
+        afile,
+        '-p',
+        plugin('increment-export-default'),
+        '--find-babel-config'
+      ]);
+      ok(false, 'this command should have failed');
+    } catch (err) {
+      ok(
+        /SyntaxError: Unexpected token export/.test(err.stack),
+        `error should reference invalid syntax: ${err.stack}`
+      );
+    }
   });
 
   it('can load and run with a remote plugin', async function() {
