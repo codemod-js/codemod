@@ -1,4 +1,5 @@
 import * as realFs from 'fs';
+import getStream = require('get-stream');
 import { basename } from 'path';
 import iterateSources from './iterateSources';
 import Options, { DEFAULT_EXTENSIONS } from './Options';
@@ -101,7 +102,7 @@ export default async function run(
   let sourcesIterator: IterableIterator<Source>;
 
   if (options.stdio) {
-    sourcesIterator = [new Source('<stdin>', await readStream(stdin))][
+    sourcesIterator = [new Source('<stdin>', await getStream(stdin))][
       Symbol.iterator
     ]();
   } else {
@@ -159,31 +160,4 @@ export default async function run(
 
   // exit status is number of errors up to byte max value
   return Math.min(stats.errors, 255);
-}
-
-/**
- * Reads a stream and resolves to the read string.
- */
-async function readStream(stream: NodeJS.ReadableStream): Promise<string> {
-  return new Promise<string>((resolve, reject) => {
-    let result = '';
-
-    stream.on('readable', () => {
-      let chunk = stream.read();
-
-      if (chunk instanceof Buffer) {
-        result += chunk.toString('utf8');
-      } else if (typeof chunk === 'string') {
-        result += chunk;
-      }
-    });
-
-    stream.on('end', () => {
-      resolve(result);
-    });
-
-    stream.on('error', error => {
-      reject(error);
-    });
-  });
 }
