@@ -2,7 +2,7 @@ import * as realFs from 'fs';
 import { basename } from 'path';
 import iterateSources from './iterateSources';
 import Options, { DEFAULT_EXTENSIONS } from './Options';
-import RequireSnapshot from './RequireSnapshot';
+import ProcessSnapshot from './ProcessSnapshot';
 import TransformRunner, { BabelPlugin, Source } from './TransformRunner';
 
 function printHelp(argv: Array<string>, out: NodeJS.WritableStream) {
@@ -80,7 +80,7 @@ export default async function run(
     return 0;
   }
 
-  let snapshot = new RequireSnapshot();
+  let snapshot = new ProcessSnapshot();
   let plugins: Array<BabelPlugin>;
 
   try {
