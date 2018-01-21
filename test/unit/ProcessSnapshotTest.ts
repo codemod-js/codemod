@@ -1,6 +1,6 @@
 import { deepEqual, ok, strictEqual } from 'assert';
 import Module = require('module');
-import ProcessSnapshot from '../../src/RequireSnapshot';
+import ProcessSnapshot from '../../src/ProcessSnapshot';
 
 describe('ProcessSnapshot', function() {
   let fakeRequire: typeof require;
