@@ -40,7 +40,7 @@ There are [many, many existing plugins](https://yarnpkg.com/en/packages?q=babel-
 
 ### Transpiling using babel plugins
 
-`babel-codemod` also supports non-standard/future language features that are not currently supported by the latest version of node. It does this by leveraging `babel-preset-env` which loads the [latest babel plugins](https://github.com/babel/babel/tree/master/packages/babel-preset-env#support-all-plugins-in-babel-that-are-considered-latest). This feature is on by default.
+`babel-codemod` also supports non-standard/future language features that are not currently supported by the latest version of node. It does this by leveraging `@babel/preset-env` which loads the [latest babel plugins](https://github.com/babel/babel/tree/master/packages/babel-preset-env#support-all-plugins-in-babel-that-are-considered-latest). This feature is on by default.
 
 This feature should support most use cases when writing plugins in advanced JavaScript syntax. However, if you are writing plugins with syntax that is beyond "latest", or you would like to use your own set of plugins and presets, you can pass in the `--find-babel-config` switch in combination with a local `.babelrc` file that lists the presets/plugins you want applied to your plugin code.
 
@@ -49,17 +49,17 @@ This feature should support most use cases when writing plugins in advanced Java
 $ codemod --find-babel-config --plugin ./my-plugin.js src/
 ```
 
-This requires that all babel plugins and presets be installed locally and are listed in your `.babelrc` file. `babel-codemod` uses `babel-register` under the hood too accomplish this and all `.babelrc` [lookup rules apply](https://babeljs.io/docs/usage/babelrc/#lookup-behavior).
+This requires that all babel plugins and presets be installed locally and are listed in your `.babelrc` file. `babel-codemod` uses `@babel/core` under the hood to accomplish this and all `.babelrc` [lookup rules apply](https://babeljs.io/docs/usage/babelrc/#lookup-behavior).
 
 ### Transpiling using TypeScript
 
-There is currently an [open issue](https://github.com/square/babel-codemod/issues/51) for supporting plugins written in typescript. In the interim, you can take the same approach using `--require` along with `ts-node/register`.
+There is experimental support for running plugins written in TypeScript. This is on by default and works by using `@babel/preset-typescript` rather than the official TypeScript compiler. This feature may be removed in the future.
 
 For example:
 
 ```sh
 # Run a local plugin written with TypeScript.
-$ codemod --require ts-node/register --plugin ./my-plugin.ts src/
+$ codemod --plugin ./my-plugin.ts src/
 ```
 
 ## Contributing

@@ -89,6 +89,7 @@ export default async function run(
     options.loadRequires();
     plugins = await options.getBabelPlugins();
   } finally {
+    options.unloadBabelTranspile();
     snapshot.restore();
   }
 

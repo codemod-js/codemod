@@ -19,6 +19,7 @@ node_modules
 
 # allow fixtures
 !test/fixtures/**/*.js
+test/fixtures/**/*-typescript.js
 
 # allow JS config files
 !*.config.js

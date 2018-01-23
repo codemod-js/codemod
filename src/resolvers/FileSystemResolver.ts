@@ -1,8 +1,7 @@
 import { stat } from 'mz/fs';
 import { resolve } from 'path';
+import { SUPPORTED_EXTENSIONS } from '../transpile-requires';
 import Resolver from './Resolver';
-
-const DEFAULT_PLUGIN_EXTENSIONS = new Set(['.js']);
 
 async function isFile(path: string): Promise<boolean> {
   try {
@@ -17,7 +16,7 @@ async function isFile(path: string): Promise<boolean> {
  */
 export default class FileSystemResolver implements Resolver {
   constructor(
-    private readonly optionalExtensions: Set<string> = DEFAULT_PLUGIN_EXTENSIONS
+    private readonly optionalExtensions: Set<string> = SUPPORTED_EXTENSIONS
   ) {}
 
   private *enumerateCandidateSources(source: string): IterableIterator<string> {

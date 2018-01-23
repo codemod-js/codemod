@@ -1,8 +1,6 @@
-import * as Babel from 'babel-core';
-import { transform } from 'babel-core';
-import { Visitor } from 'babel-traverse';
-import * as babylon from 'babylon';
-import { parse, print } from 'recast';
+import * as Babel from '@babel/core';
+import { transform } from '@babel/core';
+import { Visitor } from '@babel/traverse';
 
 export class Source {
   constructor(readonly path: string, readonly content: string) {}
@@ -47,38 +45,6 @@ export default class TransformRunner {
     return transform(source.content, {
       filename: source.path,
       babelrc: false,
-      parserOpts: {
-        parser(code: string) {
-          return parse(code, {
-            parser: {
-              parse(code: string) {
-                return babylon.parse(code, {
-                  sourceType: 'module',
-                  allowImportExportEverywhere: false, // consistent with espree
-                  allowReturnOutsideFunction: true,
-                  allowSuperOutsideMethod: true,
-                  plugins: [
-                    'flow',
-                    'jsx',
-                    'asyncGenerators',
-                    'classProperties',
-                    'doExpressions',
-                    'exportExtensions',
-                    'functionBind',
-                    'functionSent',
-                    'objectRestSpread',
-                    'dynamicImport',
-                    'decorators'
-                  ]
-                });
-              }
-            }
-          });
-        }
-      },
-      generatorOpts: {
-        generator: print
-      },
       plugins: this.plugins
     } as {}).code as string;
   }
