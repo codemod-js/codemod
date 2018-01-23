@@ -6,5 +6,8 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "declaration": true
-  }
+  },
+  "exclude": [
+    "test/fixtures/**/*.ts"
+  ]
 }

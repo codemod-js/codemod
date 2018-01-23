@@ -1,15 +1,18 @@
-import * as Babel from 'babel-core';
+import * as Babel from '@babel/core';
 import { existsSync, readFileSync } from 'fs';
 import { hasMagic as hasGlob, sync as globSync } from 'glob';
 import { basename, extname, resolve } from 'path';
 import { sync as resolveSync } from 'resolve';
+import { install } from 'source-map-support';
 import { PathPredicate } from './iterateSources';
 import PluginLoader from './PluginLoader';
+import RecastPlugin from './RecastPlugin';
 import AstExplorerResolver from './resolvers/AstExplorerResolver';
 import FileSystemResolver from './resolvers/FileSystemResolver';
 import NetworkResolver from './resolvers/NetworkResolver';
 import PackageResolver from './resolvers/PackageResolver';
 import { BabelPlugin, RawBabelPlugin } from './TransformRunner';
+import { disable, enable } from './transpile-requires';
 
 export const DEFAULT_EXTENSIONS = new Set(['.js', '.jsx']);
 export type ParseOptionsResult = Options | Error;
@@ -99,13 +102,14 @@ export default class Options {
 
   loadBabelTranspile() {
     if (this.transpilePlugins) {
-      let pluginOptions;
-      if (!this.findBabelConfig) {
-        pluginOptions = require('babel-preset-env').default();
-        pluginOptions.babelrc = false; // ignore babelrc file if present
-      }
+      enable(this.findBabelConfig);
+      install();
+    }
+  }
 
-      require('babel-register')(pluginOptions);
+  unloadBabelTranspile() {
+    if (this.transpilePlugins) {
+      disable();
     }
   }
 
@@ -120,7 +124,7 @@ export default class Options {
   }
 
   async getBabelPlugins(): Promise<Array<BabelPlugin>> {
-    let result: Array<BabelPlugin> = [];
+    let result: Array<BabelPlugin> = [RecastPlugin];
 
     for (let plugin of await this.getPlugins()) {
       let options =

@@ -32,7 +32,7 @@ export default class NetworkResolver implements Resolver {
       throw new NetworkLoadError(response);
     }
 
-    let filename = tmp();
+    let filename = tmp({ postfix: '.js' });
     await writeFile(filename, response.body);
     return filename;
   }
