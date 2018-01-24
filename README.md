@@ -24,7 +24,7 @@ $ codemod --plugin transform-module-name \
   another/file.js
 ```
 
-This will re-write the files `path/to/file.js` and `another/file.js` by transforming them with the babel plugin `transform-module-name`. Multiple plugins may be specified, and multiple file or directories may be re-written at once.
+This will re-write the files `path/to/file.js` and `another/file.js` by transforming them with the babel plugin `transform-module-name`. Multiple plugins may be specified, and multiple files or directories may be re-written at once.
 
 Plugins may also be loaded from remote URLs, including saved [AST Explorer](https://astexplorer.net/) URLs, using `--remote-plugin`. This feature should only be used as a convenience to load code that you or someone you trust wrote. It will run with your full user privileges, so please exercise caution!
 
