@@ -11,7 +11,10 @@
     "test": "mocha 'test/**/*Test.js'",
     "semantic-release": "semantic-release",
     "commitmsg": "commitlint -e $GIT_PARAMS",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "postmerge": "yarnhook",
+    "postcheckout": "yarnhook",
+    "postrewrite": "yarnhook"
   },
   "lint-staged": {
     "*.ts": [
@@ -61,7 +64,8 @@
     "semantic-release": "^11.0.2",
     "tslint": "^5.4.2",
     "tslint-config-prettier": "^1.6.0",
-    "typescript": "^2.2.1"
+    "typescript": "^2.2.1",
+    "yarnhook": "^0.1.1"
   },
   "dependencies": {
     "@babel/core": "^7.0.0-beta.38",
