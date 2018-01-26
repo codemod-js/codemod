@@ -55,7 +55,7 @@ EXAMPLES
   $ ${$0} -p ./a.js -o a=@opts.json src/
 
   # Run with a plugin written in TypeScript.
-  $ ${$0} -r ts-node/register -p ./some-plugin.ts src/
+  $ ${$0} -p ./some-plugin.ts src/
   `.trim()
   );
   out.write('\n');
