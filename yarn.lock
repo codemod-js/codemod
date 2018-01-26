@@ -673,6 +673,12 @@
   dependencies:
     "@types/node" "*"
 
+"@types/make-dir@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.npmjs.org/@types/make-dir/-/make-dir-1.0.3.tgz#91fb52cefd07b0755d2373bcd46229765197ca3e"
+  dependencies:
+    "@types/node" "*"
+
 "@types/minimatch@*":
   version "3.0.2"
   resolved "https://registry.npmjs.org/@types/minimatch/-/minimatch-3.0.2.tgz#09c06877e478a5d5f32ce5017c2eb2b33006f6f5"
@@ -2309,6 +2315,12 @@ lru-cache@^4.0.1:
   dependencies:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
+
+make-dir@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/make-dir/-/make-dir-1.1.0.tgz#19b4369fe48c116f53c2af95ad102c0e39e85d51"
+  dependencies:
+    pify "^3.0.0"
 
 map-obj@^1.0.0, map-obj@^1.0.1:
   version "1.0.1"

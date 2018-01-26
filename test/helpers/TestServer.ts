@@ -11,7 +11,7 @@ export class RealTestServer {
   private server: Server;
 
   readonly protocol: string = 'http:';
-  readonly hostname: string = '0.0.0.0';
+  readonly hostname: string = '127.0.0.1';
 
   constructor(readonly port: number, readonly handler: RequestHandler) {
     this.server = createServer(handler);
