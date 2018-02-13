@@ -55,7 +55,7 @@
     "@types/tmp": "^0.0.33",
     "commitlint": "^6.0.1",
     "get-port": "^3.2.0",
-    "globby": "^7.1.1",
+    "globby": "^8.0.0",
     "husky": "^0.14.3",
     "lint-staged": "^6.0.0",
     "make-dir": "^1.1.0",
