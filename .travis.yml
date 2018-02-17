@@ -4,7 +4,7 @@ cache:
   directories:
     - node_modules
 notifications:
-  email: false
+  email: true
 node_js:
   - '9'
   - '8'
@@ -14,6 +14,7 @@ before_install:
 before_script:
   - greenkeeper-lockfile-update
 script:
+  - '[ "$TRAVIS_EVENT_TYPE" != cron ] || yarn install --no-lockfile'
   - ./script/lint-commits
   - ./script/prettier-check
   - yarn test
