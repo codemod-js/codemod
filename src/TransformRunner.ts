@@ -1,5 +1,6 @@
 import * as Babel from '@babel/core';
 import { transform } from '@babel/core';
+import { GeneratorOptions } from '@babel/generator';
 import { Visitor } from '@babel/traverse';
 
 export class Source {
@@ -14,9 +15,26 @@ export class SourceTransformResult {
   ) {}
 }
 
+export type ParseOptions = object;
+export type AST = object;
+
 export type RawBabelPlugin = (
   babel: typeof Babel
-) => { name?: string; visitor: Visitor };
+) => {
+  name?: string;
+  visitor?: Visitor;
+  parserOverride?: (
+    code: string,
+    options: ParseOptions,
+    parse: (code: string, options: ParseOptions) => AST
+  ) => AST;
+  generatorOverride?: (
+    ast: AST,
+    options: GeneratorOptions,
+    code: string,
+    generate: (ast: AST, options: GeneratorOptions) => string
+  ) => string;
+};
 export type RawBabelPluginWithOptions = [RawBabelPlugin, object];
 export type BabelPlugin = RawBabelPlugin | RawBabelPluginWithOptions;
 

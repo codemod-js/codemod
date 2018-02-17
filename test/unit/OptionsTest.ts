@@ -78,7 +78,7 @@ describe('Options', function() {
 
   it('interprets `--require` as expected', function() {
     let options = assertOptionsParsed(Options.parse(['--require', 'mz']));
-    deepEqual(options.requires, ['mz'].map(require.resolve));
+    deepEqual(options.requires, ['mz'].map(name => require.resolve(name)));
   });
 
   it('associates plugin options based on inferred name', async function() {
