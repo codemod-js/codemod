@@ -884,9 +884,9 @@ assign-symbols@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/assign-symbols/-/assign-symbols-1.0.0.tgz#59667f41fadd4f20ccbc2bb96b8d4f7f78ec0367"
 
-ast-types@0.10.1:
-  version "0.10.1"
-  resolved "https://registry.npmjs.org/ast-types/-/ast-types-0.10.1.tgz#f52fca9715579a14f841d67d7f8d25432ab6a3dd"
+ast-types@0.10.2:
+  version "0.10.2"
+  resolved "https://registry.npmjs.org/ast-types/-/ast-types-0.10.2.tgz#aef76a04fde54634976fc94defaad1a67e2eadb0"
 
 async@^1.4.0:
   version "1.5.2"
@@ -3335,11 +3335,11 @@ readdir-enhanced@mrmlnc/readdir-enhanced#ISSUE-11_monkey_fix:
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-recast@0.13.0:
-  version "0.13.0"
-  resolved "https://registry.npmjs.org/recast/-/recast-0.13.0.tgz#a343a394a37d24668d700f88ed04b8d2c314d40d"
+recast@0.13.2:
+  version "0.13.2"
+  resolved "https://registry.npmjs.org/recast/-/recast-0.13.2.tgz#919e7e856d5154f13284142ed1797753c6756137"
   dependencies:
-    ast-types "0.10.1"
+    ast-types "0.10.2"
     esprima "~4.0.0"
     private "~0.1.5"
     source-map "~0.6.1"
