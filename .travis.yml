@@ -11,6 +11,7 @@ node_js:
   - '6'
 before_install:
   - yarn global add greenkeeper-lockfile@1
+  - 'yarn global add semantic-release || echo "Ignoring semantic-release install failure"'
 before_script:
   - greenkeeper-lockfile-update
 script:
@@ -18,9 +19,10 @@ script:
   - ./script/lint-commits
   - ./script/prettier-check
   - yarn test
-after_script: greenkeeper-lockfile-upload
+after_script:
+  - greenkeeper-lockfile-upload
 after_success:
-  - npm run semantic-release
+  - semantic-release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
