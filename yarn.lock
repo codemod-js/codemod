@@ -3194,9 +3194,9 @@ readdir-enhanced@mrmlnc/readdir-enhanced#ISSUE-11_monkey_fix:
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-recast@0.14.2:
-  version "0.14.2"
-  resolved "https://registry.npmjs.org/recast/-/recast-0.14.2.tgz#95751b8016a24614d14c3e532968fb1b3d0220a6"
+recast@0.14.3:
+  version "0.14.3"
+  resolved "https://registry.npmjs.org/recast/-/recast-0.14.3.tgz#3a80180037da837a6d35286c806d8b5b933b03d5"
   dependencies:
     ast-types "0.11.1"
     esprima "~4.0.0"
