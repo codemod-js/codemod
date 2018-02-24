@@ -79,7 +79,7 @@
     "got": "^8.1.0",
     "mz": "^2.7.0",
     "pirates": "^3.0.2",
-    "recast": "0.14.2",
+    "recast": "0.14.4",
     "resolve": "^1.5.0",
     "source-map-support": "^0.5.3",
     "tmp": "^0.0.33",
