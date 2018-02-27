@@ -3098,9 +3098,9 @@ prettier-check@^2.0.0:
   dependencies:
     execa "^0.6.0"
 
-prettier@1.10.2:
-  version "1.10.2"
-  resolved "https://registry.npmjs.org/prettier/-/prettier-1.10.2.tgz#1af8356d1842276a99a5b5529c82dd9e9ad3cc93"
+prettier@1.11.0:
+  version "1.11.0"
+  resolved "https://registry.npmjs.org/prettier/-/prettier-1.11.0.tgz#c024f70cab158c993f50fc0c25ffe738cb8b0f85"
 
 pretty-format@^22.4.0:
   version "22.4.0"
