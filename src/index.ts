@@ -25,8 +25,9 @@ OPTIONS
       --[no-]find-babel-config      Run plugins through babel plugins/presets specified in local
                                     .babelrc file instead of babel-preset-env (default: off).
   -s, --stdio                       Read source from stdin and print to stdout.
-  -h, --help                        Show this help message.
   -d, --dry                         Run plugins without modifying files on disk.
+      --version                     Print the version of ${$0}.
+  -h, --help                        Show this help message.
 
   NOTE: \`--remote-plugin\` should only be used as a convenience to load code that you or someone
         you trust wrote. It will run with your full user privileges, so please exercise caution!
@@ -61,6 +62,11 @@ EXAMPLES
   out.write('\n');
 }
 
+function printVersion(argv: Array<string>, out: NodeJS.WritableStream) {
+  out.write(require('../package.json').version);
+  out.write('\n');
+}
+
 export default async function run(
   argv: Array<string>,
   stdin: NodeJS.ReadStream,
@@ -78,6 +84,11 @@ export default async function run(
 
   if (options.help) {
     printHelp(argv, stdout);
+    return 0;
+  }
+
+  if (options.version) {
+    printVersion(argv, stdout);
     return 0;
   }
 

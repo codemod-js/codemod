@@ -2,6 +2,8 @@ import { deepEqual, ok, strictEqual } from 'assert';
 import { readFile } from 'mz/fs';
 import { dirname } from 'path';
 import { sync as rimraf } from 'rimraf';
+import { valid } from 'semver';
+import { inspect } from 'util';
 import createTemporaryFile from '../helpers/createTemporaryFile';
 import getTemporaryFilePath from '../helpers/getTemporaryFilePath';
 import plugin from '../helpers/plugin';
@@ -18,6 +20,18 @@ describe('CLI', function() {
 
     strictEqual(status, 0);
     ok(stdout.startsWith('codemod [OPTIONS]'));
+    strictEqual(stderr, '');
+  });
+
+  it('prints the version', async function() {
+    let { status, stdout, stderr } = await runCodemodCLI(['--version']);
+    let trimmedStdout = stdout.trim();
+
+    strictEqual(status, 0);
+    ok(
+      valid(trimmedStdout),
+      `${inspect(trimmedStdout)} should be valid semver`
+    );
     strictEqual(stderr, '');
   });
 
