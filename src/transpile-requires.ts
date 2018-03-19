@@ -30,10 +30,10 @@ export function hook(code: string, filename: string): string {
 
   if (!useBabelrc) {
     if (ext === '.ts') {
-      options.presets.push('@babel/preset-typescript');
+      options.presets.push(require.resolve('@babel/preset-typescript'));
     }
 
-    options.presets.push('@babel/preset-env');
+    options.presets.push(require.resolve('@babel/preset-env'));
   }
 
   return transform(code, options).code as string;
