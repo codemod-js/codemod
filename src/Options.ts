@@ -47,6 +47,7 @@ export default class Options {
     readonly ignore: PathPredicate,
     readonly stdio: boolean,
     readonly help: boolean,
+    readonly version: boolean,
     readonly dry: boolean
   ) {}
 
@@ -170,6 +171,7 @@ export default class Options {
     let transpilePlugins = true;
     let stdio = false;
     let help = false;
+    let version = false;
     let dry = false;
 
     for (let i = 0; i < args.length; i++) {
@@ -243,6 +245,10 @@ export default class Options {
           help = true;
           break;
 
+        case '--version':
+          version = true;
+          break;
+
         case '-d':
         case '--dry':
           dry = true;
@@ -274,6 +280,7 @@ export default class Options {
       ignore,
       stdio,
       help,
+      version,
       dry
     );
   }

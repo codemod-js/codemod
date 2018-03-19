@@ -13,6 +13,16 @@ describe('Options', function() {
     strictEqual(options.stdio, false);
   });
 
+  it('interprets `--help` as asking for help', function() {
+    let options = assertOptionsParsed(Options.parse(['--help']));
+    strictEqual(options.help, true);
+  });
+
+  it('interprets `--version` as asking to print the version', function() {
+    let options = assertOptionsParsed(Options.parse(['--version']));
+    strictEqual(options.version, true);
+  });
+
   it('interprets `--extensions` as expected', function() {
     let options = assertOptionsParsed(
       Options.parse(['--extensions', '.js,.jsx,.ts'])
