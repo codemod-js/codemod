@@ -4,6 +4,7 @@ import { hasMagic as hasGlob, sync as globSync } from 'glob';
 import { basename, extname, resolve } from 'path';
 import { sync as resolveSync } from 'resolve';
 import { install } from 'source-map-support';
+import AllSyntaxPlugin from './AllSyntaxPlugin';
 import { PathPredicate } from './iterateSources';
 import PluginLoader from './PluginLoader';
 import RecastPlugin from './RecastPlugin';
@@ -125,7 +126,7 @@ export default class Options {
   }
 
   async getBabelPlugins(): Promise<Array<BabelPlugin>> {
-    let result: Array<BabelPlugin> = [RecastPlugin];
+    let result: Array<BabelPlugin> = [AllSyntaxPlugin, RecastPlugin];
 
     for (let plugin of await this.getPlugins()) {
       let options =

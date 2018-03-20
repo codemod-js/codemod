@@ -15,7 +15,12 @@ export class SourceTransformResult {
   ) {}
 }
 
-export type ParseOptions = object;
+export interface BabelOptions {
+  filename: string;
+}
+export interface ParseOptions {
+  plugins: Array<string>;
+}
 export type AST = object;
 
 export type RawBabelPlugin = (
@@ -23,6 +28,7 @@ export type RawBabelPlugin = (
 ) => {
   name?: string;
   visitor?: Visitor;
+  manipulateOptions?: (opts: object, parserOpts: ParseOptions) => void;
   parserOverride?: (
     code: string,
     options: ParseOptions,

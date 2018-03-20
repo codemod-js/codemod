@@ -1,6 +1,7 @@
 import { transform } from '@babel/core';
 import { extname } from 'path';
 import { addHook } from 'pirates';
+import AllSyntaxPlugin from './AllSyntaxPlugin';
 
 let useBabelrc = false;
 let revert: (() => void) | null = null;
@@ -25,6 +26,7 @@ export function hook(code: string, filename: string): string {
     filename,
     babelrc: useBabelrc,
     presets: [] as Array<string>,
+    plugins: [AllSyntaxPlugin],
     sourceMaps: 'inline'
   };
 

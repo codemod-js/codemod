@@ -1,6 +1,7 @@
 import * as Babel from '@babel/core';
 import { GeneratorOptions } from '@babel/generator';
 import * as recast from 'recast';
+import { ALL_PLUGINS } from './AllSyntaxPlugin';
 import { AST, ParseOptions } from './TransformRunner';
 
 const DEFAULT_OPTIONS = {
@@ -8,22 +9,10 @@ const DEFAULT_OPTIONS = {
   allowImportExportEverywhere: true,
   allowReturnOutsideFunction: true,
   allowSuperOutsideMethod: true,
-  plugins: [
-    'flow',
-    'jsx',
-    'asyncGenerators',
-    'classProperties',
-    'doExpressions',
-    'exportExtensions',
-    'functionBind',
-    'functionSent',
-    'objectRestSpread',
-    'dynamicImport',
-    'decorators'
-  ]
+  plugins: ALL_PLUGINS
 };
 
-export default function(babel: Babel) {
+export default function(babel: typeof Babel) {
   return {
     parserOverride(
       code: string,
