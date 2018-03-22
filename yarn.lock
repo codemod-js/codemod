@@ -3318,9 +3318,9 @@ readable-stream@^2.0.0, readable-stream@^2.1.5:
     string_decoder "~1.0.3"
     util-deprecate "~1.0.1"
 
-recast@0.14.5:
-  version "0.14.5"
-  resolved "https://registry.npmjs.org/recast/-/recast-0.14.5.tgz#53f1f6edf7810bdfb39a25d0ff97d315bad7c314"
+recast@0.14.6:
+  version "0.14.6"
+  resolved "https://registry.npmjs.org/recast/-/recast-0.14.6.tgz#11f171a3fdd09155c9156b8becc5ed2f0a68bd18"
   dependencies:
     ast-types "0.11.3"
     esprima "~4.0.0"
