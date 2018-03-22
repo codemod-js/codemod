@@ -735,9 +735,9 @@
   version "3.0.2"
   resolved "https://registry.npmjs.org/@types/minimatch/-/minimatch-3.0.2.tgz#09c06877e478a5d5f32ce5017c2eb2b33006f6f5"
 
-"@types/mocha@^2.2.48":
-  version "2.2.48"
-  resolved "https://registry.npmjs.org/@types/mocha/-/mocha-2.2.48.tgz#3523b126a0b049482e1c3c11877460f76622ffab"
+"@types/mocha@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.npmjs.org/@types/mocha/-/mocha-5.0.0.tgz#a3014921991066193f6c8e47290d4d598dfd19e6"
 
 "@types/mz@0.0.32":
   version "0.0.32"
