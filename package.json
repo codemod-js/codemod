@@ -46,7 +46,7 @@
     "@types/glob": "^5.0.35",
     "@types/got": "^7.1.7",
     "@types/make-dir": "^1.0.3",
-    "@types/mocha": "^2.2.48",
+    "@types/mocha": "^5.0.0",
     "@types/mz": "0.0.32",
     "@types/node": "^9.4.6",
     "@types/rimraf": "2.0.2",
