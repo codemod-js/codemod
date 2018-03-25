@@ -1,6 +1,7 @@
 import * as realFs from 'fs';
 import getStream = require('get-stream');
 import { basename } from 'path';
+import Config from './Config';
 import iterateSources from './iterateSources';
 import Options, { DEFAULT_EXTENSIONS } from './Options';
 import ProcessSnapshot from './ProcessSnapshot';
@@ -74,20 +75,22 @@ export default async function run(
   stderr: NodeJS.WriteStream,
   fs: typeof realFs = realFs
 ): Promise<number> {
-  let options = Options.parse(argv.slice(2));
+  let config: Config;
 
-  if (options instanceof Error) {
-    stderr.write(`ERROR: ${options.message}\n`);
+  try {
+    config = new Options(argv.slice(2)).parse();
+  } catch (error) {
+    stderr.write(`ERROR: ${error.message}\n`);
     printHelp(argv, stderr);
     return 1;
   }
 
-  if (options.help) {
+  if (config.help) {
     printHelp(argv, stdout);
     return 0;
   }
 
-  if (options.version) {
+  if (config.version) {
     printVersion(argv, stdout);
     return 0;
   }
@@ -96,11 +99,11 @@ export default async function run(
   let plugins: Array<BabelPlugin>;
 
   try {
-    options.loadBabelTranspile();
-    options.loadRequires();
-    plugins = await options.getBabelPlugins();
+    config.loadBabelTranspile();
+    config.loadRequires();
+    plugins = await config.getBabelPlugins();
   } finally {
-    options.unloadBabelTranspile();
+    config.unloadBabelTranspile();
     snapshot.restore();
   }
 
@@ -110,18 +113,18 @@ export default async function run(
     total: 0,
     errors: 0
   };
-  let dryRun = options.dry;
+  let dryRun = config.dry;
   let sourcesIterator: IterableIterator<Source>;
 
-  if (options.stdio) {
+  if (config.stdio) {
     sourcesIterator = [new Source('<stdin>', await getStream(stdin))][
       Symbol.iterator
     ]();
   } else {
     sourcesIterator = iterateSources(
-      options.sourcePaths,
-      options.extensions,
-      options.ignore,
+      config.sourcePaths,
+      config.extensions,
+      config.ignore,
       fs.statSync,
       fs.readdirSync,
       fs.readFileSync
@@ -135,7 +138,7 @@ export default async function run(
 
   for (let result of runner.run()) {
     if (result.output) {
-      if (options.stdio) {
+      if (config.stdio) {
         stdout.write(`${result.output}\n`);
       } else {
         if (result.output === result.source.content) {
@@ -151,7 +154,7 @@ export default async function run(
     } else if (result.error) {
       stats.errors++;
 
-      if (!options.stdio) {
+      if (!config.stdio) {
         stderr.write(
           `Encountered an error while processing ${result.source.path}:\n`
         );
@@ -163,7 +166,7 @@ export default async function run(
     stats.total++;
   }
 
-  if (!options.stdio) {
+  if (!config.stdio) {
     if (dryRun) {
       stdout.write('DRY RUN: no files affected\n');
     }
