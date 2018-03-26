@@ -67,7 +67,7 @@
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.8.0",
     "typescript": "^2.7.2",
-    "yarnhook": "^0.1.1"
+    "yarnhook": "^0.2.0"
   },
   "dependencies": {
     "@babel/core": "^7.0.0-beta.42",
