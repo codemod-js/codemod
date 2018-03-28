@@ -1,10 +1,11 @@
 import { deepEqual, strictEqual, throws } from 'assert';
 import { inspect } from 'util';
-import Options from '../../src/Options';
+import Config from '../../src/Config';
+import Options, { Command } from '../../src/Options';
 
 describe('Options', function() {
   it('has sensible defaults', function() {
-    let config = new Options([]).parse();
+    let config = getRunConfig(new Options([]).parse());
     deepEqual(config.extensions, new Set(['.js', '.jsx']));
     deepEqual(config.localPlugins, []);
     deepEqual(config.sourcePaths, []);
@@ -14,17 +15,17 @@ describe('Options', function() {
   });
 
   it('interprets `--help` as asking for help', function() {
-    let config = new Options(['--help']).parse();
-    strictEqual(config.help, true);
+    strictEqual(new Options(['--help']).parse().kind, 'help');
   });
 
   it('interprets `--version` as asking to print the version', function() {
-    let config = new Options(['--version']).parse();
-    strictEqual(config.version, true);
+    strictEqual(new Options(['--version']).parse().kind, 'version');
   });
 
   it('interprets `--extensions` as expected', function() {
-    let config = new Options(['--extensions', '.js,.jsx,.ts']).parse();
+    let config = getRunConfig(
+      new Options(['--extensions', '.js,.jsx,.ts']).parse()
+    );
     deepEqual(config.extensions, new Set(['.js', '.jsx', '.ts']));
   });
 
@@ -33,12 +34,14 @@ describe('Options', function() {
   });
 
   it('interprets non-option arguments as paths', function() {
-    let config = new Options(['src/', 'a.js']).parse();
+    let config = getRunConfig(new Options(['src/', 'a.js']).parse());
     deepEqual(config.sourcePaths, ['src/', 'a.js']);
   });
 
   it('treats sources as globs', function() {
-    let config = new Options(['test/fixtures/glob-test/**/*.js']).parse();
+    let config = getRunConfig(
+      new Options(['test/fixtures/glob-test/**/*.js']).parse()
+    );
     deepEqual(config.sourcePaths, [
       'test/fixtures/glob-test/abc.js',
       'test/fixtures/glob-test/subdir/def.js'
@@ -46,38 +49,44 @@ describe('Options', function() {
   });
 
   it('interprets `--stdio` as reading/writing stdin/stdout', function() {
-    let config = new Options(['--stdio']).parse();
+    let config = getRunConfig(new Options(['--stdio']).parse());
     strictEqual(config.stdio, true);
   });
 
   it('can parse inline plugin options as JSON', function() {
-    let config = new Options(['-o', 'my-plugin={"foo": true}']).parse();
+    let config = getRunConfig(
+      new Options(['-o', 'my-plugin={"foo": true}']).parse()
+    );
     deepEqual(config.pluginOptions.get('my-plugin'), { foo: true });
   });
 
   it('associates plugin options based on declared name', async function() {
-    let config = new Options([
-      '--plugin',
-      './test/fixtures/plugin/index.js',
-      '--plugin-options',
-      'basic-plugin={"a": true}'
-    ]).parse();
+    let config = getRunConfig(
+      new Options([
+        '--plugin',
+        './test/fixtures/plugin/index.js',
+        '--plugin-options',
+        'basic-plugin={"a": true}'
+      ]).parse()
+    );
 
     deepEqual(config.pluginOptions.get('basic-plugin'), { a: true });
   });
 
   it('interprets `--require` as expected', function() {
-    let config = new Options(['--require', 'mz']).parse();
+    let config = getRunConfig(new Options(['--require', 'mz']).parse());
     deepEqual(config.requires, ['mz'].map(name => require.resolve(name)));
   });
 
   it('associates plugin options based on inferred name', async function() {
-    let config = new Options([
-      '--plugin',
-      './test/fixtures/plugin/index.js',
-      '--plugin-options',
-      'index={"a": true}'
-    ]).parse();
+    let config = getRunConfig(
+      new Options([
+        '--plugin',
+        './test/fixtures/plugin/index.js',
+        '--plugin-options',
+        'index={"a": true}'
+      ]).parse()
+    );
 
     // "index" is the name of the file
     deepEqual(config.pluginOptions.get('index'), { a: true });
@@ -95,18 +104,28 @@ describe('Options', function() {
 
   it('can parse a JSON file for plugin options', function() {
     // You wouldn't actually use package.json, but it's a convenient JSON file.
-    let config = new Options(['-o', 'my-plugin=@package.json']).parse();
+    let config = getRunConfig(
+      new Options(['-o', 'my-plugin=@package.json']).parse()
+    );
     let pluginOpts = config.pluginOptions.get('my-plugin');
     strictEqual(pluginOpts && pluginOpts['name'], 'babel-codemod');
   });
 
   it('should set dry option', function() {
-    let config = new Options(['--dry']).parse();
+    let config = getRunConfig(new Options(['--dry']).parse());
     strictEqual(config.dry, true);
   });
 
   it('should set useLocalBabel', function() {
-    let config = new Options(['--find-babel-config']).parse();
+    let config = getRunConfig(new Options(['--find-babel-config']).parse());
     strictEqual(config.findBabelConfig, true);
   });
+
+  function getRunConfig(command: Command): Config {
+    if (command.kind === 'run') {
+      return command.config;
+    } else {
+      throw new Error(`expected a run command but got: ${inspect(command)}`);
+    }
+  }
 });

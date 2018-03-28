@@ -1,32 +1,60 @@
 import * as realFs from 'fs';
 import getStream = require('get-stream');
 import { basename } from 'path';
+import CLIEngine from './CLIEngine';
 import Config from './Config';
-import iterateSources from './iterateSources';
-import Options, { DEFAULT_EXTENSIONS } from './Options';
-import ProcessSnapshot from './ProcessSnapshot';
-import TransformRunner, { BabelPlugin, Source } from './TransformRunner';
+import Options, { Command } from './Options';
+import { SourceTransformResult } from './TransformRunner';
+
+function optionAnnotation(
+  value: boolean | Array<string> | Map<string, object>
+): string {
+  if (Array.isArray(value) || value instanceof Map) {
+    return ' (allows multiple)';
+  } else if (typeof value === 'boolean') {
+    return ` (default: ${value ? 'on' : 'off'})`;
+  } else {
+    return '';
+  }
+}
 
 function printHelp(argv: Array<string>, out: NodeJS.WritableStream) {
   let $0 = basename(argv[1]);
+  let defaults = new Config();
 
   out.write(
     `
 ${$0} [OPTIONS] [PATH … | --stdio]
 
 OPTIONS
-  -p, --plugin PLUGIN               Transform sources with PLUGIN (allows multiple).
-      --remote-plugin URL           Fetch a plugin from URL (allows multiple).
-  -o, --plugin-options PLUGIN=OPTS  JSON-encoded OPTS for PLUGIN (allows multiple).
-  -r, --require PATH                Require PATH before transform (allows multiple).
+  -p, --plugin PLUGIN               Transform sources with PLUGIN${optionAnnotation(
+    defaults.localPlugins
+  )}.
+      --remote-plugin URL           Fetch a plugin from URL${optionAnnotation(
+        defaults.remotePlugins
+      )}.
+  -o, --plugin-options PLUGIN=OPTS  JSON-encoded OPTS for PLUGIN${optionAnnotation(
+    defaults.pluginOptions
+  )}.
+  -r, --require PATH                Require PATH before transform${optionAnnotation(
+    defaults.requires
+  )}.
       --extensions EXTS             Comma-separated extensions to process (default: "${Array.from(
-        DEFAULT_EXTENSIONS
+        defaults.extensions
       ).join(',')}").
-      --[no-]transpile-plugins      Transpile plugins to enable future syntax (default: on).
+      --[no-]transpile-plugins      Transpile plugins to enable future syntax${optionAnnotation(
+        defaults.transpilePlugins
+      )}.
       --[no-]find-babel-config      Run plugins through babel plugins/presets specified in local
-                                    .babelrc file instead of babel-preset-env (default: off).
-  -s, --stdio                       Read source from stdin and print to stdout.
-  -d, --dry                         Run plugins without modifying files on disk.
+                                    .babelrc file instead of babel-preset-env${optionAnnotation(
+                                      defaults.findBabelConfig
+                                    )}.
+  -s, --stdio                       Read source from stdin and print to stdout${optionAnnotation(
+    defaults.stdio
+  )}.
+  -d, --dry                         Run plugins without modifying files on disk${optionAnnotation(
+    defaults.dry
+  )}.
       --version                     Print the version of ${$0}.
   -h, --help                        Show this help message.
 
@@ -75,85 +103,40 @@ export default async function run(
   stderr: NodeJS.WriteStream,
   fs: typeof realFs = realFs
 ): Promise<number> {
-  let config: Config;
+  let command: Command;
 
   try {
-    config = new Options(argv.slice(2)).parse();
+    command = new Options(argv.slice(2)).parse();
   } catch (error) {
     stderr.write(`ERROR: ${error.message}\n`);
     printHelp(argv, stderr);
     return 1;
   }
 
-  if (config.help) {
+  if (command.kind === 'help') {
     printHelp(argv, stdout);
     return 0;
   }
 
-  if (config.version) {
+  if (command.kind === 'version') {
     printVersion(argv, stdout);
     return 0;
   }
 
-  let snapshot = new ProcessSnapshot();
-  let plugins: Array<BabelPlugin>;
-
-  try {
-    config.loadBabelTranspile();
-    config.loadRequires();
-    plugins = await config.getBabelPlugins();
-  } finally {
-    config.unloadBabelTranspile();
-    snapshot.restore();
-  }
-
-  let runner: TransformRunner;
-  let stats = {
-    modified: 0,
-    total: 0,
-    errors: 0
-  };
-  let dryRun = config.dry;
-  let sourcesIterator: IterableIterator<Source>;
-
-  if (config.stdio) {
-    sourcesIterator = [new Source('<stdin>', await getStream(stdin))][
-      Symbol.iterator
-    ]();
-  } else {
-    sourcesIterator = iterateSources(
-      config.sourcePaths,
-      config.extensions,
-      config.ignore,
-      fs.statSync,
-      fs.readdirSync,
-      fs.readFileSync
-    );
-  }
-
-  runner = new TransformRunner(sourcesIterator, plugins);
-
+  let config = command.config;
   let dim = stdout.isTTY ? '\x1b[2m' : '';
   let reset = stdout.isTTY ? '\x1b[0m' : '';
 
-  for (let result of runner.run()) {
+  function onTransform(result: SourceTransformResult): void {
     if (result.output) {
-      if (config.stdio) {
-        stdout.write(`${result.output}\n`);
-      } else {
+      if (!config.stdio) {
         if (result.output === result.source.content) {
           stdout.write(`${dim}${result.source.path}${reset}\n`);
         } else {
-          stats.modified++;
           stdout.write(`${result.source.path}\n`);
-          if (!dryRun) {
-            fs.writeFileSync(result.source.path, result.output);
-          }
         }
       }
     } else if (result.error) {
-      stats.errors++;
-
       if (!config.stdio) {
         stderr.write(
           `Encountered an error while processing ${result.source.path}:\n`
@@ -162,12 +145,18 @@ export default async function run(
 
       stderr.write(`${result.error.stack}\n`);
     }
-
-    stats.total++;
   }
 
+  let { stats } = await new CLIEngine(
+    config,
+    onTransform,
+    async () => await getStream(stdin),
+    (data: string) => stdout.write(data),
+    fs
+  ).run();
+
   if (!config.stdio) {
-    if (dryRun) {
+    if (config.dry) {
       stdout.write('DRY RUN: no files affected\n');
     }
 
