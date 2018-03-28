@@ -48,6 +48,20 @@ describe('CLI', function() {
     );
   });
 
+  it('fails with an error when a plugin throws an exception', async function() {
+    let { status, stdout, stderr } = await runCodemodCLI(
+      ['--plugin', plugin('bad-plugin'), '--stdio'],
+      '3+4'
+    );
+
+    strictEqual(status, 1);
+    strictEqual(stdout, '');
+    ok(
+      stderr.startsWith('Error: I am a bad plugin'),
+      `stderr should start with "Error: I am a bad plugin", got: ${stderr}`
+    );
+  });
+
   it('can read from stdin and write to stdout given the --stdio flag', async function() {
     let { status, stdout, stderr } = await runCodemodCLI(['--stdio'], '3+4');
 

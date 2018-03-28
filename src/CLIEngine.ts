@@ -70,8 +70,9 @@ export default class CLIEngine {
     runner = new TransformRunner(sourcesIterator, plugins);
 
     for (let result of runner.run()) {
+      this.onTransform(result);
+
       if (result.output) {
-        this.onTransform(result);
         if (this.config.stdio) {
           this.writeStdout(result.output);
         } else {
