@@ -47,8 +47,6 @@ export default class Config {
     readonly findBabelConfig: boolean = false,
     readonly ignore: PathPredicate = ignoreDotfiles,
     readonly stdio: boolean = false,
-    readonly help: boolean = false,
-    readonly version: boolean = false,
     readonly dry: boolean = false
   ) {}
 
@@ -171,8 +169,6 @@ export class ConfigBuilder {
   private _findBabelConfig?: boolean;
   private _ignore?: PathPredicate;
   private _stdio?: boolean;
-  private _help?: boolean;
-  private _version?: boolean;
   private _dry?: boolean;
 
   sourcePaths(value: Array<string>): this {
@@ -280,16 +276,6 @@ export class ConfigBuilder {
     return this;
   }
 
-  help(value: boolean): this {
-    this._help = value;
-    return this;
-  }
-
-  version(value: boolean): this {
-    this._version = value;
-    return this;
-  }
-
   dry(value: boolean): this {
     this._dry = value;
     return this;
@@ -307,8 +293,6 @@ export class ConfigBuilder {
       this._findBabelConfig,
       this._ignore,
       this._stdio,
-      this._help,
-      this._version,
       this._dry
     );
   }

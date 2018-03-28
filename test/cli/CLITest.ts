@@ -52,7 +52,7 @@ describe('CLI', function() {
     let { status, stdout, stderr } = await runCodemodCLI(['--stdio'], '3+4');
 
     strictEqual(status, 0);
-    strictEqual(stdout, '3+4\n');
+    strictEqual(stdout, '3+4');
     strictEqual(stderr, '');
   });
 

@@ -5,12 +5,25 @@ import { sync as resolveSync } from 'resolve';
 import Config, { ConfigBuilder } from './Config';
 import { SUPPORTED_EXTENSIONS } from './transpile-requires';
 
-export const DEFAULT_EXTENSIONS = new Set(['.js', '.jsx']);
+export interface RunCommand {
+  kind: 'run';
+  config: Config;
+}
+
+export interface HelpCommand {
+  kind: 'help';
+}
+
+export interface VersionCommand {
+  kind: 'version';
+}
+
+export type Command = RunCommand | HelpCommand | VersionCommand;
 
 export default class Options {
   constructor(readonly args: Array<string>) {}
 
-  parse(): Config {
+  parse(): RunCommand | HelpCommand | VersionCommand {
     let config = new ConfigBuilder();
 
     for (let i = 0; i < this.args.length; i++) {
@@ -85,12 +98,10 @@ export default class Options {
 
         case '-h':
         case '--help':
-          config.help(true);
-          break;
+          return { kind: 'help' };
 
         case '--version':
-          config.version(true);
-          break;
+          return { kind: 'version' };
 
         case '-d':
         case '--dry':
@@ -111,7 +122,10 @@ export default class Options {
       }
     }
 
-    return config.build();
+    return {
+      kind: 'run',
+      config: config.build()
+    };
   }
 }
 
