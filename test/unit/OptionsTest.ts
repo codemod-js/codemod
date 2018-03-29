@@ -1,6 +1,6 @@
 import { deepEqual, strictEqual, throws } from 'assert';
 import { inspect } from 'util';
-import Config from '../../src/Config';
+import Config, { Printer } from '../../src/Config';
 import Options, { Command } from '../../src/Options';
 
 describe('Options', function() {
@@ -119,6 +119,21 @@ describe('Options', function() {
   it('should set useLocalBabel', function() {
     let config = getRunConfig(new Options(['--find-babel-config']).parse());
     strictEqual(config.findBabelConfig, true);
+  });
+
+  it('uses the recast printer by default', function() {
+    let config = getRunConfig(new Options([]).parse());
+    strictEqual(config.printer, Printer.Recast);
+  });
+
+  it('can use the prettier printer', function() {
+    let config = getRunConfig(new Options(['--printer', 'prettier']).parse());
+    strictEqual(config.printer, Printer.Prettier);
+  });
+
+  it('can use the babel printer', function() {
+    let config = getRunConfig(new Options(['--printer', 'babel']).parse());
+    strictEqual(config.printer, Printer.Babel);
   });
 
   function getRunConfig(command: Command): Config {

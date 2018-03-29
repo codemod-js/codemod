@@ -2,7 +2,7 @@ import * as realFs from 'fs';
 import getStream = require('get-stream');
 import { basename } from 'path';
 import CLIEngine from './CLIEngine';
-import Config from './Config';
+import Config, { Printer } from './Config';
 import Options, { Command } from './Options';
 import { SourceTransformResult } from './TransformRunner';
 
@@ -49,6 +49,9 @@ OPTIONS
                                     .babelrc file instead of babel-preset-env${optionAnnotation(
                                       defaults.findBabelConfig
                                     )}.
+      --printer PRINTER             Specify which printer to use${optionAnnotation(
+        Printer[defaults.printer]
+      )}
   -s, --stdio                       Read source from stdin and print to stdout${optionAnnotation(
     defaults.stdio
   )}.
