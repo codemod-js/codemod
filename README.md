@@ -32,6 +32,8 @@ Plugins may also be loaded from remote URLs, including saved [AST Explorer](http
 $ codemod --remote-plugin URL …
 ```
 
+By default, babel-codemod makes minimal changes to your source files by using [recast](https://github.com/benjamn/recast) to parse and print your code, retaining the original comments and formatting. If desired, you can reformat files using [Prettier](https://prettier.io/) by using `--printer prettier`. Note that this is typically only desired in projects that use Prettier, or if you plan on adopting Prettier.
+
 For more detailed options, run `codemod --help`.
 
 ## Writing a Plugin

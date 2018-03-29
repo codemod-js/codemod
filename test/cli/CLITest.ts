@@ -1,9 +1,11 @@
 import { deepEqual, ok, strictEqual } from 'assert';
 import { readFile } from 'mz/fs';
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 import { sync as rimraf } from 'rimraf';
 import { valid } from 'semver';
 import { inspect } from 'util';
+import copyFixturesInto from '../helpers/copyFixturesInto';
+import createTemporaryDirectory from '../helpers/createTemporaryDirectory';
 import createTemporaryFile from '../helpers/createTemporaryFile';
 import getTemporaryFilePath from '../helpers/getTemporaryFilePath';
 import plugin from '../helpers/plugin';
@@ -328,5 +330,74 @@ describe('CLI', function() {
     } finally {
       await server.stop();
     }
+  });
+
+  it('can print using babel', async function() {
+    let afile = await createTemporaryFile('a-file.js', 'var a=1;');
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      '--printer',
+      'babel'
+    ]);
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+        stderr: ''
+      }
+    );
+
+    strictEqual(await readFile(afile, 'utf8'), 'var a = 1;');
+  });
+
+  it('can print using prettier using its default settings', async function() {
+    let workspace = await copyFixturesInto(
+      'prettier/defaults',
+      await createTemporaryDirectory('prettier/defaults')
+    );
+    let file = join(workspace, 'index.jsx');
+    let original = await readFile(file, 'utf8');
+    let { status, stdout, stderr } = await runCodemodCLI([
+      workspace,
+      '--printer',
+      'prettier'
+    ]);
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${file}\n1 file(s), 0 modified, 0 errors\n`,
+        stderr: ''
+      }
+    );
+
+    strictEqual(await readFile(file, 'utf8'), original);
+  });
+
+  it('can print using prettier using custom config', async function() {
+    let workspace = await copyFixturesInto(
+      'prettier/with-config',
+      await createTemporaryDirectory('prettier/with-config')
+    );
+    let file = join(workspace, 'index.js');
+    let { status, stdout, stderr } = await runCodemodCLI([
+      workspace,
+      '--printer',
+      'prettier'
+    ]);
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${file}\n1 file(s), 1 modified, 0 errors\n`,
+        stderr: ''
+      }
+    );
+
+    strictEqual(await readFile(file, 'utf8'), `var a = '';\n`);
   });
 });

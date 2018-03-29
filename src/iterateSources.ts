@@ -15,7 +15,7 @@ export type PathPredicate = (
  */
 export default function* iterateSources(
   paths: Array<string>,
-  extensions: Set<string>,
+  extensions: Set<string> | null,
   ignore: PathPredicate,
   statSyncImpl: typeof statSync = statSync,
   readdirSyncImpl: typeof readdirSync = readdirSync,
@@ -34,7 +34,7 @@ export default function* iterateSources(
         }
 
         if (childStat.isFile()) {
-          if (extensions.has(extname(child))) {
+          if (!extensions || extensions.has(extname(child))) {
             yield* iterateSources(
               [childPath],
               extensions,

@@ -749,6 +749,10 @@
   version "9.4.7"
   resolved "http://registry.npmjs.org/@types/node/-/node-9.4.7.tgz#57d81cd98719df2c9de118f2d5f3b1120dcd7275"
 
+"@types/prettier@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.npmjs.org/@types/prettier/-/prettier-1.10.0.tgz#5abf1ec0a6e904fe2490cc2068f36a38e4a63c42"
+
 "@types/rimraf@2.0.2":
   version "2.0.2"
   resolved "https://registry.npmjs.org/@types/rimraf/-/rimraf-2.0.2.tgz#7f0fc3cf0ff0ad2a99bb723ae1764f30acaf8b6e"

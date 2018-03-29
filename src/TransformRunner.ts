@@ -39,7 +39,7 @@ export type RawBabelPlugin = (
     options: GeneratorOptions,
     code: string,
     generate: (ast: AST, options: GeneratorOptions) => string
-  ) => string;
+  ) => { code: string; map?: object };
 };
 export type RawBabelPluginWithOptions = [RawBabelPlugin, object];
 export type BabelPlugin = RawBabelPlugin | RawBabelPluginWithOptions;

@@ -2,8 +2,10 @@ import * as Babel from '@babel/core';
 import { basename, extname } from 'path';
 import { install } from 'source-map-support';
 import AllSyntaxPlugin from './AllSyntaxPlugin';
+import BabelPrinterPlugin from './BabelPrinterPlugin';
 import { PathPredicate } from './iterateSources';
 import PluginLoader from './PluginLoader';
+import PrettierPrinterPlugin from './PrettierPrinterPlugin';
 import RecastPlugin from './RecastPlugin';
 import AstExplorerResolver from './resolvers/AstExplorerResolver';
 import FileSystemResolver from './resolvers/FileSystemResolver';
@@ -35,12 +37,19 @@ function ignoreDotfiles(path: string, basename: string, root: string): boolean {
   return basename.startsWith('.');
 }
 
+export enum Printer {
+  Recast = 'recast',
+  Prettier = 'prettier',
+  Babel = 'babel'
+}
+
 export default class Config {
   constructor(
     readonly sourcePaths: Array<string> = [],
     readonly localPlugins: Array<string> = [],
     readonly remotePlugins: Array<string> = [],
     readonly pluginOptions: Map<string, object> = new Map<string, object>(),
+    readonly printer: Printer = Printer.Recast,
     readonly extensions: Set<string> = DEFAULT_EXTENSIONS,
     readonly requires: Array<string> = [],
     readonly transpilePlugins: boolean = true,
@@ -124,7 +133,21 @@ export default class Config {
   }
 
   async getBabelPlugins(): Promise<Array<BabelPlugin>> {
-    let result: Array<BabelPlugin> = [AllSyntaxPlugin, RecastPlugin];
+    let result: Array<BabelPlugin> = [AllSyntaxPlugin];
+
+    switch (this.printer) {
+      case Printer.Recast:
+        result.push(RecastPlugin);
+        break;
+
+      case Printer.Babel:
+        result.push(BabelPrinterPlugin);
+        break;
+
+      case Printer.Prettier:
+        result.push(PrettierPrinterPlugin);
+        break;
+    }
 
     for (let plugin of await this.getPlugins()) {
       let options =
@@ -163,6 +186,7 @@ export class ConfigBuilder {
   private _localPlugins?: Array<string>;
   private _remotePlugins?: Array<string>;
   private _pluginOptions?: Map<string, object>;
+  private _printer?: Printer;
   private _extensions?: Set<string>;
   private _requires?: Array<string>;
   private _transpilePlugins?: boolean;
@@ -230,6 +254,11 @@ export class ConfigBuilder {
     return this;
   }
 
+  printer(value: Printer): this {
+    this._printer = value;
+    return this;
+  }
+
   extensions(value: Set<string>): this {
     this._extensions = value;
     return this;
@@ -287,6 +316,7 @@ export class ConfigBuilder {
       this._localPlugins,
       this._remotePlugins,
       this._pluginOptions,
+      this._printer,
       this._extensions,
       this._requires,
       this._transpilePlugins,

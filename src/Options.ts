@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'fs';
 import { hasMagic as hasGlob, sync as globSync } from 'glob';
 import { resolve } from 'path';
 import { sync as resolveSync } from 'resolve';
-import Config, { ConfigBuilder } from './Config';
+import Config, { ConfigBuilder, Printer } from './Config';
 import { SUPPORTED_EXTENSIONS } from './transpile-requires';
 
 export interface RunCommand {
@@ -61,6 +61,21 @@ export default class Options {
             throw new Error(
               `unable to parse JSON config for ${name}: ${optionsRaw}`
             );
+          }
+          break;
+
+        case '--printer':
+          i++;
+          let rawPrinter = this.args[i];
+
+          if (rawPrinter === Printer.Babel) {
+            config.printer(Printer.Babel);
+          } else if (rawPrinter === Printer.Prettier) {
+            config.printer(Printer.Prettier);
+          } else if (rawPrinter === Printer.Recast) {
+            config.printer(Printer.Recast);
+          } else {
+            throw new Error(`unexpected printer value: ${rawPrinter}`);
           }
           break;
 
