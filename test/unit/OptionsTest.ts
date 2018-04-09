@@ -29,6 +29,11 @@ describe('Options', function() {
     deepEqual(config.extensions, new Set(['.js', '.jsx', '.ts']));
   });
 
+  it('--add-extension adds to the default extensions', function() {
+    let config = getRunConfig(new Options(['--add-extension', '.ts']).parse());
+    deepEqual(config.extensions, new Set(['.js', '.jsx', '.ts']));
+  });
+
   it('fails to parse unknown options', function() {
     throws(() => new Options(['--wtf']).parse(), 'unexpected option: --wtf');
   });
