@@ -39,6 +39,7 @@ OPTIONS
   -r, --require PATH                Require PATH before transform${optionAnnotation(
     defaults.requires
   )}.
+      --add-extension EXT           Add an extension to the list of supported extensions.
       --extensions EXTS             Comma-separated extensions to process (default: "${Array.from(
         defaults.extensions
       ).join(',')}").

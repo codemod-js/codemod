@@ -187,7 +187,7 @@ export class ConfigBuilder {
   private _remotePlugins?: Array<string>;
   private _pluginOptions?: Map<string, object>;
   private _printer?: Printer;
-  private _extensions?: Set<string>;
+  private _extensions: Set<string> = new Set(DEFAULT_EXTENSIONS);
   private _requires?: Array<string>;
   private _transpilePlugins?: boolean;
   private _findBabelConfig?: boolean;

@@ -106,6 +106,11 @@ export default class Options {
           );
           break;
 
+        case '--add-extension':
+          i++;
+          config.addExtension(this.args[i]);
+          break;
+
         case '-s':
         case '--stdio':
           config.stdio(true);
