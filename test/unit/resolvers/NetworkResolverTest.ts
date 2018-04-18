@@ -34,9 +34,9 @@ describe('NetworkResolver', function() {
 
     ok(await resolver.canResolve('http://example.com/'));
     ok(await resolver.canResolve('https://example.com/'));
-    ok(!await resolver.canResolve('/'));
-    ok(!await resolver.canResolve('afp://192.168.0.1/volume/folder/file.js'));
-    ok(!await resolver.canResolve('data:,Hello%2C%20World!'));
+    ok(!(await resolver.canResolve('/')));
+    ok(!(await resolver.canResolve('afp://192.168.0.1/volume/folder/file.js')));
+    ok(!(await resolver.canResolve('data:,Hello%2C%20World!')));
   });
 
   it('follows redirects', async function() {

@@ -31,7 +31,7 @@ describe('FileSystemResolver', function() {
 
   it('fails to resolve a non-existent file', async function() {
     let resolver = new FileSystemResolver();
-    ok(!await resolver.canResolve('/this/file/is/not/there'));
+    ok(!(await resolver.canResolve('/this/file/is/not/there')));
 
     try {
       await resolver.resolve('/this/file/is/not/there');
