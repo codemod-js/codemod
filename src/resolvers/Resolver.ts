@@ -20,4 +20,4 @@ export default interface Resolver {
    * to disk in a temporary location.
    */
   resolve(source: string): Promise<string>;
-};
+}
