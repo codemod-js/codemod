@@ -719,9 +719,9 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/got@^7.1.7":
-  version "7.1.8"
-  resolved "https://registry.npmjs.org/@types/got/-/got-7.1.8.tgz#c5f421b25770689bf8948b1241f710d71a00d7dd"
+"@types/got@^8.3.0":
+  version "8.3.0"
+  resolved "https://registry.npmjs.org/@types/got/-/got-8.3.0.tgz#b3ce6a75eed23dd46142bb6679f2e8e740ff53bb"
   dependencies:
     "@types/node" "*"
 
