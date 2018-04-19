@@ -7,7 +7,6 @@
     "strictNullChecks": true,
     "declaration": true
   },
-  "exclude": [
-    "test/fixtures/**/*.ts"
-  ]
+  "exclude": ["test/fixtures/**/*.ts"],
+  "compileOnSave": true
 }

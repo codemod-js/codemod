@@ -2,17 +2,19 @@ import * as realFs from 'fs';
 import getStream = require('get-stream');
 import { basename } from 'path';
 import CLIEngine from './CLIEngine';
-import Config, { Printer } from './Config';
+import Config from './Config';
 import Options, { Command } from './Options';
 import { SourceTransformResult } from './TransformRunner';
 
 function optionAnnotation(
-  value: boolean | Array<string> | Map<string, object>
+  value: boolean | Array<string> | Map<string, object> | string
 ): string {
   if (Array.isArray(value) || value instanceof Map) {
     return ' (allows multiple)';
   } else if (typeof value === 'boolean') {
     return ` (default: ${value ? 'on' : 'off'})`;
+  } else if (typeof value === 'string') {
+    return ` (default: ${value})`;
   } else {
     return '';
   }
@@ -51,8 +53,8 @@ OPTIONS
                                       defaults.findBabelConfig
                                     )}.
       --printer PRINTER             Specify which printer to use${optionAnnotation(
-        Printer[defaults.printer]
-      )}
+        defaults.printer
+      )}.
   -s, --stdio                       Read source from stdin and print to stdout${optionAnnotation(
     defaults.stdio
   )}.
@@ -81,6 +83,9 @@ EXAMPLES
     return a + b;
   }
   EOS
+
+  # Reprint modified files with prettier.
+  $ ${$0} --printer prettier -p some-plugin src/
 
   # Pass options to a plugin.
   $ ${$0} -p ./a.js -o a='{"foo":true}' src/
