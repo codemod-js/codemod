@@ -2,6 +2,7 @@ import * as Babel from '@babel/core';
 import { NodePath } from '@babel/traverse';
 import { NumericLiteral, Program } from '@babel/types';
 import { deepEqual, strictEqual } from 'assert';
+import { join } from 'path';
 import TransformRunner, {
   Source,
   SourceTransformResult
@@ -88,6 +89,6 @@ describe('TransformRunner', function() {
     // Consume all results, but ignore them.
     Array.from(new TransformRunner([source], [plugin]).run());
 
-    strictEqual(filename, 'a.js');
+    strictEqual(filename, join(process.cwd(), 'a.js'));
   });
 });
