@@ -35,7 +35,11 @@ describe('Options', function() {
   });
 
   it('fails to parse unknown options', function() {
-    throws(() => new Options(['--wtf']).parse(), 'unexpected option: --wtf');
+    throws(
+      () => new Options(['--wtf']).parse(),
+      Error,
+      'unexpected option: --wtf'
+    );
   });
 
   it('interprets non-option arguments as paths', function() {
