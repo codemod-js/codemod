@@ -17,7 +17,7 @@
   },
   "lint-staged": {
     "*.ts": [
-      "prettier --parser typescript --write",
+      "prettier --write",
       "git add"
     ],
     "*.md": [
