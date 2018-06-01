@@ -150,14 +150,14 @@ export default class ProcessSnapshot {
 
     for (let [event, [original, updated]] of modified) {
       for (let originalEntry of original) {
-        if (updated.indexOf(originalEntry) < 0) {
+        if (!updated.includes(originalEntry)) {
           this.log(`restoring removed '${event.toString()}' event listener`);
           process.addListener(event as any, originalEntry); // tslint:disable-line no-any
         }
       }
 
       for (let updatedEntry of updated) {
-        if (original.indexOf(updatedEntry) < 0) {
+        if (!original.includes(updatedEntry)) {
           this.log(`removing added '${event.toString()}' event listener`);
           process.removeListener(event, updatedEntry);
         }
