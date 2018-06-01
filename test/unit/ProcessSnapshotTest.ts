@@ -145,7 +145,7 @@ describe('ProcessSnapshot', function() {
     snapshot.restore();
 
     deepEqual(messages, [`removing all 'exit' event listeners`]);
-    ok(fakeProcess.listeners('exit').indexOf(listener) < 0);
+    ok(!fakeProcess.listeners('exit').includes(listener));
   });
 
   it('adds removed process event listeners', function() {
@@ -163,7 +163,7 @@ describe('ProcessSnapshot', function() {
     snapshot.restore();
 
     deepEqual(messages, [`restoring removed 'exit' event listener`]);
-    strictEqual(fakeProcess.listeners('exit').indexOf(listener), 0);
+    ok(fakeProcess.listeners('exit').includes(listener));
   });
 
   it('removes an added event listener when there already is at least one', function() {
