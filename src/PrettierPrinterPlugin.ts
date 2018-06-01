@@ -16,6 +16,13 @@ function loadPrettier(): typeof Prettier {
 export default function(babel: typeof Babel) {
   let prettier = loadPrettier();
 
+  function resolvePrettierConfig(filepath: string): Prettier.Options {
+    return {
+      ...(prettier.resolveConfig.sync(filepath) || undefined),
+      filepath
+    };
+  }
+
   return {
     parserOverride: parse,
     generatorOverride(
@@ -27,7 +34,7 @@ export default function(babel: typeof Babel) {
       return {
         code: prettier.format(
           generate(ast, options, code, _generate).code,
-          prettier.resolveConfig.sync(options.filename) || undefined
+          resolvePrettierConfig(options.filename)
         )
       };
     }
