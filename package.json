@@ -37,8 +37,8 @@
   "author": "Brian Donovan <donovan@squareup.com>",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@commitlint/cli": "^6.1.0",
-    "@commitlint/config-conventional": "^6.1.0",
+    "@commitlint/cli": "^6.2.0",
+    "@commitlint/config-conventional": "^6.1.3",
     "@types/babel-traverse": "^6.25.3",
     "@types/babylon": "^6.16.2",
     "@types/get-port": "^3.2.0",
@@ -78,15 +78,15 @@
     "@babel/types": "^7.0.0-beta.49",
     "get-stream": "^3.0.0",
     "glob": "^7.1.2",
-    "got": "^8.1.0",
+    "got": "^8.3.1",
     "mz": "^2.7.0",
     "pirates": "^3.0.2",
-    "prettier": "^1.13.3",
-    "recast": "^0.14.7",
-    "resolve": "^1.5.0",
-    "source-map-support": "^0.5.3",
+    "prettier": "^1.13.4",
+    "recast": "^0.15.0",
+    "resolve": "^1.7.1",
+    "source-map-support": "^0.5.6",
     "tmp": "^0.0.33",
-    "whatwg-url": "^6.4.0"
+    "whatwg-url": "^6.4.1"
   },
   "engines": {
     "node": ">=6.0.0"
