@@ -144,21 +144,21 @@ export default class ProcessSnapshot {
     );
 
     for (let event of added.keys()) {
-      this.log(`removing all '${event}' event listeners`);
+      this.log(`removing all '${event.toString()}' event listeners`);
       process.removeAllListeners(event);
     }
 
     for (let [event, [original, updated]] of modified) {
       for (let originalEntry of original) {
         if (updated.indexOf(originalEntry) < 0) {
-          this.log(`restoring removed '${event}' event listener`);
+          this.log(`restoring removed '${event.toString()}' event listener`);
           process.addListener(event as any, originalEntry); // tslint:disable-line no-any
         }
       }
 
       for (let updatedEntry of updated) {
         if (original.indexOf(updatedEntry) < 0) {
-          this.log(`removing added '${event}' event listener`);
+          this.log(`removing added '${event.toString()}' event listener`);
           process.removeListener(event, updatedEntry);
         }
       }
@@ -166,7 +166,7 @@ export default class ProcessSnapshot {
 
     for (let [event, callbacks] of deleted) {
       for (let callback of callbacks) {
-        this.log(`restoring removed '${event}' event listener`);
+        this.log(`restoring removed '${event.toString()}' event listener`);
         process.addListener(event as any, callback); // tslint:disable-line no-any
       }
     }
