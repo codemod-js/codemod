@@ -32,7 +32,7 @@ export default class CLIEngine {
     readonly fs: typeof realFs = realFs
   ) {}
 
-  async run(): Promise<RunResult> {
+  private async loadPlugins(): Promise<Array<BabelPlugin>> {
     let snapshot = new ProcessSnapshot();
     let plugins: Array<BabelPlugin>;
 
@@ -45,6 +45,11 @@ export default class CLIEngine {
       snapshot.restore();
     }
 
+    return plugins;
+  }
+
+  async run(): Promise<RunResult> {
+    let plugins = await this.loadPlugins();
     let runner: TransformRunner;
     let modified = 0;
     let errors = 0;
@@ -69,7 +74,7 @@ export default class CLIEngine {
 
     runner = new TransformRunner(sourcesIterator, plugins);
 
-    for (let result of runner.run()) {
+    for await (let result of runner.run()) {
       this.onTransform(result);
 
       if (result.output) {

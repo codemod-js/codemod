@@ -9,17 +9,27 @@ import TransformRunner, {
 } from '../../src/TransformRunner';
 
 describe('TransformRunner', function() {
-  it('passes source through as-is when there are no plugins', function() {
+  async function run(runner: TransformRunner) {
+    let result: Array<SourceTransformResult> = [];
+
+    for await (let transformResult of runner.run()) {
+      result.push(transformResult);
+    }
+
+    return result;
+  }
+
+  it('passes source through as-is when there are no plugins', async function() {
     let source = new Source('a.js', 'a + b;');
     let runner = new TransformRunner([source], []);
-    let result = Array.from(runner.run());
+    let result = await run(runner);
 
     deepEqual(result, [
       new SourceTransformResult(source, source.content, null)
     ]);
   });
 
-  it('transforms source using plugins', function() {
+  it('transforms source using plugins', async function() {
     let source = new Source('a.js', '3 + 4;');
     let plugin = function(babel: typeof Babel) {
       return {
@@ -31,22 +41,22 @@ describe('TransformRunner', function() {
       };
     };
     let runner = new TransformRunner([source], [plugin]);
-    let result = Array.from(runner.run());
+    let result = await run(runner);
 
     deepEqual(result, [new SourceTransformResult(source, '4 + 5;', null)]);
   });
 
-  it('does not include any plugins not specified explicitly', function() {
+  it('does not include any plugins not specified explicitly', async function() {
     let source = new Source('a.js', 'export default 0;');
     let runner = new TransformRunner([source], []);
-    let result = Array.from(runner.run());
+    let result = await run(runner);
 
     deepEqual(result, [
       new SourceTransformResult(source, 'export default 0;', null)
     ]);
   });
 
-  it('allows running plugins with options', function() {
+  it('allows running plugins with options', async function() {
     let source = new Source('a.js', '3 + 4;');
     let plugin = function(babel: typeof Babel) {
       return {
@@ -63,12 +73,12 @@ describe('TransformRunner', function() {
       };
     };
     let runner = new TransformRunner([source], [[plugin, { value: 3 }]]);
-    let result = Array.from(runner.run());
+    let result = await run(runner);
 
     deepEqual(result, [new SourceTransformResult(source, '4 + 4;', null)]);
   });
 
-  it('passes the filename', function() {
+  it('passes the filename', async function() {
     let source = new Source('a.js', '');
     let filename;
     let plugin = function(babel: typeof Babel) {
@@ -87,7 +97,7 @@ describe('TransformRunner', function() {
     };
 
     // Consume all results, but ignore them.
-    Array.from(new TransformRunner([source], [plugin]).run());
+    await run(new TransformRunner([source], [plugin]));
 
     strictEqual(filename, join(process.cwd(), 'a.js'));
   });
