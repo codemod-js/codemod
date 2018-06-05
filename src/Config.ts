@@ -2,6 +2,7 @@ import * as Babel from '@babel/core';
 import { basename, extname } from 'path';
 import { install } from 'source-map-support';
 import AllSyntaxPlugin from './AllSyntaxPlugin';
+import { BabelPlugin, RawBabelPlugin } from './BabelPluginTypes';
 import BabelPrinterPlugin from './BabelPrinterPlugin';
 import { PathPredicate } from './iterateSources';
 import PluginLoader from './PluginLoader';
@@ -11,7 +12,6 @@ import AstExplorerResolver from './resolvers/AstExplorerResolver';
 import FileSystemResolver from './resolvers/FileSystemResolver';
 import NetworkResolver from './resolvers/NetworkResolver';
 import PackageResolver from './resolvers/PackageResolver';
-import { BabelPlugin, RawBabelPlugin } from './TransformRunner';
 import { disable, enable } from './transpile-requires';
 
 export const DEFAULT_EXTENSIONS = new Set(['.js', '.jsx']);

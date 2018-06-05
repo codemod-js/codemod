@@ -1,10 +1,11 @@
 import * as realFs from 'fs';
 import getStream = require('get-stream');
+import { BabelPlugin } from './BabelPluginTypes';
 import Config from './Config';
+import InlineTransformer from './InlineTransformer';
 import iterateSources from './iterateSources';
 import ProcessSnapshot from './ProcessSnapshot';
 import TransformRunner, {
-  BabelPlugin,
   Source,
   SourceTransformResult
 } from './TransformRunner';
@@ -72,7 +73,10 @@ export default class CLIEngine {
       );
     }
 
-    runner = new TransformRunner(sourcesIterator, plugins);
+    runner = new TransformRunner(
+      sourcesIterator,
+      new InlineTransformer(plugins)
+    );
 
     for await (let result of runner.run()) {
       this.onTransform(result);

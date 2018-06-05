@@ -2,7 +2,7 @@ import * as Babel from '@babel/core';
 import { GeneratorOptions } from '@babel/generator';
 import * as recast from 'recast';
 import { ALL_PLUGINS } from './AllSyntaxPlugin';
-import { AST, ParseOptions } from './TransformRunner';
+import { AST, ParseOptions } from './BabelPluginTypes';
 
 const DEFAULT_OPTIONS = {
   sourceType: 'module',
