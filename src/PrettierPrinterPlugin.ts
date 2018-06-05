@@ -2,8 +2,8 @@ import * as Babel from '@babel/core';
 import { GeneratorOptions } from '@babel/generator';
 import * as Prettier from 'prettier';
 import { sync as resolveSync } from 'resolve';
+import { AST } from './BabelPluginTypes';
 import { generate, parse } from './RecastPlugin';
-import { AST } from './TransformRunner';
 
 function loadPrettier(): typeof Prettier {
   try {
