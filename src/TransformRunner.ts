@@ -50,7 +50,7 @@ export default class TransformRunner {
     readonly plugins: Array<BabelPlugin>
   ) {}
 
-  *run(): IterableIterator<SourceTransformResult> {
+  *run(): AsyncIterableIterator<SourceTransformResult> {
     for (let source of this.sources) {
       let transformed: SourceTransformResult;
 
