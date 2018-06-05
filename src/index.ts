@@ -6,10 +6,6 @@ import Config from './Config';
 import Options, { Command } from './Options';
 import { SourceTransformResult } from './TransformRunner';
 
-// Polyfill `Symbol.asyncIterator` so `for await` will work.
-Symbol['asyncIterator' as string] =
-  Symbol.asyncIterator || Symbol.for('Symbol.asyncIterator');
-
 function optionAnnotation(
   value: boolean | Array<string> | Map<string, object> | string
 ): string {

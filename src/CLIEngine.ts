@@ -1,10 +1,10 @@
 import * as realFs from 'fs';
 import getStream = require('get-stream');
-import { BabelPlugin } from './BabelPluginTypes';
 import Config from './Config';
+import Environment from './Environment';
 import InlineTransformer from './InlineTransformer';
 import iterateSources from './iterateSources';
-import ProcessSnapshot from './ProcessSnapshot';
+import { installAsyncIterator } from './polyfills';
 import TransformRunner, {
   Source,
   SourceTransformResult
@@ -33,24 +33,9 @@ export default class CLIEngine {
     readonly fs: typeof realFs = realFs
   ) {}
 
-  private async loadPlugins(): Promise<Array<BabelPlugin>> {
-    let snapshot = new ProcessSnapshot();
-    let plugins: Array<BabelPlugin>;
-
-    try {
-      this.config.loadBabelTranspile();
-      this.config.loadRequires();
-      plugins = await this.config.getBabelPlugins();
-    } finally {
-      this.config.unloadBabelTranspile();
-      snapshot.restore();
-    }
-
-    return plugins;
-  }
-
   async run(): Promise<RunResult> {
-    let plugins = await this.loadPlugins();
+    let environment = Environment.fromConfig(this.config);
+    let plugins = await environment.loadPlugins();
     let runner: TransformRunner;
     let modified = 0;
     let errors = 0;
@@ -77,6 +62,8 @@ export default class CLIEngine {
       sourcesIterator,
       new InlineTransformer(plugins)
     );
+
+    installAsyncIterator();
 
     for await (let result of runner.run()) {
       this.onTransform(result);

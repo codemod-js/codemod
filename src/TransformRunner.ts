@@ -1,3 +1,4 @@
+import { installAsyncIterator } from './polyfills';
 import Transformer from './Transformer';
 
 export class Source {
@@ -19,10 +20,13 @@ export default class TransformRunner {
   ) {}
 
   async *run(): AsyncIterableIterator<SourceTransformResult> {
+    installAsyncIterator();
+
     for (let source of this.sources) {
       let transformed: SourceTransformResult;
 
       try {
+        await this.transformer.ready();
         let output = await this.transformer.transform(
           source.path,
           source.content
@@ -34,5 +38,7 @@ export default class TransformRunner {
 
       yield transformed;
     }
+
+    await this.transformer.cleanup();
   }
 }

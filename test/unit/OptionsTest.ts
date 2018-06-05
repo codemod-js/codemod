@@ -1,6 +1,7 @@
 import { deepEqual, strictEqual, throws } from 'assert';
 import { inspect } from 'util';
 import Config, { Printer } from '../../src/Config';
+import Environment from '../../src/Environment';
 import Options, { Command } from '../../src/Options';
 
 describe('Options', function() {
@@ -100,7 +101,8 @@ describe('Options', function() {
     // "index" is the name of the file
     deepEqual(config.pluginOptions.get('index'), { a: true });
 
-    let babelPlugin = await config.getBabelPlugin('index');
+    let environment = Environment.fromConfig(config);
+    let babelPlugin = await environment.getBabelPlugin('index');
 
     if (!Array.isArray(babelPlugin)) {
       throw new Error(

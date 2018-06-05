@@ -691,6 +691,10 @@
   dependencies:
     "@types/babel-types" "*"
 
+"@types/debug@^0.0.30":
+  version "0.0.30"
+  resolved "https://registry.npmjs.org/@types/debug/-/debug-0.0.30.tgz#dc1e40f7af3b9c815013a7860e6252f6352a84df"
+
 "@types/events@*":
   version "1.1.0"
   resolved "https://registry.npmjs.org/@types/events/-/events-1.1.0.tgz#93b1be91f63c184450385272c47b6496fd028e02"

@@ -1,6 +1,7 @@
 import { deepEqual, strictEqual } from 'assert';
 import { inspect } from 'util';
 import Config, { ConfigBuilder } from '../../src/Config';
+import Environment from '../../src/Environment';
 
 // TODO: move some of the babel plugin loading tests in here
 
@@ -22,7 +23,8 @@ describe('Config', function() {
       .build();
 
     // "basic-plugin" is declared in the plugin file
-    let babelPlugin = await config.getBabelPlugin('basic-plugin');
+    let environment = Environment.fromConfig(config);
+    let babelPlugin = await environment.getBabelPlugin('basic-plugin');
 
     if (!Array.isArray(babelPlugin)) {
       throw new Error(
