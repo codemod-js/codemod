@@ -1,5 +1,5 @@
 import * as Babel from '@babel/core';
-import { BabelOptions, ParseOptions } from './TransformRunner';
+import { BabelOptions, ParseOptions } from './BabelPluginTypes';
 
 export const ALL_PLUGINS = [
   'flow',
