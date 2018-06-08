@@ -84,8 +84,11 @@ export default class AstExplorerResolver extends NetworkResolver {
   }
 
   private matchesHost(url: URL): boolean {
-    return (
-      url.protocol === this.baseURL.protocol && url.host === this.baseURL.host
-    );
+    if (url.host !== this.baseURL.host) {
+      return false;
+    }
+
+    // use SSL even if the URL doesn't use it
+    return url.protocol === this.baseURL.protocol || url.protocol === 'http:';
   }
 }

@@ -17,6 +17,18 @@ describe('AstExplorerResolver', function() {
     );
   });
 
+  it('normalizes http gist+commit editor URL to an https API URL', async function() {
+    let resolver = new AstExplorerResolver();
+    let normalized = await resolver.normalize(
+      'http://astexplorer.net/#/gist/b5b33c/f9ae8a'
+    );
+
+    strictEqual(
+      normalized,
+      'https://astexplorer.net/api/v1/gist/b5b33c/f9ae8a'
+    );
+  });
+
   it('normalizes a gist-only editor URL into an API URL', async function() {
     let resolver = new AstExplorerResolver();
     let normalized = await resolver.normalize(
