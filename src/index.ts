@@ -83,6 +83,9 @@ EXAMPLES
   # Run with multiple plugins.
   $ ${$0} -p ./a.js -p ./b.js some-file.js
 
+  # Transform TypeScript sources.
+  # ${$0} -p ./a.js my-typescript-file.ts a-component.tsx
+
   # Run with a plugin in \`node_modules\` on stdin.
   $ ${$0} -s -p babel-plugin-typecheck <<EOS
   function add(a: number, b: number): number {

@@ -4,6 +4,7 @@ import { install } from 'source-map-support';
 import AllSyntaxPlugin from './AllSyntaxPlugin';
 import { BabelPlugin, RawBabelPlugin } from './BabelPluginTypes';
 import BabelPrinterPlugin from './BabelPrinterPlugin';
+import { TransformableExtensions } from './extensions';
 import { PathPredicate } from './iterateSources';
 import PluginLoader from './PluginLoader';
 import PrettierPrinterPlugin from './PrettierPrinterPlugin';
@@ -13,8 +14,6 @@ import FileSystemResolver from './resolvers/FileSystemResolver';
 import NetworkResolver from './resolvers/NetworkResolver';
 import PackageResolver from './resolvers/PackageResolver';
 import { disable, enable } from './transpile-requires';
-
-export const DEFAULT_EXTENSIONS = new Set(['.js', '.jsx']);
 
 export class Plugin {
   readonly declaredName?: string;
@@ -50,7 +49,7 @@ export default class Config {
     readonly remotePlugins: Array<string> = [],
     readonly pluginOptions: Map<string, object> = new Map<string, object>(),
     readonly printer: Printer = Printer.Recast,
-    readonly extensions: Set<string> = DEFAULT_EXTENSIONS,
+    readonly extensions: Set<string> = TransformableExtensions,
     readonly requires: Array<string> = [],
     readonly transpilePlugins: boolean = true,
     readonly findBabelConfig: boolean = false,
@@ -187,7 +186,7 @@ export class ConfigBuilder {
   private _remotePlugins?: Array<string>;
   private _pluginOptions?: Map<string, object>;
   private _printer?: Printer;
-  private _extensions: Set<string> = new Set(DEFAULT_EXTENSIONS);
+  private _extensions: Set<string> = new Set(TransformableExtensions);
   private _requires?: Array<string>;
   private _transpilePlugins?: boolean;
   private _findBabelConfig?: boolean;

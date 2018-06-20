@@ -1,6 +1,6 @@
 # babel-codemod
 
-babel-codemod rewrites JavaScript using babel plugins.
+babel-codemod rewrites JavaScript and TypeScript using babel plugins.
 
 ## Install
 
@@ -21,10 +21,13 @@ The primary interface is as a command line tool, usually run like so:
 ```sh
 $ codemod --plugin transform-module-name \
   path/to/file.js \
-  another/file.js
+  another/file.js \
+  a/directory
 ```
 
-This will re-write the files `path/to/file.js` and `another/file.js` by transforming them with the babel plugin `transform-module-name`. Multiple plugins may be specified, and multiple files or directories may be re-written at once.
+This will re-write the files `path/to/file.js`, `another/file.js`, and any supported files found in `a/directory` by transforming them with the babel plugin `transform-module-name`. Multiple plugins may be specified, and multiple files or directories may be re-written at once.
+
+Note that TypeScript support is provided by babel and therefore may not completely support all valid TypeScript code. If you encounter an issue, consider looking for it in the [babel issues labeled `area: typescript`](https://github.com/babel/babel/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+label%3A%22area%3A+typescript%22+) before filing an issue with babel-codemod.
 
 Plugins may also be loaded from remote URLs, including saved [AST Explorer](https://astexplorer.net/) URLs, using `--remote-plugin`. This feature should only be used as a convenience to load code that you or someone you trust wrote. It will run with your full user privileges, so please exercise caution!
 

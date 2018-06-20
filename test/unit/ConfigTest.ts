@@ -1,4 +1,4 @@
-import { deepEqual, strictEqual } from 'assert';
+import { deepEqual, ok, strictEqual } from 'assert';
 import { inspect } from 'util';
 import Config, { ConfigBuilder } from '../../src/Config';
 
@@ -7,7 +7,10 @@ import Config, { ConfigBuilder } from '../../src/Config';
 describe('Config', function() {
   it('has sensible defaults', function() {
     let config = new Config();
-    deepEqual(config.extensions, new Set(['.js', '.jsx']));
+    ok(config.extensions.has('.js'));
+    ok(config.extensions.has('.ts'));
+    ok(config.extensions.has('.jsx'));
+    ok(config.extensions.has('.tsx'));
     deepEqual(config.localPlugins, []);
     deepEqual(config.sourcePaths, []);
     deepEqual(config.requires, []);

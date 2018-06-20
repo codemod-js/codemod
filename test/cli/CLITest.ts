@@ -93,9 +93,9 @@ describe('CLI', function() {
 
   it('processes all matching files in a directory', async function() {
     let file1 = await createTemporaryFile('a-dir/file1.js', '3 + 4;');
-    let file2 = await createTemporaryFile('a-dir/file2.js', '0;');
+    let file2 = await createTemporaryFile('a-dir/file2.ts', '0;');
     let file3 = await createTemporaryFile('a-dir/sub-dir/file3.jsx', '99;');
-    let ignored = await createTemporaryFile('a-dir/ignored.es6', '8;');
+    let ignored = await createTemporaryFile('a-dir/ignored.css', '* {}');
     let { status, stdout, stderr } = await runCodemodCLI([
       dirname(file1),
       '-p',
@@ -115,7 +115,7 @@ describe('CLI', function() {
       '4 + 5;',
       'file1.js is processed'
     );
-    strictEqual(await readFile(file2, 'utf8'), '1;', 'file2.js is processed');
+    strictEqual(await readFile(file2, 'utf8'), '1;', 'file2.ts is processed');
     strictEqual(
       await readFile(file3, 'utf8'),
       '100;',
@@ -123,20 +123,20 @@ describe('CLI', function() {
     );
     strictEqual(
       await readFile(ignored, 'utf8'),
-      '8;',
-      'ignored.es6 is ignored'
+      '* {}',
+      'ignored.css is ignored'
     );
   });
 
   it('processes all matching files in a directory with custom extensions', async function() {
     let ignored = await createTemporaryFile('a-dir/ignored.js', '3 + 4;');
-    let processed = await createTemporaryFile('a-dir/processed.es6', '0;');
+    let processed = await createTemporaryFile('a-dir/processed.myjs', '0;');
     let { status, stdout, stderr } = await runCodemodCLI([
       dirname(ignored),
       '-p',
       plugin('increment'),
       '--extensions',
-      '.es6'
+      '.myjs'
     ]);
 
     deepEqual(
@@ -399,5 +399,79 @@ describe('CLI', function() {
     );
 
     strictEqual(await readFile(file, 'utf8'), `var a = '';\n`);
+  });
+
+  it('can rewrite TypeScript files ending in `.ts`', async function() {
+    let afile = await createTemporaryFile(
+      'a-file.ts',
+      'type A = any;\nlet a = {} as any;'
+    );
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      '-p',
+      plugin('replace-any-with-object', '.ts')
+    ]);
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+        stderr: ''
+      }
+    );
+
+    strictEqual(
+      await readFile(afile, 'utf8'),
+      'type A = object;\nlet a = {} as object;'
+    );
+  });
+
+  it('can rewrite TypeScript files ending in `.tsx`', async function() {
+    let afile = await createTemporaryFile(
+      'a-file.tsx',
+      'export default () => (<div/>);'
+    );
+    let { status, stdout, stderr } = await runCodemodCLI([afile]);
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${afile}\n1 file(s), 0 modified, 0 errors\n`,
+        stderr: ''
+      }
+    );
+
+    strictEqual(
+      await readFile(afile, 'utf8'),
+      'export default () => (<div/>);'
+    );
+  });
+
+  it('can rewrite TypeScript files with prettier', async function() {
+    let afile = await createTemporaryFile(
+      'a-file.ts',
+      'type A=any;\nlet a={} as any;'
+    );
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      '--printer',
+      'prettier'
+    ]);
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+        stderr: ''
+      }
+    );
+
+    strictEqual(
+      await readFile(afile, 'utf8'),
+      'type A = any;\nlet a = {} as any;\n'
+    );
   });
 });

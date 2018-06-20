@@ -6,7 +6,11 @@ export interface BabelOptions {
   filename: string;
 }
 export interface ParseOptions {
-  plugins: Array<string>;
+  sourceType?: 'module' | 'script';
+  allowImportExportEverywhere?: boolean;
+  allowReturnOutsideFunction?: boolean;
+  allowSuperOutsideMethod?: boolean;
+  plugins?: Array<string>;
 }
 export type AST = object;
 
