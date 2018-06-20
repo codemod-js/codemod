@@ -2,15 +2,12 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es2015",
-    "lib": [
-      "es2015",
-      "es2016"
-    ],
+    "lib": ["es2015", "es2016"],
     "noImplicitAny": false,
     "sourceMap": true,
     "strictNullChecks": true,
     "declaration": true
   },
-  "exclude": ["test/fixtures/**/*.ts"],
+  "exclude": ["test/fixtures/**/*.ts", "tmp"],
   "compileOnSave": true
 }

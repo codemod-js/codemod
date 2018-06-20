@@ -1,4 +1,4 @@
-import { deepEqual, strictEqual, throws } from 'assert';
+import { deepEqual, ok, strictEqual, throws } from 'assert';
 import { inspect } from 'util';
 import Config, { Printer } from '../../src/Config';
 import Options, { Command } from '../../src/Options';
@@ -6,7 +6,10 @@ import Options, { Command } from '../../src/Options';
 describe('Options', function() {
   it('has sensible defaults', function() {
     let config = getRunConfig(new Options([]).parse());
-    deepEqual(config.extensions, new Set(['.js', '.jsx']));
+    ok(config.extensions.has('.js'));
+    ok(config.extensions.has('.ts'));
+    ok(config.extensions.has('.jsx'));
+    ok(config.extensions.has('.tsx'));
     deepEqual(config.localPlugins, []);
     deepEqual(config.sourcePaths, []);
     deepEqual(config.requires, []);
@@ -23,15 +26,16 @@ describe('Options', function() {
   });
 
   it('interprets `--extensions` as expected', function() {
-    let config = getRunConfig(
-      new Options(['--extensions', '.js,.jsx,.ts']).parse()
-    );
-    deepEqual(config.extensions, new Set(['.js', '.jsx', '.ts']));
+    let config = getRunConfig(new Options(['--extensions', '.js,.ts']).parse());
+    deepEqual(config.extensions, new Set(['.js', '.ts']));
   });
 
   it('--add-extension adds to the default extensions', function() {
-    let config = getRunConfig(new Options(['--add-extension', '.ts']).parse());
-    deepEqual(config.extensions, new Set(['.js', '.jsx', '.ts']));
+    let config = getRunConfig(
+      new Options(['--add-extension', '.myjs']).parse()
+    );
+    ok(config.extensions.size > 1);
+    ok(config.extensions.has('.myjs'));
   });
 
   it('fails to parse unknown options', function() {

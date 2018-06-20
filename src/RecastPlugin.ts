@@ -1,16 +1,7 @@
 import * as Babel from '@babel/core';
 import { GeneratorOptions } from '@babel/generator';
 import * as recast from 'recast';
-import { ALL_PLUGINS } from './AllSyntaxPlugin';
 import { AST, ParseOptions } from './BabelPluginTypes';
-
-const DEFAULT_OPTIONS = {
-  sourceType: 'module',
-  allowImportExportEverywhere: true,
-  allowReturnOutsideFunction: true,
-  allowSuperOutsideMethod: true,
-  plugins: ALL_PLUGINS
-};
 
 export function parse(
   code: string,
@@ -20,7 +11,7 @@ export function parse(
   return recast.parse(code, {
     parser: {
       parse(code: string) {
-        return parse(code, DEFAULT_OPTIONS);
+        return parse(code, options);
       }
     }
   });

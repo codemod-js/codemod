@@ -3,7 +3,7 @@ import { hasMagic as hasGlob, sync as globSync } from 'glob';
 import { resolve } from 'path';
 import { sync as resolveSync } from 'resolve';
 import Config, { ConfigBuilder, Printer } from './Config';
-import { SUPPORTED_EXTENSIONS } from './transpile-requires';
+import { RequireableExtensions } from './extensions';
 
 export interface RunCommand {
   kind: 'run';
@@ -157,7 +157,7 @@ function getRequirableModulePath(modulePath: string): string {
     return resolve(modulePath);
   }
 
-  for (let ext of SUPPORTED_EXTENSIONS) {
+  for (let ext of RequireableExtensions) {
     if (existsSync(modulePath + ext)) {
       return resolve(modulePath + ext);
     }
