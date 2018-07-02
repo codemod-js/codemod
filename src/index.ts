@@ -4,7 +4,10 @@ import { basename } from 'path';
 import CLIEngine from './CLIEngine';
 import Config from './Config';
 import Options, { Command } from './Options';
-import { SourceTransformResult } from './TransformRunner';
+import {
+  SourceTransformResult,
+  SourceTransformResultKind
+} from './TransformRunner';
 
 // Polyfill `Symbol.asyncIterator` so `for await` will work.
 if (!Symbol.asyncIterator) {
@@ -146,7 +149,7 @@ export default async function run(
   let reset = stdout.isTTY ? '\x1b[0m' : '';
 
   function onTransform(result: SourceTransformResult): void {
-    if (result.output) {
+    if (result.kind === SourceTransformResultKind.Transformed) {
       if (!config.stdio) {
         if (result.output === result.source.content) {
           stdout.write(`${dim}${result.source.path}${reset}\n`);
