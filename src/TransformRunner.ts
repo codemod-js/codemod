@@ -4,13 +4,18 @@ export class Source {
   constructor(readonly path: string, readonly content: string) {}
 }
 
-export class SourceTransformResult {
-  constructor(
-    readonly source: Source,
-    readonly output: string | null,
-    readonly error: Error | null
-  ) {}
+export enum SourceTransformResultKind {
+  Transformed = 'Transformed',
+  Error = 'Error'
 }
+
+export type SourceTransformResult =
+  | {
+      kind: SourceTransformResultKind.Transformed;
+      source: Source;
+      output: string;
+    }
+  | { kind: SourceTransformResultKind.Error; source: Source; error: Error };
 
 export default class TransformRunner {
   constructor(
@@ -20,19 +25,23 @@ export default class TransformRunner {
 
   async *run(): AsyncIterableIterator<SourceTransformResult> {
     for (let source of this.sources) {
-      let transformed: SourceTransformResult;
+      let result: SourceTransformResult;
 
       try {
         let output = await this.transformer.transform(
           source.path,
           source.content
         );
-        transformed = new SourceTransformResult(source, output, null);
-      } catch (err) {
-        transformed = new SourceTransformResult(source, null, err);
+        result = {
+          kind: SourceTransformResultKind.Transformed,
+          source,
+          output
+        };
+      } catch (error) {
+        result = { kind: SourceTransformResultKind.Error, source, error };
       }
 
-      yield transformed;
+      yield result;
     }
   }
 }

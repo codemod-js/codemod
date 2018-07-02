@@ -1,7 +1,8 @@
 import { deepEqual } from 'assert';
 import TransformRunner, {
   Source,
-  SourceTransformResult
+  SourceTransformResult,
+  SourceTransformResultKind
 } from '../../src/TransformRunner';
 
 describe('TransformRunner', function() {
@@ -24,8 +25,16 @@ describe('TransformRunner', function() {
     });
 
     deepEqual(await run(runner), [
-      new SourceTransformResult(sources[0], 'A;', null),
-      new SourceTransformResult(sources[1], 'B;', null)
+      {
+        kind: SourceTransformResultKind.Transformed,
+        source: sources[0],
+        output: 'A;'
+      },
+      {
+        kind: SourceTransformResultKind.Transformed,
+        source: sources[1],
+        output: 'B;'
+      }
     ]);
   });
 
@@ -38,11 +47,11 @@ describe('TransformRunner', function() {
     });
 
     deepEqual(await run(runner), [
-      new SourceTransformResult(
-        sources[0],
-        null,
-        new Error('unable to process fails.js: invalid syntax')
-      )
+      {
+        kind: SourceTransformResultKind.Error,
+        source: sources[0],
+        error: new Error('unable to process fails.js: invalid syntax')
+      }
     ]);
   });
 });

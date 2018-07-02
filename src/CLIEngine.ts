@@ -7,7 +7,8 @@ import iterateSources from './iterateSources';
 import ProcessSnapshot from './ProcessSnapshot';
 import TransformRunner, {
   Source,
-  SourceTransformResult
+  SourceTransformResult,
+  SourceTransformResultKind
 } from './TransformRunner';
 
 export class RunResult {
@@ -81,7 +82,7 @@ export default class CLIEngine {
     for await (let result of runner.run()) {
       this.onTransform(result);
 
-      if (result.output) {
+      if (result.kind === SourceTransformResultKind.Transformed) {
         if (this.config.stdio) {
           this.writeStdout(result.output);
         } else {
