@@ -2622,9 +2622,9 @@ pify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
 
-pirates@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.npmjs.org/pirates/-/pirates-3.0.2.tgz#7e6f85413fd9161ab4e12b539b06010d85954bb9"
+pirates@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmjs.org/pirates/-/pirates-4.0.0.tgz#850b18781b4ac6ec58a43c9ed9ec5fe6796addbd"
   dependencies:
     node-modules-regexp "^1.0.0"
 
