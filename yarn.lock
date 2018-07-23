@@ -3385,9 +3385,9 @@ yargs-parser@^10.0.0:
   dependencies:
     camelcase "^4.1.0"
 
-yarnhook@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.npmjs.org/yarnhook/-/yarnhook-0.2.0.tgz#291e49db6066df2d8f745087c407362042a0d055"
+yarnhook@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.npmjs.org/yarnhook/-/yarnhook-0.3.0.tgz#9a4bd1248b7a126ed78cb332b0800f2d76a38fa8"
   dependencies:
     execa "^0.8.0"
     find-parent-dir "^0.3.0"
