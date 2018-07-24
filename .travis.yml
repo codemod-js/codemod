@@ -11,7 +11,7 @@ node_js:
   - '8'
   - '6'
 before_install:
-  - yarn global add greenkeeper-lockfile@1
+  - npm install --global greenkeeper-lockfile@1
 before_script:
   - greenkeeper-lockfile-update
 script:
