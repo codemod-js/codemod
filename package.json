@@ -75,7 +75,7 @@
     "@babel/preset-typescript": "^7.0.0-beta.49",
     "@babel/traverse": "^7.0.0-beta.49",
     "@babel/types": "^7.0.0-beta.49",
-    "get-stream": "^3.0.0",
+    "get-stream": "^4.0.0",
     "globby": "^8.0.1",
     "got": "^8.3.1",
     "mz": "^2.7.0",
