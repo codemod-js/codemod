@@ -3372,9 +3372,9 @@ webidl-conversions@^4.0.2:
   version "4.0.2"
   resolved "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-4.0.2.tgz#a855980b1f0b6b359ba1d5d9fb39ae941faa63ad"
 
-whatwg-url@^6.4.1:
-  version "6.4.1"
-  resolved "https://registry.npmjs.org/whatwg-url/-/whatwg-url-6.4.1.tgz#fdb94b440fd4ad836202c16e9737d511f012fd67"
+whatwg-url@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.npmjs.org/whatwg-url/-/whatwg-url-7.0.0.tgz#fde926fa54a599f3adf82dff25a9f7be02dc6edd"
   dependencies:
     lodash.sortby "^4.7.0"
     tr46 "^1.0.1"
