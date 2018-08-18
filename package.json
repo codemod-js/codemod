@@ -41,7 +41,7 @@
     "@commitlint/config-conventional": "^7.0.1",
     "@types/babel-traverse": "^6.25.3",
     "@types/babylon": "^6.16.2",
-    "@types/get-port": "^3.2.0",
+    "@types/get-port": "^4.0.0",
     "@types/get-stream": "^3.0.1",
     "@types/glob": "^5.0.35",
     "@types/got": "^8.3.1",
