@@ -10,7 +10,7 @@ export interface ParseOptions {
   allowImportExportEverywhere?: boolean;
   allowReturnOutsideFunction?: boolean;
   allowSuperOutsideMethod?: boolean;
-  plugins?: Array<string>;
+  plugins?: Array<string | [string, object]>;
 }
 export type AST = object;
 

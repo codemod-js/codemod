@@ -3,7 +3,7 @@ import { extname } from 'path';
 import { BabelOptions, ParseOptions } from './BabelPluginTypes';
 import { TypeScriptExtensions } from './extensions';
 
-const BASIC_PLUGINS = [
+const BASIC_PLUGINS: Array<string | [string, object]> = [
   'jsx',
   'asyncGenerators',
   'classProperties',
@@ -13,10 +13,12 @@ const BASIC_PLUGINS = [
   'functionSent',
   'objectRestSpread',
   'dynamicImport',
-  'decorators'
+  ['decorators', { decoratorsBeforeExport: true }]
 ];
 
-function pluginsForFilename(filename: string): Array<string> {
+function pluginsForFilename(
+  filename: string
+): Array<string | [string, object]> {
   let isTypeScript = TypeScriptExtensions.has(extname(filename));
 
   return isTypeScript
