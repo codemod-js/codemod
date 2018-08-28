@@ -69,12 +69,12 @@
     "yarnhook": "^0.3.0"
   },
   "dependencies": {
-    "@babel/core": "^7.0.0-rc.3",
-    "@babel/generator": "^7.0.0-rc.3",
-    "@babel/preset-env": "^7.0.0-rc.3",
-    "@babel/preset-typescript": "^7.0.0-rc.3",
-    "@babel/traverse": "^7.0.0-rc.3",
-    "@babel/types": "^7.0.0-rc.3",
+    "@babel/core": "^7.0.0",
+    "@babel/generator": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-typescript": "^7.0.0",
+    "@babel/traverse": "^7.0.0",
+    "@babel/types": "^7.0.0",
     "get-stream": "^4.0.0",
     "globby": "^8.0.1",
     "got": "^8.3.1",
