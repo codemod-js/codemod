@@ -1,6 +1,6 @@
 import * as Babel from '@babel/core';
 import { NodePath } from '@babel/traverse';
-import { NumericLiteral, Program } from '@babel/types';
+import { Identifier, NumericLiteral, Program } from '@babel/types';
 import { strictEqual } from 'assert';
 import { join } from 'path';
 import InlineTransformer from '../../src/InlineTransformer';
@@ -36,7 +36,7 @@ describe('InlineTransformer', function() {
     let filepath = 'a.js';
     let content = 'export default 0;';
     let transformer = new InlineTransformer([]);
-    let output = transformer.transform(filepath, content);
+    let output = await transformer.transform(filepath, content);
 
     strictEqual(output, 'export default 0;');
   });
@@ -61,7 +61,7 @@ describe('InlineTransformer', function() {
         { value: 3 }
       ]
     ]);
-    let output = transformer.transform(filepath, content);
+    let output = await transformer.transform(filepath, content);
 
     strictEqual(output, '4 + 4;');
   });
@@ -87,8 +87,35 @@ describe('InlineTransformer', function() {
     ]);
 
     // Ignore the result since we only care about arguments to the visitor.
-    transformer.transform(filepath, content);
+    await transformer.transform(filepath, content);
 
     strictEqual(filename, join(process.cwd(), 'a.js'));
+  });
+
+  it('does not add extra semicolons to "use strict" when removing the statement before it', async function() {
+    let filepath = 'a.js';
+    let content = `(function () {
+  "use strict";
+  hello;
+})();`;
+
+    let transformer = new InlineTransformer([
+      (babel: typeof Babel) => ({
+        visitor: {
+          Identifier(path: NodePath<Identifier>) {
+            path.remove();
+          }
+        }
+      })
+    ]);
+
+    let output = await transformer.transform(filepath, content);
+
+    strictEqual(
+      output,
+      `(function () {
+  "use strict";
+})();`
+    );
   });
 });
