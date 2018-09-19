@@ -43,7 +43,7 @@
     "@types/babylon": "^6.16.2",
     "@types/get-port": "^4.0.0",
     "@types/get-stream": "^3.0.1",
-    "@types/glob": "^5.0.35",
+    "@types/glob": "^7.1.0",
     "@types/got": "^8.3.1",
     "@types/make-dir": "^1.0.3",
     "@types/mocha": "^5.2.1",
