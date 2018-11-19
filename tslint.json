@@ -5,7 +5,6 @@
   "rules": {
     "array-type": [true, "generic"],
     "no-unused-expression": true,
-    "no-unused-variable": true,
     "curly": true,
     "class-name": true,
     "triple-equals": true,

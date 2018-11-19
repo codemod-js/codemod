@@ -1,13 +1,13 @@
 import * as Babel from '@babel/core';
-import { GeneratorOptions } from '@babel/generator';
+import { File } from '@babel/types';
 import * as recast from 'recast';
-import { AST, ParseOptions } from './BabelPluginTypes';
+import { PluginObj } from './BabelPluginTypes';
 
 export function parse(
   code: string,
-  options: ParseOptions,
-  parse: (code: string, options: ParseOptions) => AST
-): AST {
+  options: Babel.ParserOptions,
+  parse: (code: string, options: Babel.ParserOptions) => File
+): File {
   return recast.parse(code, {
     parser: {
       parse(code: string) {
@@ -18,15 +18,15 @@ export function parse(
 }
 
 export function generate(
-  ast: AST,
-  options: GeneratorOptions,
+  ast: File,
+  options: Babel.GeneratorOptions,
   code: string,
-  generate: (ast: AST, options: GeneratorOptions) => string
+  generate: (ast: File, options: Babel.GeneratorOptions) => string
 ): { code: string; map?: object } {
   return recast.print(ast);
 }
 
-export default function(babel: typeof Babel) {
+export default function(babel: typeof Babel): PluginObj {
   return {
     parserOverride: parse,
     generatorOverride: generate

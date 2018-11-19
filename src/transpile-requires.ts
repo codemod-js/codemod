@@ -1,4 +1,4 @@
-import { transform } from '@babel/core';
+import { transformSync, TransformOptions } from '@babel/core';
 import { extname } from 'path';
 import { addHook } from 'pirates';
 import AllSyntaxPlugin from './AllSyntaxPlugin';
@@ -14,23 +14,30 @@ export function hook(code: string, filename: string): string {
     throw new Error(`cannot load file type '${ext}': ${filename}`);
   }
 
-  let options = {
+  let presets: Array<string> = [];
+  let options: TransformOptions = {
     filename,
     babelrc: useBabelrc,
-    presets: [] as Array<string>,
+    presets: presets,
     plugins: [AllSyntaxPlugin],
     sourceMaps: 'inline'
   };
 
   if (!useBabelrc) {
     if (TypeScriptExtensions.has(ext)) {
-      options.presets.push(require.resolve('@babel/preset-typescript'));
+      presets.push(require.resolve('@babel/preset-typescript'));
     }
 
-    options.presets.push(require.resolve('@babel/preset-env'));
+    presets.push(require.resolve('@babel/preset-env'));
   }
 
-  return transform(code, options).code as string;
+  let result = transformSync(code, options);
+
+  if (!result) {
+    throw new Error(`[${filename}] babel transform returned null`);
+  }
+
+  return result.code as string;
 }
 
 export function enable(babelrc: boolean = false) {
