@@ -3,6 +3,7 @@ import { NodePath } from '@babel/traverse';
 import { Identifier, NumericLiteral, Program } from '@babel/types';
 import { strictEqual } from 'assert';
 import { join } from 'path';
+import { PluginObj } from '../../src/BabelPluginTypes';
 import InlineTransformer from '../../src/InlineTransformer';
 
 describe('InlineTransformer', function() {
@@ -19,13 +20,14 @@ describe('InlineTransformer', function() {
     let filepath = 'a.js';
     let content = '3 + 4;';
     let transformer = new InlineTransformer([
-      (babel: typeof Babel) => ({
-        visitor: {
-          NumericLiteral(path: NodePath<NumericLiteral>) {
-            path.node.value++;
+      (babel: typeof Babel): PluginObj =>
+        ({
+          visitor: {
+            NumericLiteral(path: NodePath<NumericLiteral>): void {
+              path.node.value++;
+            }
           }
-        }
-      })
+        } as PluginObj) /* conflicting definitions of `@babel/types`? */
     ]);
     let output = await transformer.transform(filepath, content);
 
@@ -46,18 +48,19 @@ describe('InlineTransformer', function() {
     let content = '3 + 4;';
     let transformer = new InlineTransformer([
       [
-        (babel: typeof Babel) => ({
-          visitor: {
-            NumericLiteral(
-              path: NodePath<NumericLiteral>,
-              state: { opts: { value?: number } }
-            ) {
-              if (state.opts.value === path.node.value) {
-                path.node.value++;
+        (babel: typeof Babel): PluginObj =>
+          ({
+            visitor: {
+              NumericLiteral(
+                path: NodePath<NumericLiteral>,
+                state: { opts: { value?: number } }
+              ) {
+                if (state.opts.value === path.node.value) {
+                  path.node.value++;
+                }
               }
             }
-          }
-        }),
+          } as PluginObj) /* conflicting definitions of `@babel/types`? */,
         { value: 3 }
       ]
     ]);
@@ -72,18 +75,19 @@ describe('InlineTransformer', function() {
     let filename: string | undefined;
 
     let transformer = new InlineTransformer([
-      (babel: typeof Babel) => ({
-        visitor: {
-          Program(
-            path: NodePath<Program>,
-            state: {
-              file: { opts: { filename: string } };
+      (babel: typeof Babel): PluginObj =>
+        ({
+          visitor: {
+            Program(
+              path: NodePath<Program>,
+              state: {
+                file: { opts: { filename: string } };
+              }
+            ) {
+              filename = state.file.opts.filename;
             }
-          ) {
-            filename = state.file.opts.filename;
           }
-        }
-      })
+        } as PluginObj) /* conflicting definitions of `@babel/types`? */
     ]);
 
     // Ignore the result since we only care about arguments to the visitor.
@@ -100,13 +104,14 @@ describe('InlineTransformer', function() {
 })();`;
 
     let transformer = new InlineTransformer([
-      (babel: typeof Babel) => ({
-        visitor: {
-          Identifier(path: NodePath<Identifier>) {
-            path.remove();
+      (babel: typeof Babel): PluginObj =>
+        ({
+          visitor: {
+            Identifier(path: NodePath<Identifier>) {
+              path.remove();
+            }
           }
-        }
-      })
+        } as PluginObj) /* conflicting definitions of `@babel/types`? */
     ]);
 
     let output = await transformer.transform(filepath, content);

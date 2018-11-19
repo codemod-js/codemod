@@ -1,8 +1,8 @@
 import * as Babel from '@babel/core';
 import { GeneratorOptions } from '@babel/generator';
+import { File } from '@babel/types';
 import * as Prettier from 'prettier';
 import { sync as resolveSync } from 'resolve';
-import { AST } from './BabelPluginTypes';
 import { generate, parse } from './RecastPlugin';
 
 function loadPrettier(): typeof Prettier {
@@ -26,15 +26,15 @@ export default function(babel: typeof Babel) {
   return {
     parserOverride: parse,
     generatorOverride(
-      ast: AST,
+      ast: File,
       options: GeneratorOptions,
       code: string,
-      _generate: (ast: AST, options: GeneratorOptions) => string
+      _generate: (ast: File, options: GeneratorOptions) => string
     ): { code: string; map?: object } {
       return {
         code: prettier.format(
           generate(ast, options, code, _generate).code,
-          resolvePrettierConfig(options.filename)
+          resolvePrettierConfig(options.filename as string)
         )
       };
     }

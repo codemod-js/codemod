@@ -1,14 +1,14 @@
 import * as Babel from '@babel/core';
+import { ParserPlugin } from '@babel/parser';
 import { extname } from 'path';
-import { BabelOptions, ParseOptions } from './BabelPluginTypes';
+import { PluginObj } from './BabelPluginTypes';
 import { TypeScriptExtensions } from './extensions';
 
-const BASIC_PLUGINS: Array<string | [string, object]> = [
+const BASIC_PLUGINS: Array<ParserPlugin | [ParserPlugin, object]> = [
   'jsx',
   'asyncGenerators',
   'classProperties',
   'doExpressions',
-  'exportExtensions',
   'functionBind',
   'functionSent',
   'objectRestSpread',
@@ -18,7 +18,7 @@ const BASIC_PLUGINS: Array<string | [string, object]> = [
 
 function pluginsForFilename(
   filename: string
-): Array<string | [string, object]> {
+): Array<ParserPlugin | [ParserPlugin, object]> {
   let isTypeScript = TypeScriptExtensions.has(extname(filename));
 
   return isTypeScript
@@ -26,17 +26,21 @@ function pluginsForFilename(
     : [...BASIC_PLUGINS, 'flow'];
 }
 
-export default function(babel: typeof Babel) {
+export default function(babel: typeof Babel): PluginObj {
   return {
-    manipulateOptions(opts: BabelOptions, parserOpts: ParseOptions) {
+    manipulateOptions(
+      opts: Babel.TransformOptions,
+      parserOpts: Babel.ParserOptions
+    ): void {
       parserOpts.sourceType = 'module';
       parserOpts.allowImportExportEverywhere = true;
       parserOpts.allowReturnOutsideFunction = true;
       parserOpts.allowSuperOutsideMethod = true;
+      // Cast this because @babel/types typings don't allow plugin options.
       parserOpts.plugins = [
         ...(parserOpts.plugins || []),
-        ...pluginsForFilename(opts.filename)
-      ];
+        ...pluginsForFilename(opts.filename as string)
+      ] as Array<ParserPlugin>;
     }
   };
 }
