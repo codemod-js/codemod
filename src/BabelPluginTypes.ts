@@ -11,6 +11,7 @@ export interface ParseOptions {
   allowReturnOutsideFunction?: boolean;
   allowSuperOutsideMethod?: boolean;
   plugins?: Array<string | [string, object]>;
+  tokens?: boolean;
 }
 export type AST = object;
 
