@@ -11,7 +11,7 @@ export function parse(
   return recast.parse(code, {
     parser: {
       parse(code: string) {
-        return parse(code, options);
+        return parse(code, { ...options, tokens: true });
       }
     }
   });
