@@ -1,7 +1,7 @@
 import { transformSync, TransformOptions } from '@babel/core';
 import { extname } from 'path';
 import { addHook } from 'pirates';
-import AllSyntaxPlugin from './AllSyntaxPlugin';
+import buildAllSyntaxPlugin from './AllSyntaxPlugin';
 import { PluginExtensions, TypeScriptExtensions } from './extensions';
 
 let useBabelrc = false;
@@ -19,7 +19,7 @@ export function hook(code: string, filename: string): string {
     filename,
     babelrc: useBabelrc,
     presets: presets,
-    plugins: [AllSyntaxPlugin],
+    plugins: [buildAllSyntaxPlugin('module')],
     sourceMaps: 'inline'
   };
 

@@ -54,6 +54,10 @@ OPTIONS
       --extensions EXTS             Comma-separated extensions to process (default: "${Array.from(
         defaults.extensions
       ).join(',')}").
+      --source-type                 Parse as "module", "script", or "unambiguous" (meaning babel
+                                    will try to guess, default: "${
+                                      defaults.sourceType
+                                    }").
       --[no-]transpile-plugins      Transpile plugins to enable future syntax${optionAnnotation(
         defaults.transpilePlugins
       )}.

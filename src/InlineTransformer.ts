@@ -1,5 +1,6 @@
 import { transformAsync } from '@babel/core';
 import { BabelPlugin } from './BabelPluginTypes';
+import Config from './Config';
 import Transformer from './Transformer';
 
 export default class InlineTransformer implements Transformer {
