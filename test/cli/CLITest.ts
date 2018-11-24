@@ -474,4 +474,87 @@ describe('CLI', function() {
       'type A = any;\nlet a = {} as any;\n'
     );
   });
+
+  it('can specify the source type as "script"', async function() {
+    let afile = await createTemporaryFile(
+      'a-file.js',
+      'with (a) { b; }' // `with` statements aren't allowed in modules
+    );
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      '--source-type',
+      'script'
+    ]);
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${afile}\n1 file(s), 0 modified, 0 errors\n`,
+        stderr: ''
+      }
+    );
+  });
+
+  it('can specify the source type as "module"', async function() {
+    let afile = await createTemporaryFile(
+      'a-file.js',
+      'import "./b-file"' // `import` statements aren't allowed in scripts
+    );
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      '--source-type',
+      'module'
+    ]);
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${afile}\n1 file(s), 0 modified, 0 errors\n`,
+        stderr: ''
+      }
+    );
+  });
+
+  it('can specify the source type as "unambiguous"', async function() {
+    let afile = await createTemporaryFile(
+      'a-file.js',
+      'with (a) { b; }' // `with` statements aren't allowed in modules
+    );
+    let bfile = await createTemporaryFile(
+      'b-file.js',
+      'import "./a-file"' // `import` statements aren't allowed in scripts
+    );
+    let { status, stdout, stderr } = await runCodemodCLI([
+      afile,
+      bfile,
+      '--source-type',
+      'unambiguous'
+    ]);
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${afile}\n${bfile}\n2 file(s), 0 modified, 0 errors\n`,
+        stderr: ''
+      }
+    );
+  });
+
+  it('fails when given an invalid source type', async function() {
+    let { status, stdout, stderr } = await runCodemodCLI([
+      '--source-type',
+      'hypercard'
+    ]);
+    let expectedPrefix = `ERROR: expected '--source-type' to be one of "module", "script", or "unambiguous" but got: "hypercard"`;
+
+    ok(
+      stderr.startsWith(expectedPrefix),
+      `expected stderr to start with error but got:\n${stderr}`
+    );
+
+    deepEqual({ status, stdout }, { status: 1, stdout: '' });
+  });
 });

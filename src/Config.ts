@@ -1,7 +1,8 @@
 import * as Babel from '@babel/core';
+import { ParserOptions } from '@babel/parser';
 import { basename, extname } from 'path';
 import { install } from 'source-map-support';
-import AllSyntaxPlugin from './AllSyntaxPlugin';
+import buildAllSyntaxPlugin from './AllSyntaxPlugin';
 import { BabelPlugin, RawBabelPlugin } from './BabelPluginTypes';
 import BabelPrinterPlugin from './BabelPrinterPlugin';
 import { TransformableExtensions } from './extensions';
@@ -50,6 +51,7 @@ export default class Config {
     readonly pluginOptions: Map<string, object> = new Map<string, object>(),
     readonly printer: Printer = Printer.Recast,
     readonly extensions: Set<string> = TransformableExtensions,
+    readonly sourceType: ParserOptions['sourceType'] = 'unambiguous',
     readonly requires: Array<string> = [],
     readonly transpilePlugins: boolean = true,
     readonly findBabelConfig: boolean = false,
@@ -132,7 +134,7 @@ export default class Config {
   }
 
   async getBabelPlugins(): Promise<Array<BabelPlugin>> {
-    let result: Array<BabelPlugin> = [AllSyntaxPlugin];
+    let result: Array<BabelPlugin> = [buildAllSyntaxPlugin(this.sourceType)];
 
     switch (this.printer) {
       case Printer.Recast:
@@ -187,6 +189,7 @@ export class ConfigBuilder {
   private _pluginOptions?: Map<string, object>;
   private _printer?: Printer;
   private _extensions: Set<string> = new Set(TransformableExtensions);
+  private _sourceType: ParserOptions['sourceType'] = 'module';
   private _requires?: Array<string>;
   private _transpilePlugins?: boolean;
   private _findBabelConfig?: boolean;
@@ -271,6 +274,11 @@ export class ConfigBuilder {
     return this;
   }
 
+  sourceType(value: ParserOptions['sourceType']): this {
+    this._sourceType = value;
+    return this;
+  }
+
   requires(value: Array<string>): this {
     this._requires = value;
     return this;
@@ -317,6 +325,7 @@ export class ConfigBuilder {
       this._pluginOptions,
       this._printer,
       this._extensions,
+      this._sourceType,
       this._requires,
       this._transpilePlugins,
       this._findBabelConfig,

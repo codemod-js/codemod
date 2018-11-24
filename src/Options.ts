@@ -111,6 +111,24 @@ export default class Options {
           config.addExtension(this.args[i]);
           break;
 
+        case '--source-type': {
+          i++;
+          let sourceType = this.args[i];
+          if (
+            sourceType === 'module' ||
+            sourceType === 'script' ||
+            sourceType === 'unambiguous'
+          ) {
+            config.sourceType(sourceType);
+          } else {
+            throw new Error(
+              `expected '--source-type' to be one of "module", "script", ` +
+                `or "unambiguous" but got: "${sourceType}"`
+            );
+          }
+          break;
+        }
+
         case '-s':
         case '--stdio':
           config.stdio(true);
