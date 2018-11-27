@@ -4,7 +4,7 @@ import { addHook } from 'pirates';
 import buildAllSyntaxPlugin from './AllSyntaxPlugin';
 import { PluginExtensions, TypeScriptExtensions } from './extensions';
 
-let useBabelrc = false;
+let useBabelConfig = false;
 let revert: (() => void) | null = null;
 
 export function hook(code: string, filename: string): string {
@@ -17,13 +17,17 @@ export function hook(code: string, filename: string): string {
   let presets: Array<string> = [];
   let options: TransformOptions = {
     filename,
-    babelrc: useBabelrc,
+    babelrc: useBabelConfig,
     presets: presets,
     plugins: [buildAllSyntaxPlugin('module')],
     sourceMaps: 'inline'
   };
 
-  if (!useBabelrc) {
+  if (!useBabelConfig) {
+    options.configFile = useBabelConfig;
+  }
+
+  if (!useBabelConfig) {
     if (TypeScriptExtensions.has(ext)) {
       presets.push(require.resolve('@babel/preset-typescript'));
     }
@@ -40,9 +44,9 @@ export function hook(code: string, filename: string): string {
   return result.code as string;
 }
 
-export function enable(babelrc: boolean = false) {
+export function enable(shouldUseBabelConfig: boolean = false) {
   disable();
-  useBabelrc = babelrc;
+  useBabelConfig = shouldUseBabelConfig;
   revert = addHook(hook, {
     exts: Array.from(PluginExtensions),
     ignoreNodeModules: true

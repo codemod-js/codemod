@@ -76,7 +76,7 @@ export default class CLIEngine {
 
     runner = new TransformRunner(
       sourcesIterator,
-      new InlineTransformer(plugins)
+      new InlineTransformer(plugins, this.config.findBabelConfig)
     );
 
     for await (let result of runner.run()) {

@@ -1,17 +1,25 @@
-import { transformAsync } from '@babel/core';
+import { transformAsync, TransformOptions } from '@babel/core';
 import { BabelPlugin } from './BabelPluginTypes';
-import Config from './Config';
 import Transformer from './Transformer';
 
 export default class InlineTransformer implements Transformer {
-  constructor(private readonly plugins: Array<BabelPlugin>) {}
+  constructor(
+    private readonly plugins: Array<BabelPlugin>,
+    private readonly findBabelConfig: boolean = false
+  ) {}
 
   async transform(filepath: string, content: string): Promise<string> {
-    let result = await transformAsync(content, {
+    let options: TransformOptions = {
       filename: filepath,
-      babelrc: false,
+      babelrc: this.findBabelConfig,
       plugins: this.plugins
-    });
+    };
+
+    if (!this.findBabelConfig) {
+      options.configFile = this.findBabelConfig;
+    }
+
+    let result = await transformAsync(content, options);
 
     if (!result) {
       throw new Error(`[${filepath}] babel transform returned null`);
