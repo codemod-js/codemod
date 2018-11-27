@@ -557,4 +557,58 @@ describe('CLI', function() {
 
     deepEqual({ status, stdout }, { status: 1, stdout: '' });
   });
+
+  it('ignores babel.config.js files by default', async function() {
+    let workspace = await copyFixturesInto(
+      'babel-config',
+      await createTemporaryDirectory('babel-config')
+    );
+    let { status, stdout, stderr } = await runCodemodCLI(
+      ['index.js'],
+      undefined,
+      workspace
+    );
+
+    strictEqual(
+      await readFile(join(workspace, 'index.js'), 'utf8'),
+      'const a = 1;\n',
+      'file contents should not change'
+    );
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: 'index.js\n1 file(s), 0 modified, 0 errors\n',
+        stderr: ''
+      }
+    );
+  });
+
+  it('reads babel.config.js files if requested', async function() {
+    let workspace = await copyFixturesInto(
+      'babel-config',
+      await createTemporaryDirectory('babel-config')
+    );
+    let { status, stdout, stderr } = await runCodemodCLI(
+      ['index.js', '--find-babel-config'],
+      undefined,
+      workspace
+    );
+
+    strictEqual(
+      await readFile(join(workspace, 'index.js'), 'utf8'),
+      '"use strict";\nvar a = 1;\n',
+      'file should have been transpiled'
+    );
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: 'index.js\n1 file(s), 1 modified, 0 errors\n',
+        stderr: ''
+      }
+    );
+  });
 });

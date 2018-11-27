@@ -6,7 +6,8 @@ export type CLIResult = { status: number; stdout: string; stderr: string };
 
 export default async function runCodemodCLI(
   args: Array<string>,
-  stdin: string = ''
+  stdin: string = '',
+  cwd?: string
 ): Promise<CLIResult> {
   let stdinStream = new PassThrough();
   let stdoutStream = new PassThrough();
@@ -15,7 +16,18 @@ export default async function runCodemodCLI(
   stdinStream.end(new Buffer(stdin));
 
   let argv = [process.argv[0], require.resolve('../../bin/codemod'), ...args];
-  let status = await run(argv, stdinStream, stdoutStream, stderrStream);
+  let status: number;
+  let oldCwd = process.cwd();
+
+  try {
+    if (cwd) {
+      process.chdir(cwd);
+    }
+
+    status = await run(argv, stdinStream, stdoutStream, stderrStream);
+  } finally {
+    process.chdir(oldCwd);
+  }
 
   stdoutStream.end();
   stderrStream.end();
