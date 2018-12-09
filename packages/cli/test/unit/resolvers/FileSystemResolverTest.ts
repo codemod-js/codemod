@@ -10,22 +10,22 @@ describe('FileSystemResolver', function() {
   });
 
   it('can resolve files by inferring an extension from a configurable set of extensions', async function() {
-    let resolver = new FileSystemResolver(new Set(['.lock']));
-    let yarnLockWithoutExtension = join(__dirname, '../../../yarn');
-    ok(await resolver.canResolve(yarnLockWithoutExtension));
+    let resolver = new FileSystemResolver(new Set(['.json']));
+    let packageJsonWithoutExtension = join(__dirname, '../../../package');
+    ok(await resolver.canResolve(packageJsonWithoutExtension));
     strictEqual(
-      await resolver.resolve(yarnLockWithoutExtension),
-      `${yarnLockWithoutExtension}.lock`
+      await resolver.resolve(packageJsonWithoutExtension),
+      `${packageJsonWithoutExtension}.json`
     );
   });
 
   it('can resolve files by inferring an dot-less extension from a configurable set of extensions', async function() {
-    let resolver = new FileSystemResolver(new Set(['lock']));
-    let yarnLockWithoutExtension = join(__dirname, '../../../yarn');
-    ok(await resolver.canResolve(yarnLockWithoutExtension));
+    let resolver = new FileSystemResolver(new Set(['json']));
+    let packageJsonWithoutExtension = join(__dirname, '../../../package');
+    ok(await resolver.canResolve(packageJsonWithoutExtension));
     strictEqual(
-      await resolver.resolve(yarnLockWithoutExtension),
-      `${yarnLockWithoutExtension}.lock`
+      await resolver.resolve(packageJsonWithoutExtension),
+      `${packageJsonWithoutExtension}.json`
     );
   });
 
