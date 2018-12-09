@@ -121,7 +121,7 @@ describe('Options', function() {
       new Options(['-o', 'my-plugin=@package.json']).parse()
     );
     let pluginOpts = config.pluginOptions.get('my-plugin');
-    strictEqual(pluginOpts && pluginOpts['name'], 'babel-codemod');
+    strictEqual(pluginOpts && pluginOpts['name'], '@codemod/cli');
   });
 
   it('should set dry option', function() {
