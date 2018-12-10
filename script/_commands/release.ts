@@ -6,5 +6,5 @@ export default async function main(
   stdout: NodeJS.WriteStream,
   stderr: NodeJS.WriteStream
 ): Promise<void> {
-  await runInPackages(stdin, stdout, stderr, 'yarn', ['test']);
+  await runInPackages(stdin, stdout, stderr, 'npx', ['semantic-release']);
 }

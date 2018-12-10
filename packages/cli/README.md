@@ -73,7 +73,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for information on setting up the proje
 
 ## Status
 
-[![Build Status](https://travis-ci.org/codemod-js/codemod.svg?branch=master)](https://travis-ci.org/codemod-js/codemod) [![dependencies Status](https://david-dm.org/codemod-js/codemod/status.svg)](https://david-dm.org/codemod-js/codemod) [![Greenkeeper badge](https://badges.greenkeeper.io/codemod-js/codemod.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.com/codemod-js/codemod.svg?branch=master)](https://travis-ci.com/codemod-js/codemod)
 
 ## License
 

@@ -1,7 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env node
 
-set -euo pipefail
-
-yarn install
-yarn tsc
-npx semantic-release
+require('./_utils/run-command')(
+  require.resolve('./_commands/release.ts')
+);
