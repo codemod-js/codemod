@@ -24,5 +24,8 @@ test/fixtures/**/*-typescript.js
 # allow JS config files
 !*.config.js
 
+# allow JS script files
+!script/**/*.js
+
 # ignore tmp directory
 tmp

@@ -2,8 +2,7 @@
 
 # Based on http://marionebl.github.io/commitlint/#/guides-ci-setup
 
-set -e
-set -u
+set -euo pipefail
 
 IS_SHALLOW_REPOSITORY="$(git rev-parse --is-shallow-repository)"
 
@@ -22,7 +21,11 @@ case "$IS_SHALLOW_REPOSITORY" in
     ;;
 esac
 
-if [[ "$TRAVIS_PULL_REQUEST_SLUG" != "" && "$TRAVIS_PULL_REQUEST_SLUG" != "$TRAVIS_REPO_SLUG" ]]; then
+if [ -z "${TRAVIS_COMMIT:-}" ]; then
+    exec ./node_modules/.bin/commitlint --from="$(git merge-base HEAD origin/master)"
+fi
+
+if [[ "${TRAVIS_PULL_REQUEST_SLUG:-}" != "" && "${TRAVIS_PULL_REQUEST_SLUG:-}" != "${TRAVIS_REPO_SLUG:-}" ]]; then
     # This is a Pull Request from a different slug, hence a forked repository
     git remote add "$TRAVIS_PULL_REQUEST_SLUG" "https://github.com/$TRAVIS_PULL_REQUEST_SLUG.git"
     git fetch "$TRAVIS_PULL_REQUEST_SLUG"

@@ -15,7 +15,6 @@ before_install:
 before_script:
   - greenkeeper-lockfile-update
 script:
-  - '[ "$TRAVIS_EVENT_TYPE" != cron ] || yarn install --no-lockfile'
   - ./script/lint-commits
   - ./script/prettier-check
   - yarn test
@@ -31,6 +30,6 @@ jobs:
       deploy:
         provider: script
         skip_cleanup: true
-        script: 'yarn install && yarn tsc --project . && npx semantic-release'
+        script: './script/release'
         on:
           branch: master
