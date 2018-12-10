@@ -2,5 +2,12 @@
   "private": true,
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "@types/globby": "^8.0.0",
+    "@types/mz": "^0.0.32",
+    "globby": "^8.0.1",
+    "mz": "^2.7.0",
+    "ts-node": "^7.0.1"
+  }
 }

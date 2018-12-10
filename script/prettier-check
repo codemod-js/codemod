@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+
+require('./_utils/run-command')(
+  require.resolve('./_commands/prettier-check.ts')
+);
