@@ -3,6 +3,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "test": "script/ci"
+  },
   "devDependencies": {
     "@types/globby": "^8.0.0",
     "@types/mz": "^0.0.32",
