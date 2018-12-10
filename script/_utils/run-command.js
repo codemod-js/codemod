@@ -3,7 +3,7 @@ module.exports = function(name) {
     require('ts-node').register({
       compilerOptions: {
         lib: ['esnext'],
-        target: 'esnext'
+        target: 'es2016'
       }
     });
 
