@@ -1,12 +1,12 @@
-import { readdirSync, readFileSync, statSync, Stats } from 'fs';
 import { extname, join } from 'path';
+import { EntryType, RealSystem, System } from './System';
 import { Source } from './TransformRunner';
 
 export type PathPredicate = (
   path: string,
   basename: string,
   root: string,
-  stat: Stats
+  type: EntryType
 ) => boolean;
 
 /**
@@ -17,46 +17,30 @@ export default function* iterateSources(
   paths: Array<string>,
   extensions: Set<string> | null,
   ignore: PathPredicate,
-  statSyncImpl: typeof statSync = statSync,
-  readdirSyncImpl: typeof readdirSync = readdirSync,
-  readFileSyncImpl: typeof readFileSync = readFileSync
+  sys: System = RealSystem
 ): IterableIterator<Source> {
   for (let path of paths) {
-    let stats = statSyncImpl(path);
+    let type = sys.getEntryType(path);
 
-    if (stats.isDirectory()) {
-      for (let child of readdirSyncImpl(path)) {
+    if (type === EntryType.Directory) {
+      for (let child of sys.readdir(path)) {
         let childPath = join(path, child);
-        let childStat = statSyncImpl(childPath);
+        let childType = sys.getEntryType(childPath);
 
-        if (ignore(childPath, child, path, childStat)) {
+        if (ignore(childPath, child, path, childType)) {
           continue;
         }
 
-        if (childStat.isFile()) {
+        if (childType === EntryType.File) {
           if (!extensions || extensions.has(extname(child))) {
-            yield* iterateSources(
-              [childPath],
-              extensions,
-              ignore,
-              statSyncImpl,
-              readdirSyncImpl,
-              readFileSyncImpl
-            );
+            yield* iterateSources([childPath], extensions, ignore, sys);
           }
-        } else if (childStat.isDirectory()) {
-          yield* iterateSources(
-            [childPath],
-            extensions,
-            ignore,
-            statSyncImpl,
-            readdirSyncImpl,
-            readFileSyncImpl
-          );
+        } else if (childType === EntryType.Directory) {
+          yield* iterateSources([childPath], extensions, ignore, sys);
         }
       }
-    } else if (stats.isFile()) {
-      yield new Source(path, readFileSyncImpl(path, { encoding: 'utf8' }));
+    } else if (type === EntryType.File) {
+      yield new Source(path, sys.readFile(path, 'utf8'));
     }
   }
 }
