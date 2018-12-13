@@ -1,10 +1,10 @@
-import * as realFs from 'fs';
 import getStream = require('get-stream');
 import { BabelPlugin } from './BabelPluginTypes';
 import Config from './Config';
 import InlineTransformer from './InlineTransformer';
 import iterateSources from './iterateSources';
 import ProcessSnapshot from './ProcessSnapshot';
+import { RealSystem, System } from './System';
 import TransformRunner, {
   Source,
   SourceTransformResult,
@@ -27,11 +27,7 @@ export default class CLIEngine {
   constructor(
     readonly config: Config,
     readonly onTransform: (result: SourceTransformResult) => void = () => {},
-    readonly readStdin: () => Promise<string> = async () =>
-      await getStream(process.stdin),
-    readonly writeStdout: (data: string) => void = (data: string) =>
-      process.stdout.write(data),
-    readonly fs: typeof realFs = realFs
+    readonly sys: System = RealSystem
   ) {}
 
   private async loadPlugins(): Promise<Array<BabelPlugin>> {
@@ -60,17 +56,15 @@ export default class CLIEngine {
     let sourcesIterator: IterableIterator<Source>;
 
     if (this.config.stdio) {
-      sourcesIterator = [new Source('<stdin>', await this.readStdin())][
-        Symbol.iterator
-      ]();
+      sourcesIterator = [
+        new Source('<stdin>', await getStream(this.sys.stdin))
+      ][Symbol.iterator]();
     } else {
       sourcesIterator = iterateSources(
         this.config.sourcePaths,
         this.config.extensions,
         this.config.ignore,
-        this.fs.statSync,
-        this.fs.readdirSync,
-        this.fs.readFileSync
+        this.sys
       );
     }
 
@@ -84,12 +78,12 @@ export default class CLIEngine {
 
       if (result.kind === SourceTransformResultKind.Transformed) {
         if (this.config.stdio) {
-          this.writeStdout(result.output);
+          this.sys.stdout.write(result.output);
         } else {
           if (result.output !== result.source.content) {
             modified++;
             if (!dryRun) {
-              this.fs.writeFileSync(result.source.path, result.output);
+              this.sys.writeFile(result.source.path, result.output, 'utf8');
             }
           }
         }

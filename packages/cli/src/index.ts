@@ -1,9 +1,8 @@
-import * as realFs from 'fs';
-import getStream = require('get-stream');
 import { basename } from 'path';
 import CLIEngine from './CLIEngine';
 import Config from './Config';
 import Options, { Command } from './Options';
+import { RealSystem, System } from './System';
 import {
   SourceTransformResult,
   SourceTransformResultKind
@@ -123,69 +122,60 @@ function printVersion(argv: Array<string>, out: NodeJS.WritableStream) {
 
 export default async function run(
   argv: Array<string>,
-  stdin: NodeJS.ReadStream,
-  stdout: NodeJS.WriteStream,
-  stderr: NodeJS.WriteStream,
-  fs: typeof realFs = realFs
+  sys: System = RealSystem
 ): Promise<number> {
   let command: Command;
 
   try {
     command = new Options(argv.slice(2)).parse();
   } catch (error) {
-    stderr.write(`ERROR: ${error.message}\n`);
-    printHelp(argv, stderr);
+    sys.stderr.write(`ERROR: ${error.message}\n`);
+    printHelp(argv, sys.stderr);
     return 1;
   }
 
   if (command.kind === 'help') {
-    printHelp(argv, stdout);
+    printHelp(argv, sys.stdout);
     return 0;
   }
 
   if (command.kind === 'version') {
-    printVersion(argv, stdout);
+    printVersion(argv, sys.stdout);
     return 0;
   }
 
   let config = command.config;
-  let dim = stdout.isTTY ? '\x1b[2m' : '';
-  let reset = stdout.isTTY ? '\x1b[0m' : '';
+  let dim = sys.stdout.isTTY ? '\x1b[2m' : '';
+  let reset = sys.stdout.isTTY ? '\x1b[0m' : '';
 
   function onTransform(result: SourceTransformResult): void {
     if (result.kind === SourceTransformResultKind.Transformed) {
       if (!config.stdio) {
         if (result.output === result.source.content) {
-          stdout.write(`${dim}${result.source.path}${reset}\n`);
+          sys.stdout.write(`${dim}${result.source.path}${reset}\n`);
         } else {
-          stdout.write(`${result.source.path}\n`);
+          sys.stdout.write(`${result.source.path}\n`);
         }
       }
     } else if (result.error) {
       if (!config.stdio) {
-        stderr.write(
+        sys.stderr.write(
           `Encountered an error while processing ${result.source.path}:\n`
         );
       }
 
-      stderr.write(`${result.error.stack}\n`);
+      sys.stderr.write(`${result.error.stack}\n`);
     }
   }
 
-  let { stats } = await new CLIEngine(
-    config,
-    onTransform,
-    async () => await getStream(stdin),
-    (data: string) => stdout.write(data),
-    fs
-  ).run();
+  let { stats } = await new CLIEngine(config, onTransform, sys).run();
 
   if (!config.stdio) {
     if (config.dry) {
-      stdout.write('DRY RUN: no files affected\n');
+      sys.stdout.write('DRY RUN: no files affected\n');
     }
 
-    stdout.write(
+    sys.stdout.write(
       `${stats.total} file(s), ${stats.modified} modified, ${
         stats.errors
       } errors\n`

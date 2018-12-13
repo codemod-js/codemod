@@ -2,7 +2,7 @@
 
 const run = require('../').default;
 
-run(process.argv, process.stdin, process.stdout, process.stderr)
+run(process.argv)
   .then(status => {
     process.exit(status);
   })
