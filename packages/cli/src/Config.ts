@@ -14,6 +14,7 @@ import AstExplorerResolver from './resolvers/AstExplorerResolver';
 import FileSystemResolver from './resolvers/FileSystemResolver';
 import NetworkResolver from './resolvers/NetworkResolver';
 import PackageResolver from './resolvers/PackageResolver';
+import { EntryType } from './System';
 import { disable, enable } from './transpile-requires';
 
 export class Plugin {
@@ -33,8 +34,18 @@ export class Plugin {
   }
 }
 
-function ignoreDotfiles(path: string, basename: string, root: string): boolean {
-  return basename.startsWith('.');
+function defaultIgnorePredicate(
+  path: string,
+  basename: string,
+  root: string,
+  type: EntryType
+): boolean {
+  return (
+    // ignore paths starting with a dot
+    basename.startsWith('.') ||
+    // ignore TypeScript declaration files
+    basename.endsWith('.d.ts')
+  );
 }
 
 export enum Printer {
@@ -55,7 +66,7 @@ export default class Config {
     readonly requires: Array<string> = [],
     readonly transpilePlugins: boolean = true,
     readonly findBabelConfig: boolean = false,
-    readonly ignore: PathPredicate = ignoreDotfiles,
+    readonly ignore: PathPredicate = defaultIgnorePredicate,
     readonly stdio: boolean = false,
     readonly dry: boolean = false
   ) {}
