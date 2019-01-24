@@ -7,41 +7,67 @@ set -euo pipefail
 IS_SHALLOW_REPOSITORY="$(git rev-parse --is-shallow-repository)"
 
 case "$IS_SHALLOW_REPOSITORY" in
-    false)
-        # nothing to do
-    ;;
+  false)
+    # nothing to do
+  ;;
 
-    true)
-        git fetch --unshallow
-    ;;
+  true)
+    git fetch --unshallow
+  ;;
 
-    *)
-        echo "$(git --version) does not understand 'git rev-parse --is-shallow-repository', got '$IS_SHALLOW_REPOSITORY'" >&2
-        exit 1
-    ;;
+  *)
+    echo "$(git --version) does not understand 'git rev-parse --is-shallow-repository', got '$IS_SHALLOW_REPOSITORY'" >&2
+    exit 1
+  ;;
 esac
 
-if [ -z "${TRAVIS_COMMIT:-}" ]; then
-    exec ./node_modules/.bin/commitlint --from="$(git merge-base HEAD origin/master)"
+if [ "${CI}" != true ]; then
+  exec ./node_modules/.bin/commitlint --from="$(git merge-base HEAD origin/master)"
 fi
 
-if [[ "${TRAVIS_PULL_REQUEST_SLUG:-}" != "" && "${TRAVIS_PULL_REQUEST_SLUG:-}" != "${TRAVIS_REPO_SLUG:-}" ]]; then
-    # This is a Pull Request from a different slug, hence a forked repository
-    git remote add "$TRAVIS_PULL_REQUEST_SLUG" "https://github.com/$TRAVIS_PULL_REQUEST_SLUG.git"
-    git fetch "$TRAVIS_PULL_REQUEST_SLUG"
+git_fork_url() {
+  if [ -n "${CIRCLE_PR_REPONAME:-}" ]; then
+    echo "https://github.com/${CIRCLE_PR_USERNAME}/${CIRCLE_PR_REPONAME}.git"
+  elif [ -n "${TRAVIS_PULL_REQUEST_SLUG:-}" ] && [ "${TRAVIS_PULL_REQUEST_SLUG:-}" != "${TRAVIS_REPO_SLUG:-}" ]; then
+    echo "https://github.com/${TRAVIS_PULL_REQUEST_SLUG}.git"
+  fi
+}
 
-    # Use the fetched remote pointing to the source clone for comparison
-    TO="$TRAVIS_PULL_REQUEST_SLUG/$TRAVIS_PULL_REQUEST_BRANCH"
+git_pr_branch() {
+  if [ -n "${CIRCLE_BRANCH:-}" ]; then
+    echo "${CIRCLE_BRANCH}"
+  elif [ -n "${TRAVIS_PULL_REQUEST_BRANCH:-}" ]; then
+    echo "${TRAVIS_PULL_REQUEST_BRANCH}"
+  fi
+}
+
+git_commit_ref() {
+  if [ -n "${CIRCLE_SHA1:-}" ]; then
+    echo "${CIRCLE_SHA1}"
+  elif [ -n "${TRAVIS_COMMIT:-}" ]; then
+    echo "${TRAVIS_COMMIT}"
+  fi
+}
+
+GIT_FORK_URL=$(git_fork_url)
+GIT_PR_BRANCH=$(git_pr_branch)
+if [ -n "${GIT_FORK_URL}" ] && [ -n "${GIT_PR_BRANCH}" ]; then
+  # This is a Pull Request from a different slug, hence a forked repository
+  git remote add pr-fork-repo "${GIT_FORK_URL}"
+  git fetch pr-fork-repo
+
+  # Use the fetched remote pointing to the source clone for comparison
+  TO="pr-fork-repo/${GIT_PR_BRANCH}"
 else
-    # This is a Pull Request from the same remote, no clone repository
-    TO=$TRAVIS_COMMIT
+  # This is a Pull Request from the same remote, no clone repository
+  TO=$(git_commit_ref)
 fi
 
 # Lint all commits in the PR
 # - Covers fork pull requests (when TO=slug/branch)
 # - Covers branch pull requests (when TO=branch)
-./node_modules/.bin/commitlint --from="$TRAVIS_BRANCH" --to="$TO"
+./node_modules/.bin/commitlint --from="$(git merge-base origin/master "$(git_commit_ref)")" --to="$TO"
 
 # Always lint the triggering commit
 # - Covers direct commits
-./node_modules/.bin/commitlint --from="$TRAVIS_COMMIT"
+./node_modules/.bin/commitlint --from="$(git_commit_ref)"
