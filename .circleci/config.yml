@@ -1,0 +1,85 @@
+aliases:
+  restore_cache_step: &restore_cache_step
+    restore_cache:
+      key: dependency-cache-{{ checksum "yarn.lock" }}
+  save_cache_step: &save_cache_step
+    save_cache:
+      key: dependency-cache-{{ checksum "yarn.lock" }}
+      paths:
+        - ./node_modules
+  install_dependencies_step: &install_dependencies_step
+    run:
+      name: install-dependencies
+      command: yarn install
+
+  unit_test: &unit_test
+    steps:
+      - checkout
+      - *restore_cache_step
+      - *install_dependencies_step
+      - *save_cache_step
+      - run:
+          name: '@codemod/cli tests'
+          command: |
+            cd packages/cli
+            yarn tsc
+            yarn mocha "test/**/*Test.js" --reporter mocha-junit-reporter
+          environment:
+            MOCHA_FILE: "reports/junit/js-test-results.xml"
+      - run:
+          name: '@codemod/cli tslint'
+          command: |
+            cd packages/cli
+            yarn tslint --project . --format junit -o reports/junit/tslint-results.xml
+      - store_test_results:
+          path: packages/cli/reports/junit
+      - store_artifacts:
+          path: packages/cli/reports/junit
+
+version: 2
+jobs:
+  node-v6-latest:
+    docker:
+      - image: circleci/node:6
+    <<: *unit_test
+  node-v8-latest:
+    docker:
+      - image: circleci/node:8
+    <<: *unit_test
+  node-v10-latest:
+    docker:
+      - image: circleci/node:10
+    <<: *unit_test
+  node-v11-latest:
+    docker:
+      - image: circleci/node:11
+    <<: *unit_test
+  deploy:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - *restore_cache_step
+      - *install_dependencies_step
+      - *save_cache_step
+      - run:
+          name: Publish package
+          command: npx semantic-release
+
+workflows:
+  version: 2
+  test-deploy:
+    jobs:
+      - node-v6-latest
+      - node-v8-latest
+      - node-v10-latest
+      - node-v11-latest
+      - deploy:
+          requires:
+            - node-v6-latest
+            - node-v8-latest
+            - node-v10-latest
+            - node-v11-latest
+          filters:
+            branches:
+              only: master
