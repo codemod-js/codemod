@@ -20,12 +20,12 @@ aliases:
       - *save_cache_step
       - run:
           name: tests
-          command: 'yarn test'
+          command: 'yarn test --reporter mocha-junit-reporter'
           environment:
-            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
+            MOCHA_FILE: "reports/junit/js-test-results.xml"
       - run:
           name: tslint
-          command: 'yarn tslint --project . --format junit -o reports/junit/tslint-results.xml'
+          command: 'yarn tslint --project packages/cli --format junit -o reports/junit/tslint-results.xml'
       - store_test_results:
           path: reports/junit
       - store_artifacts:
