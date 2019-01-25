@@ -1,0 +1,19 @@
+{
+  "parser": "typescript-eslint-parser",
+  "extends": [
+    "prettier",
+    "plugin:typescript/recommended"
+  ],
+  "plugins": [
+    "prettier"
+  ],
+  "rules": {
+    "prettier/prettier": ["error", { "singleQuote": true }],
+    "typescript/indent": "off",
+    "typescript/array-type": ["error", "generic"],
+    "typescript/explicit-member-accessibility": "off",
+    "typescript/no-use-before-define": "off",
+    "typescript/no-parameter-properties": "off",
+    "typescript/no-object-literal-type-assertion": "off"
+  }
+}

@@ -27,19 +27,22 @@ async function runForPackage(
   return new Promise<void>((resolve, reject) => {
     stdout.write(`${pkg} ❯ ${command} ${args.join(' ')}\n`);
 
-    const child = spawn(
-      command,
-      args,
-      {
-        cwd: pkg,
-        stdio: [stdin, stdout, stderr]
-      });
+    const child = spawn(command, args, {
+      cwd: pkg,
+      stdio: [stdin, stdout, stderr]
+    });
 
     child.on('exit', code => {
       if (code === 0) {
         resolve();
       } else {
-        reject(new Error(`exit status was ${code} for command: ${command} args: [${args.join(' ')}]`));
+        reject(
+          new Error(
+            `exit status was ${code} for command: ${command} args: [${args.join(
+              ' '
+            )}]`
+          )
+        );
       }
     });
 
@@ -50,6 +53,14 @@ async function runForPackage(
 }
 
 async function findPackages(): Promise<Array<string>> {
-  const globs = JSON.parse(await readFile(join(__dirname, '../../package.json'), 'utf8')).workspaces;
+  const { workspaces } = JSON.parse(
+    await readFile(join(__dirname, '../../package.json'), 'utf8')
+  );
+  const globs: Array<string> = Array.isArray(workspaces)
+    ? workspaces
+    : typeof workspaces === 'string'
+    ? [workspaces]
+    : workspaces.packages;
+
   return await globby(globs, { onlyDirectories: true });
 }

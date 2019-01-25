@@ -3,7 +3,11 @@ import { PassThrough } from 'stream';
 import run from '../../src/index';
 import { RealSystem, System } from '../../src/System';
 
-export type CLIResult = { status: number; stdout: string; stderr: string };
+export interface CLIResult {
+  status: number;
+  stdout: string;
+  stderr: string;
+}
 
 function makeTestSystem(): System {
   return {
