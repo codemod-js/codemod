@@ -35,22 +35,22 @@ $ yarn prepublish
 
 ### Running linting/testing
 
-Because this project is written in TypeScript, we use [TSLint](https://palantir.github.io/tslint/) rather than [ESLint](http://eslint.org/). It provides similar functionality but with rules explicitly catering to TypeScript. To run TSLint on the project, run:
+We use [ESLint](https://eslint.org/). To run ESLint on the project, run:
 
 ```
-$ yarn lint
+$ script/ci lint
 ```
 
-To automatically fix some of the issues TSLint finds:
+To automatically fix some of the issues ESLint finds:
 
 ```
-$ yarn lint-fix
+$ script/ci lint --fix
 ```
 
-The tests in this project are written using the [Mocha](https://mochajs.org/) test framework and, like the non-test code, are also written in TypeScript. To run the tests:
+The tests in this project are written using [Mocha](https://mochajs.org/) and [Jest](https://jestjs.io/) and, like the non-test code, are also written in TypeScript. To run the tests:
 
 ```
-$ yarn test
+$ script/ci test
 ```
 
 ## Submitting Changes

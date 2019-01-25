@@ -14,7 +14,6 @@ import AstExplorerResolver from './resolvers/AstExplorerResolver';
 import FileSystemResolver from './resolvers/FileSystemResolver';
 import NetworkResolver from './resolvers/NetworkResolver';
 import PackageResolver from './resolvers/PackageResolver';
-import { EntryType } from './System';
 import { disable, enable } from './transpile-requires';
 
 export class Plugin {
@@ -34,12 +33,7 @@ export class Plugin {
   }
 }
 
-function defaultIgnorePredicate(
-  path: string,
-  basename: string,
-  root: string,
-  type: EntryType
-): boolean {
+function defaultIgnorePredicate(path: string, basename: string): boolean {
   return (
     // ignore paths starting with a dot
     basename.startsWith('.') ||
@@ -115,20 +109,20 @@ export default class Config {
     return this._pluginCache;
   }
 
-  loadRequires() {
+  loadRequires(): void {
     for (let modulePath of this.requires) {
       require(modulePath);
     }
   }
 
-  loadBabelTranspile() {
+  loadBabelTranspile(): void {
     if (this.transpilePlugins) {
       enable(this.findBabelConfig);
       install();
     }
   }
 
-  unloadBabelTranspile() {
+  unloadBabelTranspile(): void {
     if (this.transpilePlugins) {
       disable();
     }

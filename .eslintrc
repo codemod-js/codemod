@@ -14,6 +14,7 @@
     "typescript/explicit-member-accessibility": "off",
     "typescript/no-use-before-define": "off",
     "typescript/no-parameter-properties": "off",
-    "typescript/no-object-literal-type-assertion": "off"
+    "typescript/no-object-literal-type-assertion": "off",
+    "typescript/no-unused-vars": "error"
   }
 }

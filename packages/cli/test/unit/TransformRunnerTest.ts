@@ -6,7 +6,9 @@ import TransformRunner, {
 } from '../../src/TransformRunner';
 
 describe('TransformRunner', function() {
-  async function run(runner: TransformRunner) {
+  async function run(
+    runner: TransformRunner
+  ): Promise<Array<SourceTransformResult>> {
     let result: Array<SourceTransformResult> = [];
 
     for await (let transformResult of runner.run()) {

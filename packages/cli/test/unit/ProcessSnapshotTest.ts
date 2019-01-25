@@ -117,7 +117,7 @@ describe('ProcessSnapshot', function() {
 
   it('replaces modified require extensions', function() {
     // Add a require extension.
-    let originalLoader = () => {};
+    let originalLoader = (): void => {};
     fakeRequire.extensions['.omg'] = originalLoader;
 
     // Take a snapshot.
@@ -138,7 +138,7 @@ describe('ProcessSnapshot', function() {
     let snapshot = new ProcessSnapshot(fakeRequire, fakeProcess, log);
 
     // Add an event listener.
-    let listener = () => {};
+    let listener = (): void => {};
     fakeProcess.on('exit', listener);
 
     // Restore the snapshot.
@@ -150,7 +150,7 @@ describe('ProcessSnapshot', function() {
 
   it('adds removed process event listeners', function() {
     // Add an event listener.
-    let listener = () => {};
+    let listener = (): void => {};
     fakeProcess.on('exit', listener);
 
     // Take a snapshot.
@@ -168,14 +168,14 @@ describe('ProcessSnapshot', function() {
 
   it('removes an added event listener when there already is at least one', function() {
     // Start with an event listener.
-    let existingListener = () => {};
+    let existingListener = (): void => {};
     fakeProcess.on('exit', existingListener);
 
     // Take a snapshot.
     let snapshot = new ProcessSnapshot(fakeRequire, fakeProcess, log);
 
     // Add an event listener.
-    let listener = () => {};
+    let listener = (): void => {};
     fakeProcess.on('exit', listener);
 
     // Restore the snapshot.

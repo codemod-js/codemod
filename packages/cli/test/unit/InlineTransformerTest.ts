@@ -1,4 +1,3 @@
-import * as Babel from '@babel/core';
 import { NodePath } from '@babel/traverse';
 import { Identifier, NumericLiteral, Program } from '@babel/types';
 import { strictEqual } from 'assert';
@@ -20,7 +19,7 @@ describe('InlineTransformer', function() {
     let filepath = 'a.js';
     let content = '3 + 4;';
     let transformer = new InlineTransformer([
-      (babel: typeof Babel): PluginObj =>
+      (): PluginObj =>
         ({
           visitor: {
             NumericLiteral(path: NodePath<NumericLiteral>): void {
@@ -48,7 +47,7 @@ describe('InlineTransformer', function() {
     let content = '3 + 4;';
     let transformer = new InlineTransformer([
       [
-        (babel: typeof Babel): PluginObj =>
+        (): PluginObj =>
           ({
             visitor: {
               NumericLiteral(
@@ -75,7 +74,7 @@ describe('InlineTransformer', function() {
     let filename: string | undefined;
 
     let transformer = new InlineTransformer([
-      (babel: typeof Babel): PluginObj =>
+      (): PluginObj =>
         ({
           visitor: {
             Program(
@@ -104,7 +103,7 @@ describe('InlineTransformer', function() {
 })();`;
 
     let transformer = new InlineTransformer([
-      (babel: typeof Babel): PluginObj =>
+      (): PluginObj =>
         ({
           visitor: {
             Identifier(path: NodePath<Identifier>) {

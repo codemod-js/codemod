@@ -1,4 +1,4 @@
-function union<T>(...sets: Array<Set<T>>) {
+function union<T>(...sets: Array<Set<T>>): Set<T> {
   return new Set(sets.reduce((result, set) => [...result, ...set], []));
 }
 

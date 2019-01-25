@@ -44,7 +44,7 @@ export function hook(code: string, filename: string): string {
   return result.code as string;
 }
 
-export function enable(shouldUseBabelConfig: boolean = false) {
+export function enable(shouldUseBabelConfig: boolean = false): void {
   disable();
   useBabelConfig = shouldUseBabelConfig;
   revert = addHook(hook, {
@@ -53,7 +53,7 @@ export function enable(shouldUseBabelConfig: boolean = false) {
   });
 }
 
-export function disable() {
+export function disable(): void {
   if (revert) {
     revert();
     revert = null;

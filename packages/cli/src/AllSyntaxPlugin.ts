@@ -29,7 +29,7 @@ function pluginsForFilename(
 export default function buildPlugin(
   sourceType: Babel.ParserOptions['sourceType']
 ): BabelPlugin {
-  return function(babel: typeof Babel): PluginObj {
+  return function(): PluginObj {
     return {
       manipulateOptions(
         opts: Babel.TransformOptions,

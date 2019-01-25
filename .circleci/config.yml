@@ -19,26 +19,13 @@ aliases:
       - *install_dependencies_step
       - *save_cache_step
       - run:
-          name: '@codemod/cli tests'
+          name: script/ci
           command: |
-            cd packages/cli
-            yarn tsc
-            yarn mocha "test/**/*Test.js" --reporter mocha-junit-reporter
-          environment:
-            MOCHA_FILE: "reports/junit/js-test-results.xml"
-      - run:
-          name: '@codemod/cli tslint'
-          command: |
-            cd packages/cli
-            yarn tslint --project . --format junit -o reports/junit/tslint-results.xml
-      - run:
-          name: eslint
-          command: |
-            yarn eslint . --ext .ts --format junit -o reports/junit/eslint-results.xml
+            script/ci
       - store_test_results:
-          path: packages/cli/reports/junit
+          path: reports/junit
       - store_artifacts:
-          path: packages/cli/reports/junit
+          path: reports/junit
 
 version: 2
 jobs:

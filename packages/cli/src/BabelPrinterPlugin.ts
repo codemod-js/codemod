@@ -1,6 +1,6 @@
-import * as Babel from '@babel/core';
+import { PluginObj } from './BabelPluginTypes';
 
-export default function(babel: typeof Babel) {
+export default function(): PluginObj {
   // We don't need to override anything; babel will do what babel does.
   return {};
 }
