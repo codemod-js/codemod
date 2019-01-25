@@ -1,9 +1,9 @@
-import * as Babel from '@babel/core';
 import { GeneratorOptions } from '@babel/generator';
 import { File } from '@babel/types';
 import * as Prettier from 'prettier';
 import { sync as resolveSync } from 'resolve';
 import { generate, parse } from './RecastPlugin';
+import { PluginObj } from './BabelPluginTypes';
 
 function loadPrettier(): typeof Prettier {
   try {
@@ -13,7 +13,7 @@ function loadPrettier(): typeof Prettier {
   }
 }
 
-export default function(babel: typeof Babel) {
+export default function(): PluginObj {
   let prettier = loadPrettier();
 
   function resolvePrettierConfig(filepath: string): Prettier.Options {
@@ -27,13 +27,11 @@ export default function(babel: typeof Babel) {
     parserOverride: parse,
     generatorOverride(
       ast: File,
-      options: GeneratorOptions,
-      code: string,
-      _generate: (ast: File, options: GeneratorOptions) => string
+      options: GeneratorOptions
     ): { code: string; map?: object } {
       return {
         code: prettier.format(
-          generate(ast, options, code, _generate).code,
+          generate(ast).code,
           resolvePrettierConfig(options.filename as string)
         )
       };

@@ -17,16 +17,11 @@ export function parse(
   });
 }
 
-export function generate(
-  ast: File,
-  options: Babel.GeneratorOptions,
-  code: string,
-  generate: (ast: File, options: Babel.GeneratorOptions) => string
-): { code: string; map?: object } {
+export function generate(ast: File): { code: string; map?: object } {
   return recast.print(ast);
 }
 
-export default function(babel: typeof Babel): PluginObj {
+export default function(): PluginObj {
   return {
     parserOverride: parse,
     generatorOverride: generate

@@ -1,5 +1,3 @@
 #!/usr/bin/env node
 
-require('./_utils/run-command')(
-  require.resolve('./_commands/release.ts')
-);
+require('./_utils/runCommand')(require.resolve('./_commands/release.ts'));

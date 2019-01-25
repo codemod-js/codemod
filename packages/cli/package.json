@@ -4,12 +4,8 @@
   "description": "codemod rewrites JavaScript and TypeScript",
   "main": "src/index.js",
   "scripts": {
-    "build": "tsc",
     "prepare": "yarn test",
-    "lint": "tslint --project .",
-    "lint-fix": "tslint --project . --fix",
-    "pretest": "yarn lint && tsc --project .",
-    "test": "mocha \"test/**/*Test.js\""
+    "test": "script/ci"
   },
   "lint-staged": {
     "*.ts": [
@@ -60,8 +56,6 @@
     "mocha-junit-reporter": "^1.18.0",
     "rimraf": "2.6.2",
     "semver": "^5.6.0",
-    "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.16.0",
     "typescript": "^3.1.6",
     "yarnhook": "^0.3.0"
   },

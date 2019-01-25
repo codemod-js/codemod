@@ -38,9 +38,7 @@ async function runForPackage(
       } else {
         reject(
           new Error(
-            `exit status was ${code} for command: ${command} args: [${args.join(
-              ' '
-            )}]`
+            `exit status was ${code} for command: ${command} ${args.join(' ')}`
           )
         );
       }

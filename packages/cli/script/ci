@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+
+require('../../../script/_utils/runCommand')(
+  require.resolve('./_commands/ci.ts')
+);

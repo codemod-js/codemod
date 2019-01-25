@@ -6,14 +6,12 @@ interface MapDiff<K, V> {
   deleted: Map<K, V>;
 }
 
-// tslint:disable no-any
 type CacheSnapshot = Map<string, Module>;
 type ExtensionSnapshot = Map<string, typeof require.extensions['.js']>;
 type EventsSnapshot = Map<
   string | symbol,
-  Array<(...args: Array<any>) => void>
+  Array<(...args: Array<unknown>) => void>
 >;
-// tslint:enable no-any
 
 /**
  * Snapshots various global values and allows rolling back to the snapshot.
@@ -152,7 +150,8 @@ export default class ProcessSnapshot {
       for (let originalEntry of original) {
         if (!updated.includes(originalEntry)) {
           this.log(`restoring removed '${event.toString()}' event listener`);
-          process.addListener(event as any, originalEntry); // tslint:disable-line no-any
+          // eslint-disable-next-line typescript/no-explicit-any
+          process.addListener(event as any, originalEntry);
         }
       }
 
@@ -167,7 +166,8 @@ export default class ProcessSnapshot {
     for (let [event, callbacks] of deleted) {
       for (let callback of callbacks) {
         this.log(`restoring removed '${event.toString()}' event listener`);
-        process.addListener(event as any, callback); // tslint:disable-line no-any
+        // eslint-disable-next-line typescript/no-explicit-any
+        process.addListener(event as any, callback);
       }
     }
   }
@@ -212,9 +212,8 @@ export default class ProcessSnapshot {
     let events = this.processImpl.eventNames();
 
     for (let name of events) {
-      // tslint:disable no-any
+      // eslint-disable-next-line typescript/no-explicit-any
       result.set(name, this.processImpl.listeners(name as any));
-      // tslint:enable no-any
     }
 
     return result;

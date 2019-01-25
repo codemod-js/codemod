@@ -28,7 +28,7 @@ function optionAnnotation(
   }
 }
 
-function printHelp(argv: Array<string>, out: NodeJS.WritableStream) {
+function printHelp(argv: Array<string>, out: NodeJS.WritableStream): void {
   let $0 = basename(argv[1]);
   let defaults = new Config();
 
@@ -115,7 +115,7 @@ EXAMPLES
   out.write('\n');
 }
 
-function printVersion(argv: Array<string>, out: NodeJS.WritableStream) {
+function printVersion(argv: Array<string>, out: NodeJS.WritableStream): void {
   out.write(require('../package.json').version);
   out.write('\n');
 }
