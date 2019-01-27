@@ -4,7 +4,7 @@ codemod rewrites JavaScript and TypeScript using babel plugins.
 
 ## Install
 
-Install from npm:
+Install from [npm](https://npmjs.com/):
 
 ```sh
 $ npm install -g @codemod/cli

@@ -1,6 +1,6 @@
 # codemod
 
-Code rewriter for automated refactors.
+Code rewriting tools for automated refactors.
 
 ## Why Codemods?
 
@@ -16,6 +16,13 @@ Since codemods are typically just code themselves, you can write one to do whate
 ## Getting Started
 
 Check out the docs for [@codemod/cli](packages/cli/README.md) for instructions on installing and using the `codemod` CLI tool.
+
+## Repository Structure
+
+This repository is a monorepo, or multi-package repository. See the READMEs for the packages here:
+
+- [`@codemod/cli` README](packages/cli/README.md)
+- [`@codemod/matchers` README](packages/matchers/README.md)
 
 ## License
 

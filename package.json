@@ -1,8 +1,9 @@
 {
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": ["packages/*"],
+    "nohoist": ["**/@types/**"]
+  },
   "scripts": {
     "test": "script/ci"
   },
