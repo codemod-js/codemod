@@ -1,9 +1,68 @@
+/**
+ * Converts default-exported class with all static methods to named exports.
+ *
+ * @example
+ *
+ * class MobileAppUpsellHelper {
+ *   static getIosAppLink(specialTrackingLink) {
+ *     const trackingLink = specialTrackingLink || 'IOS_BRANCH_LINK';
+ *     return this.getBranchLink(trackingLink);
+ *   }
+ *
+ *   static getAndroidAppLink(specialTrackingLink) {
+ *     const trackingLink = specialTrackingLink || 'ANDROID_BRANCH_LINK';
+ *     return this.getBranchLink(trackingLink);
+ *   }
+ *
+ *   static getBranchLink(specialTrackingLink) {
+ *     if (specialTrackingLink && APP_DOWNLOAD_ASSETS[specialTrackingLink]) {
+ *       return APP_DOWNLOAD_ASSETS[specialTrackingLink];
+ *     }
+ *
+ *     return APP_DOWNLOAD_ASSETS.DEFAULT_BRANCH_LINK;
+ *   }
+ *
+ *   static getHideAppBanner() {
+ *     return CookieHelper.get('hide_app_banner');
+ *   }
+ * }
+ *
+ * export default MobileAppUpsellHelper;
+ *
+ * // becomes
+ *
+ * export function getIosAppLink(specialTrackingLink) {
+ *   const trackingLink = specialTrackingLink || 'IOS_BRANCH_LINK';
+ *   return getBranchLink(trackingLink);
+ * }
+ *
+ * export function getAndroidAppLink(specialTrackingLink) {
+ *   const trackingLink = specialTrackingLink || 'ANDROID_BRANCH_LINK';
+ *   return getBranchLink(trackingLink);
+ * }
+ *
+ * export function getBranchLink(specialTrackingLink) {
+ *   if (specialTrackingLink && APP_DOWNLOAD_ASSETS[specialTrackingLink]) {
+ *     return APP_DOWNLOAD_ASSETS[specialTrackingLink];
+ *   }
+ *
+ *   return APP_DOWNLOAD_ASSETS.DEFAULT_BRANCH_LINK;
+ * }
+ *
+ * export function getHideAppBanner() {
+ *   return CookieHelper.get('hide_app_banner');
+ * }
+ */
+
 import { PluginObj } from '@babel/core';
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import * as m from '../src';
 
+// capture the name of the exported class
 const className = m.capture(m.anyString());
+
+// capture the class declaration
 const classDeclaration = m.capture(
   m.classDeclaration(
     m.identifier(className),
@@ -22,17 +81,24 @@ const classDeclaration = m.capture(
     )
   )
 );
+
+// capture the export, making sure to match the class name
 const exportDeclaration = m.capture(
   m.exportDefaultDeclaration(m.identifier(m.fromCapture(className)))
 );
-const matcher = m.anyList<t.Statement>(
-  m.zeroOrMore(),
-  classDeclaration,
-  m.zeroOrMore(),
-  exportDeclaration,
-  m.zeroOrMore()
+
+// match a program that contains a matching class and export declaration
+const matcher = m.program(
+  m.anyList<t.Statement>(
+    m.zeroOrMore(),
+    classDeclaration,
+    m.zeroOrMore(),
+    exportDeclaration,
+    m.zeroOrMore()
+  )
 );
 
+// match `this.*`, used internally
 const thisPropertyAccessMatcher = m.memberExpression(
   m.thisExpression(),
   m.identifier(),
@@ -43,23 +109,14 @@ export default function(): PluginObj {
   return {
     visitor: {
       Program(path: NodePath<t.Program>): void {
-        m.match(
+        m.matchPath(
           matcher,
           { exportDeclaration, classDeclaration },
-          path.node.body,
+          path,
           ({ exportDeclaration, classDeclaration }) => {
-            const statements = path.node.body;
             const replacements: Array<t.Statement> = [];
-            const exportDeclarationPath = path.get('body')[
-              statements.indexOf(exportDeclaration)
-            ] as NodePath<t.ExportDefaultDeclaration>;
-            const classDeclarationPath = path.get('body')[
-              statements.indexOf(classDeclaration)
-            ] as NodePath<t.ClassDeclaration>;
 
-            for (const property of classDeclarationPath
-              .get('body')
-              .get('body')) {
+            for (const property of classDeclaration.get('body').get('body')) {
               if (!property.isClassMethod()) {
                 throw new Error(
                   `unexpected ${property.type} while looking for ClassMethod`
@@ -103,8 +160,8 @@ export default function(): PluginObj {
               });
             }
 
-            exportDeclarationPath.remove();
-            classDeclarationPath.replaceWithMultiple(replacements);
+            exportDeclaration.remove();
+            classDeclaration.replaceWithMultiple(replacements);
           }
         );
       }

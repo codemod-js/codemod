@@ -432,7 +432,7 @@ class StringMatching extends m.Matcher<string> {
     super();
   }
 
-  match(value: unknown): value is string {
+  matchValue(value: unknown, keys: ReadonlyArray<PropertyKey>): value is string {
     return typeof value === 'string' && this.pattern.test(value);
   }
 }

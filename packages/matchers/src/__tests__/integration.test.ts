@@ -1,12 +1,13 @@
 import * as t from '@babel/types';
-import * as m from '../../src/matchers';
+import * as m from '../../src';
 import js from './utils/parse/js';
 import generate from '@babel/generator';
 import traverse, { NodePath } from '@babel/traverse';
 import dedent = require('dedent');
-import { BuildExpression as E, BuildStatement as S } from './utils/builders';
+import { BuildExpression as E } from './utils/builders';
 import match from '../utils/match';
 import convertStaticClassToNamedExports from '../../examples/convert-static-class-to-named-exports';
+import convertQUnitAssertExpectToAssertAsync from '../../examples/convert-qunit-assert-expect-to-assert-async';
 import { transformSync } from '@babel/core';
 
 /**
@@ -264,7 +265,7 @@ test('codemod: double-equal null to triple-equal', () => {
 });
 
 test('codemod: assert.expect to assert.async', () => {
-  const ast = js(dedent`
+  const input = dedent`
     test("my test", function (assert) {
       assert.expect(1);
       window.server.get("/some/api", () => {
@@ -274,124 +275,13 @@ test('codemod: assert.expect to assert.async', () => {
       });
       doStuff();
     });
-  `);
+  `;
 
-  // capture name of `assert` parameter
-  const assertBinding = m.capture(m.anyString());
-
-  // capture `assert.expect(<number>);` inside the async test
-  const assertExpect = m.capture(
-    m.expressionStatement(
-      m.callExpression(
-        m.memberExpression(
-          m.identifier(m.fromCapture(assertBinding)),
-          m.identifier('expect')
-        ),
-        [m.numericLiteral()]
-      )
-    )
-  );
-
-  // capture `assert.<method>(…);` inside the callback
-  const callbackAssertion = m.capture(
-    m.expressionStatement(
-      m.callExpression(
-        m.memberExpression(
-          m.identifier(m.fromCapture(assertBinding)),
-          m.identifier()
-        )
-      )
-    )
-  );
-
-  // capture callback function body
-  const callbackFunctionBody = m.containerOf(
-    m.blockStatement(
-      m.anyList(m.zeroOrMore(), callbackAssertion, m.zeroOrMore())
-    )
-  );
-
-  // capture async test function body
-  const asyncTestFunctionBody = m.capture(
-    m.blockStatement(
-      m.anyList(
-        m.zeroOrMore(),
-        assertExpect,
-        m.zeroOrMore(),
-        m.expressionStatement(
-          m.callExpression(
-            undefined,
-            m.anyList(
-              m.zeroOrMore(),
-              m.or(
-                m.functionExpression(
-                  undefined,
-                  undefined,
-                  callbackFunctionBody
-                ),
-                m.arrowFunctionExpression(undefined, callbackFunctionBody)
-              )
-            )
-          )
-        ),
-        m.zeroOrMore()
-      )
-    )
-  );
-
-  // match the whole `test('description', function(assert) { … })`
-  const asyncTestMatcher = m.callExpression(m.identifier('test'), [
-    m.stringLiteral(),
-    m.functionExpression(
-      undefined,
-      [m.identifier(assertBinding)],
-      asyncTestFunctionBody
-    )
-  ]);
-
-  traverse(ast, {
-    CallExpression(path: NodePath<t.CallExpression>): void {
-      match(
-        asyncTestMatcher,
-        {
-          asyncTestFunctionBody,
-          assertExpect,
-          callbackFunctionBody,
-          callbackAssertion,
-          assertBinding
-        },
-        path.node,
-        ({
-          asyncTestFunctionBody,
-          assertExpect,
-          callbackFunctionBody,
-          callbackAssertion,
-          assertBinding
-        }) => {
-          const assertExpectIndex = asyncTestFunctionBody.body.indexOf(
-            assertExpect
-          );
-          const callbackAssertionIndex = callbackFunctionBody.body.indexOf(
-            callbackAssertion
-          );
-
-          asyncTestFunctionBody.body.splice(
-            assertExpectIndex,
-            1,
-            S`const done = ${t.identifier(assertBinding)}.async();`
-          );
-
-          callbackFunctionBody.body.splice(
-            callbackAssertionIndex + 1,
-            0,
-            S`done();`
-          );
-        }
-      );
-    }
+  const output = transformSync(input, {
+    plugins: [convertQUnitAssertExpectToAssertAsync()]
   });
 
-  expect(generate(ast).code).toEqual(dedent`
+  expect(output && output.code).toEqual(dedent`
     test("my test", function (assert) {
       const done = assert.async();
       window.server.get("/some/api", () => {

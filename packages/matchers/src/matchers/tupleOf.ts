@@ -10,7 +10,7 @@ export class TupleOfMatcher<T, A extends Array<T> = Array<T>> extends Matcher<
     this.matchers = matchers;
   }
 
-  match(value: unknown): value is A {
+  matchValue(value: unknown, keys: ReadonlyArray<PropertyKey>): value is A {
     if (!Array.isArray(value)) {
       return false;
     }
@@ -23,7 +23,7 @@ export class TupleOfMatcher<T, A extends Array<T> = Array<T>> extends Matcher<
       const matcher = this.matchers[i];
       const element = value[i];
 
-      if (!matcher.match(element)) {
+      if (!matcher.matchValue(element, [...keys, i])) {
         return false;
       }
     }

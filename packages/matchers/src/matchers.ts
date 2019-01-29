@@ -36,7 +36,7 @@ export class ArrayExpressionMatcher extends Matcher<t.ArrayExpression> {
     super();
   }
 
-  match(node: unknown): node is t.ArrayExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ArrayExpression {
     if (
       !isNode(node) ||
       !t.isArrayExpression(node)
@@ -47,10 +47,10 @@ export class ArrayExpressionMatcher extends Matcher<t.ArrayExpression> {
     if (typeof this.elements === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.elements)) {
-      if (!tupleOf<unknown>(...this.elements).match(node.elements)) {
+      if (!tupleOf<unknown>(...this.elements).matchValue(node.elements, [...keys, 'elements'])) {
         return false;
       }
-    } else if (!this.elements.match(node.elements)) {
+    } else if (!this.elements.matchValue(node.elements, [...keys, 'elements'])) {
       return false;
     }
 
@@ -75,7 +75,7 @@ export class AssignmentExpressionMatcher extends Matcher<t.AssignmentExpression>
     super();
   }
 
-  match(node: unknown): node is t.AssignmentExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.AssignmentExpression {
     if (
       !isNode(node) ||
       !t.isAssignmentExpression(node)
@@ -89,19 +89,19 @@ export class AssignmentExpressionMatcher extends Matcher<t.AssignmentExpression>
       if (this.operator !== node.operator) {
         return false;
       }
-    } else if (!this.operator.match(node.operator)) {
+    } else if (!this.operator.matchValue(node.operator, [...keys, 'operator'])) {
       return false;
     }
 
     if (typeof this.left === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.left.match(node.left)) {
+    } else if (!this.left.matchValue(node.left, [...keys, 'left'])) {
       return false;
     }
 
     if (typeof this.right === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.right.match(node.right)) {
+    } else if (!this.right.matchValue(node.right, [...keys, 'right'])) {
       return false;
     }
 
@@ -130,7 +130,7 @@ export class BinaryExpressionMatcher extends Matcher<t.BinaryExpression> {
     super();
   }
 
-  match(node: unknown): node is t.BinaryExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.BinaryExpression {
     if (
       !isNode(node) ||
       !t.isBinaryExpression(node)
@@ -144,19 +144,19 @@ export class BinaryExpressionMatcher extends Matcher<t.BinaryExpression> {
       if (this.operator !== node.operator) {
         return false;
       }
-    } else if (!this.operator.match(node.operator)) {
+    } else if (!this.operator.matchValue(node.operator, [...keys, 'operator'])) {
       return false;
     }
 
     if (typeof this.left === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.left.match(node.left)) {
+    } else if (!this.left.matchValue(node.left, [...keys, 'left'])) {
       return false;
     }
 
     if (typeof this.right === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.right.match(node.right)) {
+    } else if (!this.right.matchValue(node.right, [...keys, 'right'])) {
       return false;
     }
 
@@ -183,7 +183,7 @@ export class InterpreterDirectiveMatcher extends Matcher<t.InterpreterDirective>
     super();
   }
 
-  match(node: unknown): node is t.InterpreterDirective {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.InterpreterDirective {
     if (
       !isNode(node) ||
       !t.isInterpreterDirective(node)
@@ -197,7 +197,7 @@ export class InterpreterDirectiveMatcher extends Matcher<t.InterpreterDirective>
       if (this.value !== node.value) {
         return false;
       }
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -220,7 +220,7 @@ export class DirectiveMatcher extends Matcher<t.Directive> {
     super();
   }
 
-  match(node: unknown): node is t.Directive {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.Directive {
     if (
       !isNode(node) ||
       !t.isDirective(node)
@@ -230,7 +230,7 @@ export class DirectiveMatcher extends Matcher<t.Directive> {
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -253,7 +253,7 @@ export class DirectiveLiteralMatcher extends Matcher<t.DirectiveLiteral> {
     super();
   }
 
-  match(node: unknown): node is t.DirectiveLiteral {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.DirectiveLiteral {
     if (
       !isNode(node) ||
       !t.isDirectiveLiteral(node)
@@ -267,7 +267,7 @@ export class DirectiveLiteralMatcher extends Matcher<t.DirectiveLiteral> {
       if (this.value !== node.value) {
         return false;
       }
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -291,7 +291,7 @@ export class BlockStatementMatcher extends Matcher<t.BlockStatement> {
     super();
   }
 
-  match(node: unknown): node is t.BlockStatement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.BlockStatement {
     if (
       !isNode(node) ||
       !t.isBlockStatement(node)
@@ -302,20 +302,20 @@ export class BlockStatementMatcher extends Matcher<t.BlockStatement> {
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.body)) {
-      if (!tupleOf<unknown>(...this.body).match(node.body)) {
+      if (!tupleOf<unknown>(...this.body).matchValue(node.body, [...keys, 'body'])) {
         return false;
       }
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
     if (typeof this.directives === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.directives)) {
-      if (!tupleOf<unknown>(...this.directives).match(node.directives)) {
+      if (!tupleOf<unknown>(...this.directives).matchValue(node.directives, [...keys, 'directives'])) {
         return false;
       }
-    } else if (!this.directives.match(node.directives)) {
+    } else if (!this.directives.matchValue(node.directives, [...keys, 'directives'])) {
       return false;
     }
 
@@ -340,7 +340,7 @@ export class BreakStatementMatcher extends Matcher<t.BreakStatement> {
     super();
   }
 
-  match(node: unknown): node is t.BreakStatement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.BreakStatement {
     if (
       !isNode(node) ||
       !t.isBreakStatement(node)
@@ -357,7 +357,7 @@ export class BreakStatementMatcher extends Matcher<t.BreakStatement> {
       }
     } else if (node.label === null) {
       return false;
-    } else if (!this.label.match(node.label)) {
+    } else if (!this.label.matchValue(node.label, [...keys, 'label'])) {
       return false;
     }
 
@@ -381,7 +381,7 @@ export class CallExpressionMatcher extends Matcher<t.CallExpression> {
     super();
   }
 
-  match(node: unknown): node is t.CallExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.CallExpression {
     if (
       !isNode(node) ||
       !t.isCallExpression(node)
@@ -391,17 +391,17 @@ export class CallExpressionMatcher extends Matcher<t.CallExpression> {
 
     if (typeof this.callee === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.callee.match(node.callee)) {
+    } else if (!this.callee.matchValue(node.callee, [...keys, 'callee'])) {
       return false;
     }
 
     if (typeof this._arguments === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this._arguments)) {
-      if (!tupleOf<unknown>(...this._arguments).match(node.arguments)) {
+      if (!tupleOf<unknown>(...this._arguments).matchValue(node.arguments, [...keys, 'arguments'])) {
         return false;
       }
-    } else if (!this._arguments.match(node.arguments)) {
+    } else if (!this._arguments.matchValue(node.arguments, [...keys, 'arguments'])) {
       return false;
     }
 
@@ -427,7 +427,7 @@ export class CatchClauseMatcher extends Matcher<t.CatchClause> {
     super();
   }
 
-  match(node: unknown): node is t.CatchClause {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.CatchClause {
     if (
       !isNode(node) ||
       !t.isCatchClause(node)
@@ -444,13 +444,13 @@ export class CatchClauseMatcher extends Matcher<t.CatchClause> {
       }
     } else if (node.param === null) {
       return false;
-    } else if (!this.param.match(node.param)) {
+    } else if (!this.param.matchValue(node.param, [...keys, 'param'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -477,7 +477,7 @@ export class ConditionalExpressionMatcher extends Matcher<t.ConditionalExpressio
     super();
   }
 
-  match(node: unknown): node is t.ConditionalExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ConditionalExpression {
     if (
       !isNode(node) ||
       !t.isConditionalExpression(node)
@@ -487,19 +487,19 @@ export class ConditionalExpressionMatcher extends Matcher<t.ConditionalExpressio
 
     if (typeof this.test === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.test.match(node.test)) {
+    } else if (!this.test.matchValue(node.test, [...keys, 'test'])) {
       return false;
     }
 
     if (typeof this.consequent === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.consequent.match(node.consequent)) {
+    } else if (!this.consequent.matchValue(node.consequent, [...keys, 'consequent'])) {
       return false;
     }
 
     if (typeof this.alternate === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.alternate.match(node.alternate)) {
+    } else if (!this.alternate.matchValue(node.alternate, [...keys, 'alternate'])) {
       return false;
     }
 
@@ -526,7 +526,7 @@ export class ContinueStatementMatcher extends Matcher<t.ContinueStatement> {
     super();
   }
 
-  match(node: unknown): node is t.ContinueStatement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ContinueStatement {
     if (
       !isNode(node) ||
       !t.isContinueStatement(node)
@@ -543,7 +543,7 @@ export class ContinueStatementMatcher extends Matcher<t.ContinueStatement> {
       }
     } else if (node.label === null) {
       return false;
-    } else if (!this.label.match(node.label)) {
+    } else if (!this.label.matchValue(node.label, [...keys, 'label'])) {
       return false;
     }
 
@@ -565,7 +565,7 @@ export class DebuggerStatementMatcher extends Matcher<t.DebuggerStatement> {
     super();
   }
 
-  match(node: unknown): node is t.DebuggerStatement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.DebuggerStatement {
     if (
       !isNode(node) ||
       !t.isDebuggerStatement(node)
@@ -591,7 +591,7 @@ export class DoWhileStatementMatcher extends Matcher<t.DoWhileStatement> {
     super();
   }
 
-  match(node: unknown): node is t.DoWhileStatement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.DoWhileStatement {
     if (
       !isNode(node) ||
       !t.isDoWhileStatement(node)
@@ -601,13 +601,13 @@ export class DoWhileStatementMatcher extends Matcher<t.DoWhileStatement> {
 
     if (typeof this.test === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.test.match(node.test)) {
+    } else if (!this.test.matchValue(node.test, [...keys, 'test'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -631,7 +631,7 @@ export class EmptyStatementMatcher extends Matcher<t.EmptyStatement> {
     super();
   }
 
-  match(node: unknown): node is t.EmptyStatement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.EmptyStatement {
     if (
       !isNode(node) ||
       !t.isEmptyStatement(node)
@@ -656,7 +656,7 @@ export class ExpressionStatementMatcher extends Matcher<t.ExpressionStatement> {
     super();
   }
 
-  match(node: unknown): node is t.ExpressionStatement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ExpressionStatement {
     if (
       !isNode(node) ||
       !t.isExpressionStatement(node)
@@ -666,7 +666,7 @@ export class ExpressionStatementMatcher extends Matcher<t.ExpressionStatement> {
 
     if (typeof this.expression === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.expression.match(node.expression)) {
+    } else if (!this.expression.matchValue(node.expression, [...keys, 'expression'])) {
       return false;
     }
 
@@ -691,7 +691,7 @@ export class FileMatcher extends Matcher<t.File> {
     super();
   }
 
-  match(node: unknown): node is t.File {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.File {
     if (
       !isNode(node) ||
       !t.isFile(node)
@@ -701,19 +701,19 @@ export class FileMatcher extends Matcher<t.File> {
 
     if (typeof this.program === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.program.match(node.program)) {
+    } else if (!this.program.matchValue(node.program, [...keys, 'program'])) {
       return false;
     }
 
     if (typeof this.comments === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.comments.match(node.comments)) {
+    } else if (!this.comments.matchValue(node.comments, [...keys, 'comments'])) {
       return false;
     }
 
     if (typeof this.tokens === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.tokens.match(node.tokens)) {
+    } else if (!this.tokens.matchValue(node.tokens, [...keys, 'tokens'])) {
       return false;
     }
 
@@ -742,7 +742,7 @@ export class ForInStatementMatcher extends Matcher<t.ForInStatement> {
     super();
   }
 
-  match(node: unknown): node is t.ForInStatement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ForInStatement {
     if (
       !isNode(node) ||
       !t.isForInStatement(node)
@@ -752,19 +752,19 @@ export class ForInStatementMatcher extends Matcher<t.ForInStatement> {
 
     if (typeof this.left === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.left.match(node.left)) {
+    } else if (!this.left.matchValue(node.left, [...keys, 'left'])) {
       return false;
     }
 
     if (typeof this.right === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.right.match(node.right)) {
+    } else if (!this.right.matchValue(node.right, [...keys, 'right'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -794,7 +794,7 @@ export class ForStatementMatcher extends Matcher<t.ForStatement> {
     super();
   }
 
-  match(node: unknown): node is t.ForStatement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ForStatement {
     if (
       !isNode(node) ||
       !t.isForStatement(node)
@@ -811,7 +811,7 @@ export class ForStatementMatcher extends Matcher<t.ForStatement> {
       }
     } else if (node.init === null) {
       return false;
-    } else if (!this.init.match(node.init)) {
+    } else if (!this.init.matchValue(node.init, [...keys, 'init'])) {
       return false;
     }
 
@@ -824,7 +824,7 @@ export class ForStatementMatcher extends Matcher<t.ForStatement> {
       }
     } else if (node.test === null) {
       return false;
-    } else if (!this.test.match(node.test)) {
+    } else if (!this.test.matchValue(node.test, [...keys, 'test'])) {
       return false;
     }
 
@@ -837,13 +837,13 @@ export class ForStatementMatcher extends Matcher<t.ForStatement> {
       }
     } else if (node.update === null) {
       return false;
-    } else if (!this.update.match(node.update)) {
+    } else if (!this.update.matchValue(node.update, [...keys, 'update'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -876,7 +876,7 @@ export class FunctionDeclarationMatcher extends Matcher<t.FunctionDeclaration> {
     super();
   }
 
-  match(node: unknown): node is t.FunctionDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.FunctionDeclaration {
     if (
       !isNode(node) ||
       !t.isFunctionDeclaration(node)
@@ -893,23 +893,23 @@ export class FunctionDeclarationMatcher extends Matcher<t.FunctionDeclaration> {
       }
     } else if (node.id === null) {
       return false;
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
     if (typeof this.params === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.params)) {
-      if (!tupleOf<unknown>(...this.params).match(node.params)) {
+      if (!tupleOf<unknown>(...this.params).matchValue(node.params, [...keys, 'params'])) {
         return false;
       }
-    } else if (!this.params.match(node.params)) {
+    } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -926,7 +926,7 @@ export class FunctionDeclarationMatcher extends Matcher<t.FunctionDeclaration> {
       }
     } else if (node.generator === null) {
       return false;
-    } else if (!this.generator.match(node.generator)) {
+    } else if (!this.generator.matchValue(node.generator, [...keys, 'generator'])) {
       return false;
     }
 
@@ -943,7 +943,7 @@ export class FunctionDeclarationMatcher extends Matcher<t.FunctionDeclaration> {
       }
     } else if (node.async === null) {
       return false;
-    } else if (!this.async.match(node.async)) {
+    } else if (!this.async.matchValue(node.async, [...keys, 'async'])) {
       return false;
     }
 
@@ -978,7 +978,7 @@ export class FunctionExpressionMatcher extends Matcher<t.FunctionExpression> {
     super();
   }
 
-  match(node: unknown): node is t.FunctionExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.FunctionExpression {
     if (
       !isNode(node) ||
       !t.isFunctionExpression(node)
@@ -995,23 +995,23 @@ export class FunctionExpressionMatcher extends Matcher<t.FunctionExpression> {
       }
     } else if (node.id === null) {
       return false;
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
     if (typeof this.params === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.params)) {
-      if (!tupleOf<unknown>(...this.params).match(node.params)) {
+      if (!tupleOf<unknown>(...this.params).matchValue(node.params, [...keys, 'params'])) {
         return false;
       }
-    } else if (!this.params.match(node.params)) {
+    } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -1028,7 +1028,7 @@ export class FunctionExpressionMatcher extends Matcher<t.FunctionExpression> {
       }
     } else if (node.generator === null) {
       return false;
-    } else if (!this.generator.match(node.generator)) {
+    } else if (!this.generator.matchValue(node.generator, [...keys, 'generator'])) {
       return false;
     }
 
@@ -1045,7 +1045,7 @@ export class FunctionExpressionMatcher extends Matcher<t.FunctionExpression> {
       }
     } else if (node.async === null) {
       return false;
-    } else if (!this.async.match(node.async)) {
+    } else if (!this.async.matchValue(node.async, [...keys, 'async'])) {
       return false;
     }
 
@@ -1076,7 +1076,7 @@ export class IdentifierMatcher extends Matcher<t.Identifier> {
     super();
   }
 
-  match(node: unknown): node is t.Identifier {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.Identifier {
     if (
       !isNode(node) ||
       !t.isIdentifier(node)
@@ -1090,7 +1090,7 @@ export class IdentifierMatcher extends Matcher<t.Identifier> {
       if (this.name !== node.name) {
         return false;
       }
-    } else if (!this.name.match(node.name)) {
+    } else if (!this.name.matchValue(node.name, [...keys, 'name'])) {
       return false;
     }
 
@@ -1115,7 +1115,7 @@ export class IfStatementMatcher extends Matcher<t.IfStatement> {
     super();
   }
 
-  match(node: unknown): node is t.IfStatement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.IfStatement {
     if (
       !isNode(node) ||
       !t.isIfStatement(node)
@@ -1125,13 +1125,13 @@ export class IfStatementMatcher extends Matcher<t.IfStatement> {
 
     if (typeof this.test === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.test.match(node.test)) {
+    } else if (!this.test.matchValue(node.test, [...keys, 'test'])) {
       return false;
     }
 
     if (typeof this.consequent === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.consequent.match(node.consequent)) {
+    } else if (!this.consequent.matchValue(node.consequent, [...keys, 'consequent'])) {
       return false;
     }
 
@@ -1144,7 +1144,7 @@ export class IfStatementMatcher extends Matcher<t.IfStatement> {
       }
     } else if (node.alternate === null) {
       return false;
-    } else if (!this.alternate.match(node.alternate)) {
+    } else if (!this.alternate.matchValue(node.alternate, [...keys, 'alternate'])) {
       return false;
     }
 
@@ -1172,7 +1172,7 @@ export class LabeledStatementMatcher extends Matcher<t.LabeledStatement> {
     super();
   }
 
-  match(node: unknown): node is t.LabeledStatement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.LabeledStatement {
     if (
       !isNode(node) ||
       !t.isLabeledStatement(node)
@@ -1182,13 +1182,13 @@ export class LabeledStatementMatcher extends Matcher<t.LabeledStatement> {
 
     if (typeof this.label === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.label.match(node.label)) {
+    } else if (!this.label.matchValue(node.label, [...keys, 'label'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -1213,7 +1213,7 @@ export class StringLiteralMatcher extends Matcher<t.StringLiteral> {
     super();
   }
 
-  match(node: unknown): node is t.StringLiteral {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.StringLiteral {
     if (
       !isNode(node) ||
       !t.isStringLiteral(node)
@@ -1227,7 +1227,7 @@ export class StringLiteralMatcher extends Matcher<t.StringLiteral> {
       if (this.value !== node.value) {
         return false;
       }
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -1250,7 +1250,7 @@ export class NumericLiteralMatcher extends Matcher<t.NumericLiteral> {
     super();
   }
 
-  match(node: unknown): node is t.NumericLiteral {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.NumericLiteral {
     if (
       !isNode(node) ||
       !t.isNumericLiteral(node)
@@ -1264,7 +1264,7 @@ export class NumericLiteralMatcher extends Matcher<t.NumericLiteral> {
       if (this.value !== node.value) {
         return false;
       }
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -1286,7 +1286,7 @@ export class NullLiteralMatcher extends Matcher<t.NullLiteral> {
     super();
   }
 
-  match(node: unknown): node is t.NullLiteral {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.NullLiteral {
     if (
       !isNode(node) ||
       !t.isNullLiteral(node)
@@ -1311,7 +1311,7 @@ export class BooleanLiteralMatcher extends Matcher<t.BooleanLiteral> {
     super();
   }
 
-  match(node: unknown): node is t.BooleanLiteral {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.BooleanLiteral {
     if (
       !isNode(node) ||
       !t.isBooleanLiteral(node)
@@ -1325,7 +1325,7 @@ export class BooleanLiteralMatcher extends Matcher<t.BooleanLiteral> {
       if (this.value !== node.value) {
         return false;
       }
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -1349,7 +1349,7 @@ export class RegExpLiteralMatcher extends Matcher<t.RegExpLiteral> {
     super();
   }
 
-  match(node: unknown): node is t.RegExpLiteral {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.RegExpLiteral {
     if (
       !isNode(node) ||
       !t.isRegExpLiteral(node)
@@ -1363,7 +1363,7 @@ export class RegExpLiteralMatcher extends Matcher<t.RegExpLiteral> {
       if (this.pattern !== node.pattern) {
         return false;
       }
-    } else if (!this.pattern.match(node.pattern)) {
+    } else if (!this.pattern.matchValue(node.pattern, [...keys, 'pattern'])) {
       return false;
     }
 
@@ -1373,7 +1373,7 @@ export class RegExpLiteralMatcher extends Matcher<t.RegExpLiteral> {
       if (this.flags !== node.flags) {
         return false;
       }
-    } else if (!this.flags.match(node.flags)) {
+    } else if (!this.flags.matchValue(node.flags, [...keys, 'flags'])) {
       return false;
     }
 
@@ -1400,7 +1400,7 @@ export class LogicalExpressionMatcher extends Matcher<t.LogicalExpression> {
     super();
   }
 
-  match(node: unknown): node is t.LogicalExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.LogicalExpression {
     if (
       !isNode(node) ||
       !t.isLogicalExpression(node)
@@ -1414,19 +1414,19 @@ export class LogicalExpressionMatcher extends Matcher<t.LogicalExpression> {
       if (this.operator !== node.operator) {
         return false;
       }
-    } else if (!this.operator.match(node.operator)) {
+    } else if (!this.operator.matchValue(node.operator, [...keys, 'operator'])) {
       return false;
     }
 
     if (typeof this.left === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.left.match(node.left)) {
+    } else if (!this.left.matchValue(node.left, [...keys, 'left'])) {
       return false;
     }
 
     if (typeof this.right === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.right.match(node.right)) {
+    } else if (!this.right.matchValue(node.right, [...keys, 'right'])) {
       return false;
     }
 
@@ -1456,7 +1456,7 @@ export class MemberExpressionMatcher extends Matcher<t.MemberExpression> {
     super();
   }
 
-  match(node: unknown): node is t.MemberExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.MemberExpression {
     if (
       !isNode(node) ||
       !t.isMemberExpression(node)
@@ -1466,13 +1466,13 @@ export class MemberExpressionMatcher extends Matcher<t.MemberExpression> {
 
     if (typeof this.object === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.object.match(node.object)) {
+    } else if (!this.object.matchValue(node.object, [...keys, 'object'])) {
       return false;
     }
 
     if (typeof this.property === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.property.match(node.property)) {
+    } else if (!this.property.matchValue(node.property, [...keys, 'property'])) {
       return false;
     }
 
@@ -1482,7 +1482,7 @@ export class MemberExpressionMatcher extends Matcher<t.MemberExpression> {
       if (this.computed !== node.computed) {
         return false;
       }
-    } else if (!this.computed.match(node.computed)) {
+    } else if (!this.computed.matchValue(node.computed, [...keys, 'computed'])) {
       return false;
     }
 
@@ -1499,7 +1499,7 @@ export class MemberExpressionMatcher extends Matcher<t.MemberExpression> {
       }
     } else if (node.optional === null) {
       return false;
-    } else if (!this.optional.match(node.optional)) {
+    } else if (!this.optional.matchValue(node.optional, [...keys, 'optional'])) {
       return false;
     }
 
@@ -1529,7 +1529,7 @@ export class NewExpressionMatcher extends Matcher<t.NewExpression> {
     super();
   }
 
-  match(node: unknown): node is t.NewExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.NewExpression {
     if (
       !isNode(node) ||
       !t.isNewExpression(node)
@@ -1539,17 +1539,17 @@ export class NewExpressionMatcher extends Matcher<t.NewExpression> {
 
     if (typeof this.callee === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.callee.match(node.callee)) {
+    } else if (!this.callee.matchValue(node.callee, [...keys, 'callee'])) {
       return false;
     }
 
     if (typeof this._arguments === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this._arguments)) {
-      if (!tupleOf<unknown>(...this._arguments).match(node.arguments)) {
+      if (!tupleOf<unknown>(...this._arguments).matchValue(node.arguments, [...keys, 'arguments'])) {
         return false;
       }
-    } else if (!this._arguments.match(node.arguments)) {
+    } else if (!this._arguments.matchValue(node.arguments, [...keys, 'arguments'])) {
       return false;
     }
 
@@ -1577,7 +1577,7 @@ export class ProgramMatcher extends Matcher<t.Program> {
     super();
   }
 
-  match(node: unknown): node is t.Program {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.Program {
     if (
       !isNode(node) ||
       !t.isProgram(node)
@@ -1588,20 +1588,20 @@ export class ProgramMatcher extends Matcher<t.Program> {
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.body)) {
-      if (!tupleOf<unknown>(...this.body).match(node.body)) {
+      if (!tupleOf<unknown>(...this.body).matchValue(node.body, [...keys, 'body'])) {
         return false;
       }
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
     if (typeof this.directives === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.directives)) {
-      if (!tupleOf<unknown>(...this.directives).match(node.directives)) {
+      if (!tupleOf<unknown>(...this.directives).matchValue(node.directives, [...keys, 'directives'])) {
         return false;
       }
-    } else if (!this.directives.match(node.directives)) {
+    } else if (!this.directives.matchValue(node.directives, [...keys, 'directives'])) {
       return false;
     }
 
@@ -1611,7 +1611,7 @@ export class ProgramMatcher extends Matcher<t.Program> {
       if (this.sourceType !== node.sourceType) {
         return false;
       }
-    } else if (!this.sourceType.match(node.sourceType)) {
+    } else if (!this.sourceType.matchValue(node.sourceType, [...keys, 'sourceType'])) {
       return false;
     }
 
@@ -1624,7 +1624,7 @@ export class ProgramMatcher extends Matcher<t.Program> {
       }
     } else if (node.interpreter === null) {
       return false;
-    } else if (!this.interpreter.match(node.interpreter)) {
+    } else if (!this.interpreter.matchValue(node.interpreter, [...keys, 'interpreter'])) {
       return false;
     }
 
@@ -1653,7 +1653,7 @@ export class ObjectExpressionMatcher extends Matcher<t.ObjectExpression> {
     super();
   }
 
-  match(node: unknown): node is t.ObjectExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ObjectExpression {
     if (
       !isNode(node) ||
       !t.isObjectExpression(node)
@@ -1664,10 +1664,10 @@ export class ObjectExpressionMatcher extends Matcher<t.ObjectExpression> {
     if (typeof this.properties === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.properties)) {
-      if (!tupleOf<unknown>(...this.properties).match(node.properties)) {
+      if (!tupleOf<unknown>(...this.properties).matchValue(node.properties, [...keys, 'properties'])) {
         return false;
       }
-    } else if (!this.properties.match(node.properties)) {
+    } else if (!this.properties.matchValue(node.properties, [...keys, 'properties'])) {
       return false;
     }
 
@@ -1694,7 +1694,7 @@ export class ObjectMethodMatcher extends Matcher<t.ObjectMethod> {
     super();
   }
 
-  match(node: unknown): node is t.ObjectMethod {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ObjectMethod {
     if (
       !isNode(node) ||
       !t.isObjectMethod(node)
@@ -1708,29 +1708,29 @@ export class ObjectMethodMatcher extends Matcher<t.ObjectMethod> {
       if (this.kind !== node.kind) {
         return false;
       }
-    } else if (!this.kind.match(node.kind)) {
+    } else if (!this.kind.matchValue(node.kind, [...keys, 'kind'])) {
       return false;
     }
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.key.match(node.key)) {
+    } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
       return false;
     }
 
     if (typeof this.params === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.params)) {
-      if (!tupleOf<unknown>(...this.params).match(node.params)) {
+      if (!tupleOf<unknown>(...this.params).matchValue(node.params, [...keys, 'params'])) {
         return false;
       }
-    } else if (!this.params.match(node.params)) {
+    } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -1740,7 +1740,7 @@ export class ObjectMethodMatcher extends Matcher<t.ObjectMethod> {
       if (this.computed !== node.computed) {
         return false;
       }
-    } else if (!this.computed.match(node.computed)) {
+    } else if (!this.computed.matchValue(node.computed, [...keys, 'computed'])) {
       return false;
     }
 
@@ -1775,7 +1775,7 @@ export class ObjectPropertyMatcher extends Matcher<t.ObjectProperty> {
     super();
   }
 
-  match(node: unknown): node is t.ObjectProperty {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ObjectProperty {
     if (
       !isNode(node) ||
       !t.isObjectProperty(node)
@@ -1785,13 +1785,13 @@ export class ObjectPropertyMatcher extends Matcher<t.ObjectProperty> {
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.key.match(node.key)) {
+    } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
       return false;
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -1801,7 +1801,7 @@ export class ObjectPropertyMatcher extends Matcher<t.ObjectProperty> {
       if (this.computed !== node.computed) {
         return false;
       }
-    } else if (!this.computed.match(node.computed)) {
+    } else if (!this.computed.matchValue(node.computed, [...keys, 'computed'])) {
       return false;
     }
 
@@ -1811,7 +1811,7 @@ export class ObjectPropertyMatcher extends Matcher<t.ObjectProperty> {
       if (this.shorthand !== node.shorthand) {
         return false;
       }
-    } else if (!this.shorthand.match(node.shorthand)) {
+    } else if (!this.shorthand.matchValue(node.shorthand, [...keys, 'shorthand'])) {
       return false;
     }
 
@@ -1825,10 +1825,10 @@ export class ObjectPropertyMatcher extends Matcher<t.ObjectProperty> {
     } else if (node.decorators === null) {
       return false;
     } else if (Array.isArray(this.decorators)) {
-      if (!tupleOf<unknown>(...this.decorators).match(node.decorators)) {
+      if (!tupleOf<unknown>(...this.decorators).matchValue(node.decorators, [...keys, 'decorators'])) {
         return false;
       }
-    } else if (!this.decorators.match(node.decorators)) {
+    } else if (!this.decorators.matchValue(node.decorators, [...keys, 'decorators'])) {
       return false;
     }
 
@@ -1859,7 +1859,7 @@ export class RestElementMatcher extends Matcher<t.RestElement> {
     super();
   }
 
-  match(node: unknown): node is t.RestElement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.RestElement {
     if (
       !isNode(node) ||
       !t.isRestElement(node)
@@ -1869,7 +1869,7 @@ export class RestElementMatcher extends Matcher<t.RestElement> {
 
     if (typeof this.argument === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.argument.match(node.argument)) {
+    } else if (!this.argument.matchValue(node.argument, [...keys, 'argument'])) {
       return false;
     }
 
@@ -1892,7 +1892,7 @@ export class ReturnStatementMatcher extends Matcher<t.ReturnStatement> {
     super();
   }
 
-  match(node: unknown): node is t.ReturnStatement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ReturnStatement {
     if (
       !isNode(node) ||
       !t.isReturnStatement(node)
@@ -1909,7 +1909,7 @@ export class ReturnStatementMatcher extends Matcher<t.ReturnStatement> {
       }
     } else if (node.argument === null) {
       return false;
-    } else if (!this.argument.match(node.argument)) {
+    } else if (!this.argument.matchValue(node.argument, [...keys, 'argument'])) {
       return false;
     }
 
@@ -1932,7 +1932,7 @@ export class SequenceExpressionMatcher extends Matcher<t.SequenceExpression> {
     super();
   }
 
-  match(node: unknown): node is t.SequenceExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.SequenceExpression {
     if (
       !isNode(node) ||
       !t.isSequenceExpression(node)
@@ -1943,10 +1943,10 @@ export class SequenceExpressionMatcher extends Matcher<t.SequenceExpression> {
     if (typeof this.expressions === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.expressions)) {
-      if (!tupleOf<unknown>(...this.expressions).match(node.expressions)) {
+      if (!tupleOf<unknown>(...this.expressions).matchValue(node.expressions, [...keys, 'expressions'])) {
         return false;
       }
-    } else if (!this.expressions.match(node.expressions)) {
+    } else if (!this.expressions.matchValue(node.expressions, [...keys, 'expressions'])) {
       return false;
     }
 
@@ -1970,7 +1970,7 @@ export class SwitchCaseMatcher extends Matcher<t.SwitchCase> {
     super();
   }
 
-  match(node: unknown): node is t.SwitchCase {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.SwitchCase {
     if (
       !isNode(node) ||
       !t.isSwitchCase(node)
@@ -1987,17 +1987,17 @@ export class SwitchCaseMatcher extends Matcher<t.SwitchCase> {
       }
     } else if (node.test === null) {
       return false;
-    } else if (!this.test.match(node.test)) {
+    } else if (!this.test.matchValue(node.test, [...keys, 'test'])) {
       return false;
     }
 
     if (typeof this.consequent === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.consequent)) {
-      if (!tupleOf<unknown>(...this.consequent).match(node.consequent)) {
+      if (!tupleOf<unknown>(...this.consequent).matchValue(node.consequent, [...keys, 'consequent'])) {
         return false;
       }
-    } else if (!this.consequent.match(node.consequent)) {
+    } else if (!this.consequent.matchValue(node.consequent, [...keys, 'consequent'])) {
       return false;
     }
 
@@ -2023,7 +2023,7 @@ export class SwitchStatementMatcher extends Matcher<t.SwitchStatement> {
     super();
   }
 
-  match(node: unknown): node is t.SwitchStatement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.SwitchStatement {
     if (
       !isNode(node) ||
       !t.isSwitchStatement(node)
@@ -2033,17 +2033,17 @@ export class SwitchStatementMatcher extends Matcher<t.SwitchStatement> {
 
     if (typeof this.discriminant === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.discriminant.match(node.discriminant)) {
+    } else if (!this.discriminant.matchValue(node.discriminant, [...keys, 'discriminant'])) {
       return false;
     }
 
     if (typeof this.cases === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.cases)) {
-      if (!tupleOf<unknown>(...this.cases).match(node.cases)) {
+      if (!tupleOf<unknown>(...this.cases).matchValue(node.cases, [...keys, 'cases'])) {
         return false;
       }
-    } else if (!this.cases.match(node.cases)) {
+    } else if (!this.cases.matchValue(node.cases, [...keys, 'cases'])) {
       return false;
     }
 
@@ -2067,7 +2067,7 @@ export class ThisExpressionMatcher extends Matcher<t.ThisExpression> {
     super();
   }
 
-  match(node: unknown): node is t.ThisExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ThisExpression {
     if (
       !isNode(node) ||
       !t.isThisExpression(node)
@@ -2092,7 +2092,7 @@ export class ThrowStatementMatcher extends Matcher<t.ThrowStatement> {
     super();
   }
 
-  match(node: unknown): node is t.ThrowStatement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ThrowStatement {
     if (
       !isNode(node) ||
       !t.isThrowStatement(node)
@@ -2102,7 +2102,7 @@ export class ThrowStatementMatcher extends Matcher<t.ThrowStatement> {
 
     if (typeof this.argument === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.argument.match(node.argument)) {
+    } else if (!this.argument.matchValue(node.argument, [...keys, 'argument'])) {
       return false;
     }
 
@@ -2127,7 +2127,7 @@ export class TryStatementMatcher extends Matcher<t.TryStatement> {
     super();
   }
 
-  match(node: unknown): node is t.TryStatement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TryStatement {
     if (
       !isNode(node) ||
       !t.isTryStatement(node)
@@ -2137,7 +2137,7 @@ export class TryStatementMatcher extends Matcher<t.TryStatement> {
 
     if (typeof this.block === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.block.match(node.block)) {
+    } else if (!this.block.matchValue(node.block, [...keys, 'block'])) {
       return false;
     }
 
@@ -2150,7 +2150,7 @@ export class TryStatementMatcher extends Matcher<t.TryStatement> {
       }
     } else if (node.handler === null) {
       return false;
-    } else if (!this.handler.match(node.handler)) {
+    } else if (!this.handler.matchValue(node.handler, [...keys, 'handler'])) {
       return false;
     }
 
@@ -2163,7 +2163,7 @@ export class TryStatementMatcher extends Matcher<t.TryStatement> {
       }
     } else if (node.finalizer === null) {
       return false;
-    } else if (!this.finalizer.match(node.finalizer)) {
+    } else if (!this.finalizer.matchValue(node.finalizer, [...keys, 'finalizer'])) {
       return false;
     }
 
@@ -2192,7 +2192,7 @@ export class UnaryExpressionMatcher extends Matcher<t.UnaryExpression> {
     super();
   }
 
-  match(node: unknown): node is t.UnaryExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.UnaryExpression {
     if (
       !isNode(node) ||
       !t.isUnaryExpression(node)
@@ -2206,13 +2206,13 @@ export class UnaryExpressionMatcher extends Matcher<t.UnaryExpression> {
       if (this.operator !== node.operator) {
         return false;
       }
-    } else if (!this.operator.match(node.operator)) {
+    } else if (!this.operator.matchValue(node.operator, [...keys, 'operator'])) {
       return false;
     }
 
     if (typeof this.argument === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.argument.match(node.argument)) {
+    } else if (!this.argument.matchValue(node.argument, [...keys, 'argument'])) {
       return false;
     }
 
@@ -2222,7 +2222,7 @@ export class UnaryExpressionMatcher extends Matcher<t.UnaryExpression> {
       if (this.prefix !== node.prefix) {
         return false;
       }
-    } else if (!this.prefix.match(node.prefix)) {
+    } else if (!this.prefix.matchValue(node.prefix, [...keys, 'prefix'])) {
       return false;
     }
 
@@ -2251,7 +2251,7 @@ export class UpdateExpressionMatcher extends Matcher<t.UpdateExpression> {
     super();
   }
 
-  match(node: unknown): node is t.UpdateExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.UpdateExpression {
     if (
       !isNode(node) ||
       !t.isUpdateExpression(node)
@@ -2265,13 +2265,13 @@ export class UpdateExpressionMatcher extends Matcher<t.UpdateExpression> {
       if (this.operator !== node.operator) {
         return false;
       }
-    } else if (!this.operator.match(node.operator)) {
+    } else if (!this.operator.matchValue(node.operator, [...keys, 'operator'])) {
       return false;
     }
 
     if (typeof this.argument === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.argument.match(node.argument)) {
+    } else if (!this.argument.matchValue(node.argument, [...keys, 'argument'])) {
       return false;
     }
 
@@ -2281,7 +2281,7 @@ export class UpdateExpressionMatcher extends Matcher<t.UpdateExpression> {
       if (this.prefix !== node.prefix) {
         return false;
       }
-    } else if (!this.prefix.match(node.prefix)) {
+    } else if (!this.prefix.matchValue(node.prefix, [...keys, 'prefix'])) {
       return false;
     }
 
@@ -2309,7 +2309,7 @@ export class VariableDeclarationMatcher extends Matcher<t.VariableDeclaration> {
     super();
   }
 
-  match(node: unknown): node is t.VariableDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.VariableDeclaration {
     if (
       !isNode(node) ||
       !t.isVariableDeclaration(node)
@@ -2323,17 +2323,17 @@ export class VariableDeclarationMatcher extends Matcher<t.VariableDeclaration> {
       if (this.kind !== node.kind) {
         return false;
       }
-    } else if (!this.kind.match(node.kind)) {
+    } else if (!this.kind.matchValue(node.kind, [...keys, 'kind'])) {
       return false;
     }
 
     if (typeof this.declarations === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.declarations)) {
-      if (!tupleOf<unknown>(...this.declarations).match(node.declarations)) {
+      if (!tupleOf<unknown>(...this.declarations).matchValue(node.declarations, [...keys, 'declarations'])) {
         return false;
       }
-    } else if (!this.declarations.match(node.declarations)) {
+    } else if (!this.declarations.matchValue(node.declarations, [...keys, 'declarations'])) {
       return false;
     }
 
@@ -2359,7 +2359,7 @@ export class VariableDeclaratorMatcher extends Matcher<t.VariableDeclarator> {
     super();
   }
 
-  match(node: unknown): node is t.VariableDeclarator {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.VariableDeclarator {
     if (
       !isNode(node) ||
       !t.isVariableDeclarator(node)
@@ -2369,7 +2369,7 @@ export class VariableDeclaratorMatcher extends Matcher<t.VariableDeclarator> {
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -2382,7 +2382,7 @@ export class VariableDeclaratorMatcher extends Matcher<t.VariableDeclarator> {
       }
     } else if (node.init === null) {
       return false;
-    } else if (!this.init.match(node.init)) {
+    } else if (!this.init.matchValue(node.init, [...keys, 'init'])) {
       return false;
     }
 
@@ -2408,7 +2408,7 @@ export class WhileStatementMatcher extends Matcher<t.WhileStatement> {
     super();
   }
 
-  match(node: unknown): node is t.WhileStatement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.WhileStatement {
     if (
       !isNode(node) ||
       !t.isWhileStatement(node)
@@ -2418,13 +2418,13 @@ export class WhileStatementMatcher extends Matcher<t.WhileStatement> {
 
     if (typeof this.test === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.test.match(node.test)) {
+    } else if (!this.test.matchValue(node.test, [...keys, 'test'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -2450,7 +2450,7 @@ export class WithStatementMatcher extends Matcher<t.WithStatement> {
     super();
   }
 
-  match(node: unknown): node is t.WithStatement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.WithStatement {
     if (
       !isNode(node) ||
       !t.isWithStatement(node)
@@ -2460,13 +2460,13 @@ export class WithStatementMatcher extends Matcher<t.WithStatement> {
 
     if (typeof this.object === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.object.match(node.object)) {
+    } else if (!this.object.matchValue(node.object, [...keys, 'object'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -2492,7 +2492,7 @@ export class AssignmentPatternMatcher extends Matcher<t.AssignmentPattern> {
     super();
   }
 
-  match(node: unknown): node is t.AssignmentPattern {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.AssignmentPattern {
     if (
       !isNode(node) ||
       !t.isAssignmentPattern(node)
@@ -2502,13 +2502,13 @@ export class AssignmentPatternMatcher extends Matcher<t.AssignmentPattern> {
 
     if (typeof this.left === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.left.match(node.left)) {
+    } else if (!this.left.matchValue(node.left, [...keys, 'left'])) {
       return false;
     }
 
     if (typeof this.right === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.right.match(node.right)) {
+    } else if (!this.right.matchValue(node.right, [...keys, 'right'])) {
       return false;
     }
 
@@ -2533,7 +2533,7 @@ export class ArrayPatternMatcher extends Matcher<t.ArrayPattern> {
     super();
   }
 
-  match(node: unknown): node is t.ArrayPattern {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ArrayPattern {
     if (
       !isNode(node) ||
       !t.isArrayPattern(node)
@@ -2544,10 +2544,10 @@ export class ArrayPatternMatcher extends Matcher<t.ArrayPattern> {
     if (typeof this.elements === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.elements)) {
-      if (!tupleOf<unknown>(...this.elements).match(node.elements)) {
+      if (!tupleOf<unknown>(...this.elements).matchValue(node.elements, [...keys, 'elements'])) {
         return false;
       }
-    } else if (!this.elements.match(node.elements)) {
+    } else if (!this.elements.matchValue(node.elements, [...keys, 'elements'])) {
       return false;
     }
 
@@ -2572,7 +2572,7 @@ export class ArrowFunctionExpressionMatcher extends Matcher<t.ArrowFunctionExpre
     super();
   }
 
-  match(node: unknown): node is t.ArrowFunctionExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ArrowFunctionExpression {
     if (
       !isNode(node) ||
       !t.isArrowFunctionExpression(node)
@@ -2583,16 +2583,16 @@ export class ArrowFunctionExpressionMatcher extends Matcher<t.ArrowFunctionExpre
     if (typeof this.params === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.params)) {
-      if (!tupleOf<unknown>(...this.params).match(node.params)) {
+      if (!tupleOf<unknown>(...this.params).matchValue(node.params, [...keys, 'params'])) {
         return false;
       }
-    } else if (!this.params.match(node.params)) {
+    } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -2609,7 +2609,7 @@ export class ArrowFunctionExpressionMatcher extends Matcher<t.ArrowFunctionExpre
       }
     } else if (node.async === null) {
       return false;
-    } else if (!this.async.match(node.async)) {
+    } else if (!this.async.matchValue(node.async, [...keys, 'async'])) {
       return false;
     }
 
@@ -2636,7 +2636,7 @@ export class ClassBodyMatcher extends Matcher<t.ClassBody> {
     super();
   }
 
-  match(node: unknown): node is t.ClassBody {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ClassBody {
     if (
       !isNode(node) ||
       !t.isClassBody(node)
@@ -2647,10 +2647,10 @@ export class ClassBodyMatcher extends Matcher<t.ClassBody> {
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.body)) {
-      if (!tupleOf<unknown>(...this.body).match(node.body)) {
+      if (!tupleOf<unknown>(...this.body).matchValue(node.body, [...keys, 'body'])) {
         return false;
       }
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -2676,7 +2676,7 @@ export class ClassDeclarationMatcher extends Matcher<t.ClassDeclaration> {
     super();
   }
 
-  match(node: unknown): node is t.ClassDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ClassDeclaration {
     if (
       !isNode(node) ||
       !t.isClassDeclaration(node)
@@ -2693,7 +2693,7 @@ export class ClassDeclarationMatcher extends Matcher<t.ClassDeclaration> {
       }
     } else if (node.id === null) {
       return false;
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -2706,13 +2706,13 @@ export class ClassDeclarationMatcher extends Matcher<t.ClassDeclaration> {
       }
     } else if (node.superClass === null) {
       return false;
-    } else if (!this.superClass.match(node.superClass)) {
+    } else if (!this.superClass.matchValue(node.superClass, [...keys, 'superClass'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -2726,10 +2726,10 @@ export class ClassDeclarationMatcher extends Matcher<t.ClassDeclaration> {
     } else if (node.decorators === null) {
       return false;
     } else if (Array.isArray(this.decorators)) {
-      if (!tupleOf<unknown>(...this.decorators).match(node.decorators)) {
+      if (!tupleOf<unknown>(...this.decorators).matchValue(node.decorators, [...keys, 'decorators'])) {
         return false;
       }
-    } else if (!this.decorators.match(node.decorators)) {
+    } else if (!this.decorators.matchValue(node.decorators, [...keys, 'decorators'])) {
       return false;
     }
 
@@ -2761,7 +2761,7 @@ export class ClassExpressionMatcher extends Matcher<t.ClassExpression> {
     super();
   }
 
-  match(node: unknown): node is t.ClassExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ClassExpression {
     if (
       !isNode(node) ||
       !t.isClassExpression(node)
@@ -2778,7 +2778,7 @@ export class ClassExpressionMatcher extends Matcher<t.ClassExpression> {
       }
     } else if (node.id === null) {
       return false;
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -2791,13 +2791,13 @@ export class ClassExpressionMatcher extends Matcher<t.ClassExpression> {
       }
     } else if (node.superClass === null) {
       return false;
-    } else if (!this.superClass.match(node.superClass)) {
+    } else if (!this.superClass.matchValue(node.superClass, [...keys, 'superClass'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -2811,10 +2811,10 @@ export class ClassExpressionMatcher extends Matcher<t.ClassExpression> {
     } else if (node.decorators === null) {
       return false;
     } else if (Array.isArray(this.decorators)) {
-      if (!tupleOf<unknown>(...this.decorators).match(node.decorators)) {
+      if (!tupleOf<unknown>(...this.decorators).matchValue(node.decorators, [...keys, 'decorators'])) {
         return false;
       }
-    } else if (!this.decorators.match(node.decorators)) {
+    } else if (!this.decorators.matchValue(node.decorators, [...keys, 'decorators'])) {
       return false;
     }
 
@@ -2843,7 +2843,7 @@ export class ExportAllDeclarationMatcher extends Matcher<t.ExportAllDeclaration>
     super();
   }
 
-  match(node: unknown): node is t.ExportAllDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ExportAllDeclaration {
     if (
       !isNode(node) ||
       !t.isExportAllDeclaration(node)
@@ -2853,7 +2853,7 @@ export class ExportAllDeclarationMatcher extends Matcher<t.ExportAllDeclaration>
 
     if (typeof this.source === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.source.match(node.source)) {
+    } else if (!this.source.matchValue(node.source, [...keys, 'source'])) {
       return false;
     }
 
@@ -2876,7 +2876,7 @@ export class ExportDefaultDeclarationMatcher extends Matcher<t.ExportDefaultDecl
     super();
   }
 
-  match(node: unknown): node is t.ExportDefaultDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ExportDefaultDeclaration {
     if (
       !isNode(node) ||
       !t.isExportDefaultDeclaration(node)
@@ -2886,7 +2886,7 @@ export class ExportDefaultDeclarationMatcher extends Matcher<t.ExportDefaultDecl
 
     if (typeof this.declaration === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.declaration.match(node.declaration)) {
+    } else if (!this.declaration.matchValue(node.declaration, [...keys, 'declaration'])) {
       return false;
     }
 
@@ -2911,7 +2911,7 @@ export class ExportNamedDeclarationMatcher extends Matcher<t.ExportNamedDeclarat
     super();
   }
 
-  match(node: unknown): node is t.ExportNamedDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ExportNamedDeclaration {
     if (
       !isNode(node) ||
       !t.isExportNamedDeclaration(node)
@@ -2928,17 +2928,17 @@ export class ExportNamedDeclarationMatcher extends Matcher<t.ExportNamedDeclarat
       }
     } else if (node.declaration === null) {
       return false;
-    } else if (!this.declaration.match(node.declaration)) {
+    } else if (!this.declaration.matchValue(node.declaration, [...keys, 'declaration'])) {
       return false;
     }
 
     if (typeof this.specifiers === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.specifiers)) {
-      if (!tupleOf<unknown>(...this.specifiers).match(node.specifiers)) {
+      if (!tupleOf<unknown>(...this.specifiers).matchValue(node.specifiers, [...keys, 'specifiers'])) {
         return false;
       }
-    } else if (!this.specifiers.match(node.specifiers)) {
+    } else if (!this.specifiers.matchValue(node.specifiers, [...keys, 'specifiers'])) {
       return false;
     }
 
@@ -2951,7 +2951,7 @@ export class ExportNamedDeclarationMatcher extends Matcher<t.ExportNamedDeclarat
       }
     } else if (node.source === null) {
       return false;
-    } else if (!this.source.match(node.source)) {
+    } else if (!this.source.matchValue(node.source, [...keys, 'source'])) {
       return false;
     }
 
@@ -2979,7 +2979,7 @@ export class ExportSpecifierMatcher extends Matcher<t.ExportSpecifier> {
     super();
   }
 
-  match(node: unknown): node is t.ExportSpecifier {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ExportSpecifier {
     if (
       !isNode(node) ||
       !t.isExportSpecifier(node)
@@ -2989,13 +2989,13 @@ export class ExportSpecifierMatcher extends Matcher<t.ExportSpecifier> {
 
     if (typeof this.local === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.local.match(node.local)) {
+    } else if (!this.local.matchValue(node.local, [...keys, 'local'])) {
       return false;
     }
 
     if (typeof this.exported === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.exported.match(node.exported)) {
+    } else if (!this.exported.matchValue(node.exported, [...keys, 'exported'])) {
       return false;
     }
 
@@ -3022,7 +3022,7 @@ export class ForOfStatementMatcher extends Matcher<t.ForOfStatement> {
     super();
   }
 
-  match(node: unknown): node is t.ForOfStatement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ForOfStatement {
     if (
       !isNode(node) ||
       !t.isForOfStatement(node)
@@ -3032,19 +3032,19 @@ export class ForOfStatementMatcher extends Matcher<t.ForOfStatement> {
 
     if (typeof this.left === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.left.match(node.left)) {
+    } else if (!this.left.matchValue(node.left, [...keys, 'left'])) {
       return false;
     }
 
     if (typeof this.right === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.right.match(node.right)) {
+    } else if (!this.right.matchValue(node.right, [...keys, 'right'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -3072,7 +3072,7 @@ export class ImportDeclarationMatcher extends Matcher<t.ImportDeclaration> {
     super();
   }
 
-  match(node: unknown): node is t.ImportDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ImportDeclaration {
     if (
       !isNode(node) ||
       !t.isImportDeclaration(node)
@@ -3083,16 +3083,16 @@ export class ImportDeclarationMatcher extends Matcher<t.ImportDeclaration> {
     if (typeof this.specifiers === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.specifiers)) {
-      if (!tupleOf<unknown>(...this.specifiers).match(node.specifiers)) {
+      if (!tupleOf<unknown>(...this.specifiers).matchValue(node.specifiers, [...keys, 'specifiers'])) {
         return false;
       }
-    } else if (!this.specifiers.match(node.specifiers)) {
+    } else if (!this.specifiers.matchValue(node.specifiers, [...keys, 'specifiers'])) {
       return false;
     }
 
     if (typeof this.source === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.source.match(node.source)) {
+    } else if (!this.source.matchValue(node.source, [...keys, 'source'])) {
       return false;
     }
 
@@ -3117,7 +3117,7 @@ export class ImportDefaultSpecifierMatcher extends Matcher<t.ImportDefaultSpecif
     super();
   }
 
-  match(node: unknown): node is t.ImportDefaultSpecifier {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ImportDefaultSpecifier {
     if (
       !isNode(node) ||
       !t.isImportDefaultSpecifier(node)
@@ -3127,7 +3127,7 @@ export class ImportDefaultSpecifierMatcher extends Matcher<t.ImportDefaultSpecif
 
     if (typeof this.local === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.local.match(node.local)) {
+    } else if (!this.local.matchValue(node.local, [...keys, 'local'])) {
       return false;
     }
 
@@ -3150,7 +3150,7 @@ export class ImportNamespaceSpecifierMatcher extends Matcher<t.ImportNamespaceSp
     super();
   }
 
-  match(node: unknown): node is t.ImportNamespaceSpecifier {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ImportNamespaceSpecifier {
     if (
       !isNode(node) ||
       !t.isImportNamespaceSpecifier(node)
@@ -3160,7 +3160,7 @@ export class ImportNamespaceSpecifierMatcher extends Matcher<t.ImportNamespaceSp
 
     if (typeof this.local === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.local.match(node.local)) {
+    } else if (!this.local.matchValue(node.local, [...keys, 'local'])) {
       return false;
     }
 
@@ -3184,7 +3184,7 @@ export class ImportSpecifierMatcher extends Matcher<t.ImportSpecifier> {
     super();
   }
 
-  match(node: unknown): node is t.ImportSpecifier {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ImportSpecifier {
     if (
       !isNode(node) ||
       !t.isImportSpecifier(node)
@@ -3194,13 +3194,13 @@ export class ImportSpecifierMatcher extends Matcher<t.ImportSpecifier> {
 
     if (typeof this.local === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.local.match(node.local)) {
+    } else if (!this.local.matchValue(node.local, [...keys, 'local'])) {
       return false;
     }
 
     if (typeof this.imported === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.imported.match(node.imported)) {
+    } else if (!this.imported.matchValue(node.imported, [...keys, 'imported'])) {
       return false;
     }
 
@@ -3226,7 +3226,7 @@ export class MetaPropertyMatcher extends Matcher<t.MetaProperty> {
     super();
   }
 
-  match(node: unknown): node is t.MetaProperty {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.MetaProperty {
     if (
       !isNode(node) ||
       !t.isMetaProperty(node)
@@ -3236,13 +3236,13 @@ export class MetaPropertyMatcher extends Matcher<t.MetaProperty> {
 
     if (typeof this.meta === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.meta.match(node.meta)) {
+    } else if (!this.meta.matchValue(node.meta, [...keys, 'meta'])) {
       return false;
     }
 
     if (typeof this.property === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.property.match(node.property)) {
+    } else if (!this.property.matchValue(node.property, [...keys, 'property'])) {
       return false;
     }
 
@@ -3272,7 +3272,7 @@ export class ClassMethodMatcher extends Matcher<t.ClassMethod> {
     super();
   }
 
-  match(node: unknown): node is t.ClassMethod {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ClassMethod {
     if (
       !isNode(node) ||
       !t.isClassMethod(node)
@@ -3293,29 +3293,29 @@ export class ClassMethodMatcher extends Matcher<t.ClassMethod> {
       }
     } else if (node.kind === null) {
       return false;
-    } else if (!this.kind.match(node.kind)) {
+    } else if (!this.kind.matchValue(node.kind, [...keys, 'kind'])) {
       return false;
     }
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.key.match(node.key)) {
+    } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
       return false;
     }
 
     if (typeof this.params === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.params)) {
-      if (!tupleOf<unknown>(...this.params).match(node.params)) {
+      if (!tupleOf<unknown>(...this.params).matchValue(node.params, [...keys, 'params'])) {
         return false;
       }
-    } else if (!this.params.match(node.params)) {
+    } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -3332,7 +3332,7 @@ export class ClassMethodMatcher extends Matcher<t.ClassMethod> {
       }
     } else if (node.computed === null) {
       return false;
-    } else if (!this.computed.match(node.computed)) {
+    } else if (!this.computed.matchValue(node.computed, [...keys, 'computed'])) {
       return false;
     }
 
@@ -3349,7 +3349,7 @@ export class ClassMethodMatcher extends Matcher<t.ClassMethod> {
       }
     } else if (node.static === null) {
       return false;
-    } else if (!this._static.match(node.static)) {
+    } else if (!this._static.matchValue(node.static, [...keys, 'static'])) {
       return false;
     }
 
@@ -3382,7 +3382,7 @@ export class ObjectPatternMatcher extends Matcher<t.ObjectPattern> {
     super();
   }
 
-  match(node: unknown): node is t.ObjectPattern {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ObjectPattern {
     if (
       !isNode(node) ||
       !t.isObjectPattern(node)
@@ -3393,10 +3393,10 @@ export class ObjectPatternMatcher extends Matcher<t.ObjectPattern> {
     if (typeof this.properties === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.properties)) {
-      if (!tupleOf<unknown>(...this.properties).match(node.properties)) {
+      if (!tupleOf<unknown>(...this.properties).matchValue(node.properties, [...keys, 'properties'])) {
         return false;
       }
-    } else if (!this.properties.match(node.properties)) {
+    } else if (!this.properties.matchValue(node.properties, [...keys, 'properties'])) {
       return false;
     }
 
@@ -3419,7 +3419,7 @@ export class SpreadElementMatcher extends Matcher<t.SpreadElement> {
     super();
   }
 
-  match(node: unknown): node is t.SpreadElement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.SpreadElement {
     if (
       !isNode(node) ||
       !t.isSpreadElement(node)
@@ -3429,7 +3429,7 @@ export class SpreadElementMatcher extends Matcher<t.SpreadElement> {
 
     if (typeof this.argument === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.argument.match(node.argument)) {
+    } else if (!this.argument.matchValue(node.argument, [...keys, 'argument'])) {
       return false;
     }
 
@@ -3451,7 +3451,7 @@ export class SuperMatcher extends Matcher<t.Super> {
     super();
   }
 
-  match(node: unknown): node is t.Super {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.Super {
     if (
       !isNode(node) ||
       !t.isSuper(node)
@@ -3477,7 +3477,7 @@ export class TaggedTemplateExpressionMatcher extends Matcher<t.TaggedTemplateExp
     super();
   }
 
-  match(node: unknown): node is t.TaggedTemplateExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TaggedTemplateExpression {
     if (
       !isNode(node) ||
       !t.isTaggedTemplateExpression(node)
@@ -3487,13 +3487,13 @@ export class TaggedTemplateExpressionMatcher extends Matcher<t.TaggedTemplateExp
 
     if (typeof this.tag === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.tag.match(node.tag)) {
+    } else if (!this.tag.matchValue(node.tag, [...keys, 'tag'])) {
       return false;
     }
 
     if (typeof this.quasi === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.quasi.match(node.quasi)) {
+    } else if (!this.quasi.matchValue(node.quasi, [...keys, 'quasi'])) {
       return false;
     }
 
@@ -3519,7 +3519,7 @@ export class TemplateElementMatcher extends Matcher<t.TemplateElement> {
     super();
   }
 
-  match(node: unknown): node is t.TemplateElement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TemplateElement {
     if (
       !isNode(node) ||
       !t.isTemplateElement(node)
@@ -3529,7 +3529,7 @@ export class TemplateElementMatcher extends Matcher<t.TemplateElement> {
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -3539,7 +3539,7 @@ export class TemplateElementMatcher extends Matcher<t.TemplateElement> {
       if (this.tail !== node.tail) {
         return false;
       }
-    } else if (!this.tail.match(node.tail)) {
+    } else if (!this.tail.matchValue(node.tail, [...keys, 'tail'])) {
       return false;
     }
 
@@ -3565,7 +3565,7 @@ export class TemplateLiteralMatcher extends Matcher<t.TemplateLiteral> {
     super();
   }
 
-  match(node: unknown): node is t.TemplateLiteral {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TemplateLiteral {
     if (
       !isNode(node) ||
       !t.isTemplateLiteral(node)
@@ -3576,20 +3576,20 @@ export class TemplateLiteralMatcher extends Matcher<t.TemplateLiteral> {
     if (typeof this.quasis === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.quasis)) {
-      if (!tupleOf<unknown>(...this.quasis).match(node.quasis)) {
+      if (!tupleOf<unknown>(...this.quasis).matchValue(node.quasis, [...keys, 'quasis'])) {
         return false;
       }
-    } else if (!this.quasis.match(node.quasis)) {
+    } else if (!this.quasis.matchValue(node.quasis, [...keys, 'quasis'])) {
       return false;
     }
 
     if (typeof this.expressions === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.expressions)) {
-      if (!tupleOf<unknown>(...this.expressions).match(node.expressions)) {
+      if (!tupleOf<unknown>(...this.expressions).matchValue(node.expressions, [...keys, 'expressions'])) {
         return false;
       }
-    } else if (!this.expressions.match(node.expressions)) {
+    } else if (!this.expressions.matchValue(node.expressions, [...keys, 'expressions'])) {
       return false;
     }
 
@@ -3615,7 +3615,7 @@ export class YieldExpressionMatcher extends Matcher<t.YieldExpression> {
     super();
   }
 
-  match(node: unknown): node is t.YieldExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.YieldExpression {
     if (
       !isNode(node) ||
       !t.isYieldExpression(node)
@@ -3632,7 +3632,7 @@ export class YieldExpressionMatcher extends Matcher<t.YieldExpression> {
       }
     } else if (node.argument === null) {
       return false;
-    } else if (!this.argument.match(node.argument)) {
+    } else if (!this.argument.matchValue(node.argument, [...keys, 'argument'])) {
       return false;
     }
 
@@ -3642,7 +3642,7 @@ export class YieldExpressionMatcher extends Matcher<t.YieldExpression> {
       if (this.delegate !== node.delegate) {
         return false;
       }
-    } else if (!this.delegate.match(node.delegate)) {
+    } else if (!this.delegate.matchValue(node.delegate, [...keys, 'delegate'])) {
       return false;
     }
 
@@ -3666,7 +3666,7 @@ export class AnyTypeAnnotationMatcher extends Matcher<t.AnyTypeAnnotation> {
     super();
   }
 
-  match(node: unknown): node is t.AnyTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.AnyTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isAnyTypeAnnotation(node)
@@ -3691,7 +3691,7 @@ export class ArrayTypeAnnotationMatcher extends Matcher<t.ArrayTypeAnnotation> {
     super();
   }
 
-  match(node: unknown): node is t.ArrayTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ArrayTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isArrayTypeAnnotation(node)
@@ -3701,7 +3701,7 @@ export class ArrayTypeAnnotationMatcher extends Matcher<t.ArrayTypeAnnotation> {
 
     if (typeof this.elementType === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.elementType.match(node.elementType)) {
+    } else if (!this.elementType.matchValue(node.elementType, [...keys, 'elementType'])) {
       return false;
     }
 
@@ -3723,7 +3723,7 @@ export class BooleanTypeAnnotationMatcher extends Matcher<t.BooleanTypeAnnotatio
     super();
   }
 
-  match(node: unknown): node is t.BooleanTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.BooleanTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isBooleanTypeAnnotation(node)
@@ -3748,7 +3748,7 @@ export class BooleanLiteralTypeAnnotationMatcher extends Matcher<t.BooleanLitera
     super();
   }
 
-  match(node: unknown): node is t.BooleanLiteralTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.BooleanLiteralTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isBooleanLiteralTypeAnnotation(node)
@@ -3762,7 +3762,7 @@ export class BooleanLiteralTypeAnnotationMatcher extends Matcher<t.BooleanLitera
       if (this.value !== node.value) {
         return false;
       }
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -3784,7 +3784,7 @@ export class NullLiteralTypeAnnotationMatcher extends Matcher<t.NullLiteralTypeA
     super();
   }
 
-  match(node: unknown): node is t.NullLiteralTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.NullLiteralTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isNullLiteralTypeAnnotation(node)
@@ -3810,7 +3810,7 @@ export class ClassImplementsMatcher extends Matcher<t.ClassImplements> {
     super();
   }
 
-  match(node: unknown): node is t.ClassImplements {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ClassImplements {
     if (
       !isNode(node) ||
       !t.isClassImplements(node)
@@ -3820,7 +3820,7 @@ export class ClassImplementsMatcher extends Matcher<t.ClassImplements> {
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -3833,7 +3833,7 @@ export class ClassImplementsMatcher extends Matcher<t.ClassImplements> {
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
@@ -3861,7 +3861,7 @@ export class DeclareClassMatcher extends Matcher<t.DeclareClass> {
     super();
   }
 
-  match(node: unknown): node is t.DeclareClass {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.DeclareClass {
     if (
       !isNode(node) ||
       !t.isDeclareClass(node)
@@ -3871,7 +3871,7 @@ export class DeclareClassMatcher extends Matcher<t.DeclareClass> {
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -3884,7 +3884,7 @@ export class DeclareClassMatcher extends Matcher<t.DeclareClass> {
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
@@ -3898,16 +3898,16 @@ export class DeclareClassMatcher extends Matcher<t.DeclareClass> {
     } else if (node.extends === null) {
       return false;
     } else if (Array.isArray(this._extends)) {
-      if (!tupleOf<unknown>(...this._extends).match(node.extends)) {
+      if (!tupleOf<unknown>(...this._extends).matchValue(node.extends, [...keys, 'extends'])) {
         return false;
       }
-    } else if (!this._extends.match(node.extends)) {
+    } else if (!this._extends.matchValue(node.extends, [...keys, 'extends'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -3936,7 +3936,7 @@ export class DeclareFunctionMatcher extends Matcher<t.DeclareFunction> {
     super();
   }
 
-  match(node: unknown): node is t.DeclareFunction {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.DeclareFunction {
     if (
       !isNode(node) ||
       !t.isDeclareFunction(node)
@@ -3946,7 +3946,7 @@ export class DeclareFunctionMatcher extends Matcher<t.DeclareFunction> {
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -3972,7 +3972,7 @@ export class DeclareInterfaceMatcher extends Matcher<t.DeclareInterface> {
     super();
   }
 
-  match(node: unknown): node is t.DeclareInterface {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.DeclareInterface {
     if (
       !isNode(node) ||
       !t.isDeclareInterface(node)
@@ -3982,7 +3982,7 @@ export class DeclareInterfaceMatcher extends Matcher<t.DeclareInterface> {
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -3995,7 +3995,7 @@ export class DeclareInterfaceMatcher extends Matcher<t.DeclareInterface> {
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
@@ -4009,16 +4009,16 @@ export class DeclareInterfaceMatcher extends Matcher<t.DeclareInterface> {
     } else if (node.extends === null) {
       return false;
     } else if (Array.isArray(this._extends)) {
-      if (!tupleOf<unknown>(...this._extends).match(node.extends)) {
+      if (!tupleOf<unknown>(...this._extends).matchValue(node.extends, [...keys, 'extends'])) {
         return false;
       }
-    } else if (!this._extends.match(node.extends)) {
+    } else if (!this._extends.matchValue(node.extends, [...keys, 'extends'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -4049,7 +4049,7 @@ export class DeclareModuleMatcher extends Matcher<t.DeclareModule> {
     super();
   }
 
-  match(node: unknown): node is t.DeclareModule {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.DeclareModule {
     if (
       !isNode(node) ||
       !t.isDeclareModule(node)
@@ -4059,13 +4059,13 @@ export class DeclareModuleMatcher extends Matcher<t.DeclareModule> {
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -4082,7 +4082,7 @@ export class DeclareModuleMatcher extends Matcher<t.DeclareModule> {
       }
     } else if (node.kind === null) {
       return false;
-    } else if (!this.kind.match(node.kind)) {
+    } else if (!this.kind.matchValue(node.kind, [...keys, 'kind'])) {
       return false;
     }
 
@@ -4109,7 +4109,7 @@ export class DeclareModuleExportsMatcher extends Matcher<t.DeclareModuleExports>
     super();
   }
 
-  match(node: unknown): node is t.DeclareModuleExports {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.DeclareModuleExports {
     if (
       !isNode(node) ||
       !t.isDeclareModuleExports(node)
@@ -4119,7 +4119,7 @@ export class DeclareModuleExportsMatcher extends Matcher<t.DeclareModuleExports>
 
     if (typeof this.typeAnnotation === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -4144,7 +4144,7 @@ export class DeclareTypeAliasMatcher extends Matcher<t.DeclareTypeAlias> {
     super();
   }
 
-  match(node: unknown): node is t.DeclareTypeAlias {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.DeclareTypeAlias {
     if (
       !isNode(node) ||
       !t.isDeclareTypeAlias(node)
@@ -4154,7 +4154,7 @@ export class DeclareTypeAliasMatcher extends Matcher<t.DeclareTypeAlias> {
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -4167,13 +4167,13 @@ export class DeclareTypeAliasMatcher extends Matcher<t.DeclareTypeAlias> {
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
     if (typeof this.right === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.right.match(node.right)) {
+    } else if (!this.right.matchValue(node.right, [...keys, 'right'])) {
       return false;
     }
 
@@ -4202,7 +4202,7 @@ export class DeclareOpaqueTypeMatcher extends Matcher<t.DeclareOpaqueType> {
     super();
   }
 
-  match(node: unknown): node is t.DeclareOpaqueType {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.DeclareOpaqueType {
     if (
       !isNode(node) ||
       !t.isDeclareOpaqueType(node)
@@ -4212,7 +4212,7 @@ export class DeclareOpaqueTypeMatcher extends Matcher<t.DeclareOpaqueType> {
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -4225,7 +4225,7 @@ export class DeclareOpaqueTypeMatcher extends Matcher<t.DeclareOpaqueType> {
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
@@ -4238,7 +4238,7 @@ export class DeclareOpaqueTypeMatcher extends Matcher<t.DeclareOpaqueType> {
       }
     } else if (node.supertype === null) {
       return false;
-    } else if (!this.supertype.match(node.supertype)) {
+    } else if (!this.supertype.matchValue(node.supertype, [...keys, 'supertype'])) {
       return false;
     }
 
@@ -4265,7 +4265,7 @@ export class DeclareVariableMatcher extends Matcher<t.DeclareVariable> {
     super();
   }
 
-  match(node: unknown): node is t.DeclareVariable {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.DeclareVariable {
     if (
       !isNode(node) ||
       !t.isDeclareVariable(node)
@@ -4275,7 +4275,7 @@ export class DeclareVariableMatcher extends Matcher<t.DeclareVariable> {
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -4300,7 +4300,7 @@ export class DeclareExportDeclarationMatcher extends Matcher<t.DeclareExportDecl
     super();
   }
 
-  match(node: unknown): node is t.DeclareExportDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.DeclareExportDeclaration {
     if (
       !isNode(node) ||
       !t.isDeclareExportDeclaration(node)
@@ -4317,7 +4317,7 @@ export class DeclareExportDeclarationMatcher extends Matcher<t.DeclareExportDecl
       }
     } else if (node.declaration === null) {
       return false;
-    } else if (!this.declaration.match(node.declaration)) {
+    } else if (!this.declaration.matchValue(node.declaration, [...keys, 'declaration'])) {
       return false;
     }
 
@@ -4331,10 +4331,10 @@ export class DeclareExportDeclarationMatcher extends Matcher<t.DeclareExportDecl
     } else if (node.specifiers === null) {
       return false;
     } else if (Array.isArray(this.specifiers)) {
-      if (!tupleOf<unknown>(...this.specifiers).match(node.specifiers)) {
+      if (!tupleOf<unknown>(...this.specifiers).matchValue(node.specifiers, [...keys, 'specifiers'])) {
         return false;
       }
-    } else if (!this.specifiers.match(node.specifiers)) {
+    } else if (!this.specifiers.matchValue(node.specifiers, [...keys, 'specifiers'])) {
       return false;
     }
 
@@ -4347,7 +4347,7 @@ export class DeclareExportDeclarationMatcher extends Matcher<t.DeclareExportDecl
       }
     } else if (node.source === null) {
       return false;
-    } else if (!this.source.match(node.source)) {
+    } else if (!this.source.matchValue(node.source, [...keys, 'source'])) {
       return false;
     }
 
@@ -4374,7 +4374,7 @@ export class DeclareExportAllDeclarationMatcher extends Matcher<t.DeclareExportA
     super();
   }
 
-  match(node: unknown): node is t.DeclareExportAllDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.DeclareExportAllDeclaration {
     if (
       !isNode(node) ||
       !t.isDeclareExportAllDeclaration(node)
@@ -4384,7 +4384,7 @@ export class DeclareExportAllDeclarationMatcher extends Matcher<t.DeclareExportA
 
     if (typeof this.source === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.source.match(node.source)) {
+    } else if (!this.source.matchValue(node.source, [...keys, 'source'])) {
       return false;
     }
 
@@ -4407,7 +4407,7 @@ export class DeclaredPredicateMatcher extends Matcher<t.DeclaredPredicate> {
     super();
   }
 
-  match(node: unknown): node is t.DeclaredPredicate {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.DeclaredPredicate {
     if (
       !isNode(node) ||
       !t.isDeclaredPredicate(node)
@@ -4417,7 +4417,7 @@ export class DeclaredPredicateMatcher extends Matcher<t.DeclaredPredicate> {
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -4439,7 +4439,7 @@ export class ExistsTypeAnnotationMatcher extends Matcher<t.ExistsTypeAnnotation>
     super();
   }
 
-  match(node: unknown): node is t.ExistsTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ExistsTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isExistsTypeAnnotation(node)
@@ -4467,7 +4467,7 @@ export class FunctionTypeAnnotationMatcher extends Matcher<t.FunctionTypeAnnotat
     super();
   }
 
-  match(node: unknown): node is t.FunctionTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.FunctionTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isFunctionTypeAnnotation(node)
@@ -4484,17 +4484,17 @@ export class FunctionTypeAnnotationMatcher extends Matcher<t.FunctionTypeAnnotat
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
     if (typeof this.params === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.params)) {
-      if (!tupleOf<unknown>(...this.params).match(node.params)) {
+      if (!tupleOf<unknown>(...this.params).matchValue(node.params, [...keys, 'params'])) {
         return false;
       }
-    } else if (!this.params.match(node.params)) {
+    } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
       return false;
     }
 
@@ -4507,13 +4507,13 @@ export class FunctionTypeAnnotationMatcher extends Matcher<t.FunctionTypeAnnotat
       }
     } else if (node.rest === null) {
       return false;
-    } else if (!this.rest.match(node.rest)) {
+    } else if (!this.rest.matchValue(node.rest, [...keys, 'rest'])) {
       return false;
     }
 
     if (typeof this.returnType === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.returnType.match(node.returnType)) {
+    } else if (!this.returnType.matchValue(node.returnType, [...keys, 'returnType'])) {
       return false;
     }
 
@@ -4543,7 +4543,7 @@ export class FunctionTypeParamMatcher extends Matcher<t.FunctionTypeParam> {
     super();
   }
 
-  match(node: unknown): node is t.FunctionTypeParam {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.FunctionTypeParam {
     if (
       !isNode(node) ||
       !t.isFunctionTypeParam(node)
@@ -4560,13 +4560,13 @@ export class FunctionTypeParamMatcher extends Matcher<t.FunctionTypeParam> {
       }
     } else if (node.name === null) {
       return false;
-    } else if (!this.name.match(node.name)) {
+    } else if (!this.name.matchValue(node.name, [...keys, 'name'])) {
       return false;
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -4592,7 +4592,7 @@ export class GenericTypeAnnotationMatcher extends Matcher<t.GenericTypeAnnotatio
     super();
   }
 
-  match(node: unknown): node is t.GenericTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.GenericTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isGenericTypeAnnotation(node)
@@ -4602,7 +4602,7 @@ export class GenericTypeAnnotationMatcher extends Matcher<t.GenericTypeAnnotatio
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -4615,7 +4615,7 @@ export class GenericTypeAnnotationMatcher extends Matcher<t.GenericTypeAnnotatio
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
@@ -4639,7 +4639,7 @@ export class InferredPredicateMatcher extends Matcher<t.InferredPredicate> {
     super();
   }
 
-  match(node: unknown): node is t.InferredPredicate {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.InferredPredicate {
     if (
       !isNode(node) ||
       !t.isInferredPredicate(node)
@@ -4665,7 +4665,7 @@ export class InterfaceExtendsMatcher extends Matcher<t.InterfaceExtends> {
     super();
   }
 
-  match(node: unknown): node is t.InterfaceExtends {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.InterfaceExtends {
     if (
       !isNode(node) ||
       !t.isInterfaceExtends(node)
@@ -4675,7 +4675,7 @@ export class InterfaceExtendsMatcher extends Matcher<t.InterfaceExtends> {
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -4688,7 +4688,7 @@ export class InterfaceExtendsMatcher extends Matcher<t.InterfaceExtends> {
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
@@ -4716,7 +4716,7 @@ export class InterfaceDeclarationMatcher extends Matcher<t.InterfaceDeclaration>
     super();
   }
 
-  match(node: unknown): node is t.InterfaceDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.InterfaceDeclaration {
     if (
       !isNode(node) ||
       !t.isInterfaceDeclaration(node)
@@ -4726,7 +4726,7 @@ export class InterfaceDeclarationMatcher extends Matcher<t.InterfaceDeclaration>
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -4739,7 +4739,7 @@ export class InterfaceDeclarationMatcher extends Matcher<t.InterfaceDeclaration>
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
@@ -4753,16 +4753,16 @@ export class InterfaceDeclarationMatcher extends Matcher<t.InterfaceDeclaration>
     } else if (node.extends === null) {
       return false;
     } else if (Array.isArray(this._extends)) {
-      if (!tupleOf<unknown>(...this._extends).match(node.extends)) {
+      if (!tupleOf<unknown>(...this._extends).matchValue(node.extends, [...keys, 'extends'])) {
         return false;
       }
-    } else if (!this._extends.match(node.extends)) {
+    } else if (!this._extends.matchValue(node.extends, [...keys, 'extends'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -4792,7 +4792,7 @@ export class InterfaceTypeAnnotationMatcher extends Matcher<t.InterfaceTypeAnnot
     super();
   }
 
-  match(node: unknown): node is t.InterfaceTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.InterfaceTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isInterfaceTypeAnnotation(node)
@@ -4810,16 +4810,16 @@ export class InterfaceTypeAnnotationMatcher extends Matcher<t.InterfaceTypeAnnot
     } else if (node.extends === null) {
       return false;
     } else if (Array.isArray(this._extends)) {
-      if (!tupleOf<unknown>(...this._extends).match(node.extends)) {
+      if (!tupleOf<unknown>(...this._extends).matchValue(node.extends, [...keys, 'extends'])) {
         return false;
       }
-    } else if (!this._extends.match(node.extends)) {
+    } else if (!this._extends.matchValue(node.extends, [...keys, 'extends'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -4844,7 +4844,7 @@ export class IntersectionTypeAnnotationMatcher extends Matcher<t.IntersectionTyp
     super();
   }
 
-  match(node: unknown): node is t.IntersectionTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.IntersectionTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isIntersectionTypeAnnotation(node)
@@ -4855,10 +4855,10 @@ export class IntersectionTypeAnnotationMatcher extends Matcher<t.IntersectionTyp
     if (typeof this.types === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.types)) {
-      if (!tupleOf<unknown>(...this.types).match(node.types)) {
+      if (!tupleOf<unknown>(...this.types).matchValue(node.types, [...keys, 'types'])) {
         return false;
       }
-    } else if (!this.types.match(node.types)) {
+    } else if (!this.types.matchValue(node.types, [...keys, 'types'])) {
       return false;
     }
 
@@ -4880,7 +4880,7 @@ export class MixedTypeAnnotationMatcher extends Matcher<t.MixedTypeAnnotation> {
     super();
   }
 
-  match(node: unknown): node is t.MixedTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.MixedTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isMixedTypeAnnotation(node)
@@ -4904,7 +4904,7 @@ export class EmptyTypeAnnotationMatcher extends Matcher<t.EmptyTypeAnnotation> {
     super();
   }
 
-  match(node: unknown): node is t.EmptyTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.EmptyTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isEmptyTypeAnnotation(node)
@@ -4929,7 +4929,7 @@ export class NullableTypeAnnotationMatcher extends Matcher<t.NullableTypeAnnotat
     super();
   }
 
-  match(node: unknown): node is t.NullableTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.NullableTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isNullableTypeAnnotation(node)
@@ -4939,7 +4939,7 @@ export class NullableTypeAnnotationMatcher extends Matcher<t.NullableTypeAnnotat
 
     if (typeof this.typeAnnotation === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -4962,7 +4962,7 @@ export class NumberLiteralTypeAnnotationMatcher extends Matcher<t.NumberLiteralT
     super();
   }
 
-  match(node: unknown): node is t.NumberLiteralTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.NumberLiteralTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isNumberLiteralTypeAnnotation(node)
@@ -4976,7 +4976,7 @@ export class NumberLiteralTypeAnnotationMatcher extends Matcher<t.NumberLiteralT
       if (this.value !== node.value) {
         return false;
       }
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -4998,7 +4998,7 @@ export class NumberTypeAnnotationMatcher extends Matcher<t.NumberTypeAnnotation>
     super();
   }
 
-  match(node: unknown): node is t.NumberTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.NumberTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isNumberTypeAnnotation(node)
@@ -5027,7 +5027,7 @@ export class ObjectTypeAnnotationMatcher extends Matcher<t.ObjectTypeAnnotation>
     super();
   }
 
-  match(node: unknown): node is t.ObjectTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ObjectTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isObjectTypeAnnotation(node)
@@ -5038,10 +5038,10 @@ export class ObjectTypeAnnotationMatcher extends Matcher<t.ObjectTypeAnnotation>
     if (typeof this.properties === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.properties)) {
-      if (!tupleOf<unknown>(...this.properties).match(node.properties)) {
+      if (!tupleOf<unknown>(...this.properties).matchValue(node.properties, [...keys, 'properties'])) {
         return false;
       }
-    } else if (!this.properties.match(node.properties)) {
+    } else if (!this.properties.matchValue(node.properties, [...keys, 'properties'])) {
       return false;
     }
 
@@ -5055,10 +5055,10 @@ export class ObjectTypeAnnotationMatcher extends Matcher<t.ObjectTypeAnnotation>
     } else if (node.indexers === null) {
       return false;
     } else if (Array.isArray(this.indexers)) {
-      if (!tupleOf<unknown>(...this.indexers).match(node.indexers)) {
+      if (!tupleOf<unknown>(...this.indexers).matchValue(node.indexers, [...keys, 'indexers'])) {
         return false;
       }
-    } else if (!this.indexers.match(node.indexers)) {
+    } else if (!this.indexers.matchValue(node.indexers, [...keys, 'indexers'])) {
       return false;
     }
 
@@ -5072,10 +5072,10 @@ export class ObjectTypeAnnotationMatcher extends Matcher<t.ObjectTypeAnnotation>
     } else if (node.callProperties === null) {
       return false;
     } else if (Array.isArray(this.callProperties)) {
-      if (!tupleOf<unknown>(...this.callProperties).match(node.callProperties)) {
+      if (!tupleOf<unknown>(...this.callProperties).matchValue(node.callProperties, [...keys, 'callProperties'])) {
         return false;
       }
-    } else if (!this.callProperties.match(node.callProperties)) {
+    } else if (!this.callProperties.matchValue(node.callProperties, [...keys, 'callProperties'])) {
       return false;
     }
 
@@ -5089,10 +5089,10 @@ export class ObjectTypeAnnotationMatcher extends Matcher<t.ObjectTypeAnnotation>
     } else if (node.internalSlots === null) {
       return false;
     } else if (Array.isArray(this.internalSlots)) {
-      if (!tupleOf<unknown>(...this.internalSlots).match(node.internalSlots)) {
+      if (!tupleOf<unknown>(...this.internalSlots).matchValue(node.internalSlots, [...keys, 'internalSlots'])) {
         return false;
       }
-    } else if (!this.internalSlots.match(node.internalSlots)) {
+    } else if (!this.internalSlots.matchValue(node.internalSlots, [...keys, 'internalSlots'])) {
       return false;
     }
 
@@ -5102,7 +5102,7 @@ export class ObjectTypeAnnotationMatcher extends Matcher<t.ObjectTypeAnnotation>
       if (this.exact !== node.exact) {
         return false;
       }
-    } else if (!this.exact.match(node.exact)) {
+    } else if (!this.exact.matchValue(node.exact, [...keys, 'exact'])) {
       return false;
     }
 
@@ -5137,7 +5137,7 @@ export class ObjectTypeInternalSlotMatcher extends Matcher<t.ObjectTypeInternalS
     super();
   }
 
-  match(node: unknown): node is t.ObjectTypeInternalSlot {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ObjectTypeInternalSlot {
     if (
       !isNode(node) ||
       !t.isObjectTypeInternalSlot(node)
@@ -5147,13 +5147,13 @@ export class ObjectTypeInternalSlotMatcher extends Matcher<t.ObjectTypeInternalS
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -5163,7 +5163,7 @@ export class ObjectTypeInternalSlotMatcher extends Matcher<t.ObjectTypeInternalS
       if (this.optional !== node.optional) {
         return false;
       }
-    } else if (!this.optional.match(node.optional)) {
+    } else if (!this.optional.matchValue(node.optional, [...keys, 'optional'])) {
       return false;
     }
 
@@ -5173,7 +5173,7 @@ export class ObjectTypeInternalSlotMatcher extends Matcher<t.ObjectTypeInternalS
       if (this._static !== node.static) {
         return false;
       }
-    } else if (!this._static.match(node.static)) {
+    } else if (!this._static.matchValue(node.static, [...keys, 'static'])) {
       return false;
     }
 
@@ -5183,7 +5183,7 @@ export class ObjectTypeInternalSlotMatcher extends Matcher<t.ObjectTypeInternalS
       if (this.method !== node.method) {
         return false;
       }
-    } else if (!this.method.match(node.method)) {
+    } else if (!this.method.matchValue(node.method, [...keys, 'method'])) {
       return false;
     }
 
@@ -5214,7 +5214,7 @@ export class ObjectTypeCallPropertyMatcher extends Matcher<t.ObjectTypeCallPrope
     super();
   }
 
-  match(node: unknown): node is t.ObjectTypeCallProperty {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ObjectTypeCallProperty {
     if (
       !isNode(node) ||
       !t.isObjectTypeCallProperty(node)
@@ -5224,7 +5224,7 @@ export class ObjectTypeCallPropertyMatcher extends Matcher<t.ObjectTypeCallPrope
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -5250,7 +5250,7 @@ export class ObjectTypeIndexerMatcher extends Matcher<t.ObjectTypeIndexer> {
     super();
   }
 
-  match(node: unknown): node is t.ObjectTypeIndexer {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ObjectTypeIndexer {
     if (
       !isNode(node) ||
       !t.isObjectTypeIndexer(node)
@@ -5267,19 +5267,19 @@ export class ObjectTypeIndexerMatcher extends Matcher<t.ObjectTypeIndexer> {
       }
     } else if (node.id === null) {
       return false;
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.key.match(node.key)) {
+    } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
       return false;
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -5292,7 +5292,7 @@ export class ObjectTypeIndexerMatcher extends Matcher<t.ObjectTypeIndexer> {
       }
     } else if (node.variance === null) {
       return false;
-    } else if (!this.variance.match(node.variance)) {
+    } else if (!this.variance.matchValue(node.variance, [...keys, 'variance'])) {
       return false;
     }
 
@@ -5323,7 +5323,7 @@ export class ObjectTypePropertyMatcher extends Matcher<t.ObjectTypeProperty> {
     super();
   }
 
-  match(node: unknown): node is t.ObjectTypeProperty {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ObjectTypeProperty {
     if (
       !isNode(node) ||
       !t.isObjectTypeProperty(node)
@@ -5333,13 +5333,13 @@ export class ObjectTypePropertyMatcher extends Matcher<t.ObjectTypeProperty> {
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.key.match(node.key)) {
+    } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
       return false;
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -5352,7 +5352,7 @@ export class ObjectTypePropertyMatcher extends Matcher<t.ObjectTypeProperty> {
       }
     } else if (node.variance === null) {
       return false;
-    } else if (!this.variance.match(node.variance)) {
+    } else if (!this.variance.matchValue(node.variance, [...keys, 'variance'])) {
       return false;
     }
 
@@ -5379,7 +5379,7 @@ export class ObjectTypeSpreadPropertyMatcher extends Matcher<t.ObjectTypeSpreadP
     super();
   }
 
-  match(node: unknown): node is t.ObjectTypeSpreadProperty {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ObjectTypeSpreadProperty {
     if (
       !isNode(node) ||
       !t.isObjectTypeSpreadProperty(node)
@@ -5389,7 +5389,7 @@ export class ObjectTypeSpreadPropertyMatcher extends Matcher<t.ObjectTypeSpreadP
 
     if (typeof this.argument === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.argument.match(node.argument)) {
+    } else if (!this.argument.matchValue(node.argument, [...keys, 'argument'])) {
       return false;
     }
 
@@ -5415,7 +5415,7 @@ export class OpaqueTypeMatcher extends Matcher<t.OpaqueType> {
     super();
   }
 
-  match(node: unknown): node is t.OpaqueType {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.OpaqueType {
     if (
       !isNode(node) ||
       !t.isOpaqueType(node)
@@ -5425,7 +5425,7 @@ export class OpaqueTypeMatcher extends Matcher<t.OpaqueType> {
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -5438,7 +5438,7 @@ export class OpaqueTypeMatcher extends Matcher<t.OpaqueType> {
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
@@ -5451,13 +5451,13 @@ export class OpaqueTypeMatcher extends Matcher<t.OpaqueType> {
       }
     } else if (node.supertype === null) {
       return false;
-    } else if (!this.supertype.match(node.supertype)) {
+    } else if (!this.supertype.matchValue(node.supertype, [...keys, 'supertype'])) {
       return false;
     }
 
     if (typeof this.impltype === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.impltype.match(node.impltype)) {
+    } else if (!this.impltype.matchValue(node.impltype, [...keys, 'impltype'])) {
       return false;
     }
 
@@ -5487,7 +5487,7 @@ export class QualifiedTypeIdentifierMatcher extends Matcher<t.QualifiedTypeIdent
     super();
   }
 
-  match(node: unknown): node is t.QualifiedTypeIdentifier {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.QualifiedTypeIdentifier {
     if (
       !isNode(node) ||
       !t.isQualifiedTypeIdentifier(node)
@@ -5497,13 +5497,13 @@ export class QualifiedTypeIdentifierMatcher extends Matcher<t.QualifiedTypeIdent
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
     if (typeof this.qualification === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.qualification.match(node.qualification)) {
+    } else if (!this.qualification.matchValue(node.qualification, [...keys, 'qualification'])) {
       return false;
     }
 
@@ -5528,7 +5528,7 @@ export class StringLiteralTypeAnnotationMatcher extends Matcher<t.StringLiteralT
     super();
   }
 
-  match(node: unknown): node is t.StringLiteralTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.StringLiteralTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isStringLiteralTypeAnnotation(node)
@@ -5542,7 +5542,7 @@ export class StringLiteralTypeAnnotationMatcher extends Matcher<t.StringLiteralT
       if (this.value !== node.value) {
         return false;
       }
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -5564,7 +5564,7 @@ export class StringTypeAnnotationMatcher extends Matcher<t.StringTypeAnnotation>
     super();
   }
 
-  match(node: unknown): node is t.StringTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.StringTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isStringTypeAnnotation(node)
@@ -5588,7 +5588,7 @@ export class ThisTypeAnnotationMatcher extends Matcher<t.ThisTypeAnnotation> {
     super();
   }
 
-  match(node: unknown): node is t.ThisTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ThisTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isThisTypeAnnotation(node)
@@ -5613,7 +5613,7 @@ export class TupleTypeAnnotationMatcher extends Matcher<t.TupleTypeAnnotation> {
     super();
   }
 
-  match(node: unknown): node is t.TupleTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TupleTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isTupleTypeAnnotation(node)
@@ -5624,10 +5624,10 @@ export class TupleTypeAnnotationMatcher extends Matcher<t.TupleTypeAnnotation> {
     if (typeof this.types === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.types)) {
-      if (!tupleOf<unknown>(...this.types).match(node.types)) {
+      if (!tupleOf<unknown>(...this.types).matchValue(node.types, [...keys, 'types'])) {
         return false;
       }
-    } else if (!this.types.match(node.types)) {
+    } else if (!this.types.matchValue(node.types, [...keys, 'types'])) {
       return false;
     }
 
@@ -5650,7 +5650,7 @@ export class TypeofTypeAnnotationMatcher extends Matcher<t.TypeofTypeAnnotation>
     super();
   }
 
-  match(node: unknown): node is t.TypeofTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TypeofTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isTypeofTypeAnnotation(node)
@@ -5660,7 +5660,7 @@ export class TypeofTypeAnnotationMatcher extends Matcher<t.TypeofTypeAnnotation>
 
     if (typeof this.argument === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.argument.match(node.argument)) {
+    } else if (!this.argument.matchValue(node.argument, [...keys, 'argument'])) {
       return false;
     }
 
@@ -5685,7 +5685,7 @@ export class TypeAliasMatcher extends Matcher<t.TypeAlias> {
     super();
   }
 
-  match(node: unknown): node is t.TypeAlias {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TypeAlias {
     if (
       !isNode(node) ||
       !t.isTypeAlias(node)
@@ -5695,7 +5695,7 @@ export class TypeAliasMatcher extends Matcher<t.TypeAlias> {
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -5708,13 +5708,13 @@ export class TypeAliasMatcher extends Matcher<t.TypeAlias> {
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
     if (typeof this.right === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.right.match(node.right)) {
+    } else if (!this.right.matchValue(node.right, [...keys, 'right'])) {
       return false;
     }
 
@@ -5741,7 +5741,7 @@ export class TypeAnnotationMatcher extends Matcher<t.TypeAnnotation> {
     super();
   }
 
-  match(node: unknown): node is t.TypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TypeAnnotation {
     if (
       !isNode(node) ||
       !t.isTypeAnnotation(node)
@@ -5751,7 +5751,7 @@ export class TypeAnnotationMatcher extends Matcher<t.TypeAnnotation> {
 
     if (typeof this.typeAnnotation === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -5775,7 +5775,7 @@ export class TypeCastExpressionMatcher extends Matcher<t.TypeCastExpression> {
     super();
   }
 
-  match(node: unknown): node is t.TypeCastExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TypeCastExpression {
     if (
       !isNode(node) ||
       !t.isTypeCastExpression(node)
@@ -5785,13 +5785,13 @@ export class TypeCastExpressionMatcher extends Matcher<t.TypeCastExpression> {
 
     if (typeof this.expression === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.expression.match(node.expression)) {
+    } else if (!this.expression.matchValue(node.expression, [...keys, 'expression'])) {
       return false;
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -5818,7 +5818,7 @@ export class TypeParameterMatcher extends Matcher<t.TypeParameter> {
     super();
   }
 
-  match(node: unknown): node is t.TypeParameter {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TypeParameter {
     if (
       !isNode(node) ||
       !t.isTypeParameter(node)
@@ -5835,7 +5835,7 @@ export class TypeParameterMatcher extends Matcher<t.TypeParameter> {
       }
     } else if (node.bound === null) {
       return false;
-    } else if (!this.bound.match(node.bound)) {
+    } else if (!this.bound.matchValue(node.bound, [...keys, 'bound'])) {
       return false;
     }
 
@@ -5848,7 +5848,7 @@ export class TypeParameterMatcher extends Matcher<t.TypeParameter> {
       }
     } else if (node.default === null) {
       return false;
-    } else if (!this._default.match(node.default)) {
+    } else if (!this._default.matchValue(node.default, [...keys, 'default'])) {
       return false;
     }
 
@@ -5861,7 +5861,7 @@ export class TypeParameterMatcher extends Matcher<t.TypeParameter> {
       }
     } else if (node.variance === null) {
       return false;
-    } else if (!this.variance.match(node.variance)) {
+    } else if (!this.variance.matchValue(node.variance, [...keys, 'variance'])) {
       return false;
     }
 
@@ -5888,7 +5888,7 @@ export class TypeParameterDeclarationMatcher extends Matcher<t.TypeParameterDecl
     super();
   }
 
-  match(node: unknown): node is t.TypeParameterDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TypeParameterDeclaration {
     if (
       !isNode(node) ||
       !t.isTypeParameterDeclaration(node)
@@ -5899,10 +5899,10 @@ export class TypeParameterDeclarationMatcher extends Matcher<t.TypeParameterDecl
     if (typeof this.params === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.params)) {
-      if (!tupleOf<unknown>(...this.params).match(node.params)) {
+      if (!tupleOf<unknown>(...this.params).matchValue(node.params, [...keys, 'params'])) {
         return false;
       }
-    } else if (!this.params.match(node.params)) {
+    } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
       return false;
     }
 
@@ -5925,7 +5925,7 @@ export class TypeParameterInstantiationMatcher extends Matcher<t.TypeParameterIn
     super();
   }
 
-  match(node: unknown): node is t.TypeParameterInstantiation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TypeParameterInstantiation {
     if (
       !isNode(node) ||
       !t.isTypeParameterInstantiation(node)
@@ -5936,10 +5936,10 @@ export class TypeParameterInstantiationMatcher extends Matcher<t.TypeParameterIn
     if (typeof this.params === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.params)) {
-      if (!tupleOf<unknown>(...this.params).match(node.params)) {
+      if (!tupleOf<unknown>(...this.params).matchValue(node.params, [...keys, 'params'])) {
         return false;
       }
-    } else if (!this.params.match(node.params)) {
+    } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
       return false;
     }
 
@@ -5962,7 +5962,7 @@ export class UnionTypeAnnotationMatcher extends Matcher<t.UnionTypeAnnotation> {
     super();
   }
 
-  match(node: unknown): node is t.UnionTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.UnionTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isUnionTypeAnnotation(node)
@@ -5973,10 +5973,10 @@ export class UnionTypeAnnotationMatcher extends Matcher<t.UnionTypeAnnotation> {
     if (typeof this.types === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.types)) {
-      if (!tupleOf<unknown>(...this.types).match(node.types)) {
+      if (!tupleOf<unknown>(...this.types).matchValue(node.types, [...keys, 'types'])) {
         return false;
       }
-    } else if (!this.types.match(node.types)) {
+    } else if (!this.types.matchValue(node.types, [...keys, 'types'])) {
       return false;
     }
 
@@ -5999,7 +5999,7 @@ export class VarianceMatcher extends Matcher<t.Variance> {
     super();
   }
 
-  match(node: unknown): node is t.Variance {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.Variance {
     if (
       !isNode(node) ||
       !t.isVariance(node)
@@ -6013,7 +6013,7 @@ export class VarianceMatcher extends Matcher<t.Variance> {
       if (this.kind !== node.kind) {
         return false;
       }
-    } else if (!this.kind.match(node.kind)) {
+    } else if (!this.kind.matchValue(node.kind, [...keys, 'kind'])) {
       return false;
     }
 
@@ -6035,7 +6035,7 @@ export class VoidTypeAnnotationMatcher extends Matcher<t.VoidTypeAnnotation> {
     super();
   }
 
-  match(node: unknown): node is t.VoidTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.VoidTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isVoidTypeAnnotation(node)
@@ -6061,7 +6061,7 @@ export class JSXAttributeMatcher extends Matcher<t.JSXAttribute> {
     super();
   }
 
-  match(node: unknown): node is t.JSXAttribute {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.JSXAttribute {
     if (
       !isNode(node) ||
       !t.isJSXAttribute(node)
@@ -6071,7 +6071,7 @@ export class JSXAttributeMatcher extends Matcher<t.JSXAttribute> {
 
     if (typeof this.name === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.name.match(node.name)) {
+    } else if (!this.name.matchValue(node.name, [...keys, 'name'])) {
       return false;
     }
 
@@ -6084,7 +6084,7 @@ export class JSXAttributeMatcher extends Matcher<t.JSXAttribute> {
       }
     } else if (node.value === null) {
       return false;
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -6109,7 +6109,7 @@ export class JSXClosingElementMatcher extends Matcher<t.JSXClosingElement> {
     super();
   }
 
-  match(node: unknown): node is t.JSXClosingElement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.JSXClosingElement {
     if (
       !isNode(node) ||
       !t.isJSXClosingElement(node)
@@ -6119,7 +6119,7 @@ export class JSXClosingElementMatcher extends Matcher<t.JSXClosingElement> {
 
     if (typeof this.name === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.name.match(node.name)) {
+    } else if (!this.name.matchValue(node.name, [...keys, 'name'])) {
       return false;
     }
 
@@ -6145,7 +6145,7 @@ export class JSXElementMatcher extends Matcher<t.JSXElement> {
     super();
   }
 
-  match(node: unknown): node is t.JSXElement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.JSXElement {
     if (
       !isNode(node) ||
       !t.isJSXElement(node)
@@ -6155,7 +6155,7 @@ export class JSXElementMatcher extends Matcher<t.JSXElement> {
 
     if (typeof this.openingElement === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.openingElement.match(node.openingElement)) {
+    } else if (!this.openingElement.matchValue(node.openingElement, [...keys, 'openingElement'])) {
       return false;
     }
 
@@ -6168,23 +6168,23 @@ export class JSXElementMatcher extends Matcher<t.JSXElement> {
       }
     } else if (node.closingElement === null) {
       return false;
-    } else if (!this.closingElement.match(node.closingElement)) {
+    } else if (!this.closingElement.matchValue(node.closingElement, [...keys, 'closingElement'])) {
       return false;
     }
 
     if (typeof this.children === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.children)) {
-      if (!tupleOf<unknown>(...this.children).match(node.children)) {
+      if (!tupleOf<unknown>(...this.children).matchValue(node.children, [...keys, 'children'])) {
         return false;
       }
-    } else if (!this.children.match(node.children)) {
+    } else if (!this.children.matchValue(node.children, [...keys, 'children'])) {
       return false;
     }
 
     if (typeof this.selfClosing === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.selfClosing.match(node.selfClosing)) {
+    } else if (!this.selfClosing.matchValue(node.selfClosing, [...keys, 'selfClosing'])) {
       return false;
     }
 
@@ -6212,7 +6212,7 @@ export class JSXEmptyExpressionMatcher extends Matcher<t.JSXEmptyExpression> {
     super();
   }
 
-  match(node: unknown): node is t.JSXEmptyExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.JSXEmptyExpression {
     if (
       !isNode(node) ||
       !t.isJSXEmptyExpression(node)
@@ -6237,7 +6237,7 @@ export class JSXExpressionContainerMatcher extends Matcher<t.JSXExpressionContai
     super();
   }
 
-  match(node: unknown): node is t.JSXExpressionContainer {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.JSXExpressionContainer {
     if (
       !isNode(node) ||
       !t.isJSXExpressionContainer(node)
@@ -6247,7 +6247,7 @@ export class JSXExpressionContainerMatcher extends Matcher<t.JSXExpressionContai
 
     if (typeof this.expression === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.expression.match(node.expression)) {
+    } else if (!this.expression.matchValue(node.expression, [...keys, 'expression'])) {
       return false;
     }
 
@@ -6270,7 +6270,7 @@ export class JSXSpreadChildMatcher extends Matcher<t.JSXSpreadChild> {
     super();
   }
 
-  match(node: unknown): node is t.JSXSpreadChild {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.JSXSpreadChild {
     if (
       !isNode(node) ||
       !t.isJSXSpreadChild(node)
@@ -6280,7 +6280,7 @@ export class JSXSpreadChildMatcher extends Matcher<t.JSXSpreadChild> {
 
     if (typeof this.expression === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.expression.match(node.expression)) {
+    } else if (!this.expression.matchValue(node.expression, [...keys, 'expression'])) {
       return false;
     }
 
@@ -6303,7 +6303,7 @@ export class JSXIdentifierMatcher extends Matcher<t.JSXIdentifier> {
     super();
   }
 
-  match(node: unknown): node is t.JSXIdentifier {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.JSXIdentifier {
     if (
       !isNode(node) ||
       !t.isJSXIdentifier(node)
@@ -6317,7 +6317,7 @@ export class JSXIdentifierMatcher extends Matcher<t.JSXIdentifier> {
       if (this.name !== node.name) {
         return false;
       }
-    } else if (!this.name.match(node.name)) {
+    } else if (!this.name.matchValue(node.name, [...keys, 'name'])) {
       return false;
     }
 
@@ -6341,7 +6341,7 @@ export class JSXMemberExpressionMatcher extends Matcher<t.JSXMemberExpression> {
     super();
   }
 
-  match(node: unknown): node is t.JSXMemberExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.JSXMemberExpression {
     if (
       !isNode(node) ||
       !t.isJSXMemberExpression(node)
@@ -6351,13 +6351,13 @@ export class JSXMemberExpressionMatcher extends Matcher<t.JSXMemberExpression> {
 
     if (typeof this.object === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.object.match(node.object)) {
+    } else if (!this.object.matchValue(node.object, [...keys, 'object'])) {
       return false;
     }
 
     if (typeof this.property === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.property.match(node.property)) {
+    } else if (!this.property.matchValue(node.property, [...keys, 'property'])) {
       return false;
     }
 
@@ -6383,7 +6383,7 @@ export class JSXNamespacedNameMatcher extends Matcher<t.JSXNamespacedName> {
     super();
   }
 
-  match(node: unknown): node is t.JSXNamespacedName {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.JSXNamespacedName {
     if (
       !isNode(node) ||
       !t.isJSXNamespacedName(node)
@@ -6393,13 +6393,13 @@ export class JSXNamespacedNameMatcher extends Matcher<t.JSXNamespacedName> {
 
     if (typeof this.namespace === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.namespace.match(node.namespace)) {
+    } else if (!this.namespace.matchValue(node.namespace, [...keys, 'namespace'])) {
       return false;
     }
 
     if (typeof this.name === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.name.match(node.name)) {
+    } else if (!this.name.matchValue(node.name, [...keys, 'name'])) {
       return false;
     }
 
@@ -6426,7 +6426,7 @@ export class JSXOpeningElementMatcher extends Matcher<t.JSXOpeningElement> {
     super();
   }
 
-  match(node: unknown): node is t.JSXOpeningElement {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.JSXOpeningElement {
     if (
       !isNode(node) ||
       !t.isJSXOpeningElement(node)
@@ -6436,17 +6436,17 @@ export class JSXOpeningElementMatcher extends Matcher<t.JSXOpeningElement> {
 
     if (typeof this.name === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.name.match(node.name)) {
+    } else if (!this.name.matchValue(node.name, [...keys, 'name'])) {
       return false;
     }
 
     if (typeof this.attributes === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.attributes)) {
-      if (!tupleOf<unknown>(...this.attributes).match(node.attributes)) {
+      if (!tupleOf<unknown>(...this.attributes).matchValue(node.attributes, [...keys, 'attributes'])) {
         return false;
       }
-    } else if (!this.attributes.match(node.attributes)) {
+    } else if (!this.attributes.matchValue(node.attributes, [...keys, 'attributes'])) {
       return false;
     }
 
@@ -6456,7 +6456,7 @@ export class JSXOpeningElementMatcher extends Matcher<t.JSXOpeningElement> {
       if (this.selfClosing !== node.selfClosing) {
         return false;
       }
-    } else if (!this.selfClosing.match(node.selfClosing)) {
+    } else if (!this.selfClosing.matchValue(node.selfClosing, [...keys, 'selfClosing'])) {
       return false;
     }
 
@@ -6483,7 +6483,7 @@ export class JSXSpreadAttributeMatcher extends Matcher<t.JSXSpreadAttribute> {
     super();
   }
 
-  match(node: unknown): node is t.JSXSpreadAttribute {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.JSXSpreadAttribute {
     if (
       !isNode(node) ||
       !t.isJSXSpreadAttribute(node)
@@ -6493,7 +6493,7 @@ export class JSXSpreadAttributeMatcher extends Matcher<t.JSXSpreadAttribute> {
 
     if (typeof this.argument === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.argument.match(node.argument)) {
+    } else if (!this.argument.matchValue(node.argument, [...keys, 'argument'])) {
       return false;
     }
 
@@ -6516,7 +6516,7 @@ export class JSXTextMatcher extends Matcher<t.JSXText> {
     super();
   }
 
-  match(node: unknown): node is t.JSXText {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.JSXText {
     if (
       !isNode(node) ||
       !t.isJSXText(node)
@@ -6530,7 +6530,7 @@ export class JSXTextMatcher extends Matcher<t.JSXText> {
       if (this.value !== node.value) {
         return false;
       }
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -6555,7 +6555,7 @@ export class JSXFragmentMatcher extends Matcher<t.JSXFragment> {
     super();
   }
 
-  match(node: unknown): node is t.JSXFragment {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.JSXFragment {
     if (
       !isNode(node) ||
       !t.isJSXFragment(node)
@@ -6565,23 +6565,23 @@ export class JSXFragmentMatcher extends Matcher<t.JSXFragment> {
 
     if (typeof this.openingFragment === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.openingFragment.match(node.openingFragment)) {
+    } else if (!this.openingFragment.matchValue(node.openingFragment, [...keys, 'openingFragment'])) {
       return false;
     }
 
     if (typeof this.closingFragment === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.closingFragment.match(node.closingFragment)) {
+    } else if (!this.closingFragment.matchValue(node.closingFragment, [...keys, 'closingFragment'])) {
       return false;
     }
 
     if (typeof this.children === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.children)) {
-      if (!tupleOf<unknown>(...this.children).match(node.children)) {
+      if (!tupleOf<unknown>(...this.children).matchValue(node.children, [...keys, 'children'])) {
         return false;
       }
-    } else if (!this.children.match(node.children)) {
+    } else if (!this.children.matchValue(node.children, [...keys, 'children'])) {
       return false;
     }
 
@@ -6607,7 +6607,7 @@ export class JSXOpeningFragmentMatcher extends Matcher<t.JSXOpeningFragment> {
     super();
   }
 
-  match(node: unknown): node is t.JSXOpeningFragment {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.JSXOpeningFragment {
     if (
       !isNode(node) ||
       !t.isJSXOpeningFragment(node)
@@ -6631,7 +6631,7 @@ export class JSXClosingFragmentMatcher extends Matcher<t.JSXClosingFragment> {
     super();
   }
 
-  match(node: unknown): node is t.JSXClosingFragment {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.JSXClosingFragment {
     if (
       !isNode(node) ||
       !t.isJSXClosingFragment(node)
@@ -6655,7 +6655,7 @@ export class NoopMatcher extends Matcher<t.Noop> {
     super();
   }
 
-  match(node: unknown): node is t.Noop {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.Noop {
     if (
       !isNode(node) ||
       !t.isNoop(node)
@@ -6680,7 +6680,7 @@ export class ParenthesizedExpressionMatcher extends Matcher<t.ParenthesizedExpre
     super();
   }
 
-  match(node: unknown): node is t.ParenthesizedExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ParenthesizedExpression {
     if (
       !isNode(node) ||
       !t.isParenthesizedExpression(node)
@@ -6690,7 +6690,7 @@ export class ParenthesizedExpressionMatcher extends Matcher<t.ParenthesizedExpre
 
     if (typeof this.expression === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.expression.match(node.expression)) {
+    } else if (!this.expression.matchValue(node.expression, [...keys, 'expression'])) {
       return false;
     }
 
@@ -6713,7 +6713,7 @@ export class AwaitExpressionMatcher extends Matcher<t.AwaitExpression> {
     super();
   }
 
-  match(node: unknown): node is t.AwaitExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.AwaitExpression {
     if (
       !isNode(node) ||
       !t.isAwaitExpression(node)
@@ -6723,7 +6723,7 @@ export class AwaitExpressionMatcher extends Matcher<t.AwaitExpression> {
 
     if (typeof this.argument === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.argument.match(node.argument)) {
+    } else if (!this.argument.matchValue(node.argument, [...keys, 'argument'])) {
       return false;
     }
 
@@ -6747,7 +6747,7 @@ export class BindExpressionMatcher extends Matcher<t.BindExpression> {
     super();
   }
 
-  match(node: unknown): node is t.BindExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.BindExpression {
     if (
       !isNode(node) ||
       !t.isBindExpression(node)
@@ -6757,13 +6757,13 @@ export class BindExpressionMatcher extends Matcher<t.BindExpression> {
 
     if (typeof this.object === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.object.match(node.object)) {
+    } else if (!this.object.matchValue(node.object, [...keys, 'object'])) {
       return false;
     }
 
     if (typeof this.callee === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.callee.match(node.callee)) {
+    } else if (!this.callee.matchValue(node.callee, [...keys, 'callee'])) {
       return false;
     }
 
@@ -6792,7 +6792,7 @@ export class ClassPropertyMatcher extends Matcher<t.ClassProperty> {
     super();
   }
 
-  match(node: unknown): node is t.ClassProperty {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ClassProperty {
     if (
       !isNode(node) ||
       !t.isClassProperty(node)
@@ -6802,7 +6802,7 @@ export class ClassPropertyMatcher extends Matcher<t.ClassProperty> {
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.key.match(node.key)) {
+    } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
       return false;
     }
 
@@ -6815,7 +6815,7 @@ export class ClassPropertyMatcher extends Matcher<t.ClassProperty> {
       }
     } else if (node.value === null) {
       return false;
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -6828,7 +6828,7 @@ export class ClassPropertyMatcher extends Matcher<t.ClassProperty> {
       }
     } else if (node.typeAnnotation === null) {
       return false;
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -6842,10 +6842,10 @@ export class ClassPropertyMatcher extends Matcher<t.ClassProperty> {
     } else if (node.decorators === null) {
       return false;
     } else if (Array.isArray(this.decorators)) {
-      if (!tupleOf<unknown>(...this.decorators).match(node.decorators)) {
+      if (!tupleOf<unknown>(...this.decorators).matchValue(node.decorators, [...keys, 'decorators'])) {
         return false;
       }
-    } else if (!this.decorators.match(node.decorators)) {
+    } else if (!this.decorators.matchValue(node.decorators, [...keys, 'decorators'])) {
       return false;
     }
 
@@ -6862,7 +6862,7 @@ export class ClassPropertyMatcher extends Matcher<t.ClassProperty> {
       }
     } else if (node.computed === null) {
       return false;
-    } else if (!this.computed.match(node.computed)) {
+    } else if (!this.computed.matchValue(node.computed, [...keys, 'computed'])) {
       return false;
     }
 
@@ -6896,7 +6896,7 @@ export class OptionalMemberExpressionMatcher extends Matcher<t.OptionalMemberExp
     super();
   }
 
-  match(node: unknown): node is t.OptionalMemberExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.OptionalMemberExpression {
     if (
       !isNode(node) ||
       !t.isOptionalMemberExpression(node)
@@ -6906,13 +6906,13 @@ export class OptionalMemberExpressionMatcher extends Matcher<t.OptionalMemberExp
 
     if (typeof this.object === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.object.match(node.object)) {
+    } else if (!this.object.matchValue(node.object, [...keys, 'object'])) {
       return false;
     }
 
     if (typeof this.property === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.property.match(node.property)) {
+    } else if (!this.property.matchValue(node.property, [...keys, 'property'])) {
       return false;
     }
 
@@ -6922,7 +6922,7 @@ export class OptionalMemberExpressionMatcher extends Matcher<t.OptionalMemberExp
       if (this.computed !== node.computed) {
         return false;
       }
-    } else if (!this.computed.match(node.computed)) {
+    } else if (!this.computed.matchValue(node.computed, [...keys, 'computed'])) {
       return false;
     }
 
@@ -6932,7 +6932,7 @@ export class OptionalMemberExpressionMatcher extends Matcher<t.OptionalMemberExp
       if (this.optional !== node.optional) {
         return false;
       }
-    } else if (!this.optional.match(node.optional)) {
+    } else if (!this.optional.matchValue(node.optional, [...keys, 'optional'])) {
       return false;
     }
 
@@ -6961,7 +6961,7 @@ export class PipelineTopicExpressionMatcher extends Matcher<t.PipelineTopicExpre
     super();
   }
 
-  match(node: unknown): node is t.PipelineTopicExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.PipelineTopicExpression {
     if (
       !isNode(node) ||
       !t.isPipelineTopicExpression(node)
@@ -6971,7 +6971,7 @@ export class PipelineTopicExpressionMatcher extends Matcher<t.PipelineTopicExpre
 
     if (typeof this.expression === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.expression.match(node.expression)) {
+    } else if (!this.expression.matchValue(node.expression, [...keys, 'expression'])) {
       return false;
     }
 
@@ -6994,7 +6994,7 @@ export class PipelineBareFunctionMatcher extends Matcher<t.PipelineBareFunction>
     super();
   }
 
-  match(node: unknown): node is t.PipelineBareFunction {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.PipelineBareFunction {
     if (
       !isNode(node) ||
       !t.isPipelineBareFunction(node)
@@ -7004,7 +7004,7 @@ export class PipelineBareFunctionMatcher extends Matcher<t.PipelineBareFunction>
 
     if (typeof this.callee === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.callee.match(node.callee)) {
+    } else if (!this.callee.matchValue(node.callee, [...keys, 'callee'])) {
       return false;
     }
 
@@ -7026,7 +7026,7 @@ export class PipelinePrimaryTopicReferenceMatcher extends Matcher<t.PipelinePrim
     super();
   }
 
-  match(node: unknown): node is t.PipelinePrimaryTopicReference {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.PipelinePrimaryTopicReference {
     if (
       !isNode(node) ||
       !t.isPipelinePrimaryTopicReference(node)
@@ -7053,7 +7053,7 @@ export class OptionalCallExpressionMatcher extends Matcher<t.OptionalCallExpress
     super();
   }
 
-  match(node: unknown): node is t.OptionalCallExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.OptionalCallExpression {
     if (
       !isNode(node) ||
       !t.isOptionalCallExpression(node)
@@ -7063,17 +7063,17 @@ export class OptionalCallExpressionMatcher extends Matcher<t.OptionalCallExpress
 
     if (typeof this.callee === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.callee.match(node.callee)) {
+    } else if (!this.callee.matchValue(node.callee, [...keys, 'callee'])) {
       return false;
     }
 
     if (typeof this._arguments === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this._arguments)) {
-      if (!tupleOf<unknown>(...this._arguments).match(node.arguments)) {
+      if (!tupleOf<unknown>(...this._arguments).matchValue(node.arguments, [...keys, 'arguments'])) {
         return false;
       }
-    } else if (!this._arguments.match(node.arguments)) {
+    } else if (!this._arguments.matchValue(node.arguments, [...keys, 'arguments'])) {
       return false;
     }
 
@@ -7083,7 +7083,7 @@ export class OptionalCallExpressionMatcher extends Matcher<t.OptionalCallExpress
       if (this.optional !== node.optional) {
         return false;
       }
-    } else if (!this.optional.match(node.optional)) {
+    } else if (!this.optional.matchValue(node.optional, [...keys, 'optional'])) {
       return false;
     }
 
@@ -7111,7 +7111,7 @@ export class ClassPrivatePropertyMatcher extends Matcher<t.ClassPrivateProperty>
     super();
   }
 
-  match(node: unknown): node is t.ClassPrivateProperty {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ClassPrivateProperty {
     if (
       !isNode(node) ||
       !t.isClassPrivateProperty(node)
@@ -7121,7 +7121,7 @@ export class ClassPrivatePropertyMatcher extends Matcher<t.ClassPrivateProperty>
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.key.match(node.key)) {
+    } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
       return false;
     }
 
@@ -7134,7 +7134,7 @@ export class ClassPrivatePropertyMatcher extends Matcher<t.ClassPrivateProperty>
       }
     } else if (node.value === null) {
       return false;
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -7163,7 +7163,7 @@ export class ClassPrivateMethodMatcher extends Matcher<t.ClassPrivateMethod> {
     super();
   }
 
-  match(node: unknown): node is t.ClassPrivateMethod {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ClassPrivateMethod {
     if (
       !isNode(node) ||
       !t.isClassPrivateMethod(node)
@@ -7184,29 +7184,29 @@ export class ClassPrivateMethodMatcher extends Matcher<t.ClassPrivateMethod> {
       }
     } else if (node.kind === null) {
       return false;
-    } else if (!this.kind.match(node.kind)) {
+    } else if (!this.kind.matchValue(node.kind, [...keys, 'kind'])) {
       return false;
     }
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.key.match(node.key)) {
+    } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
       return false;
     }
 
     if (typeof this.params === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.params)) {
-      if (!tupleOf<unknown>(...this.params).match(node.params)) {
+      if (!tupleOf<unknown>(...this.params).matchValue(node.params, [...keys, 'params'])) {
         return false;
       }
-    } else if (!this.params.match(node.params)) {
+    } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -7223,7 +7223,7 @@ export class ClassPrivateMethodMatcher extends Matcher<t.ClassPrivateMethod> {
       }
     } else if (node.static === null) {
       return false;
-    } else if (!this._static.match(node.static)) {
+    } else if (!this._static.matchValue(node.static, [...keys, 'static'])) {
       return false;
     }
 
@@ -7253,7 +7253,7 @@ export class ImportMatcher extends Matcher<t.Import> {
     super();
   }
 
-  match(node: unknown): node is t.Import {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.Import {
     if (
       !isNode(node) ||
       !t.isImport(node)
@@ -7278,7 +7278,7 @@ export class DecoratorMatcher extends Matcher<t.Decorator> {
     super();
   }
 
-  match(node: unknown): node is t.Decorator {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.Decorator {
     if (
       !isNode(node) ||
       !t.isDecorator(node)
@@ -7288,7 +7288,7 @@ export class DecoratorMatcher extends Matcher<t.Decorator> {
 
     if (typeof this.expression === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.expression.match(node.expression)) {
+    } else if (!this.expression.matchValue(node.expression, [...keys, 'expression'])) {
       return false;
     }
 
@@ -7311,7 +7311,7 @@ export class DoExpressionMatcher extends Matcher<t.DoExpression> {
     super();
   }
 
-  match(node: unknown): node is t.DoExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.DoExpression {
     if (
       !isNode(node) ||
       !t.isDoExpression(node)
@@ -7321,7 +7321,7 @@ export class DoExpressionMatcher extends Matcher<t.DoExpression> {
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -7344,7 +7344,7 @@ export class ExportDefaultSpecifierMatcher extends Matcher<t.ExportDefaultSpecif
     super();
   }
 
-  match(node: unknown): node is t.ExportDefaultSpecifier {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ExportDefaultSpecifier {
     if (
       !isNode(node) ||
       !t.isExportDefaultSpecifier(node)
@@ -7354,7 +7354,7 @@ export class ExportDefaultSpecifierMatcher extends Matcher<t.ExportDefaultSpecif
 
     if (typeof this.exported === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.exported.match(node.exported)) {
+    } else if (!this.exported.matchValue(node.exported, [...keys, 'exported'])) {
       return false;
     }
 
@@ -7377,7 +7377,7 @@ export class ExportNamespaceSpecifierMatcher extends Matcher<t.ExportNamespaceSp
     super();
   }
 
-  match(node: unknown): node is t.ExportNamespaceSpecifier {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.ExportNamespaceSpecifier {
     if (
       !isNode(node) ||
       !t.isExportNamespaceSpecifier(node)
@@ -7387,7 +7387,7 @@ export class ExportNamespaceSpecifierMatcher extends Matcher<t.ExportNamespaceSp
 
     if (typeof this.exported === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.exported.match(node.exported)) {
+    } else if (!this.exported.matchValue(node.exported, [...keys, 'exported'])) {
       return false;
     }
 
@@ -7410,7 +7410,7 @@ export class PrivateNameMatcher extends Matcher<t.PrivateName> {
     super();
   }
 
-  match(node: unknown): node is t.PrivateName {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.PrivateName {
     if (
       !isNode(node) ||
       !t.isPrivateName(node)
@@ -7420,7 +7420,7 @@ export class PrivateNameMatcher extends Matcher<t.PrivateName> {
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -7443,7 +7443,7 @@ export class BigIntLiteralMatcher extends Matcher<t.BigIntLiteral> {
     super();
   }
 
-  match(node: unknown): node is t.BigIntLiteral {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.BigIntLiteral {
     if (
       !isNode(node) ||
       !t.isBigIntLiteral(node)
@@ -7457,7 +7457,7 @@ export class BigIntLiteralMatcher extends Matcher<t.BigIntLiteral> {
       if (this.value !== node.value) {
         return false;
       }
-    } else if (!this.value.match(node.value)) {
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false;
     }
 
@@ -7480,7 +7480,7 @@ export class TSParameterPropertyMatcher extends Matcher<t.TSParameterProperty> {
     super();
   }
 
-  match(node: unknown): node is t.TSParameterProperty {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSParameterProperty {
     if (
       !isNode(node) ||
       !t.isTSParameterProperty(node)
@@ -7490,7 +7490,7 @@ export class TSParameterPropertyMatcher extends Matcher<t.TSParameterProperty> {
 
     if (typeof this.parameter === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.parameter.match(node.parameter)) {
+    } else if (!this.parameter.matchValue(node.parameter, [...keys, 'parameter'])) {
       return false;
     }
 
@@ -7516,7 +7516,7 @@ export class TSDeclareFunctionMatcher extends Matcher<t.TSDeclareFunction> {
     super();
   }
 
-  match(node: unknown): node is t.TSDeclareFunction {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSDeclareFunction {
     if (
       !isNode(node) ||
       !t.isTSDeclareFunction(node)
@@ -7533,7 +7533,7 @@ export class TSDeclareFunctionMatcher extends Matcher<t.TSDeclareFunction> {
       }
     } else if (node.id === null) {
       return false;
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -7546,17 +7546,17 @@ export class TSDeclareFunctionMatcher extends Matcher<t.TSDeclareFunction> {
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
     if (typeof this.params === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.params)) {
-      if (!tupleOf<unknown>(...this.params).match(node.params)) {
+      if (!tupleOf<unknown>(...this.params).matchValue(node.params, [...keys, 'params'])) {
         return false;
       }
-    } else if (!this.params.match(node.params)) {
+    } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
       return false;
     }
 
@@ -7569,7 +7569,7 @@ export class TSDeclareFunctionMatcher extends Matcher<t.TSDeclareFunction> {
       }
     } else if (node.returnType === null) {
       return false;
-    } else if (!this.returnType.match(node.returnType)) {
+    } else if (!this.returnType.matchValue(node.returnType, [...keys, 'returnType'])) {
       return false;
     }
 
@@ -7602,7 +7602,7 @@ export class TSDeclareMethodMatcher extends Matcher<t.TSDeclareMethod> {
     super();
   }
 
-  match(node: unknown): node is t.TSDeclareMethod {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSDeclareMethod {
     if (
       !isNode(node) ||
       !t.isTSDeclareMethod(node)
@@ -7620,16 +7620,16 @@ export class TSDeclareMethodMatcher extends Matcher<t.TSDeclareMethod> {
     } else if (node.decorators === null) {
       return false;
     } else if (Array.isArray(this.decorators)) {
-      if (!tupleOf<unknown>(...this.decorators).match(node.decorators)) {
+      if (!tupleOf<unknown>(...this.decorators).matchValue(node.decorators, [...keys, 'decorators'])) {
         return false;
       }
-    } else if (!this.decorators.match(node.decorators)) {
+    } else if (!this.decorators.matchValue(node.decorators, [...keys, 'decorators'])) {
       return false;
     }
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.key.match(node.key)) {
+    } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
       return false;
     }
 
@@ -7642,17 +7642,17 @@ export class TSDeclareMethodMatcher extends Matcher<t.TSDeclareMethod> {
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
     if (typeof this.params === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.params)) {
-      if (!tupleOf<unknown>(...this.params).match(node.params)) {
+      if (!tupleOf<unknown>(...this.params).matchValue(node.params, [...keys, 'params'])) {
         return false;
       }
-    } else if (!this.params.match(node.params)) {
+    } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
       return false;
     }
 
@@ -7665,7 +7665,7 @@ export class TSDeclareMethodMatcher extends Matcher<t.TSDeclareMethod> {
       }
     } else if (node.returnType === null) {
       return false;
-    } else if (!this.returnType.match(node.returnType)) {
+    } else if (!this.returnType.matchValue(node.returnType, [...keys, 'returnType'])) {
       return false;
     }
 
@@ -7697,7 +7697,7 @@ export class TSQualifiedNameMatcher extends Matcher<t.TSQualifiedName> {
     super();
   }
 
-  match(node: unknown): node is t.TSQualifiedName {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSQualifiedName {
     if (
       !isNode(node) ||
       !t.isTSQualifiedName(node)
@@ -7707,13 +7707,13 @@ export class TSQualifiedNameMatcher extends Matcher<t.TSQualifiedName> {
 
     if (typeof this.left === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.left.match(node.left)) {
+    } else if (!this.left.matchValue(node.left, [...keys, 'left'])) {
       return false;
     }
 
     if (typeof this.right === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.right.match(node.right)) {
+    } else if (!this.right.matchValue(node.right, [...keys, 'right'])) {
       return false;
     }
 
@@ -7740,7 +7740,7 @@ export class TSCallSignatureDeclarationMatcher extends Matcher<t.TSCallSignature
     super();
   }
 
-  match(node: unknown): node is t.TSCallSignatureDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSCallSignatureDeclaration {
     if (
       !isNode(node) ||
       !t.isTSCallSignatureDeclaration(node)
@@ -7757,7 +7757,7 @@ export class TSCallSignatureDeclarationMatcher extends Matcher<t.TSCallSignature
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
@@ -7771,10 +7771,10 @@ export class TSCallSignatureDeclarationMatcher extends Matcher<t.TSCallSignature
     } else if (node.parameters === null) {
       return false;
     } else if (Array.isArray(this.parameters)) {
-      if (!tupleOf<unknown>(...this.parameters).match(node.parameters)) {
+      if (!tupleOf<unknown>(...this.parameters).matchValue(node.parameters, [...keys, 'parameters'])) {
         return false;
       }
-    } else if (!this.parameters.match(node.parameters)) {
+    } else if (!this.parameters.matchValue(node.parameters, [...keys, 'parameters'])) {
       return false;
     }
 
@@ -7787,7 +7787,7 @@ export class TSCallSignatureDeclarationMatcher extends Matcher<t.TSCallSignature
       }
     } else if (node.typeAnnotation === null) {
       return false;
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -7816,7 +7816,7 @@ export class TSConstructSignatureDeclarationMatcher extends Matcher<t.TSConstruc
     super();
   }
 
-  match(node: unknown): node is t.TSConstructSignatureDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSConstructSignatureDeclaration {
     if (
       !isNode(node) ||
       !t.isTSConstructSignatureDeclaration(node)
@@ -7833,7 +7833,7 @@ export class TSConstructSignatureDeclarationMatcher extends Matcher<t.TSConstruc
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
@@ -7847,10 +7847,10 @@ export class TSConstructSignatureDeclarationMatcher extends Matcher<t.TSConstruc
     } else if (node.parameters === null) {
       return false;
     } else if (Array.isArray(this.parameters)) {
-      if (!tupleOf<unknown>(...this.parameters).match(node.parameters)) {
+      if (!tupleOf<unknown>(...this.parameters).matchValue(node.parameters, [...keys, 'parameters'])) {
         return false;
       }
-    } else if (!this.parameters.match(node.parameters)) {
+    } else if (!this.parameters.matchValue(node.parameters, [...keys, 'parameters'])) {
       return false;
     }
 
@@ -7863,7 +7863,7 @@ export class TSConstructSignatureDeclarationMatcher extends Matcher<t.TSConstruc
       }
     } else if (node.typeAnnotation === null) {
       return false;
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -7892,7 +7892,7 @@ export class TSPropertySignatureMatcher extends Matcher<t.TSPropertySignature> {
     super();
   }
 
-  match(node: unknown): node is t.TSPropertySignature {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSPropertySignature {
     if (
       !isNode(node) ||
       !t.isTSPropertySignature(node)
@@ -7902,7 +7902,7 @@ export class TSPropertySignatureMatcher extends Matcher<t.TSPropertySignature> {
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.key.match(node.key)) {
+    } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
       return false;
     }
 
@@ -7915,7 +7915,7 @@ export class TSPropertySignatureMatcher extends Matcher<t.TSPropertySignature> {
       }
     } else if (node.typeAnnotation === null) {
       return false;
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -7928,7 +7928,7 @@ export class TSPropertySignatureMatcher extends Matcher<t.TSPropertySignature> {
       }
     } else if (node.initializer === null) {
       return false;
-    } else if (!this.initializer.match(node.initializer)) {
+    } else if (!this.initializer.matchValue(node.initializer, [...keys, 'initializer'])) {
       return false;
     }
 
@@ -7958,7 +7958,7 @@ export class TSMethodSignatureMatcher extends Matcher<t.TSMethodSignature> {
     super();
   }
 
-  match(node: unknown): node is t.TSMethodSignature {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSMethodSignature {
     if (
       !isNode(node) ||
       !t.isTSMethodSignature(node)
@@ -7968,7 +7968,7 @@ export class TSMethodSignatureMatcher extends Matcher<t.TSMethodSignature> {
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.key.match(node.key)) {
+    } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
       return false;
     }
 
@@ -7981,7 +7981,7 @@ export class TSMethodSignatureMatcher extends Matcher<t.TSMethodSignature> {
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
@@ -7995,10 +7995,10 @@ export class TSMethodSignatureMatcher extends Matcher<t.TSMethodSignature> {
     } else if (node.parameters === null) {
       return false;
     } else if (Array.isArray(this.parameters)) {
-      if (!tupleOf<unknown>(...this.parameters).match(node.parameters)) {
+      if (!tupleOf<unknown>(...this.parameters).matchValue(node.parameters, [...keys, 'parameters'])) {
         return false;
       }
-    } else if (!this.parameters.match(node.parameters)) {
+    } else if (!this.parameters.matchValue(node.parameters, [...keys, 'parameters'])) {
       return false;
     }
 
@@ -8011,7 +8011,7 @@ export class TSMethodSignatureMatcher extends Matcher<t.TSMethodSignature> {
       }
     } else if (node.typeAnnotation === null) {
       return false;
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -8041,7 +8041,7 @@ export class TSIndexSignatureMatcher extends Matcher<t.TSIndexSignature> {
     super();
   }
 
-  match(node: unknown): node is t.TSIndexSignature {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSIndexSignature {
     if (
       !isNode(node) ||
       !t.isTSIndexSignature(node)
@@ -8052,10 +8052,10 @@ export class TSIndexSignatureMatcher extends Matcher<t.TSIndexSignature> {
     if (typeof this.parameters === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.parameters)) {
-      if (!tupleOf<unknown>(...this.parameters).match(node.parameters)) {
+      if (!tupleOf<unknown>(...this.parameters).matchValue(node.parameters, [...keys, 'parameters'])) {
         return false;
       }
-    } else if (!this.parameters.match(node.parameters)) {
+    } else if (!this.parameters.matchValue(node.parameters, [...keys, 'parameters'])) {
       return false;
     }
 
@@ -8068,7 +8068,7 @@ export class TSIndexSignatureMatcher extends Matcher<t.TSIndexSignature> {
       }
     } else if (node.typeAnnotation === null) {
       return false;
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -8092,7 +8092,7 @@ export class TSAnyKeywordMatcher extends Matcher<t.TSAnyKeyword> {
     super();
   }
 
-  match(node: unknown): node is t.TSAnyKeyword {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSAnyKeyword {
     if (
       !isNode(node) ||
       !t.isTSAnyKeyword(node)
@@ -8116,7 +8116,7 @@ export class TSUnknownKeywordMatcher extends Matcher<t.TSUnknownKeyword> {
     super();
   }
 
-  match(node: unknown): node is t.TSUnknownKeyword {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSUnknownKeyword {
     if (
       !isNode(node) ||
       !t.isTSUnknownKeyword(node)
@@ -8140,7 +8140,7 @@ export class TSNumberKeywordMatcher extends Matcher<t.TSNumberKeyword> {
     super();
   }
 
-  match(node: unknown): node is t.TSNumberKeyword {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSNumberKeyword {
     if (
       !isNode(node) ||
       !t.isTSNumberKeyword(node)
@@ -8164,7 +8164,7 @@ export class TSObjectKeywordMatcher extends Matcher<t.TSObjectKeyword> {
     super();
   }
 
-  match(node: unknown): node is t.TSObjectKeyword {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSObjectKeyword {
     if (
       !isNode(node) ||
       !t.isTSObjectKeyword(node)
@@ -8188,7 +8188,7 @@ export class TSBooleanKeywordMatcher extends Matcher<t.TSBooleanKeyword> {
     super();
   }
 
-  match(node: unknown): node is t.TSBooleanKeyword {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSBooleanKeyword {
     if (
       !isNode(node) ||
       !t.isTSBooleanKeyword(node)
@@ -8212,7 +8212,7 @@ export class TSStringKeywordMatcher extends Matcher<t.TSStringKeyword> {
     super();
   }
 
-  match(node: unknown): node is t.TSStringKeyword {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSStringKeyword {
     if (
       !isNode(node) ||
       !t.isTSStringKeyword(node)
@@ -8236,7 +8236,7 @@ export class TSSymbolKeywordMatcher extends Matcher<t.TSSymbolKeyword> {
     super();
   }
 
-  match(node: unknown): node is t.TSSymbolKeyword {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSSymbolKeyword {
     if (
       !isNode(node) ||
       !t.isTSSymbolKeyword(node)
@@ -8260,7 +8260,7 @@ export class TSVoidKeywordMatcher extends Matcher<t.TSVoidKeyword> {
     super();
   }
 
-  match(node: unknown): node is t.TSVoidKeyword {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSVoidKeyword {
     if (
       !isNode(node) ||
       !t.isTSVoidKeyword(node)
@@ -8284,7 +8284,7 @@ export class TSUndefinedKeywordMatcher extends Matcher<t.TSUndefinedKeyword> {
     super();
   }
 
-  match(node: unknown): node is t.TSUndefinedKeyword {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSUndefinedKeyword {
     if (
       !isNode(node) ||
       !t.isTSUndefinedKeyword(node)
@@ -8308,7 +8308,7 @@ export class TSNullKeywordMatcher extends Matcher<t.TSNullKeyword> {
     super();
   }
 
-  match(node: unknown): node is t.TSNullKeyword {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSNullKeyword {
     if (
       !isNode(node) ||
       !t.isTSNullKeyword(node)
@@ -8332,7 +8332,7 @@ export class TSNeverKeywordMatcher extends Matcher<t.TSNeverKeyword> {
     super();
   }
 
-  match(node: unknown): node is t.TSNeverKeyword {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSNeverKeyword {
     if (
       !isNode(node) ||
       !t.isTSNeverKeyword(node)
@@ -8356,7 +8356,7 @@ export class TSThisTypeMatcher extends Matcher<t.TSThisType> {
     super();
   }
 
-  match(node: unknown): node is t.TSThisType {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSThisType {
     if (
       !isNode(node) ||
       !t.isTSThisType(node)
@@ -8382,7 +8382,7 @@ export class TSFunctionTypeMatcher extends Matcher<t.TSFunctionType> {
     super();
   }
 
-  match(node: unknown): node is t.TSFunctionType {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSFunctionType {
     if (
       !isNode(node) ||
       !t.isTSFunctionType(node)
@@ -8399,7 +8399,7 @@ export class TSFunctionTypeMatcher extends Matcher<t.TSFunctionType> {
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
@@ -8412,7 +8412,7 @@ export class TSFunctionTypeMatcher extends Matcher<t.TSFunctionType> {
       }
     } else if (node.typeAnnotation === null) {
       return false;
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -8438,7 +8438,7 @@ export class TSConstructorTypeMatcher extends Matcher<t.TSConstructorType> {
     super();
   }
 
-  match(node: unknown): node is t.TSConstructorType {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSConstructorType {
     if (
       !isNode(node) ||
       !t.isTSConstructorType(node)
@@ -8455,7 +8455,7 @@ export class TSConstructorTypeMatcher extends Matcher<t.TSConstructorType> {
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
@@ -8468,7 +8468,7 @@ export class TSConstructorTypeMatcher extends Matcher<t.TSConstructorType> {
       }
     } else if (node.typeAnnotation === null) {
       return false;
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -8494,7 +8494,7 @@ export class TSTypeReferenceMatcher extends Matcher<t.TSTypeReference> {
     super();
   }
 
-  match(node: unknown): node is t.TSTypeReference {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSTypeReference {
     if (
       !isNode(node) ||
       !t.isTSTypeReference(node)
@@ -8504,7 +8504,7 @@ export class TSTypeReferenceMatcher extends Matcher<t.TSTypeReference> {
 
     if (typeof this.typeName === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.typeName.match(node.typeName)) {
+    } else if (!this.typeName.matchValue(node.typeName, [...keys, 'typeName'])) {
       return false;
     }
 
@@ -8517,7 +8517,7 @@ export class TSTypeReferenceMatcher extends Matcher<t.TSTypeReference> {
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
@@ -8543,7 +8543,7 @@ export class TSTypePredicateMatcher extends Matcher<t.TSTypePredicate> {
     super();
   }
 
-  match(node: unknown): node is t.TSTypePredicate {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSTypePredicate {
     if (
       !isNode(node) ||
       !t.isTSTypePredicate(node)
@@ -8553,13 +8553,13 @@ export class TSTypePredicateMatcher extends Matcher<t.TSTypePredicate> {
 
     if (typeof this.parameterName === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.parameterName.match(node.parameterName)) {
+    } else if (!this.parameterName.matchValue(node.parameterName, [...keys, 'parameterName'])) {
       return false;
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -8584,7 +8584,7 @@ export class TSTypeQueryMatcher extends Matcher<t.TSTypeQuery> {
     super();
   }
 
-  match(node: unknown): node is t.TSTypeQuery {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSTypeQuery {
     if (
       !isNode(node) ||
       !t.isTSTypeQuery(node)
@@ -8594,7 +8594,7 @@ export class TSTypeQueryMatcher extends Matcher<t.TSTypeQuery> {
 
     if (typeof this.exprName === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.exprName.match(node.exprName)) {
+    } else if (!this.exprName.matchValue(node.exprName, [...keys, 'exprName'])) {
       return false;
     }
 
@@ -8617,7 +8617,7 @@ export class TSTypeLiteralMatcher extends Matcher<t.TSTypeLiteral> {
     super();
   }
 
-  match(node: unknown): node is t.TSTypeLiteral {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSTypeLiteral {
     if (
       !isNode(node) ||
       !t.isTSTypeLiteral(node)
@@ -8628,10 +8628,10 @@ export class TSTypeLiteralMatcher extends Matcher<t.TSTypeLiteral> {
     if (typeof this.members === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.members)) {
-      if (!tupleOf<unknown>(...this.members).match(node.members)) {
+      if (!tupleOf<unknown>(...this.members).matchValue(node.members, [...keys, 'members'])) {
         return false;
       }
-    } else if (!this.members.match(node.members)) {
+    } else if (!this.members.matchValue(node.members, [...keys, 'members'])) {
       return false;
     }
 
@@ -8654,7 +8654,7 @@ export class TSArrayTypeMatcher extends Matcher<t.TSArrayType> {
     super();
   }
 
-  match(node: unknown): node is t.TSArrayType {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSArrayType {
     if (
       !isNode(node) ||
       !t.isTSArrayType(node)
@@ -8664,7 +8664,7 @@ export class TSArrayTypeMatcher extends Matcher<t.TSArrayType> {
 
     if (typeof this.elementType === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.elementType.match(node.elementType)) {
+    } else if (!this.elementType.matchValue(node.elementType, [...keys, 'elementType'])) {
       return false;
     }
 
@@ -8687,7 +8687,7 @@ export class TSTupleTypeMatcher extends Matcher<t.TSTupleType> {
     super();
   }
 
-  match(node: unknown): node is t.TSTupleType {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSTupleType {
     if (
       !isNode(node) ||
       !t.isTSTupleType(node)
@@ -8698,10 +8698,10 @@ export class TSTupleTypeMatcher extends Matcher<t.TSTupleType> {
     if (typeof this.elementTypes === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.elementTypes)) {
-      if (!tupleOf<unknown>(...this.elementTypes).match(node.elementTypes)) {
+      if (!tupleOf<unknown>(...this.elementTypes).matchValue(node.elementTypes, [...keys, 'elementTypes'])) {
         return false;
       }
-    } else if (!this.elementTypes.match(node.elementTypes)) {
+    } else if (!this.elementTypes.matchValue(node.elementTypes, [...keys, 'elementTypes'])) {
       return false;
     }
 
@@ -8724,7 +8724,7 @@ export class TSOptionalTypeMatcher extends Matcher<t.TSOptionalType> {
     super();
   }
 
-  match(node: unknown): node is t.TSOptionalType {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSOptionalType {
     if (
       !isNode(node) ||
       !t.isTSOptionalType(node)
@@ -8734,7 +8734,7 @@ export class TSOptionalTypeMatcher extends Matcher<t.TSOptionalType> {
 
     if (typeof this.typeAnnotation === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -8757,7 +8757,7 @@ export class TSRestTypeMatcher extends Matcher<t.TSRestType> {
     super();
   }
 
-  match(node: unknown): node is t.TSRestType {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSRestType {
     if (
       !isNode(node) ||
       !t.isTSRestType(node)
@@ -8767,7 +8767,7 @@ export class TSRestTypeMatcher extends Matcher<t.TSRestType> {
 
     if (typeof this.typeAnnotation === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -8790,7 +8790,7 @@ export class TSUnionTypeMatcher extends Matcher<t.TSUnionType> {
     super();
   }
 
-  match(node: unknown): node is t.TSUnionType {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSUnionType {
     if (
       !isNode(node) ||
       !t.isTSUnionType(node)
@@ -8801,10 +8801,10 @@ export class TSUnionTypeMatcher extends Matcher<t.TSUnionType> {
     if (typeof this.types === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.types)) {
-      if (!tupleOf<unknown>(...this.types).match(node.types)) {
+      if (!tupleOf<unknown>(...this.types).matchValue(node.types, [...keys, 'types'])) {
         return false;
       }
-    } else if (!this.types.match(node.types)) {
+    } else if (!this.types.matchValue(node.types, [...keys, 'types'])) {
       return false;
     }
 
@@ -8827,7 +8827,7 @@ export class TSIntersectionTypeMatcher extends Matcher<t.TSIntersectionType> {
     super();
   }
 
-  match(node: unknown): node is t.TSIntersectionType {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSIntersectionType {
     if (
       !isNode(node) ||
       !t.isTSIntersectionType(node)
@@ -8838,10 +8838,10 @@ export class TSIntersectionTypeMatcher extends Matcher<t.TSIntersectionType> {
     if (typeof this.types === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.types)) {
-      if (!tupleOf<unknown>(...this.types).match(node.types)) {
+      if (!tupleOf<unknown>(...this.types).matchValue(node.types, [...keys, 'types'])) {
         return false;
       }
-    } else if (!this.types.match(node.types)) {
+    } else if (!this.types.matchValue(node.types, [...keys, 'types'])) {
       return false;
     }
 
@@ -8867,7 +8867,7 @@ export class TSConditionalTypeMatcher extends Matcher<t.TSConditionalType> {
     super();
   }
 
-  match(node: unknown): node is t.TSConditionalType {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSConditionalType {
     if (
       !isNode(node) ||
       !t.isTSConditionalType(node)
@@ -8877,25 +8877,25 @@ export class TSConditionalTypeMatcher extends Matcher<t.TSConditionalType> {
 
     if (typeof this.checkType === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.checkType.match(node.checkType)) {
+    } else if (!this.checkType.matchValue(node.checkType, [...keys, 'checkType'])) {
       return false;
     }
 
     if (typeof this.extendsType === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.extendsType.match(node.extendsType)) {
+    } else if (!this.extendsType.matchValue(node.extendsType, [...keys, 'extendsType'])) {
       return false;
     }
 
     if (typeof this.trueType === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.trueType.match(node.trueType)) {
+    } else if (!this.trueType.matchValue(node.trueType, [...keys, 'trueType'])) {
       return false;
     }
 
     if (typeof this.falseType === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.falseType.match(node.falseType)) {
+    } else if (!this.falseType.matchValue(node.falseType, [...keys, 'falseType'])) {
       return false;
     }
 
@@ -8924,7 +8924,7 @@ export class TSInferTypeMatcher extends Matcher<t.TSInferType> {
     super();
   }
 
-  match(node: unknown): node is t.TSInferType {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSInferType {
     if (
       !isNode(node) ||
       !t.isTSInferType(node)
@@ -8934,7 +8934,7 @@ export class TSInferTypeMatcher extends Matcher<t.TSInferType> {
 
     if (typeof this.typeParameter === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.typeParameter.match(node.typeParameter)) {
+    } else if (!this.typeParameter.matchValue(node.typeParameter, [...keys, 'typeParameter'])) {
       return false;
     }
 
@@ -8957,7 +8957,7 @@ export class TSParenthesizedTypeMatcher extends Matcher<t.TSParenthesizedType> {
     super();
   }
 
-  match(node: unknown): node is t.TSParenthesizedType {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSParenthesizedType {
     if (
       !isNode(node) ||
       !t.isTSParenthesizedType(node)
@@ -8967,7 +8967,7 @@ export class TSParenthesizedTypeMatcher extends Matcher<t.TSParenthesizedType> {
 
     if (typeof this.typeAnnotation === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -8990,7 +8990,7 @@ export class TSTypeOperatorMatcher extends Matcher<t.TSTypeOperator> {
     super();
   }
 
-  match(node: unknown): node is t.TSTypeOperator {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSTypeOperator {
     if (
       !isNode(node) ||
       !t.isTSTypeOperator(node)
@@ -9000,7 +9000,7 @@ export class TSTypeOperatorMatcher extends Matcher<t.TSTypeOperator> {
 
     if (typeof this.typeAnnotation === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -9024,7 +9024,7 @@ export class TSIndexedAccessTypeMatcher extends Matcher<t.TSIndexedAccessType> {
     super();
   }
 
-  match(node: unknown): node is t.TSIndexedAccessType {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSIndexedAccessType {
     if (
       !isNode(node) ||
       !t.isTSIndexedAccessType(node)
@@ -9034,13 +9034,13 @@ export class TSIndexedAccessTypeMatcher extends Matcher<t.TSIndexedAccessType> {
 
     if (typeof this.objectType === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.objectType.match(node.objectType)) {
+    } else if (!this.objectType.matchValue(node.objectType, [...keys, 'objectType'])) {
       return false;
     }
 
     if (typeof this.indexType === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.indexType.match(node.indexType)) {
+    } else if (!this.indexType.matchValue(node.indexType, [...keys, 'indexType'])) {
       return false;
     }
 
@@ -9066,7 +9066,7 @@ export class TSMappedTypeMatcher extends Matcher<t.TSMappedType> {
     super();
   }
 
-  match(node: unknown): node is t.TSMappedType {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSMappedType {
     if (
       !isNode(node) ||
       !t.isTSMappedType(node)
@@ -9076,7 +9076,7 @@ export class TSMappedTypeMatcher extends Matcher<t.TSMappedType> {
 
     if (typeof this.typeParameter === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.typeParameter.match(node.typeParameter)) {
+    } else if (!this.typeParameter.matchValue(node.typeParameter, [...keys, 'typeParameter'])) {
       return false;
     }
 
@@ -9089,7 +9089,7 @@ export class TSMappedTypeMatcher extends Matcher<t.TSMappedType> {
       }
     } else if (node.typeAnnotation === null) {
       return false;
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -9114,7 +9114,7 @@ export class TSLiteralTypeMatcher extends Matcher<t.TSLiteralType> {
     super();
   }
 
-  match(node: unknown): node is t.TSLiteralType {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSLiteralType {
     if (
       !isNode(node) ||
       !t.isTSLiteralType(node)
@@ -9124,7 +9124,7 @@ export class TSLiteralTypeMatcher extends Matcher<t.TSLiteralType> {
 
     if (typeof this.literal === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.literal.match(node.literal)) {
+    } else if (!this.literal.matchValue(node.literal, [...keys, 'literal'])) {
       return false;
     }
 
@@ -9148,7 +9148,7 @@ export class TSExpressionWithTypeArgumentsMatcher extends Matcher<t.TSExpression
     super();
   }
 
-  match(node: unknown): node is t.TSExpressionWithTypeArguments {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSExpressionWithTypeArguments {
     if (
       !isNode(node) ||
       !t.isTSExpressionWithTypeArguments(node)
@@ -9158,7 +9158,7 @@ export class TSExpressionWithTypeArgumentsMatcher extends Matcher<t.TSExpression
 
     if (typeof this.expression === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.expression.match(node.expression)) {
+    } else if (!this.expression.matchValue(node.expression, [...keys, 'expression'])) {
       return false;
     }
 
@@ -9171,7 +9171,7 @@ export class TSExpressionWithTypeArgumentsMatcher extends Matcher<t.TSExpression
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
@@ -9199,7 +9199,7 @@ export class TSInterfaceDeclarationMatcher extends Matcher<t.TSInterfaceDeclarat
     super();
   }
 
-  match(node: unknown): node is t.TSInterfaceDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSInterfaceDeclaration {
     if (
       !isNode(node) ||
       !t.isTSInterfaceDeclaration(node)
@@ -9209,7 +9209,7 @@ export class TSInterfaceDeclarationMatcher extends Matcher<t.TSInterfaceDeclarat
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -9222,7 +9222,7 @@ export class TSInterfaceDeclarationMatcher extends Matcher<t.TSInterfaceDeclarat
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
@@ -9236,16 +9236,16 @@ export class TSInterfaceDeclarationMatcher extends Matcher<t.TSInterfaceDeclarat
     } else if (node.extends === null) {
       return false;
     } else if (Array.isArray(this._extends)) {
-      if (!tupleOf<unknown>(...this._extends).match(node.extends)) {
+      if (!tupleOf<unknown>(...this._extends).matchValue(node.extends, [...keys, 'extends'])) {
         return false;
       }
-    } else if (!this._extends.match(node.extends)) {
+    } else if (!this._extends.matchValue(node.extends, [...keys, 'extends'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -9274,7 +9274,7 @@ export class TSInterfaceBodyMatcher extends Matcher<t.TSInterfaceBody> {
     super();
   }
 
-  match(node: unknown): node is t.TSInterfaceBody {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSInterfaceBody {
     if (
       !isNode(node) ||
       !t.isTSInterfaceBody(node)
@@ -9285,10 +9285,10 @@ export class TSInterfaceBodyMatcher extends Matcher<t.TSInterfaceBody> {
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.body)) {
-      if (!tupleOf<unknown>(...this.body).match(node.body)) {
+      if (!tupleOf<unknown>(...this.body).matchValue(node.body, [...keys, 'body'])) {
         return false;
       }
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -9313,7 +9313,7 @@ export class TSTypeAliasDeclarationMatcher extends Matcher<t.TSTypeAliasDeclarat
     super();
   }
 
-  match(node: unknown): node is t.TSTypeAliasDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSTypeAliasDeclaration {
     if (
       !isNode(node) ||
       !t.isTSTypeAliasDeclaration(node)
@@ -9323,7 +9323,7 @@ export class TSTypeAliasDeclarationMatcher extends Matcher<t.TSTypeAliasDeclarat
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -9336,13 +9336,13 @@ export class TSTypeAliasDeclarationMatcher extends Matcher<t.TSTypeAliasDeclarat
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -9370,7 +9370,7 @@ export class TSAsExpressionMatcher extends Matcher<t.TSAsExpression> {
     super();
   }
 
-  match(node: unknown): node is t.TSAsExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSAsExpression {
     if (
       !isNode(node) ||
       !t.isTSAsExpression(node)
@@ -9380,13 +9380,13 @@ export class TSAsExpressionMatcher extends Matcher<t.TSAsExpression> {
 
     if (typeof this.expression === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.expression.match(node.expression)) {
+    } else if (!this.expression.matchValue(node.expression, [...keys, 'expression'])) {
       return false;
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -9412,7 +9412,7 @@ export class TSTypeAssertionMatcher extends Matcher<t.TSTypeAssertion> {
     super();
   }
 
-  match(node: unknown): node is t.TSTypeAssertion {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSTypeAssertion {
     if (
       !isNode(node) ||
       !t.isTSTypeAssertion(node)
@@ -9422,13 +9422,13 @@ export class TSTypeAssertionMatcher extends Matcher<t.TSTypeAssertion> {
 
     if (typeof this.typeAnnotation === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
     if (typeof this.expression === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.expression.match(node.expression)) {
+    } else if (!this.expression.matchValue(node.expression, [...keys, 'expression'])) {
       return false;
     }
 
@@ -9454,7 +9454,7 @@ export class TSEnumDeclarationMatcher extends Matcher<t.TSEnumDeclaration> {
     super();
   }
 
-  match(node: unknown): node is t.TSEnumDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSEnumDeclaration {
     if (
       !isNode(node) ||
       !t.isTSEnumDeclaration(node)
@@ -9464,17 +9464,17 @@ export class TSEnumDeclarationMatcher extends Matcher<t.TSEnumDeclaration> {
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
     if (typeof this.members === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.members)) {
-      if (!tupleOf<unknown>(...this.members).match(node.members)) {
+      if (!tupleOf<unknown>(...this.members).matchValue(node.members, [...keys, 'members'])) {
         return false;
       }
-    } else if (!this.members.match(node.members)) {
+    } else if (!this.members.matchValue(node.members, [...keys, 'members'])) {
       return false;
     }
 
@@ -9500,7 +9500,7 @@ export class TSEnumMemberMatcher extends Matcher<t.TSEnumMember> {
     super();
   }
 
-  match(node: unknown): node is t.TSEnumMember {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSEnumMember {
     if (
       !isNode(node) ||
       !t.isTSEnumMember(node)
@@ -9510,7 +9510,7 @@ export class TSEnumMemberMatcher extends Matcher<t.TSEnumMember> {
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -9523,7 +9523,7 @@ export class TSEnumMemberMatcher extends Matcher<t.TSEnumMember> {
       }
     } else if (node.initializer === null) {
       return false;
-    } else if (!this.initializer.match(node.initializer)) {
+    } else if (!this.initializer.matchValue(node.initializer, [...keys, 'initializer'])) {
       return false;
     }
 
@@ -9549,7 +9549,7 @@ export class TSModuleDeclarationMatcher extends Matcher<t.TSModuleDeclaration> {
     super();
   }
 
-  match(node: unknown): node is t.TSModuleDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSModuleDeclaration {
     if (
       !isNode(node) ||
       !t.isTSModuleDeclaration(node)
@@ -9559,13 +9559,13 @@ export class TSModuleDeclarationMatcher extends Matcher<t.TSModuleDeclaration> {
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -9590,7 +9590,7 @@ export class TSModuleBlockMatcher extends Matcher<t.TSModuleBlock> {
     super();
   }
 
-  match(node: unknown): node is t.TSModuleBlock {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSModuleBlock {
     if (
       !isNode(node) ||
       !t.isTSModuleBlock(node)
@@ -9601,10 +9601,10 @@ export class TSModuleBlockMatcher extends Matcher<t.TSModuleBlock> {
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.body)) {
-      if (!tupleOf<unknown>(...this.body).match(node.body)) {
+      if (!tupleOf<unknown>(...this.body).matchValue(node.body, [...keys, 'body'])) {
         return false;
       }
-    } else if (!this.body.match(node.body)) {
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
       return false;
     }
 
@@ -9629,7 +9629,7 @@ export class TSImportTypeMatcher extends Matcher<t.TSImportType> {
     super();
   }
 
-  match(node: unknown): node is t.TSImportType {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSImportType {
     if (
       !isNode(node) ||
       !t.isTSImportType(node)
@@ -9639,7 +9639,7 @@ export class TSImportTypeMatcher extends Matcher<t.TSImportType> {
 
     if (typeof this.argument === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.argument.match(node.argument)) {
+    } else if (!this.argument.matchValue(node.argument, [...keys, 'argument'])) {
       return false;
     }
 
@@ -9652,7 +9652,7 @@ export class TSImportTypeMatcher extends Matcher<t.TSImportType> {
       }
     } else if (node.qualifier === null) {
       return false;
-    } else if (!this.qualifier.match(node.qualifier)) {
+    } else if (!this.qualifier.matchValue(node.qualifier, [...keys, 'qualifier'])) {
       return false;
     }
 
@@ -9665,7 +9665,7 @@ export class TSImportTypeMatcher extends Matcher<t.TSImportType> {
       }
     } else if (node.typeParameters === null) {
       return false;
-    } else if (!this.typeParameters.match(node.typeParameters)) {
+    } else if (!this.typeParameters.matchValue(node.typeParameters, [...keys, 'typeParameters'])) {
       return false;
     }
 
@@ -9693,7 +9693,7 @@ export class TSImportEqualsDeclarationMatcher extends Matcher<t.TSImportEqualsDe
     super();
   }
 
-  match(node: unknown): node is t.TSImportEqualsDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSImportEqualsDeclaration {
     if (
       !isNode(node) ||
       !t.isTSImportEqualsDeclaration(node)
@@ -9703,13 +9703,13 @@ export class TSImportEqualsDeclarationMatcher extends Matcher<t.TSImportEqualsDe
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
     if (typeof this.moduleReference === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.moduleReference.match(node.moduleReference)) {
+    } else if (!this.moduleReference.matchValue(node.moduleReference, [...keys, 'moduleReference'])) {
       return false;
     }
 
@@ -9734,7 +9734,7 @@ export class TSExternalModuleReferenceMatcher extends Matcher<t.TSExternalModule
     super();
   }
 
-  match(node: unknown): node is t.TSExternalModuleReference {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSExternalModuleReference {
     if (
       !isNode(node) ||
       !t.isTSExternalModuleReference(node)
@@ -9744,7 +9744,7 @@ export class TSExternalModuleReferenceMatcher extends Matcher<t.TSExternalModule
 
     if (typeof this.expression === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.expression.match(node.expression)) {
+    } else if (!this.expression.matchValue(node.expression, [...keys, 'expression'])) {
       return false;
     }
 
@@ -9767,7 +9767,7 @@ export class TSNonNullExpressionMatcher extends Matcher<t.TSNonNullExpression> {
     super();
   }
 
-  match(node: unknown): node is t.TSNonNullExpression {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSNonNullExpression {
     if (
       !isNode(node) ||
       !t.isTSNonNullExpression(node)
@@ -9777,7 +9777,7 @@ export class TSNonNullExpressionMatcher extends Matcher<t.TSNonNullExpression> {
 
     if (typeof this.expression === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.expression.match(node.expression)) {
+    } else if (!this.expression.matchValue(node.expression, [...keys, 'expression'])) {
       return false;
     }
 
@@ -9800,7 +9800,7 @@ export class TSExportAssignmentMatcher extends Matcher<t.TSExportAssignment> {
     super();
   }
 
-  match(node: unknown): node is t.TSExportAssignment {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSExportAssignment {
     if (
       !isNode(node) ||
       !t.isTSExportAssignment(node)
@@ -9810,7 +9810,7 @@ export class TSExportAssignmentMatcher extends Matcher<t.TSExportAssignment> {
 
     if (typeof this.expression === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.expression.match(node.expression)) {
+    } else if (!this.expression.matchValue(node.expression, [...keys, 'expression'])) {
       return false;
     }
 
@@ -9833,7 +9833,7 @@ export class TSNamespaceExportDeclarationMatcher extends Matcher<t.TSNamespaceEx
     super();
   }
 
-  match(node: unknown): node is t.TSNamespaceExportDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSNamespaceExportDeclaration {
     if (
       !isNode(node) ||
       !t.isTSNamespaceExportDeclaration(node)
@@ -9843,7 +9843,7 @@ export class TSNamespaceExportDeclarationMatcher extends Matcher<t.TSNamespaceEx
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.id.match(node.id)) {
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false;
     }
 
@@ -9866,7 +9866,7 @@ export class TSTypeAnnotationMatcher extends Matcher<t.TSTypeAnnotation> {
     super();
   }
 
-  match(node: unknown): node is t.TSTypeAnnotation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSTypeAnnotation {
     if (
       !isNode(node) ||
       !t.isTSTypeAnnotation(node)
@@ -9876,7 +9876,7 @@ export class TSTypeAnnotationMatcher extends Matcher<t.TSTypeAnnotation> {
 
     if (typeof this.typeAnnotation === 'undefined') {
       // undefined matcher means anything matches
-    } else if (!this.typeAnnotation.match(node.typeAnnotation)) {
+    } else if (!this.typeAnnotation.matchValue(node.typeAnnotation, [...keys, 'typeAnnotation'])) {
       return false;
     }
 
@@ -9899,7 +9899,7 @@ export class TSTypeParameterInstantiationMatcher extends Matcher<t.TSTypeParamet
     super();
   }
 
-  match(node: unknown): node is t.TSTypeParameterInstantiation {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSTypeParameterInstantiation {
     if (
       !isNode(node) ||
       !t.isTSTypeParameterInstantiation(node)
@@ -9910,10 +9910,10 @@ export class TSTypeParameterInstantiationMatcher extends Matcher<t.TSTypeParamet
     if (typeof this.params === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.params)) {
-      if (!tupleOf<unknown>(...this.params).match(node.params)) {
+      if (!tupleOf<unknown>(...this.params).matchValue(node.params, [...keys, 'params'])) {
         return false;
       }
-    } else if (!this.params.match(node.params)) {
+    } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
       return false;
     }
 
@@ -9936,7 +9936,7 @@ export class TSTypeParameterDeclarationMatcher extends Matcher<t.TSTypeParameter
     super();
   }
 
-  match(node: unknown): node is t.TSTypeParameterDeclaration {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSTypeParameterDeclaration {
     if (
       !isNode(node) ||
       !t.isTSTypeParameterDeclaration(node)
@@ -9947,10 +9947,10 @@ export class TSTypeParameterDeclarationMatcher extends Matcher<t.TSTypeParameter
     if (typeof this.params === 'undefined') {
       // undefined matcher means anything matches
     } else if (Array.isArray(this.params)) {
-      if (!tupleOf<unknown>(...this.params).match(node.params)) {
+      if (!tupleOf<unknown>(...this.params).matchValue(node.params, [...keys, 'params'])) {
         return false;
       }
-    } else if (!this.params.match(node.params)) {
+    } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
       return false;
     }
 
@@ -9974,7 +9974,7 @@ export class TSTypeParameterMatcher extends Matcher<t.TSTypeParameter> {
     super();
   }
 
-  match(node: unknown): node is t.TSTypeParameter {
+  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.TSTypeParameter {
     if (
       !isNode(node) ||
       !t.isTSTypeParameter(node)
@@ -9991,7 +9991,7 @@ export class TSTypeParameterMatcher extends Matcher<t.TSTypeParameter> {
       }
     } else if (node.constraint === null) {
       return false;
-    } else if (!this.constraint.match(node.constraint)) {
+    } else if (!this.constraint.matchValue(node.constraint, [...keys, 'constraint'])) {
       return false;
     }
 
@@ -10004,7 +10004,7 @@ export class TSTypeParameterMatcher extends Matcher<t.TSTypeParameter> {
       }
     } else if (node.default === null) {
       return false;
-    } else if (!this._default.match(node.default)) {
+    } else if (!this._default.matchValue(node.default, [...keys, 'default'])) {
       return false;
     }
 

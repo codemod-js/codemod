@@ -2,7 +2,8 @@ import { anything } from '../matchers';
 import Matcher from './Matcher';
 
 export class CapturedMatcher<T> extends Matcher<T> {
-  private _current: T | undefined;
+  private _current?: T;
+  private _currentKeys?: ReadonlyArray<PropertyKey>;
 
   constructor(private readonly matcher: Matcher<T> = anything()) {
     super();
@@ -12,17 +13,22 @@ export class CapturedMatcher<T> extends Matcher<T> {
     return this._current;
   }
 
-  match(value: unknown): value is T {
-    if (this.matcher.match(value)) {
-      this.capture(value);
+  get currentKeys(): ReadonlyArray<PropertyKey> | undefined {
+    return this._currentKeys;
+  }
+
+  matchValue(value: unknown, keys: ReadonlyArray<PropertyKey>): value is T {
+    if (this.matcher.matchValue(value, keys)) {
+      this.capture(value, keys);
       return true;
     } else {
       return false;
     }
   }
 
-  protected capture(value: T): void {
+  protected capture(value: T, keys: ReadonlyArray<PropertyKey>): void {
     this._current = value;
+    this._currentKeys = keys;
   }
 }
 

@@ -3,7 +3,7 @@ import { isNode } from '../NodeTypes';
 import Matcher from './Matcher';
 
 export class AnyNodeMatcher extends Matcher<t.Node> {
-  match(value: unknown): value is t.Node {
+  matchValue(value: unknown): value is t.Node {
     return isNode(value);
   }
 }

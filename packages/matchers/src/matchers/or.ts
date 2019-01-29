@@ -8,10 +8,10 @@ export class OrMatcher<T, A extends Array<Matcher<T> | T>> extends Matcher<T> {
     this.matchersOrValues = matchersOrValues;
   }
 
-  match(value: unknown): value is T {
+  matchValue(value: unknown, keys: ReadonlyArray<PropertyKey>): value is T {
     for (const matcherOrValue of this.matchersOrValues) {
       if (matcherOrValue instanceof Matcher) {
-        if (matcherOrValue.match(value)) {
+        if (matcherOrValue.matchValue(value, keys)) {
           return true;
         }
       } else if (matcherOrValue === value) {

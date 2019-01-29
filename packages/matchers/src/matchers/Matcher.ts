@@ -1,6 +1,14 @@
 export default class Matcher<T> {
-  // eslint-disable-next-line typescript/no-unused-vars
-  match(value: unknown): value is T {
-    throw new Error(`${this.constructor.name}#match is not implemented`);
+  match(value: unknown, keys: ReadonlyArray<PropertyKey> = []): value is T {
+    return this.matchValue(value, keys);
+  }
+
+  matchValue(
+    /* eslint-disable typescript/no-unused-vars */
+    value: unknown,
+    keys: ReadonlyArray<PropertyKey>
+    /* eslint-enable typescript/no-unused-vars */
+  ): value is T {
+    throw new Error(`${this.constructor.name}#matchValue is not implemented`);
   }
 }

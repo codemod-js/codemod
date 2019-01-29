@@ -127,7 +127,9 @@ export default function rebuild(out: SimpleWriter): void {
     out.write(`    super();\n`);
     out.write(`  }\n`);
     out.write(`\n`);
-    out.write(`  match(node: unknown): node is t.${type} {\n`);
+    out.write(
+      `  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.${type} {\n`
+    );
     out.write(`    if (\n`);
     out.write(`      !isNode(node) ||\n`);
     out.write(`      !t.is${type}(node)\n`);
@@ -137,6 +139,7 @@ export default function rebuild(out: SimpleWriter): void {
     out.write(`\n`);
     for (const key of keys) {
       const field = fields[key];
+      const keyString = `'${key}'`;
       const binding = `this.${toBindingIdentifierName(key)}`;
       out.write(`    if (typeof ${binding} === 'undefined') {\n`);
       out.write(`      // undefined matcher means anything matches\n`);
@@ -158,12 +161,14 @@ export default function rebuild(out: SimpleWriter): void {
       if (isValidatorOfType('array', field.validate)) {
         out.write(`    } else if (Array.isArray(${binding})) {\n`);
         out.write(
-          `      if (!tupleOf<unknown>(...${binding}).match(node.${key})) {\n`
+          `      if (!tupleOf<unknown>(...${binding}).matchValue(node.${key}, [...keys, ${keyString}])) {\n`
         );
         out.write(`        return false;\n`);
         out.write(`      }\n`);
       }
-      out.write(`    } else if (!${binding}.match(node.${key})) {\n`);
+      out.write(
+        `    } else if (!${binding}.matchValue(node.${key}, [...keys, ${keyString}])) {\n`
+      );
       out.write(`      return false;\n`);
       out.write(`    }\n`);
       out.write(`\n`);

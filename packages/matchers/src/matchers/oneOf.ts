@@ -5,7 +5,7 @@ export class OneOfMatcher<T> extends Matcher<[T]> {
     super();
   }
 
-  match(value: unknown): value is [T] {
+  matchValue(value: unknown, keys: ReadonlyArray<PropertyKey>): value is [T] {
     if (!Array.isArray(value)) {
       return false;
     }
@@ -14,7 +14,7 @@ export class OneOfMatcher<T> extends Matcher<[T]> {
       return false;
     }
 
-    return this.matcher.match(value[0]);
+    return this.matcher.matchValue(value[0], [...keys, 0]);
   }
 }
 

@@ -7,7 +7,7 @@ export class PredicateMatcher<T> extends Matcher<T> {
     super();
   }
 
-  match(value: unknown): value is T {
+  matchValue(value: unknown): value is T {
     return this.predicate(value);
   }
 }

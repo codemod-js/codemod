@@ -11,22 +11,27 @@ export class FunctionMatcher extends Matcher<t.Function> {
     super();
   }
 
-  match(value: unknown): value is t.Function {
+  matchValue(
+    value: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): value is t.Function {
     if (!isNode(value) || !t.isFunction(value)) {
       return false;
     }
 
     if (this.params) {
       if (Array.isArray(this.params)) {
-        if (!tupleOf(...this.params).match(value.params)) {
+        if (
+          !tupleOf(...this.params).matchValue(value.params, [...keys, 'params'])
+        ) {
           return false;
         }
-      } else if (!this.params.match(value.params)) {
+      } else if (!this.params.matchValue(value.params, [...keys, 'params'])) {
         return false;
       }
     }
 
-    if (this.body && !this.body.match(value.body)) {
+    if (this.body && !this.body.matchValue(value.body, [...keys, 'body'])) {
       return false;
     }
 

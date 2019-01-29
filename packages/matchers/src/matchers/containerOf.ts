@@ -13,25 +13,25 @@ export class ContainerOfMatcher<T extends t.Node> extends CapturedMatcher<T> {
     super();
   }
 
-  match(value: unknown): value is T {
+  matchValue(value: unknown, keys: ReadonlyArray<PropertyKey>): value is T {
     if (!isNode(value)) {
       return false;
     }
 
-    if (this.containedMatcher.match(value)) {
-      this.capture(value);
+    if (this.containedMatcher.matchValue(value, keys)) {
+      this.capture(value, keys);
       return true;
     }
 
     for (const key in value) {
       const valueAtKey = value[key as keyof typeof value];
       if (Array.isArray(valueAtKey)) {
-        for (const element of valueAtKey) {
-          if (this.match(element)) {
+        for (const [i, element] of valueAtKey.entries()) {
+          if (this.matchValue(element, [...keys, key, i])) {
             return true;
           }
         }
-      } else if (this.match(valueAtKey)) {
+      } else if (this.matchValue(valueAtKey, [...keys, key])) {
         return true;
       }
     }

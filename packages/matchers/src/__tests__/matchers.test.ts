@@ -264,13 +264,17 @@ test('containerOf captures the first matching value', () => {
   const plusMatcher = m.containerOf(m.binaryExpression('+'));
 
   expect(plusMatcher.match(js('console.log(a + b + c);'))).toBeTruthy();
-  expect(plusMatcher.current).toEqual(
-    t.binaryExpression(
+  expect({
+    currentKeys: plusMatcher.currentKeys,
+    current: plusMatcher.current
+  }).toEqual({
+    currentKeys: ['program', 'body', 0, 'expression', 'arguments', 0],
+    current: t.binaryExpression(
       '+',
       t.binaryExpression('+', t.identifier('a'), t.identifier('b')),
       t.identifier('c')
     )
-  );
+  });
 });
 
 test('matcher builds a matcher based on a predicate', () => {

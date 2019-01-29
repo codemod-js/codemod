@@ -3,7 +3,7 @@ import { isNode } from '../NodeTypes';
 import Matcher from './Matcher';
 
 export class AnyStatementMatcher extends Matcher<t.Statement> {
-  match(value: unknown): value is t.Statement {
+  matchValue(value: unknown): value is t.Statement {
     return isNode(value) && t.isStatement(value);
   }
 }

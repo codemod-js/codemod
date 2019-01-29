@@ -6,7 +6,7 @@ export class FromCaptureMatcher<T> extends Matcher<T> {
     super();
   }
 
-  match(value: unknown): value is T {
+  matchValue(value: unknown): value is T {
     return this.capturedMatcher.current === value;
   }
 }

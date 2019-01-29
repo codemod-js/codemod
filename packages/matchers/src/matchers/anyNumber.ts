@@ -1,7 +1,7 @@
 import Matcher from './Matcher';
 
 export class NumberMatcher extends Matcher<number> {
-  match(value: unknown): value is number {
+  matchValue(value: unknown): value is number {
     return typeof value === 'number' || value instanceof Number;
   }
 }

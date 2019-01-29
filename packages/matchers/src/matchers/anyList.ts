@@ -15,7 +15,10 @@ export class AnyListMatcher<T> extends Matcher<Array<T>> {
     }
   }
 
-  match(array: unknown): array is Array<T> {
+  matchValue(
+    array: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): array is Array<T> {
     if (!Array.isArray(array)) {
       return false;
     }
@@ -32,6 +35,7 @@ export class AnyListMatcher<T> extends Matcher<Array<T>> {
     for (const allocations of spacerAllocations) {
       const toMatch: Array<T> = array.slice();
       let matchedAll = true;
+      let key = 0;
 
       for (const element of this.elements) {
         if (element instanceof Spacer) {
@@ -40,10 +44,13 @@ export class AnyListMatcher<T> extends Matcher<Array<T>> {
           while (spacesForSpacer > 0) {
             toMatch.shift();
             spacesForSpacer--;
+            key++;
           }
-        } else if (!element.match(toMatch.shift())) {
+        } else if (!element.matchValue(toMatch.shift(), [...keys, key])) {
           matchedAll = false;
           break;
+        } else {
+          key++;
         }
       }
 

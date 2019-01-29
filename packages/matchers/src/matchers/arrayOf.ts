@@ -5,13 +5,16 @@ export class ArrayOfMatcher<T> extends Matcher<Array<T>> {
     super();
   }
 
-  match(value: unknown): value is Array<T> {
+  matchValue(
+    value: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): value is Array<T> {
     if (!Array.isArray(value)) {
       return false;
     }
 
-    for (const element of value) {
-      if (!this.elementMatcher.match(element)) {
+    for (const [i, element] of value.entries()) {
+      if (!this.elementMatcher.matchValue(element, [...keys, i])) {
         return false;
       }
     }
