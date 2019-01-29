@@ -402,3 +402,157 @@ test('codemod: assert.expect to assert.async', () => {
     });
   `);
 });
+
+test('codemod: convert static exported class to named exports', () => {
+  const className = m.capture(m.anyString());
+  const classDeclaration = m.capture(
+    m.classDeclaration(
+      m.identifier(className),
+      null,
+      m.classBody(
+        m.arrayOf(
+          m.classMethod(
+            'method',
+            m.identifier(),
+            m.anything(),
+            m.anything(),
+            false,
+            true
+          )
+        )
+      )
+    )
+  );
+  const exportDeclaration = m.capture(
+    m.exportDefaultDeclaration(m.identifier(m.fromCapture(className)))
+  );
+  const matcher = m.anyList<t.Statement>(
+    m.zeroOrMore(),
+    classDeclaration,
+    m.zeroOrMore(),
+    exportDeclaration,
+    m.zeroOrMore()
+  );
+
+  const thisPropertyAccessMatcher = m.memberExpression(
+    m.thisExpression(),
+    m.identifier(),
+    false
+  );
+
+  const ast = js(dedent`
+    class MobileAppUpsellHelper {
+      static getIosAppLink(specialTrackingLink) {
+        const trackingLink = specialTrackingLink || "IOS_BRANCH_LINK";
+        return this.getBranchLink(trackingLink);
+      }
+
+      static getAndroidAppLink(specialTrackingLink) {
+        const trackingLink = specialTrackingLink || "ANDROID_BRANCH_LINK";
+        return this.getBranchLink(trackingLink);
+      }
+
+      static getBranchLink(specialTrackingLink) {
+        if (specialTrackingLink && APP_DOWNLOAD_ASSETS[specialTrackingLink]) {
+          return APP_DOWNLOAD_ASSETS[specialTrackingLink];
+        }
+
+        return APP_DOWNLOAD_ASSETS.DEFAULT_BRANCH_LINK;
+      }
+
+      static getHideAppBanner() {
+        return CookieHelper.get("hide_app_banner");
+      }
+    }
+
+    export default MobileAppUpsellHelper;
+  `);
+
+  traverse(ast, {
+    Program(path: NodePath<t.Program>): void {
+      match(
+        matcher,
+        { exportDeclaration, classDeclaration },
+        path.node.body,
+        ({ exportDeclaration, classDeclaration }) => {
+          const statements = path.node.body;
+          const replacements: Array<t.Statement> = [];
+          const exportDeclarationPath = path.get('body')[
+            statements.indexOf(exportDeclaration)
+          ] as NodePath<t.ExportDefaultDeclaration>;
+          const classDeclarationPath = path.get('body')[
+            statements.indexOf(classDeclaration)
+          ] as NodePath<t.ClassDeclaration>;
+
+          for (const property of classDeclarationPath.get('body').get('body')) {
+            if (!property.isClassMethod()) {
+              throw new Error(
+                `unexpected ${property.type} while looking for ClassMethod`
+              );
+            }
+
+            if (!t.isIdentifier(property.node.key)) {
+              throw new Error(
+                `unexpected ${
+                  property.get('key').type
+                } while looking for Identifier`
+              );
+            }
+
+            replacements.push(
+              t.exportNamedDeclaration(
+                t.functionDeclaration(
+                  property.node.key,
+                  property.node.params,
+                  property.node.body,
+                  property.node.generator,
+                  property.node.async
+                ),
+                []
+              )
+            );
+
+            property.get('body').traverse({
+              enter(path: NodePath<t.Node>): void {
+                if (path.isFunction()) {
+                  if (!path.isArrowFunctionExpression()) {
+                    path.skip();
+                  }
+                } else if (
+                  path.isMemberExpression() &&
+                  thisPropertyAccessMatcher.match(path.node)
+                ) {
+                  path.replaceWith(path.node.property);
+                }
+              }
+            });
+          }
+
+          exportDeclarationPath.remove();
+          classDeclarationPath.replaceWithMultiple(replacements);
+        }
+      );
+    }
+  });
+
+  expect(generate(ast).code).toEqual(dedent`
+    export function getIosAppLink(specialTrackingLink) {
+      const trackingLink = specialTrackingLink || "IOS_BRANCH_LINK";
+      return getBranchLink(trackingLink);
+    }
+    export function getAndroidAppLink(specialTrackingLink) {
+      const trackingLink = specialTrackingLink || "ANDROID_BRANCH_LINK";
+      return getBranchLink(trackingLink);
+    }
+    export function getBranchLink(specialTrackingLink) {
+      if (specialTrackingLink && APP_DOWNLOAD_ASSETS[specialTrackingLink]) {
+        return APP_DOWNLOAD_ASSETS[specialTrackingLink];
+      }
+
+      return APP_DOWNLOAD_ASSETS.DEFAULT_BRANCH_LINK;
+    }
+    export function getHideAppBanner() {
+      return CookieHelper.get("hide_app_banner");
+    }
+  `);
+});
