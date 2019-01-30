@@ -32,11 +32,13 @@ export default class ProcessSnapshot {
   constructor(
     private readonly requireImpl: typeof require = require,
     private readonly processImpl: typeof process = process,
+    private readonly originalGlobal: typeof global = global,
     private readonly log: typeof console.log = () => {}
   ) {
     this.cacheEntries = this.snapshotRequireCache();
     this.extensions = this.snapshotRequireExtensions();
     this.processEvents = this.snapshotProcessEvents();
+    this.originalGlobal.global = Object.create(originalGlobal);
   }
 
   /**
@@ -46,6 +48,7 @@ export default class ProcessSnapshot {
     this.restoreRequireCache();
     this.restoreExtensions();
     this.restoreProcessEvents();
+    this.restoreGlobal();
   }
 
   /**
@@ -170,6 +173,13 @@ export default class ProcessSnapshot {
         process.addListener(event as any, callback);
       }
     }
+  }
+
+  /**
+   * Restores the state of the `global` object.
+   */
+  private restoreGlobal(): void {
+    this.originalGlobal.global = this.originalGlobal;
   }
 
   /**

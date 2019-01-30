@@ -5,6 +5,7 @@ import ProcessSnapshot from '../../src/ProcessSnapshot';
 describe('ProcessSnapshot', function() {
   let fakeRequire: typeof require;
   let fakeProcess: typeof process;
+  let fakeGlobal: typeof global;
   let messages: Array<string>;
 
   function log(...args: Array<{}>): void {
@@ -21,12 +22,19 @@ describe('ProcessSnapshot', function() {
     fakeProcess['_events'] = Object.create(fakeProcess['_events']);
     fakeProcess.removeAllListeners();
 
+    fakeGlobal = Object.create(global);
+
     messages = [];
   });
 
   it('removes added require entries from the cache', function() {
     // Take a snapshot.
-    let snapshot = new ProcessSnapshot(fakeRequire, fakeProcess, log);
+    let snapshot = new ProcessSnapshot(
+      fakeRequire,
+      fakeProcess,
+      fakeGlobal,
+      log
+    );
 
     // Add a file to the cache.
     let path = '/some/added/file';
@@ -47,7 +55,12 @@ describe('ProcessSnapshot', function() {
     ok(path in fakeRequire.cache);
 
     // Take a snapshot.
-    let snapshot = new ProcessSnapshot(fakeRequire, fakeProcess, log);
+    let snapshot = new ProcessSnapshot(
+      fakeRequire,
+      fakeProcess,
+      fakeGlobal,
+      log
+    );
 
     // Remove a file from the cache.
     delete fakeRequire.cache[path];
@@ -70,7 +83,12 @@ describe('ProcessSnapshot', function() {
     ok(path in fakeRequire.cache);
 
     // Take a snapshot.
-    let snapshot = new ProcessSnapshot(fakeRequire, fakeProcess, log);
+    let snapshot = new ProcessSnapshot(
+      fakeRequire,
+      fakeProcess,
+      fakeGlobal,
+      log
+    );
 
     // Replace a file in the cache.
     fakeRequire.cache[path] = new Module(path);
@@ -86,7 +104,12 @@ describe('ProcessSnapshot', function() {
 
   it('removes added require extensions', function() {
     // Take a snapshot.
-    let snapshot = new ProcessSnapshot(fakeRequire, fakeProcess, log);
+    let snapshot = new ProcessSnapshot(
+      fakeRequire,
+      fakeProcess,
+      fakeGlobal,
+      log
+    );
 
     // Add a require extension.
     fakeRequire.extensions['.omg'] = () => {};
@@ -103,7 +126,12 @@ describe('ProcessSnapshot', function() {
     fakeRequire.extensions['.omg'] = () => {};
 
     // Take a snapshot.
-    let snapshot = new ProcessSnapshot(fakeRequire, fakeProcess, log);
+    let snapshot = new ProcessSnapshot(
+      fakeRequire,
+      fakeProcess,
+      fakeGlobal,
+      log
+    );
 
     // Remove the extension.
     delete fakeRequire.extensions['.omg'];
@@ -121,7 +149,12 @@ describe('ProcessSnapshot', function() {
     fakeRequire.extensions['.omg'] = originalLoader;
 
     // Take a snapshot.
-    let snapshot = new ProcessSnapshot(fakeRequire, fakeProcess, log);
+    let snapshot = new ProcessSnapshot(
+      fakeRequire,
+      fakeProcess,
+      fakeGlobal,
+      log
+    );
 
     // Replace a require extension.
     fakeRequire.extensions['.omg'] = () => {};
@@ -135,7 +168,12 @@ describe('ProcessSnapshot', function() {
 
   it('removes added process event listeners', function() {
     // Take a snapshot.
-    let snapshot = new ProcessSnapshot(fakeRequire, fakeProcess, log);
+    let snapshot = new ProcessSnapshot(
+      fakeRequire,
+      fakeProcess,
+      fakeGlobal,
+      log
+    );
 
     // Add an event listener.
     let listener = (): void => {};
@@ -154,7 +192,12 @@ describe('ProcessSnapshot', function() {
     fakeProcess.on('exit', listener);
 
     // Take a snapshot.
-    let snapshot = new ProcessSnapshot(fakeRequire, fakeProcess, log);
+    let snapshot = new ProcessSnapshot(
+      fakeRequire,
+      fakeProcess,
+      fakeGlobal,
+      log
+    );
 
     // Remove the event listener.
     fakeProcess.removeListener('exit', listener);
@@ -172,7 +215,12 @@ describe('ProcessSnapshot', function() {
     fakeProcess.on('exit', existingListener);
 
     // Take a snapshot.
-    let snapshot = new ProcessSnapshot(fakeRequire, fakeProcess, log);
+    let snapshot = new ProcessSnapshot(
+      fakeRequire,
+      fakeProcess,
+      fakeGlobal,
+      log
+    );
 
     // Add an event listener.
     let listener = (): void => {};
@@ -183,5 +231,22 @@ describe('ProcessSnapshot', function() {
 
     deepEqual(messages, [`removing added 'exit' event listener`]);
     deepEqual(fakeProcess.listeners('exit'), [existingListener]);
+  });
+
+  it('restores `global`', function() {
+    // Take a snapshot.
+    let snapshot = new ProcessSnapshot(
+      fakeRequire,
+      fakeProcess,
+      fakeGlobal,
+      log
+    );
+
+    fakeGlobal.global['foo'] = 123;
+
+    // Restore the snapshot.
+    snapshot.restore();
+
+    strictEqual(fakeGlobal.global['foo'], undefined);
   });
 });
