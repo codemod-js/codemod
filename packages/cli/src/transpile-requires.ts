@@ -1,4 +1,4 @@
-import { transformSync, TransformOptions } from '@babel/core';
+import { transformSync, TransformOptions, PluginItem } from '@babel/core';
 import { extname } from 'path';
 import { addHook } from 'pirates';
 import buildAllSyntaxPlugin from './AllSyntaxPlugin';
@@ -14,14 +14,20 @@ export function hook(code: string, filename: string): string {
     throw new Error(`cannot load file type '${ext}': ${filename}`);
   }
 
-  let presets: Array<string> = [];
+  let plugins: Array<PluginItem> = [];
+  let presets: Array<PluginItem> = [];
   let options: TransformOptions = {
     filename,
     babelrc: useBabelConfig,
-    presets: presets,
-    plugins: [buildAllSyntaxPlugin('module')],
+    presets,
+    plugins,
     sourceMaps: 'inline'
   };
+
+  plugins.push(
+    buildAllSyntaxPlugin('module'),
+    require.resolve('@babel/plugin-proposal-class-properties')
+  );
 
   if (!useBabelConfig) {
     options.configFile = useBabelConfig;
@@ -32,7 +38,10 @@ export function hook(code: string, filename: string): string {
       presets.push(require.resolve('@babel/preset-typescript'));
     }
 
-    presets.push(require.resolve('@babel/preset-env'));
+    presets.push([
+      require.resolve('@babel/preset-env'),
+      { useBuiltIns: 'entry' }
+    ]);
   }
 
   let result = transformSync(code, options);
@@ -47,6 +56,7 @@ export function hook(code: string, filename: string): string {
 export function enable(shouldUseBabelConfig: boolean = false): void {
   disable();
   useBabelConfig = shouldUseBabelConfig;
+  require('@babel/polyfill');
   revert = addHook(hook, {
     exts: Array.from(PluginExtensions),
     ignoreNodeModules: true
