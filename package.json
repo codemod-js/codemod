@@ -22,5 +22,8 @@
     "typescript": "^3.2.4",
     "typescript-eslint-parser": "^21.0.2"
   },
-  "name": "codemod"
+  "name": "codemod",
+  "resolutions": {
+    "**/ip-regex": "^2.0.0"
+  }
 }
