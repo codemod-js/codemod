@@ -629,4 +629,36 @@ describe('CLI', function() {
       }
     );
   });
+
+  it('can load a plugin that uses class properties', async function() {
+    let { status, stdout, stderr } = await runCodemodCLI(
+      ['--plugin', plugin('class-properties', '.ts'), '--stdio'],
+      ''
+    );
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: '',
+        stderr: ''
+      }
+    );
+  });
+
+  it('can load a plugin that uses generators', async function() {
+    let { status, stdout, stderr } = await runCodemodCLI(
+      ['--plugin', plugin('generators', '.ts'), '--stdio'],
+      ''
+    );
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: '',
+        stderr: ''
+      }
+    );
+  });
 });
