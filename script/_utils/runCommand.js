@@ -13,9 +13,11 @@ module.exports = function(name) {
       main(process.argv.slice(2), process.stdin, process.stdout, process.stderr)
     );
   })
-    .then(status => process.exit(status))
+    .then(status => {
+      process.exitCode = status;
+    })
     .catch(error => {
       process.stderr.write(`[CRASH] ${error.stack}\n`);
-      process.exit(1);
+      process.exitCode = 1;
     });
 };
