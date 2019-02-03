@@ -8,12 +8,15 @@ import { isNode } from '../NodeTypes';
  * descendants of a given node. The matched descendant is captured as the
  * current value of this capturing matcher.
  */
-export class ContainerOfMatcher<T extends t.Node> extends CapturedMatcher<T> {
-  constructor(private readonly containedMatcher: Matcher<T>) {
+export class ContainerOfMatcher<
+  C extends t.Node,
+  M extends t.Node = C
+> extends CapturedMatcher<C, M> {
+  constructor(private readonly containedMatcher: Matcher<C>) {
     super();
   }
 
-  matchValue(value: unknown, keys: ReadonlyArray<PropertyKey>): value is T {
+  matchValue(value: unknown, keys: ReadonlyArray<PropertyKey>): value is M {
     if (!isNode(value)) {
       return false;
     }
@@ -40,8 +43,8 @@ export class ContainerOfMatcher<T extends t.Node> extends CapturedMatcher<T> {
   }
 }
 
-export default function containerOf<T extends t.Node>(
-  containedMatcher: Matcher<T>
-): CapturedMatcher<T> {
+export default function containerOf<C extends t.Node, M extends t.Node = C>(
+  containedMatcher: Matcher<C>
+): ContainerOfMatcher<C, M> {
   return new ContainerOfMatcher(containedMatcher);
 }

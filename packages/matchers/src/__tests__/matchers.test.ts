@@ -277,6 +277,20 @@ test('containerOf captures the first matching value', () => {
   });
 });
 
+test('containerOf can be used in a nested matcher', () => {
+  expect(
+    m
+      .containerOf(
+        m.functionDeclaration(
+          m.anything(),
+          m.anything(),
+          m.containerOf(m.thisExpression())
+        )
+      )
+      .match(js('function returnThis() { return this; }'))
+  ).toBeTruthy();
+});
+
 test('matcher builds a matcher based on a predicate', () => {
   const matcher = m.matcher(
     value => typeof value === 'string' && value.startsWith('no')
