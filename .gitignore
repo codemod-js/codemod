@@ -1,5 +1,5 @@
-# ignore build directory
-dist
+# ignore pack
+*.tgz
 
 # ignore development
 node_modules
@@ -15,7 +15,7 @@ node_modules
 # TypeScript build files
 *.js
 *.d.ts
-*.js.map
+*.map
 
 # allow fixtures
 !test/fixtures/**/*.js
