@@ -1,6 +1,6 @@
 {
   "name": "@codemod/matchers",
-  "version": "0.0.0-development",
+  "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
   "dependencies": {
