@@ -8,15 +8,15 @@ let useBabelConfig = false;
 let revert: (() => void) | null = null;
 
 export function hook(code: string, filename: string): string {
-  let ext = extname(filename);
+  const ext = extname(filename);
 
   if (!PluginExtensions.has(ext)) {
     throw new Error(`cannot load file type '${ext}': ${filename}`);
   }
 
-  let plugins: Array<PluginItem> = [];
-  let presets: Array<PluginItem> = [];
-  let options: TransformOptions = {
+  const plugins: Array<PluginItem> = [];
+  const presets: Array<PluginItem> = [];
+  const options: TransformOptions = {
     filename,
     babelrc: useBabelConfig,
     presets,
@@ -40,11 +40,11 @@ export function hook(code: string, filename: string): string {
 
     presets.push([
       require.resolve('@babel/preset-env'),
-      { useBuiltIns: 'entry' }
+      { useBuiltIns: 'entry', corejs: { version: 3, proposals: true } }
     ]);
   }
 
-  let result = transformSync(code, options);
+  const result = transformSync(code, options);
 
   if (!result) {
     throw new Error(`[${filename}] babel transform returned null`);
@@ -56,7 +56,8 @@ export function hook(code: string, filename: string): string {
 export function enable(shouldUseBabelConfig: boolean = false): void {
   disable();
   useBabelConfig = shouldUseBabelConfig;
-  require('@babel/polyfill');
+  require('core-js');
+  require('regenerator-runtime');
   revert = addHook(hook, {
     exts: Array.from(PluginExtensions),
     ignoreNodeModules: true

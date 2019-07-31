@@ -6,7 +6,7 @@ export default async function createTemporaryFile(
   path: string,
   content: string
 ): Promise<string> {
-  let fullPath = join(
+  const fullPath = join(
     await createTemporaryDirectory(dirname(path)),
     basename(path)
   );

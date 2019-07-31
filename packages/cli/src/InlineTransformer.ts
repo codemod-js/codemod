@@ -9,7 +9,7 @@ export default class InlineTransformer implements Transformer {
   ) {}
 
   async transform(filepath: string, content: string): Promise<string> {
-    let options: TransformOptions = {
+    const options: TransformOptions = {
       filename: filepath,
       babelrc: this.findBabelConfig,
       plugins: this.plugins
@@ -19,7 +19,7 @@ export default class InlineTransformer implements Transformer {
       options.configFile = this.findBabelConfig;
     }
 
-    let result = await transformAsync(content, options);
+    const result = await transformAsync(content, options);
 
     if (!result) {
       throw new Error(`[${filepath}] babel transform returned null`);

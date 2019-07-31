@@ -6,8 +6,8 @@ import { startServer } from '../../helpers/TestServer';
 
 describe('AstExplorerResolver', function() {
   it('normalizes a gist+commit editor URL into an API URL', async function() {
-    let resolver = new AstExplorerResolver();
-    let normalized = await resolver.normalize(
+    const resolver = new AstExplorerResolver();
+    const normalized = await resolver.normalize(
       'https://astexplorer.net/#/gist/688274/5ece95'
     );
 
@@ -18,8 +18,8 @@ describe('AstExplorerResolver', function() {
   });
 
   it('normalizes http gist+commit editor URL to an https API URL', async function() {
-    let resolver = new AstExplorerResolver();
-    let normalized = await resolver.normalize(
+    const resolver = new AstExplorerResolver();
+    const normalized = await resolver.normalize(
       'http://astexplorer.net/#/gist/b5b33c/f9ae8a'
     );
 
@@ -30,8 +30,8 @@ describe('AstExplorerResolver', function() {
   });
 
   it('normalizes a gist-only editor URL into an API URL', async function() {
-    let resolver = new AstExplorerResolver();
-    let normalized = await resolver.normalize(
+    const resolver = new AstExplorerResolver();
+    const normalized = await resolver.normalize(
       'https://astexplorer.net/#/gist/688274'
     );
 
@@ -39,16 +39,16 @@ describe('AstExplorerResolver', function() {
   });
 
   it('extracts the transform from the editor view', async function() {
-    let result = await readFile(
+    const result = await readFile(
       join(__dirname, '../../fixtures/astexplorer/default.json'),
       { encoding: 'utf8' }
     );
-    let server = await startServer((req, res) => {
+    const server = await startServer((req, res) => {
       res.end(result);
     });
 
     try {
-      let resolver = new AstExplorerResolver(server.requestURL('/'));
+      const resolver = new AstExplorerResolver(server.requestURL('/'));
       strictEqual(
         await readFile(
           await resolver.resolve(
@@ -64,13 +64,13 @@ describe('AstExplorerResolver', function() {
   });
 
   it('fails when returned data is not JSON', async function() {
-    let server = await startServer((req, res) => {
+    const server = await startServer((req, res) => {
       res.end('this is not JSON');
     });
-    let url = server.requestURL('/');
+    const url = server.requestURL('/');
 
     try {
-      let resolver = new AstExplorerResolver(server.requestURL('/'));
+      const resolver = new AstExplorerResolver(server.requestURL('/'));
 
       await resolver.resolve(url.toString());
 
@@ -86,12 +86,12 @@ describe('AstExplorerResolver', function() {
   });
 
   it('fails when files data is not present', async function() {
-    let server = await startServer((req, res) => {
+    const server = await startServer((req, res) => {
       res.end(JSON.stringify({}));
     });
 
     try {
-      let resolver = new AstExplorerResolver(server.requestURL('/'));
+      const resolver = new AstExplorerResolver(server.requestURL('/'));
 
       await resolver.resolve(server.requestURL('/').toString());
 
@@ -107,12 +107,12 @@ describe('AstExplorerResolver', function() {
   });
 
   it('fails when transform.js is not present', async function() {
-    let server = await startServer((req, res) => {
+    const server = await startServer((req, res) => {
       res.end(JSON.stringify({ files: {} }));
     });
 
     try {
-      let resolver = new AstExplorerResolver(server.requestURL('/'));
+      const resolver = new AstExplorerResolver(server.requestURL('/'));
 
       await resolver.resolve(server.requestURL('/').toString());
 

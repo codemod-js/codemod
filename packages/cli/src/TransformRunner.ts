@@ -24,11 +24,11 @@ export default class TransformRunner {
   ) {}
 
   async *run(): AsyncIterableIterator<SourceTransformResult> {
-    for (let source of this.sources) {
+    for (const source of this.sources) {
       let result: SourceTransformResult;
 
       try {
-        let output = await this.transformer.transform(
+        const output = await this.transformer.transform(
           source.path,
           source.content
         );

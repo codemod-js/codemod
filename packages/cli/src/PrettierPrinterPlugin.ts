@@ -14,7 +14,7 @@ function loadPrettier(): typeof Prettier {
 }
 
 export default function(): PluginObj {
-  let prettier = loadPrettier();
+  const prettier = loadPrettier();
 
   function resolvePrettierConfig(filepath: string): Prettier.Options {
     return {

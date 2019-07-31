@@ -25,7 +25,7 @@ export class Plugin {
     readonly source?: string,
     readonly resolvedPath?: string
   ) {
-    let instance = rawPlugin(Babel);
+    const instance = rawPlugin(Babel);
 
     if (instance.name) {
       this.declaredName = instance.name;
@@ -79,10 +79,10 @@ export default class Config {
 
   async getPlugins(): Promise<Array<Plugin>> {
     if (!this._pluginCache) {
-      let localPlugins = Promise.all(
+      const localPlugins = Promise.all(
         this.localPlugins.map(async localPlugin => {
-          let pluginExports = await this.pluginLoader.load(localPlugin);
-          let defaultExport = pluginExports['default'] || pluginExports;
+          const pluginExports = await this.pluginLoader.load(localPlugin);
+          const defaultExport = pluginExports['default'] || pluginExports;
 
           return new Plugin(
             defaultExport,
@@ -91,10 +91,12 @@ export default class Config {
         })
       );
 
-      let remotePlugins = Promise.all(
+      const remotePlugins = Promise.all(
         this.remotePlugins.map(async remotePlugin => {
-          let pluginExports = await this.remotePluginLoader.load(remotePlugin);
-          let defaultExport = pluginExports['default'] || pluginExports;
+          const pluginExports = await this.remotePluginLoader.load(
+            remotePlugin
+          );
+          const defaultExport = pluginExports['default'] || pluginExports;
 
           return new Plugin(
             defaultExport,
@@ -110,7 +112,7 @@ export default class Config {
   }
 
   loadRequires(): void {
-    for (let modulePath of this.requires) {
+    for (const modulePath of this.requires) {
       require(modulePath);
     }
   }
@@ -129,7 +131,7 @@ export default class Config {
   }
 
   async getPlugin(name: string): Promise<Plugin | null> {
-    for (let plugin of await this.getPlugins()) {
+    for (const plugin of await this.getPlugins()) {
       if (plugin.declaredName === name || plugin.inferredName === name) {
         return plugin;
       }
@@ -139,7 +141,7 @@ export default class Config {
   }
 
   async getBabelPlugins(): Promise<Array<BabelPlugin>> {
-    let result: Array<BabelPlugin> = [buildAllSyntaxPlugin(this.sourceType)];
+    const result: Array<BabelPlugin> = [buildAllSyntaxPlugin(this.sourceType)];
 
     switch (this.printer) {
       case Printer.Recast:
@@ -155,8 +157,8 @@ export default class Config {
         break;
     }
 
-    for (let plugin of await this.getPlugins()) {
-      let options =
+    for (const plugin of await this.getPlugins()) {
+      const options =
         (plugin.declaredName && this.pluginOptions.get(plugin.declaredName)) ||
         this.pluginOptions.get(plugin.inferredName);
 
@@ -171,13 +173,13 @@ export default class Config {
   }
 
   async getBabelPlugin(name: string): Promise<BabelPlugin | null> {
-    let plugin = await this.getPlugin(name);
+    const plugin = await this.getPlugin(name);
 
     if (!plugin) {
       return null;
     }
 
-    let options = this.pluginOptions.get(name);
+    const options = this.pluginOptions.get(name);
 
     if (options) {
       return [plugin.rawPlugin, options];
@@ -216,7 +218,7 @@ export class ConfigBuilder {
   }
 
   addSourcePaths(...values: Array<string>): this {
-    for (let value of values) {
+    for (const value of values) {
       this.addSourcePath(value);
     }
     return this;

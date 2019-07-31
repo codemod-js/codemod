@@ -4,10 +4,10 @@ export default class Matcher<T> {
   }
 
   matchValue(
-    /* eslint-disable typescript/no-unused-vars */
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     value: unknown,
     keys: ReadonlyArray<PropertyKey>
-    /* eslint-enable typescript/no-unused-vars */
+    /* eslint-enable @typescript-eslint/no-unused-vars */
   ): value is T {
     throw new Error(`${this.constructor.name}#matchValue is not implemented`);
   }

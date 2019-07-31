@@ -24,10 +24,10 @@ export default class Options {
   constructor(readonly args: Array<string>) {}
 
   parse(): RunCommand | HelpCommand | VersionCommand {
-    let config = new ConfigBuilder();
+    const config = new ConfigBuilder();
 
     for (let i = 0; i < this.args.length; i++) {
-      let arg = this.args[i];
+      const arg = this.args[i];
 
       switch (arg) {
         case '-p':
@@ -42,10 +42,10 @@ export default class Options {
           break;
 
         case '-o':
-        case '--plugin-options':
+        case '--plugin-options': {
           i++;
-          let nameAndOptions = this.args[i].split('=');
-          let name = nameAndOptions[0];
+          const nameAndOptions = this.args[i].split('=');
+          const name = nameAndOptions[0];
           let optionsRaw = nameAndOptions[1];
 
           if (optionsRaw && optionsRaw[0] === '@') {
@@ -63,10 +63,11 @@ export default class Options {
             );
           }
           break;
+        }
 
-        case '--printer':
+        case '--printer': {
           i++;
-          let rawPrinter = this.args[i];
+          const rawPrinter = this.args[i];
 
           if (rawPrinter === Printer.Babel) {
             config.printer(Printer.Babel);
@@ -78,6 +79,7 @@ export default class Options {
             throw new Error(`unexpected printer value: ${rawPrinter}`);
           }
           break;
+        }
 
         case '-r':
         case '--require':
@@ -113,7 +115,7 @@ export default class Options {
 
         case '--source-type': {
           i++;
-          let sourceType = this.args[i];
+          const sourceType = this.args[i];
           if (
             sourceType === 'module' ||
             sourceType === 'script' ||
@@ -175,7 +177,7 @@ function getRequirableModulePath(modulePath: string): string {
     return resolve(modulePath);
   }
 
-  for (let ext of RequireableExtensions) {
+  for (const ext of RequireableExtensions) {
     if (existsSync(modulePath + ext)) {
       return resolve(modulePath + ext);
     }

@@ -6,5 +6,6 @@ export default function main(): Promise<number> {
     const out = createWriteStream(MATCHERS_FILE_PATH, 'utf8');
     out.once('close', () => resolve(0));
     rebuild(out);
+    out.close();
   });
 }

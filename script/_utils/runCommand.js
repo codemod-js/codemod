@@ -1,3 +1,5 @@
+/* eslint-env node, es6 */
+
 module.exports = function(name) {
   new Promise(resolve => {
     require('ts-node').register({

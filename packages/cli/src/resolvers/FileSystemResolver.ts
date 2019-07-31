@@ -22,7 +22,7 @@ export default class FileSystemResolver implements Resolver {
   private *enumerateCandidateSources(source: string): IterableIterator<string> {
     yield resolve(source);
 
-    for (let ext of this.optionalExtensions) {
+    for (const ext of this.optionalExtensions) {
       if (ext[0] !== '.') {
         yield resolve(`${source}.${ext}`);
       } else {
@@ -32,7 +32,7 @@ export default class FileSystemResolver implements Resolver {
   }
 
   async canResolve(source: string): Promise<boolean> {
-    for (let candidate of this.enumerateCandidateSources(source)) {
+    for (const candidate of this.enumerateCandidateSources(source)) {
       if (await isFile(candidate)) {
         return true;
       }
@@ -42,7 +42,7 @@ export default class FileSystemResolver implements Resolver {
   }
 
   async resolve(source: string): Promise<string> {
-    for (let candidate of this.enumerateCandidateSources(source)) {
+    for (const candidate of this.enumerateCandidateSources(source)) {
       if (await isFile(candidate)) {
         return candidate;
       }

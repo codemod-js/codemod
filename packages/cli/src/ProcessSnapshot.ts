@@ -58,12 +58,12 @@ export default class ProcessSnapshot {
     before: Map<K, V>,
     after: Map<K, V>
   ): MapDiff<K, V> {
-    let added = new Map<K, V>();
-    let modified = new Map<K, [V, V]>();
-    let deleted = new Map<K, V>();
+    const added = new Map<K, V>();
+    const modified = new Map<K, [V, V]>();
+    const deleted = new Map<K, V>();
 
-    for (let [beforeKey, beforeValue] of before) {
-      let afterValue = after.get(beforeKey);
+    for (const [beforeKey, beforeValue] of before) {
+      const afterValue = after.get(beforeKey);
       if (after.has(beforeKey)) {
         if (afterValue !== beforeValue) {
           modified.set(beforeKey, [beforeValue, afterValue as V]);
@@ -73,7 +73,7 @@ export default class ProcessSnapshot {
       }
     }
 
-    for (let [afterKey, afterValue] of after) {
+    for (const [afterKey, afterValue] of after) {
       if (!before.has(afterKey)) {
         added.set(afterKey, afterValue);
       }
@@ -86,23 +86,23 @@ export default class ProcessSnapshot {
    * Restores `require.cache` in place.
    */
   private restoreRequireCache(): void {
-    let { cache } = this.requireImpl;
-    let { added, modified, deleted } = ProcessSnapshot.diffMaps(
+    const { cache } = this.requireImpl;
+    const { added, modified, deleted } = ProcessSnapshot.diffMaps(
       this.cacheEntries,
       this.snapshotRequireCache()
     );
 
-    for (let key of added.keys()) {
+    for (const key of added.keys()) {
       this.log(`removing ${key} from require cache`);
       delete cache[key];
     }
 
-    for (let [key, [original]] of modified) {
+    for (const [key, [original]] of modified) {
       this.log(`restoring replaced ${key} in require cache`);
       cache[key] = original;
     }
 
-    for (let [key, original] of deleted) {
+    for (const [key, original] of deleted) {
       this.log(`restoring deleted ${key} to require cache`);
       cache[key] = original;
     }
@@ -112,23 +112,23 @@ export default class ProcessSnapshot {
    * Restores `require.extensions` in place.
    */
   private restoreExtensions(): void {
-    let { extensions } = this.requireImpl;
-    let { added, modified, deleted } = ProcessSnapshot.diffMaps(
+    const { extensions } = this.requireImpl;
+    const { added, modified, deleted } = ProcessSnapshot.diffMaps(
       this.extensions,
       this.snapshotRequireExtensions()
     );
 
-    for (let key of added.keys()) {
+    for (const key of added.keys()) {
       this.log(`removing ${key} from require extensions`);
       delete extensions[key];
     }
 
-    for (let [key, [original]] of modified) {
+    for (const [key, [original]] of modified) {
       this.log(`restoring replaced ${key} in require extensions`);
       extensions[key] = original;
     }
 
-    for (let [key, original] of deleted) {
+    for (const [key, original] of deleted) {
       this.log(`restoring deleted ${key} to require extensions`);
       extensions[key] = original;
     }
@@ -138,27 +138,27 @@ export default class ProcessSnapshot {
    * Restores `process` events using the `EventEmitter` API.
    */
   private restoreProcessEvents(): void {
-    let process = this.processImpl;
-    let { added, modified, deleted } = ProcessSnapshot.diffMaps(
+    const process = this.processImpl;
+    const { added, modified, deleted } = ProcessSnapshot.diffMaps(
       this.processEvents,
       this.snapshotProcessEvents()
     );
 
-    for (let event of added.keys()) {
+    for (const event of added.keys()) {
       this.log(`removing all '${event.toString()}' event listeners`);
       process.removeAllListeners(event);
     }
 
-    for (let [event, [original, updated]] of modified) {
-      for (let originalEntry of original) {
+    for (const [event, [original, updated]] of modified) {
+      for (const originalEntry of original) {
         if (!updated.includes(originalEntry)) {
           this.log(`restoring removed '${event.toString()}' event listener`);
-          // eslint-disable-next-line typescript/no-explicit-any
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           process.addListener(event as any, originalEntry);
         }
       }
 
-      for (let updatedEntry of updated) {
+      for (const updatedEntry of updated) {
         if (!original.includes(updatedEntry)) {
           this.log(`removing added '${event.toString()}' event listener`);
           process.removeListener(event, updatedEntry);
@@ -166,10 +166,10 @@ export default class ProcessSnapshot {
       }
     }
 
-    for (let [event, callbacks] of deleted) {
-      for (let callback of callbacks) {
+    for (const [event, callbacks] of deleted) {
+      for (const callback of callbacks) {
         this.log(`restoring removed '${event.toString()}' event listener`);
-        // eslint-disable-next-line typescript/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         process.addListener(event as any, callback);
       }
     }
@@ -186,10 +186,10 @@ export default class ProcessSnapshot {
    * Snapshots the current state of `require.cache`.
    */
   private snapshotRequireCache(): CacheSnapshot {
-    let result: CacheSnapshot = new Map();
-    let { cache } = this.requireImpl;
+    const result: CacheSnapshot = new Map();
+    const { cache } = this.requireImpl;
 
-    for (let path in cache) {
+    for (const path in cache) {
       if (Object.prototype.hasOwnProperty.call(cache, path)) {
         result.set(path, cache[path]);
       }
@@ -202,10 +202,10 @@ export default class ProcessSnapshot {
    * Snapshots the current state of `require.extensions`.
    */
   private snapshotRequireExtensions(): ExtensionSnapshot {
-    let result: ExtensionSnapshot = new Map();
-    let { extensions } = this.requireImpl;
+    const result: ExtensionSnapshot = new Map();
+    const { extensions } = this.requireImpl;
 
-    for (let key in extensions) {
+    for (const key in extensions) {
       if (Object.prototype.hasOwnProperty.call(extensions, key)) {
         result.set(key, extensions[key]);
       }
@@ -218,11 +218,11 @@ export default class ProcessSnapshot {
    * Snapshots the current state of `process` events.
    */
   private snapshotProcessEvents(): EventsSnapshot {
-    let result: EventsSnapshot = new Map();
-    let events = this.processImpl.eventNames();
+    const result: EventsSnapshot = new Map();
+    const events = this.processImpl.eventNames();
 
-    for (let name of events) {
-      // eslint-disable-next-line typescript/no-explicit-any
+    for (const name of events) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       result.set(name, this.processImpl.listeners(name as any));
     }
 

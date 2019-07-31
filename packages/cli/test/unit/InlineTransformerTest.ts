@@ -7,18 +7,18 @@ import InlineTransformer from '../../src/InlineTransformer';
 
 describe('InlineTransformer', function() {
   it('passes source through as-is when there are no plugins', async function() {
-    let filepath = 'a.js';
-    let content = 'a + b;';
-    let transformer = new InlineTransformer([]);
-    let output = await transformer.transform(filepath, content);
+    const filepath = 'a.js';
+    const content = 'a + b;';
+    const transformer = new InlineTransformer([]);
+    const output = await transformer.transform(filepath, content);
 
     strictEqual(output, content);
   });
 
   it('transforms source using plugins', async function() {
-    let filepath = 'a.js';
-    let content = '3 + 4;';
-    let transformer = new InlineTransformer([
+    const filepath = 'a.js';
+    const content = '3 + 4;';
+    const transformer = new InlineTransformer([
       (): PluginObj =>
         ({
           visitor: {
@@ -28,24 +28,24 @@ describe('InlineTransformer', function() {
           }
         } as PluginObj) /* conflicting definitions of `@babel/types`? */
     ]);
-    let output = await transformer.transform(filepath, content);
+    const output = await transformer.transform(filepath, content);
 
     strictEqual(output, '4 + 5;');
   });
 
   it('does not include any plugins not specified explicitly', async function() {
-    let filepath = 'a.js';
-    let content = 'export default 0;';
-    let transformer = new InlineTransformer([]);
-    let output = await transformer.transform(filepath, content);
+    const filepath = 'a.js';
+    const content = 'export default 0;';
+    const transformer = new InlineTransformer([]);
+    const output = await transformer.transform(filepath, content);
 
     strictEqual(output, 'export default 0;');
   });
 
   it('allows running plugins with options', async function() {
-    let filepath = 'a.js';
-    let content = '3 + 4;';
-    let transformer = new InlineTransformer([
+    const filepath = 'a.js';
+    const content = '3 + 4;';
+    const transformer = new InlineTransformer([
       [
         (): PluginObj =>
           ({
@@ -63,17 +63,17 @@ describe('InlineTransformer', function() {
         { value: 3 }
       ]
     ]);
-    let output = await transformer.transform(filepath, content);
+    const output = await transformer.transform(filepath, content);
 
     strictEqual(output, '4 + 4;');
   });
 
   it('passes the filename', async function() {
-    let filepath = 'a.js';
-    let content = '';
+    const filepath = 'a.js';
+    const content = '';
     let filename: string | undefined;
 
-    let transformer = new InlineTransformer([
+    const transformer = new InlineTransformer([
       (): PluginObj =>
         ({
           visitor: {
@@ -96,13 +96,13 @@ describe('InlineTransformer', function() {
   });
 
   it('does not add extra semicolons to "use strict" when removing the statement before it', async function() {
-    let filepath = 'a.js';
-    let content = `(function () {
+    const filepath = 'a.js';
+    const content = `(function () {
   "use strict";
   hello;
 })();`;
 
-    let transformer = new InlineTransformer([
+    const transformer = new InlineTransformer([
       (): PluginObj =>
         ({
           visitor: {
@@ -113,7 +113,7 @@ describe('InlineTransformer', function() {
         } as PluginObj) /* conflicting definitions of `@babel/types`? */
     ]);
 
-    let output = await transformer.transform(filepath, content);
+    const output = await transformer.transform(filepath, content);
 
     strictEqual(
       output,

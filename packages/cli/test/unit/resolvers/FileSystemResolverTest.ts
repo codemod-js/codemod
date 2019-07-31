@@ -4,14 +4,14 @@ import FileSystemResolver from '../../../src/resolvers/FileSystemResolver';
 
 describe('FileSystemResolver', function() {
   it('can resolve any files that exist as-is', async function() {
-    let resolver = new FileSystemResolver();
+    const resolver = new FileSystemResolver();
     ok(await resolver.canResolve(__filename));
     strictEqual(await resolver.resolve(__filename), __filename);
   });
 
   it('can resolve files by inferring an extension from a configurable set of extensions', async function() {
-    let resolver = new FileSystemResolver(new Set(['.json']));
-    let packageJsonWithoutExtension = join(__dirname, '../../../package');
+    const resolver = new FileSystemResolver(new Set(['.json']));
+    const packageJsonWithoutExtension = join(__dirname, '../../../package');
     ok(await resolver.canResolve(packageJsonWithoutExtension));
     strictEqual(
       await resolver.resolve(packageJsonWithoutExtension),
@@ -20,8 +20,8 @@ describe('FileSystemResolver', function() {
   });
 
   it('can resolve files by inferring an dot-less extension from a configurable set of extensions', async function() {
-    let resolver = new FileSystemResolver(new Set(['json']));
-    let packageJsonWithoutExtension = join(__dirname, '../../../package');
+    const resolver = new FileSystemResolver(new Set(['json']));
+    const packageJsonWithoutExtension = join(__dirname, '../../../package');
     ok(await resolver.canResolve(packageJsonWithoutExtension));
     strictEqual(
       await resolver.resolve(packageJsonWithoutExtension),
@@ -30,7 +30,7 @@ describe('FileSystemResolver', function() {
   });
 
   it('fails to resolve a non-existent file', async function() {
-    let resolver = new FileSystemResolver();
+    const resolver = new FileSystemResolver();
     ok(!(await resolver.canResolve('/this/file/is/not/there')));
 
     try {

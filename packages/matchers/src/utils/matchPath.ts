@@ -37,28 +37,19 @@ export type CapturedMatchers<C> = { [K in keyof C]: m.CapturedMatcher<C[K]> };
  *   };
  * }
  */
-export default function matchPath<
-  Node extends t.Node,
-  C extends { [key: string]: unknown }
->(
+export default function matchPath<Node extends t.Node, C extends m.CaptureBase>(
   matcher: m.Matcher<Node>,
   captures: CapturedMatchers<C>,
   value: NodePath<Node>,
   callback: (paths: CapturedNodePaths<C>) => void
 ): void;
-export default function matchPath<
-  Node extends t.Node,
-  C extends { [key: string]: unknown }
->(
+export default function matchPath<Node extends t.Node, C extends m.CaptureBase>(
   matcher: m.Matcher<Array<Node>>,
   captures: CapturedMatchers<C>,
   value: Array<NodePath<Node>>,
   callback: (paths: CapturedNodePaths<C>) => void
 ): void;
-export default function matchPath<
-  Node extends t.Node,
-  C extends { [key: string]: unknown }
->(
+export default function matchPath<Node extends t.Node, C extends m.CaptureBase>(
   matcher: m.Matcher<Node | Array<Node>>,
   captures: CapturedMatchers<C>,
   value: NodePath<Node> | Array<NodePath<Node>>,
@@ -86,7 +77,7 @@ export default function matchPath<
   }
 }
 
-function extractCapturedPath<C extends { [key: string]: unknown }>(
+function extractCapturedPath<C extends m.CaptureBase>(
   value: NodePath<t.Node> | Array<NodePath<t.Node>>,
   keys: ReadonlyArray<PropertyKey>
 ): C[keyof C] extends t.Node ? NodePath<C[keyof C]> : C[keyof C] {

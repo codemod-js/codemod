@@ -29,8 +29,8 @@ function optionAnnotation(
 }
 
 function printHelp(argv: Array<string>, out: NodeJS.WritableStream): void {
-  let $0 = basename(argv[1]);
-  let defaults = new Config();
+  const $0 = basename(argv[1]);
+  const defaults = new Config();
 
   out.write(
     `
@@ -144,9 +144,9 @@ export default async function run(
     return 0;
   }
 
-  let config = command.config;
-  let dim = sys.stdout.isTTY ? '\x1b[2m' : '';
-  let reset = sys.stdout.isTTY ? '\x1b[0m' : '';
+  const config = command.config;
+  const dim = sys.stdout.isTTY ? '\x1b[2m' : '';
+  const reset = sys.stdout.isTTY ? '\x1b[0m' : '';
 
   function onTransform(result: SourceTransformResult): void {
     if (result.kind === SourceTransformResultKind.Transformed) {
@@ -168,7 +168,7 @@ export default async function run(
     }
   }
 
-  let { stats } = await new CLIEngine(config, onTransform, sys).run();
+  const { stats } = await new CLIEngine(config, onTransform, sys).run();
 
   if (!config.stdio) {
     if (config.dry) {

@@ -5,7 +5,7 @@ import Options, { Command } from '../../src/Options';
 
 describe('Options', function() {
   it('has sensible defaults', function() {
-    let config = getRunConfig(new Options([]).parse());
+    const config = getRunConfig(new Options([]).parse());
     ok(config.extensions.has('.js'));
     ok(config.extensions.has('.ts'));
     ok(config.extensions.has('.jsx'));
@@ -26,12 +26,14 @@ describe('Options', function() {
   });
 
   it('interprets `--extensions` as expected', function() {
-    let config = getRunConfig(new Options(['--extensions', '.js,.ts']).parse());
+    const config = getRunConfig(
+      new Options(['--extensions', '.js,.ts']).parse()
+    );
     deepEqual(config.extensions, new Set(['.js', '.ts']));
   });
 
   it('--add-extension adds to the default extensions', function() {
-    let config = getRunConfig(
+    const config = getRunConfig(
       new Options(['--add-extension', '.myjs']).parse()
     );
     ok(config.extensions.size > 1);
@@ -47,12 +49,12 @@ describe('Options', function() {
   });
 
   it('interprets non-option arguments as paths', function() {
-    let config = getRunConfig(new Options(['src/', 'a.js']).parse());
+    const config = getRunConfig(new Options(['src/', 'a.js']).parse());
     deepEqual(config.sourcePaths, ['src/', 'a.js']);
   });
 
   it('treats sources as globs', function() {
-    let config = getRunConfig(
+    const config = getRunConfig(
       new Options(['test/fixtures/glob-test/**/*.js']).parse()
     );
     deepEqual(config.sourcePaths, [
@@ -62,19 +64,19 @@ describe('Options', function() {
   });
 
   it('interprets `--stdio` as reading/writing stdin/stdout', function() {
-    let config = getRunConfig(new Options(['--stdio']).parse());
+    const config = getRunConfig(new Options(['--stdio']).parse());
     strictEqual(config.stdio, true);
   });
 
   it('can parse inline plugin options as JSON', function() {
-    let config = getRunConfig(
+    const config = getRunConfig(
       new Options(['-o', 'my-plugin={"foo": true}']).parse()
     );
     deepEqual(config.pluginOptions.get('my-plugin'), { foo: true });
   });
 
   it('associates plugin options based on declared name', async function() {
-    let config = getRunConfig(
+    const config = getRunConfig(
       new Options([
         '--plugin',
         './test/fixtures/plugin/index.js',
@@ -87,12 +89,12 @@ describe('Options', function() {
   });
 
   it('interprets `--require` as expected', function() {
-    let config = getRunConfig(new Options(['--require', 'mz']).parse());
+    const config = getRunConfig(new Options(['--require', 'mz']).parse());
     deepEqual(config.requires, ['mz'].map(name => require.resolve(name)));
   });
 
   it('associates plugin options based on inferred name', async function() {
-    let config = getRunConfig(
+    const config = getRunConfig(
       new Options([
         '--plugin',
         './test/fixtures/plugin/index.js',
@@ -104,7 +106,7 @@ describe('Options', function() {
     // "index" is the name of the file
     deepEqual(config.pluginOptions.get('index'), { a: true });
 
-    let babelPlugin = await config.getBabelPlugin('index');
+    const babelPlugin = await config.getBabelPlugin('index');
 
     if (!Array.isArray(babelPlugin)) {
       throw new Error(
@@ -117,35 +119,35 @@ describe('Options', function() {
 
   it('can parse a JSON file for plugin options', function() {
     // You wouldn't actually use package.json, but it's a convenient JSON file.
-    let config = getRunConfig(
+    const config = getRunConfig(
       new Options(['-o', 'my-plugin=@package.json']).parse()
     );
-    let pluginOpts = config.pluginOptions.get('my-plugin');
+    const pluginOpts = config.pluginOptions.get('my-plugin');
     strictEqual(pluginOpts && pluginOpts['name'], '@codemod/cli');
   });
 
   it('should set dry option', function() {
-    let config = getRunConfig(new Options(['--dry']).parse());
+    const config = getRunConfig(new Options(['--dry']).parse());
     strictEqual(config.dry, true);
   });
 
   it('should set useLocalBabel', function() {
-    let config = getRunConfig(new Options(['--find-babel-config']).parse());
+    const config = getRunConfig(new Options(['--find-babel-config']).parse());
     strictEqual(config.findBabelConfig, true);
   });
 
   it('uses the recast printer by default', function() {
-    let config = getRunConfig(new Options([]).parse());
+    const config = getRunConfig(new Options([]).parse());
     strictEqual(config.printer, Printer.Recast);
   });
 
   it('can use the prettier printer', function() {
-    let config = getRunConfig(new Options(['--printer', 'prettier']).parse());
+    const config = getRunConfig(new Options(['--printer', 'prettier']).parse());
     strictEqual(config.printer, Printer.Prettier);
   });
 
   it('can use the babel printer', function() {
-    let config = getRunConfig(new Options(['--printer', 'babel']).parse());
+    const config = getRunConfig(new Options(['--printer', 'babel']).parse());
     strictEqual(config.printer, Printer.Babel);
   });
 

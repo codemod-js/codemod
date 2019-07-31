@@ -4,7 +4,7 @@ import { extname } from 'path';
 import { BabelPlugin, PluginObj } from './BabelPluginTypes';
 import { TypeScriptExtensions } from './extensions';
 
-const BASIC_PLUGINS: Array<ParserPlugin | [ParserPlugin, object]> = [
+const BASIC_PLUGINS: Array<ParserPlugin> = [
   'jsx',
   'asyncGenerators',
   'classProperties',
@@ -16,14 +16,18 @@ const BASIC_PLUGINS: Array<ParserPlugin | [ParserPlugin, object]> = [
   ['decorators', { decoratorsBeforeExport: true }]
 ];
 
-function pluginsForFilename(
-  filename: string
-): Array<ParserPlugin | [ParserPlugin, object]> {
-  let isTypeScript = TypeScriptExtensions.has(extname(filename));
+function pluginsForFilename(filename: string): Array<ParserPlugin> {
+  const isTypeScript = TypeScriptExtensions.has(extname(filename));
 
   return isTypeScript
     ? [...BASIC_PLUGINS, 'typescript']
     : [...BASIC_PLUGINS, 'flow'];
+}
+
+// TODO: remove this hack once `allowUndeclaredExports` is included in typings
+// https://github.com/babel/babel/pull/10263
+interface ParserOptionsWithAllowUndeclaredExports extends Babel.ParserOptions {
+  allowUndeclaredExports?: boolean;
 }
 
 export default function buildPlugin(
@@ -33,17 +37,17 @@ export default function buildPlugin(
     return {
       manipulateOptions(
         opts: Babel.TransformOptions,
-        parserOpts: Babel.ParserOptions
+        parserOpts: ParserOptionsWithAllowUndeclaredExports
       ): void {
         parserOpts.sourceType = sourceType;
         parserOpts.allowImportExportEverywhere = true;
         parserOpts.allowReturnOutsideFunction = true;
         parserOpts.allowSuperOutsideMethod = true;
-        // Cast this because @babel/types typings don't allow plugin options.
+        parserOpts.allowUndeclaredExports = true;
         parserOpts.plugins = [
           ...(parserOpts.plugins || []),
           ...pluginsForFilename(opts.filename as string)
-        ] as Array<ParserPlugin>;
+        ];
       }
     };
   };

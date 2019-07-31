@@ -23,13 +23,13 @@ export default async function runCodemodCLI(
   stdin: string = '',
   cwd?: string
 ): Promise<CLIResult> {
-  let sys = makeTestSystem();
+  const sys = makeTestSystem();
 
-  sys.stdin.end(new Buffer(stdin));
+  sys.stdin.end(Buffer.from(stdin));
 
-  let argv = [process.argv[0], require.resolve('../../bin/codemod'), ...args];
+  const argv = [process.argv[0], require.resolve('../../bin/codemod'), ...args];
   let status: number;
-  let oldCwd = process.cwd();
+  const oldCwd = process.cwd();
 
   try {
     if (cwd) {
@@ -44,8 +44,8 @@ export default async function runCodemodCLI(
   sys.stdout.end();
   sys.stderr.end();
 
-  let stdout = await getStream(sys.stdout);
-  let stderr = await getStream(sys.stderr);
+  const stdout = await getStream(sys.stdout);
+  const stderr = await getStream(sys.stderr);
 
   return { status, stdout, stderr };
 }

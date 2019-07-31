@@ -18,7 +18,7 @@ describe('CLI', function() {
   });
 
   it('prints help', async function() {
-    let { status, stdout, stderr } = await runCodemodCLI(['--help']);
+    const { status, stdout, stderr } = await runCodemodCLI(['--help']);
 
     strictEqual(status, 0);
     ok(stdout.startsWith('codemod [OPTIONS]'));
@@ -26,8 +26,8 @@ describe('CLI', function() {
   });
 
   it('prints the version', async function() {
-    let { status, stdout, stderr } = await runCodemodCLI(['--version']);
-    let trimmedStdout = stdout.trim();
+    const { status, stdout, stderr } = await runCodemodCLI(['--version']);
+    const trimmedStdout = stdout.trim();
 
     strictEqual(status, 0);
     ok(
@@ -38,7 +38,7 @@ describe('CLI', function() {
   });
 
   it('fails with an error when passing an invalid option', async function() {
-    let { status, stdout, stderr } = await runCodemodCLI([
+    const { status, stdout, stderr } = await runCodemodCLI([
       '--not-a-real-option'
     ]);
 
@@ -51,7 +51,7 @@ describe('CLI', function() {
   });
 
   it('fails with an error when a plugin throws an exception', async function() {
-    let { status, stdout, stderr } = await runCodemodCLI(
+    const { status, stdout, stderr } = await runCodemodCLI(
       ['--plugin', plugin('bad-plugin'), '--stdio'],
       '3+4'
     );
@@ -65,7 +65,7 @@ describe('CLI', function() {
   });
 
   it('can read from stdin and write to stdout given the --stdio flag', async function() {
-    let { status, stdout, stderr } = await runCodemodCLI(['--stdio'], '3+4');
+    const { status, stdout, stderr } = await runCodemodCLI(['--stdio'], '3+4');
 
     strictEqual(status, 0);
     strictEqual(stdout, '3+4');
@@ -73,8 +73,8 @@ describe('CLI', function() {
   });
 
   it('reads from a file, processes with plugins, then writes to that file', async function() {
-    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let { status, stdout, stderr } = await runCodemodCLI([
+    const afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    const { status, stdout, stderr } = await runCodemodCLI([
       afile,
       '-p',
       plugin('increment')
@@ -92,11 +92,11 @@ describe('CLI', function() {
   });
 
   it('processes all matching files in a directory', async function() {
-    let file1 = await createTemporaryFile('a-dir/file1.js', '3 + 4;');
-    let file2 = await createTemporaryFile('a-dir/file2.ts', '0;');
-    let file3 = await createTemporaryFile('a-dir/sub-dir/file3.jsx', '99;');
-    let ignored = await createTemporaryFile('a-dir/ignored.css', '* {}');
-    let { status, stdout, stderr } = await runCodemodCLI([
+    const file1 = await createTemporaryFile('a-dir/file1.js', '3 + 4;');
+    const file2 = await createTemporaryFile('a-dir/file2.ts', '0;');
+    const file3 = await createTemporaryFile('a-dir/sub-dir/file3.jsx', '99;');
+    const ignored = await createTemporaryFile('a-dir/ignored.css', '* {}');
+    const { status, stdout, stderr } = await runCodemodCLI([
       dirname(file1),
       '-p',
       plugin('increment')
@@ -129,9 +129,9 @@ describe('CLI', function() {
   });
 
   it('processes all matching files in a directory with custom extensions', async function() {
-    let ignored = await createTemporaryFile('a-dir/ignored.js', '3 + 4;');
-    let processed = await createTemporaryFile('a-dir/processed.myjs', '0;');
-    let { status, stdout, stderr } = await runCodemodCLI([
+    const ignored = await createTemporaryFile('a-dir/ignored.js', '3 + 4;');
+    const processed = await createTemporaryFile('a-dir/processed.myjs', '0;');
+    const { status, stdout, stderr } = await runCodemodCLI([
       dirname(ignored),
       '-p',
       plugin('increment'),
@@ -152,11 +152,11 @@ describe('CLI', function() {
   });
 
   it('ignores .d.ts files', async function() {
-    let ignored = await createTemporaryFile(
+    const ignored = await createTemporaryFile(
       'a-dir/ignored.d.ts',
       'export = 42;'
     );
-    let { status, stdout, stderr } = await runCodemodCLI([dirname(ignored)]);
+    const { status, stdout, stderr } = await runCodemodCLI([dirname(ignored)]);
 
     deepEqual(
       { status, stdout, stderr },
@@ -170,8 +170,8 @@ describe('CLI', function() {
   });
 
   it('processes files but does not replace their contents when using --dry', async function() {
-    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let { status, stdout, stderr } = await runCodemodCLI([
+    const afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    const { status, stdout, stderr } = await runCodemodCLI([
       afile,
       '-p',
       plugin('increment'),
@@ -190,8 +190,8 @@ describe('CLI', function() {
   });
 
   it('prints files not processed in dim colors', async function() {
-    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let { status, stdout, stderr } = await runCodemodCLI([afile]);
+    const afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    const { status, stdout, stderr } = await runCodemodCLI([afile]);
 
     deepEqual(
       { status, stdout, stderr },
@@ -205,8 +205,8 @@ describe('CLI', function() {
   });
 
   it('can load plugins written with ES modules by default', async function() {
-    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let { status, stdout, stderr } = await runCodemodCLI([
+    const afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    const { status, stdout, stderr } = await runCodemodCLI([
       afile,
       '-p',
       plugin('increment-export-default')
@@ -224,8 +224,8 @@ describe('CLI', function() {
   });
 
   it('can load plugins written in TypeScript by default', async function() {
-    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let { status, stdout, stderr } = await runCodemodCLI([
+    const afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    const { status, stdout, stderr } = await runCodemodCLI([
       afile,
       '-p',
       plugin('increment-typescript', '.ts')
@@ -243,8 +243,8 @@ describe('CLI', function() {
   });
 
   it('can implicitly find plugins with .ts extensions', async function() {
-    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let { status, stdout, stderr } = await runCodemodCLI([
+    const afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    const { status, stdout, stderr } = await runCodemodCLI([
       afile,
       '-p',
       plugin('increment-typescript', '')
@@ -262,7 +262,7 @@ describe('CLI', function() {
   });
 
   it('does not try to load TypeScript files when --no-transpile-plugins is set', async function() {
-    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    const afile = await createTemporaryFile('a-file.js', '3 + 4;');
     try {
       await runCodemodCLI([
         afile,
@@ -280,8 +280,8 @@ describe('CLI', function() {
   });
 
   it('can load plugins with multiple files with ES modules by default`', async function() {
-    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let { status, stdout, stderr } = await runCodemodCLI([
+    const afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    const { status, stdout, stderr } = await runCodemodCLI([
       afile,
       '-p',
       plugin('increment-export-default-multiple/increment-export-default')
@@ -299,7 +299,7 @@ describe('CLI', function() {
   });
 
   it('fails when specifying --find-babel-config as there are no plugins loaded', async function() {
-    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    const afile = await createTemporaryFile('a-file.js', '3 + 4;');
     try {
       await runCodemodCLI([
         afile,
@@ -317,8 +317,8 @@ describe('CLI', function() {
   });
 
   it('can load and run with a remote plugin', async function() {
-    let afile = await createTemporaryFile('a-file.js', '3 + 4;');
-    let server = await startServer((req, res) => {
+    const afile = await createTemporaryFile('a-file.js', '3 + 4;');
+    const server = await startServer((req, res) => {
       strictEqual(req.url, '/plugin.js');
 
       readFile(plugin('increment-export-default'), { encoding: 'utf8' }).then(
@@ -329,7 +329,7 @@ describe('CLI', function() {
     });
 
     try {
-      let { status, stdout, stderr } = await runCodemodCLI([
+      const { status, stdout, stderr } = await runCodemodCLI([
         afile,
         '--remote-plugin',
         server.requestURL('/plugin.js').toString()
@@ -351,8 +351,8 @@ describe('CLI', function() {
   });
 
   it('can print using babel', async function() {
-    let afile = await createTemporaryFile('a-file.js', 'var a=1;');
-    let { status, stdout, stderr } = await runCodemodCLI([
+    const afile = await createTemporaryFile('a-file.js', 'var a=1;');
+    const { status, stdout, stderr } = await runCodemodCLI([
       afile,
       '--printer',
       'babel'
@@ -371,13 +371,13 @@ describe('CLI', function() {
   });
 
   it('can print using prettier using its default settings', async function() {
-    let workspace = await copyFixturesInto(
+    const workspace = await copyFixturesInto(
       'prettier/defaults',
       await createTemporaryDirectory('prettier/defaults')
     );
-    let file = join(workspace, 'index.jsx');
-    let original = await readFile(file, 'utf8');
-    let { status, stdout, stderr } = await runCodemodCLI([
+    const file = join(workspace, 'index.jsx');
+    const original = await readFile(file, 'utf8');
+    const { status, stdout, stderr } = await runCodemodCLI([
       workspace,
       '--printer',
       'prettier'
@@ -396,12 +396,12 @@ describe('CLI', function() {
   });
 
   it('can print using prettier using custom config', async function() {
-    let workspace = await copyFixturesInto(
+    const workspace = await copyFixturesInto(
       'prettier/with-config',
       await createTemporaryDirectory('prettier/with-config')
     );
-    let file = join(workspace, 'index.js');
-    let { status, stdout, stderr } = await runCodemodCLI([
+    const file = join(workspace, 'index.js');
+    const { status, stdout, stderr } = await runCodemodCLI([
       workspace,
       '--printer',
       'prettier'
@@ -420,11 +420,11 @@ describe('CLI', function() {
   });
 
   it('can rewrite TypeScript files ending in `.ts`', async function() {
-    let afile = await createTemporaryFile(
+    const afile = await createTemporaryFile(
       'a-file.ts',
       'type A = any;\nlet a = {} as any;'
     );
-    let { status, stdout, stderr } = await runCodemodCLI([
+    const { status, stdout, stderr } = await runCodemodCLI([
       afile,
       '-p',
       plugin('replace-any-with-object', '.ts')
@@ -446,11 +446,11 @@ describe('CLI', function() {
   });
 
   it('can rewrite TypeScript files ending in `.tsx`', async function() {
-    let afile = await createTemporaryFile(
+    const afile = await createTemporaryFile(
       'a-file.tsx',
       'export default () => (<div/>);'
     );
-    let { status, stdout, stderr } = await runCodemodCLI([afile]);
+    const { status, stdout, stderr } = await runCodemodCLI([afile]);
 
     deepEqual(
       { status, stdout, stderr },
@@ -468,11 +468,11 @@ describe('CLI', function() {
   });
 
   it('can rewrite TypeScript files with prettier', async function() {
-    let afile = await createTemporaryFile(
+    const afile = await createTemporaryFile(
       'a-file.ts',
       'type A=any;\nlet a={} as any;'
     );
-    let { status, stdout, stderr } = await runCodemodCLI([
+    const { status, stdout, stderr } = await runCodemodCLI([
       afile,
       '--printer',
       'prettier'
@@ -494,11 +494,11 @@ describe('CLI', function() {
   });
 
   it('can specify the source type as "script"', async function() {
-    let afile = await createTemporaryFile(
+    const afile = await createTemporaryFile(
       'a-file.js',
       'with (a) { b; }' // `with` statements aren't allowed in modules
     );
-    let { status, stdout, stderr } = await runCodemodCLI([
+    const { status, stdout, stderr } = await runCodemodCLI([
       afile,
       '--source-type',
       'script'
@@ -515,11 +515,11 @@ describe('CLI', function() {
   });
 
   it('can specify the source type as "module"', async function() {
-    let afile = await createTemporaryFile(
+    const afile = await createTemporaryFile(
       'a-file.js',
       'import "./b-file"' // `import` statements aren't allowed in scripts
     );
-    let { status, stdout, stderr } = await runCodemodCLI([
+    const { status, stdout, stderr } = await runCodemodCLI([
       afile,
       '--source-type',
       'module'
@@ -536,15 +536,15 @@ describe('CLI', function() {
   });
 
   it('can specify the source type as "unambiguous"', async function() {
-    let afile = await createTemporaryFile(
+    const afile = await createTemporaryFile(
       'a-file.js',
       'with (a) { b; }' // `with` statements aren't allowed in modules
     );
-    let bfile = await createTemporaryFile(
+    const bfile = await createTemporaryFile(
       'b-file.js',
       'import "./a-file"' // `import` statements aren't allowed in scripts
     );
-    let { status, stdout, stderr } = await runCodemodCLI([
+    const { status, stdout, stderr } = await runCodemodCLI([
       afile,
       bfile,
       '--source-type',
@@ -562,11 +562,11 @@ describe('CLI', function() {
   });
 
   it('fails when given an invalid source type', async function() {
-    let { status, stdout, stderr } = await runCodemodCLI([
+    const { status, stdout, stderr } = await runCodemodCLI([
       '--source-type',
       'hypercard'
     ]);
-    let expectedPrefix = `ERROR: expected '--source-type' to be one of "module", "script", or "unambiguous" but got: "hypercard"`;
+    const expectedPrefix = `ERROR: expected '--source-type' to be one of "module", "script", or "unambiguous" but got: "hypercard"`;
 
     ok(
       stderr.startsWith(expectedPrefix),
@@ -577,11 +577,11 @@ describe('CLI', function() {
   });
 
   it('ignores babel.config.js files by default', async function() {
-    let workspace = await copyFixturesInto(
+    const workspace = await copyFixturesInto(
       'babel-config',
       await createTemporaryDirectory('babel-config')
     );
-    let { status, stdout, stderr } = await runCodemodCLI(
+    const { status, stdout, stderr } = await runCodemodCLI(
       ['index.js'],
       undefined,
       workspace
@@ -604,11 +604,11 @@ describe('CLI', function() {
   });
 
   it('reads babel.config.js files if requested', async function() {
-    let workspace = await copyFixturesInto(
+    const workspace = await copyFixturesInto(
       'babel-config',
       await createTemporaryDirectory('babel-config')
     );
-    let { status, stdout, stderr } = await runCodemodCLI(
+    const { status, stdout, stderr } = await runCodemodCLI(
       ['index.js', '--find-babel-config'],
       undefined,
       workspace
@@ -631,7 +631,7 @@ describe('CLI', function() {
   });
 
   it('can load a plugin that uses class properties', async function() {
-    let { status, stdout, stderr } = await runCodemodCLI(
+    const { status, stdout, stderr } = await runCodemodCLI(
       ['--plugin', plugin('class-properties', '.ts'), '--stdio'],
       ''
     );
@@ -647,7 +647,7 @@ describe('CLI', function() {
   });
 
   it('can load a plugin that uses generators', async function() {
-    let { status, stdout, stderr } = await runCodemodCLI(
+    const { status, stdout, stderr } = await runCodemodCLI(
       ['--plugin', plugin('generators', '.ts'), '--stdio'],
       ''
     );
