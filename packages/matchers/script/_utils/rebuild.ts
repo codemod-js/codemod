@@ -14,7 +14,7 @@ import { NodeField, BUILDER_KEYS, NODE_FIELDS } from '../../src/NodeTypes';
 
 export const MATCHERS_FILE_PATH = join(__dirname, '../../src/matchers.ts');
 
-// eslint-disable-next-line typescript/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const toBindingIdentifierName: (name: string) => string = (t as any)
   .toBindingIdentifierName;
 
@@ -81,7 +81,7 @@ export default function rebuild(out: SimpleWriter): void {
     export { default as anyString } from './matchers/anyString';
     export { default as anything } from './matchers/anything';
     export { default as arrayOf } from './matchers/arrayOf';
-    export { default as capture, CapturedMatcher } from './matchers/capture';
+    export { default as capture, CaptureBase, CapturedMatcher } from './matchers/capture';
     export { default as containerOf } from './matchers/containerOf';
     export { default as fromCapture } from './matchers/fromCapture';
     export { default as function } from './matchers/Function';
@@ -107,7 +107,7 @@ export default function rebuild(out: SimpleWriter): void {
 
   out.write('\n');
 
-  for (const type of Object.keys(BUILDER_KEYS)) {
+  for (const type of Object.keys(BUILDER_KEYS).sort()) {
     const keys = BUILDER_KEYS[type];
     const fields = NODE_FIELDS[type];
     const name = ALIASES.has(type) ? type : toFunctionName(type);

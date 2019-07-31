@@ -1,8 +1,12 @@
 {
   "private": true,
   "workspaces": {
-    "packages": ["packages/*"],
-    "nohoist": ["**/@types/**"]
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/@types/**"
+    ]
   },
   "scripts": {
     "test": "script/ci"
@@ -10,20 +14,22 @@
   "devDependencies": {
     "@types/globby": "^8.0.0",
     "@types/mz": "^0.0.32",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
     "eslint": "^5.12.0",
-    "eslint-config-prettier": "^3.3.0",
-    "eslint-plugin-prettier": "^3.0.1",
-    "eslint-plugin-typescript": "^1.0.0-rc.1",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
     "globby": "^8.0.1",
     "lerna": "^3.10.7",
     "mz": "^2.7.0",
     "prettier": "^1.15.3",
     "ts-node": "^7.0.1",
-    "typescript": "^3.2.4",
-    "typescript-eslint-parser": "^21.0.2"
+    "typescript": "^3.5.3"
   },
   "name": "codemod",
   "resolutions": {
-    "**/ip-regex": "^2.0.0"
+    "**/ip-regex": "^2.0.0",
+    "**/@babel/parser": "7.5.5",
+    "**/@babel/types": "7.5.5"
   }
 }

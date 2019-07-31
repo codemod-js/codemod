@@ -6,7 +6,7 @@ import Config, { ConfigBuilder } from '../../src/Config';
 
 describe('Config', function() {
   it('has sensible defaults', function() {
-    let config = new Config();
+    const config = new Config();
     ok(config.extensions.has('.js'));
     ok(config.extensions.has('.ts'));
     ok(config.extensions.has('.jsx'));
@@ -19,13 +19,13 @@ describe('Config', function() {
   });
 
   it('associates plugin options based on declared name', async function() {
-    let config = new ConfigBuilder()
+    const config = new ConfigBuilder()
       .addLocalPlugin('./test/fixtures/plugin/index.js')
       .setOptionsForPlugin({ a: true }, 'basic-plugin')
       .build();
 
     // "basic-plugin" is declared in the plugin file
-    let babelPlugin = await config.getBabelPlugin('basic-plugin');
+    const babelPlugin = await config.getBabelPlugin('basic-plugin');
 
     if (!Array.isArray(babelPlugin)) {
       throw new Error(

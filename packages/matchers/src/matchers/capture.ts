@@ -1,6 +1,11 @@
 import { anything } from '../matchers';
 import Matcher from './Matcher';
 
+export interface CaptureBase {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
+}
+
 export class CapturedMatcher<C, M = C> extends Matcher<M> {
   private _current?: C;
   private _currentKeys?: ReadonlyArray<PropertyKey>;

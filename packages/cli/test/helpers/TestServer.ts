@@ -38,8 +38,8 @@ export class RealTestServer {
 export async function startServer(
   handler: RequestHandler
 ): Promise<RealTestServer> {
-  let port = await getPort();
-  let server = new RealTestServer(port, handler);
+  const port = await getPort();
+  const server = new RealTestServer(port, handler);
   await server.start();
   return server;
 }

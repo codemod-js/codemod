@@ -19,7 +19,7 @@ export default class AstExplorerResolver extends NetworkResolver {
 
   async canResolve(source: string): Promise<boolean> {
     if (await super.canResolve(source)) {
-      let url = new URL(await this.normalize(source));
+      const url = new URL(await this.normalize(source));
 
       return (
         this.matchesHost(url) &&
@@ -31,8 +31,8 @@ export default class AstExplorerResolver extends NetworkResolver {
   }
 
   async resolve(source: string): Promise<string> {
-    let filename = await super.resolve(await this.normalize(source));
-    let text = await readFile(filename, { encoding: 'utf8' });
+    const filename = await super.resolve(await this.normalize(source));
+    const text = await readFile(filename, { encoding: 'utf8' });
     let data;
 
     try {
@@ -62,13 +62,13 @@ export default class AstExplorerResolver extends NetworkResolver {
   }
 
   async normalize(source: string): Promise<string> {
-    let url = new URL(source);
+    const url = new URL(source);
 
     if (!this.matchesHost(url)) {
       return source;
     }
 
-    let match = url.hash.match(EDITOR_HASH_PATTERN);
+    const match = url.hash.match(EDITOR_HASH_PATTERN);
 
     if (!match) {
       return source;

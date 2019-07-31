@@ -9,9 +9,9 @@ describe('TransformRunner', function() {
   async function run(
     runner: TransformRunner
   ): Promise<Array<SourceTransformResult>> {
-    let result: Array<SourceTransformResult> = [];
+    const result: Array<SourceTransformResult> = [];
 
-    for await (let transformResult of runner.run()) {
+    for await (const transformResult of runner.run()) {
       result.push(transformResult);
     }
 
@@ -19,8 +19,8 @@ describe('TransformRunner', function() {
   }
 
   it('generates a result for each source by calling the transformer', async function() {
-    let sources = [new Source('a.js', 'a;'), new Source('b.js', 'b;')];
-    let runner = new TransformRunner(sources, {
+    const sources = [new Source('a.js', 'a;'), new Source('b.js', 'b;')];
+    const runner = new TransformRunner(sources, {
       async transform(filepath: string, content: string): Promise<string> {
         return content.toUpperCase();
       }
@@ -41,8 +41,8 @@ describe('TransformRunner', function() {
   });
 
   it('collects errors for each failed source transform', async function() {
-    let sources = [new Source('fails.js', 'invalid syntax')];
-    let runner = new TransformRunner(sources, {
+    const sources = [new Source('fails.js', 'invalid syntax')];
+    const runner = new TransformRunner(sources, {
       async transform(filepath: string, content: string): Promise<string> {
         throw new Error(`unable to process ${filepath}: ${content}`);
       }

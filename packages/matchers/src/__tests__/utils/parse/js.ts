@@ -22,7 +22,7 @@ function stripExtras<N extends t.Node>(node: N): N {
   const allFields = Object.keys(node);
 
   for (const field of allFields) {
-    // eslint-disable-next-line typescript/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const nodeObj = node as any;
 
     if (!fieldsToKeep.has(field)) {

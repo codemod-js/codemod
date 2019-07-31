@@ -5,20 +5,20 @@ import { startServer } from '../../helpers/TestServer';
 
 describe('NetworkResolver', function() {
   it('can load data from a URL', async function() {
-    let server = await startServer((req, res) => {
+    const server = await startServer((req, res) => {
       res.end('here you go!');
     });
 
     try {
-      let resolver = new NetworkResolver();
-      let url = server.requestURL('/gimme');
+      const resolver = new NetworkResolver();
+      const url = server.requestURL('/gimme');
 
       ok(
         await resolver.canResolve(url.toString()),
         `can load from URL: ${url}`
       );
 
-      let filename = await resolver.resolve(url.toString());
+      const filename = await resolver.resolve(url.toString());
 
       strictEqual(
         await readFile(filename, { encoding: 'utf8' }),
@@ -30,7 +30,7 @@ describe('NetworkResolver', function() {
   });
 
   it('only resolves absolute HTTP URLs', async function() {
-    let resolver = new NetworkResolver();
+    const resolver = new NetworkResolver();
 
     ok(await resolver.canResolve('http://example.com/'));
     ok(await resolver.canResolve('https://example.com/'));
@@ -40,7 +40,7 @@ describe('NetworkResolver', function() {
   });
 
   it('follows redirects', async function() {
-    let server = await startServer((req, res) => {
+    const server = await startServer((req, res) => {
       if (req.url === '/') {
         res.writeHead(302, { Location: '/plugin' });
         res.end();
@@ -53,8 +53,10 @@ describe('NetworkResolver', function() {
     });
 
     try {
-      let resolver = new NetworkResolver();
-      let filename = await resolver.resolve(server.requestURL('/').toString());
+      const resolver = new NetworkResolver();
+      const filename = await resolver.resolve(
+        server.requestURL('/').toString()
+      );
 
       strictEqual(
         await readFile(filename, { encoding: 'utf8' }),
@@ -66,14 +68,14 @@ describe('NetworkResolver', function() {
   });
 
   it('throws if it gets a non-200 response', async function() {
-    let server = await startServer((req, res) => {
+    const server = await startServer((req, res) => {
       res.statusCode = 400;
       res.end();
     });
 
     try {
-      let resolver = new NetworkResolver();
-      let url = server.requestURL('/');
+      const resolver = new NetworkResolver();
+      const url = server.requestURL('/');
 
       await resolver.resolve(url.toString());
 

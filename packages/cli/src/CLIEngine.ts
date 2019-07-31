@@ -31,7 +31,7 @@ export default class CLIEngine {
   ) {}
 
   private async loadPlugins(): Promise<Array<BabelPlugin>> {
-    let snapshot = new ProcessSnapshot();
+    const snapshot = new ProcessSnapshot();
     let plugins: Array<BabelPlugin>;
 
     try {
@@ -47,12 +47,11 @@ export default class CLIEngine {
   }
 
   async run(): Promise<RunResult> {
-    let plugins = await this.loadPlugins();
-    let runner: TransformRunner;
+    const plugins = await this.loadPlugins();
     let modified = 0;
     let errors = 0;
     let total = 0;
-    let dryRun = this.config.dry;
+    const dryRun = this.config.dry;
     let sourcesIterator: IterableIterator<Source>;
 
     if (this.config.stdio) {
@@ -68,12 +67,12 @@ export default class CLIEngine {
       );
     }
 
-    runner = new TransformRunner(
+    const runner = new TransformRunner(
       sourcesIterator,
       new InlineTransformer(plugins, this.config.findBabelConfig)
     );
 
-    for await (let result of runner.run()) {
+    for await (const result of runner.run()) {
       this.onTransform(result);
 
       if (result.kind === SourceTransformResultKind.Transformed) {

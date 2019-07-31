@@ -19,13 +19,13 @@ export default function* iterateSources(
   ignore: PathPredicate,
   sys: System = RealSystem
 ): IterableIterator<Source> {
-  for (let path of paths) {
-    let type = sys.getEntryType(path);
+  for (const path of paths) {
+    const type = sys.getEntryType(path);
 
     if (type === EntryType.Directory) {
-      for (let child of sys.readdir(path)) {
-        let childPath = join(path, child);
-        let childType = sys.getEntryType(childPath);
+      for (const child of sys.readdir(path)) {
+        const childPath = join(path, child);
+        const childType = sys.getEntryType(childPath);
 
         if (ignore(childPath, child, path, childType)) {
           continue;
