@@ -7,6 +7,7 @@
   "author": "Brian Donovan",
   "license": "Apache-2.0",
   "scripts": {
+    "prepare": "tsc",
     "test": "script/ci"
   },
   "files": [

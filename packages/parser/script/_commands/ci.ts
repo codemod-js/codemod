@@ -12,12 +12,16 @@ export default async function main(
   switch (args[0]) {
     case undefined:
       return (
-        (await lint(rest, stdin, stdout, stderr)) ||
-        (await runTests(args, stdin, stdout, stderr))
+        (await build([], stdin, stdout, stderr)) ||
+        (await lint([], stdin, stdout, stderr)) ||
+        (await test([], stdin, stdout, stderr))
       );
 
+    case 'build':
+      return await test(rest, stdin, stdout, stderr);
+
     case 'test':
-      return await runTests(args, stdin, stdout, stderr);
+      return await test(rest, stdin, stdout, stderr);
 
     case 'lint':
       return await lint(rest, stdin, stdout, stderr);
@@ -27,7 +31,23 @@ export default async function main(
   }
 }
 
-async function runTests(
+async function build(
+  args: Array<string>,
+  stdin: NodeJS.ReadStream,
+  stdout: NodeJS.WriteStream,
+  stderr: NodeJS.WriteStream
+): Promise<number> {
+  return await runNodePackageBinary(
+    'tsc',
+    args,
+    join(__dirname, '../..'),
+    stdin,
+    stdout,
+    stderr
+  );
+}
+
+async function test(
   args: Array<string>,
   stdin: NodeJS.ReadStream,
   stdout: NodeJS.WriteStream,
@@ -35,7 +55,7 @@ async function runTests(
 ): Promise<number> {
   return await runNodePackageBinary(
     'jest',
-    ['--ci'],
+    ['--ci', ...args],
     join(__dirname, '../..'),
     stdin,
     stdout,

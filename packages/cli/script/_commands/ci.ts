@@ -12,15 +12,18 @@ export default async function main(
   switch (args[0]) {
     case undefined:
       return (
-        (await build(rest, stdin, stdout, stderr)) ||
-        (await lint(rest, stdin, stdout, stderr)) ||
-        (await runTests(rest, stdin, stdout, stderr))
+        (await build([], stdin, stdout, stderr)) ||
+        (await lint([], stdin, stdout, stderr)) ||
+        (await test([], stdin, stdout, stderr))
       );
+
+    case 'build':
+      return await build(rest, stdin, stdout, stderr);
 
     case 'test':
       return (
-        (await build(rest, stdin, stdout, stderr)) ||
-        (await runTests(rest, stdin, stdout, stderr))
+        (await build([], stdin, stdout, stderr)) ||
+        (await test(rest, stdin, stdout, stderr))
       );
 
     case 'lint':
@@ -39,7 +42,7 @@ async function build(
 ): Promise<number> {
   return await runNodePackageBinary(
     'tsc',
-    [],
+    args,
     join(__dirname, '../..'),
     stdin,
     stdout,
@@ -47,7 +50,7 @@ async function build(
   );
 }
 
-async function runTests(
+async function test(
   args: Array<string>,
   stdin: NodeJS.ReadStream,
   stdout: NodeJS.WriteStream,
@@ -62,9 +65,10 @@ async function runTests(
             '--reporter',
             'mocha-junit-reporter',
             '--reporter-options',
-            'mochaFile=reports/junit/js-test-results.xml'
+            'mochaFile=reports/junit/js-test-results.xml',
+            ...args
           ]
-        : [])
+        : args)
     ],
     join(__dirname, '../..'),
     stdin,

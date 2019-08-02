@@ -4,7 +4,7 @@
   "description": "codemod rewrites JavaScript and TypeScript",
   "main": "src/index.js",
   "scripts": {
-    "prepare": "yarn test",
+    "prepare": "tsc",
     "test": "script/ci"
   },
   "lint-staged": {

@@ -14,13 +14,20 @@ export default async function main(
   switch (args[0]) {
     case undefined:
       return (
-        (await verifyGeneratedMatchersUpToDate(args, stdin, stdout, stderr)) ||
-        (await lint(rest, stdin, stdout, stderr)) ||
-        (await runTests(args, stdin, stdout, stderr))
+        (await build([], stdin, stdout, stderr)) ||
+        (await verifyGeneratedMatchersUpToDate([], stdin, stdout, stderr)) ||
+        (await lint([], stdin, stdout, stderr)) ||
+        (await test([], stdin, stdout, stderr))
       );
 
+    case 'build':
+      return await build(rest, stdin, stdout, stderr);
+
+    case 'verify':
+      return await verifyGeneratedMatchersUpToDate(rest, stdin, stdout, stderr);
+
     case 'test':
-      return await runTests(args, stdin, stdout, stderr);
+      return await test(rest, stdin, stdout, stderr);
 
     case 'lint':
       return await lint(rest, stdin, stdout, stderr);
@@ -74,7 +81,23 @@ function regenerateMatchersFileAsString(): string {
   return data;
 }
 
-async function runTests(
+async function build(
+  args: Array<string>,
+  stdin: NodeJS.ReadStream,
+  stdout: NodeJS.WriteStream,
+  stderr: NodeJS.WriteStream
+): Promise<number> {
+  return await runNodePackageBinary(
+    'tsc',
+    args,
+    join(__dirname, '../..'),
+    stdin,
+    stdout,
+    stderr
+  );
+}
+
+async function test(
   args: Array<string>,
   stdin: NodeJS.ReadStream,
   stdout: NodeJS.WriteStream,
@@ -82,7 +105,7 @@ async function runTests(
 ): Promise<number> {
   return await runNodePackageBinary(
     'jest',
-    ['--ci'],
+    ['--ci', ...args],
     join(__dirname, '../..'),
     stdin,
     stdout,
