@@ -1,7 +1,7 @@
-import { transformSync, TransformOptions, PluginItem } from '@babel/core';
+import { PluginItem } from '@babel/core';
+import { transform, TransformOptions } from '@codemod/core';
 import { extname } from 'path';
 import { addHook } from 'pirates';
-import buildAllSyntaxPlugin from './AllSyntaxPlugin';
 import { PluginExtensions, TypeScriptExtensions } from './extensions';
 
 let useBabelConfig = false;
@@ -24,10 +24,7 @@ export function hook(code: string, filename: string): string {
     sourceMaps: 'inline'
   };
 
-  plugins.push(
-    buildAllSyntaxPlugin('module'),
-    require.resolve('@babel/plugin-proposal-class-properties')
-  );
+  plugins.push(require.resolve('@babel/plugin-proposal-class-properties'));
 
   if (!useBabelConfig) {
     options.configFile = useBabelConfig;
@@ -44,7 +41,7 @@ export function hook(code: string, filename: string): string {
     ]);
   }
 
-  const result = transformSync(code, options);
+  const result = transform(code, options);
 
   if (!result) {
     throw new Error(`[${filename}] babel transform returned null`);

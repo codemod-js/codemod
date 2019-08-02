@@ -616,7 +616,7 @@ describe('CLI', function() {
 
     strictEqual(
       await readFile(join(workspace, 'index.js'), 'utf8'),
-      '"use strict";\nvar a = 1;\n',
+      'const a = 42;\n',
       'file should have been transpiled'
     );
 

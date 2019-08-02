@@ -1,0 +1,31 @@
+{
+  "name": "@codemod/parser",
+  "version": "1.0.0",
+  "description": "Wrapper around @babel/parser that allows parsing everything.",
+  "main": "src/index.js",
+  "repository": "https://github.com/codemod-js/codemod",
+  "author": "Brian Donovan",
+  "license": "Apache-2.0",
+  "scripts": {
+    "prepare": "tsc",
+    "test": "jest"
+  },
+  "files": [
+    "src/**/*.js",
+    "src/**/*.d.ts",
+    "src/**/*.js.map"
+  ],
+  "dependencies": {
+    "@babel/parser": "^7.5.5"
+  },
+  "devDependencies": {
+    "@babel/types": "^7.5.5",
+    "@types/jest": "^24.0.16",
+    "jest": "^24.8.0",
+    "ts-jest": "^24.0.2"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.com/",
+    "access": "public"
+  }
+}

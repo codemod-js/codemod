@@ -1,6 +1,6 @@
 import * as t from '@babel/types';
 import * as m from '../../matchers';
-import { parse } from '@babel/parser';
+import { parse } from '@codemod/parser';
 import traverse, { NodePath } from '@babel/traverse';
 import { Validator } from '../../../script/_utils/utils';
 import { isNode } from '../../NodeTypes';
