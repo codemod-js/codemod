@@ -13,12 +13,28 @@ function loadPrettier(): typeof Prettier {
   }
 }
 
+const DEFAULT_PARSER = 'babel';
+
+type PrettierParser = Prettier.Options['parser'];
+
 export default function(): PluginObj {
   const prettier = loadPrettier();
 
-  function resolvePrettierConfig(filepath: string): Prettier.Options {
+  function inferParser(filepath?: string): PrettierParser {
+    if (!filepath) {
+      return DEFAULT_PARSER;
+    }
+
+    const { inferredParser } = prettier.getFileInfo.sync(filepath);
+    return (inferredParser || DEFAULT_PARSER) as PrettierParser;
+  }
+
+  function resolvePrettierConfig(filepath?: string): Prettier.Options {
     return {
-      ...(prettier.resolveConfig.sync(filepath) || undefined),
+      parser: inferParser(filepath),
+      ...(typeof filepath === 'string'
+        ? prettier.resolveConfig.sync(filepath)
+        : undefined),
       filepath
     };
   }
@@ -32,7 +48,7 @@ export default function(): PluginObj {
       return {
         code: prettier.format(
           generate(ast).code,
-          resolvePrettierConfig(options.filename as string)
+          resolvePrettierConfig(options.filename)
         )
       };
     }

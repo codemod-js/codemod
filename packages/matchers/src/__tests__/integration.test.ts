@@ -8,7 +8,7 @@ import { BuildExpression as E } from './utils/builders';
 import match from '../utils/match';
 import convertStaticClassToNamedExports from '../../examples/convert-static-class-to-named-exports';
 import convertQUnitAssertExpectToAssertAsync from '../../examples/convert-qunit-assert-expect-to-assert-async';
-import { transformSync } from '@babel/core';
+import { transform } from '@codemod/core';
 
 /**
  * This test demonstrates using captures to extract parts of an AST for use in
@@ -277,7 +277,7 @@ test('codemod: assert.expect to assert.async', () => {
     });
   `;
 
-  const output = transformSync(input, {
+  const output = transform(input, {
     plugins: [convertQUnitAssertExpectToAssertAsync()]
   });
 
@@ -324,7 +324,7 @@ test('codemod: convert static exported class to named exports', () => {
     export default MobileAppUpsellHelper;
   `;
 
-  const output = transformSync(code, {
+  const output = transform(code, {
     plugins: [convertStaticClassToNamedExports()]
   });
 
@@ -333,10 +333,12 @@ test('codemod: convert static exported class to named exports', () => {
       const trackingLink = specialTrackingLink || "IOS_BRANCH_LINK";
       return getBranchLink(trackingLink);
     }
+
     export function getAndroidAppLink(specialTrackingLink) {
       const trackingLink = specialTrackingLink || "ANDROID_BRANCH_LINK";
       return getBranchLink(trackingLink);
     }
+
     export function getBranchLink(specialTrackingLink) {
       if (specialTrackingLink && APP_DOWNLOAD_ASSETS[specialTrackingLink]) {
         return APP_DOWNLOAD_ASSETS[specialTrackingLink];
@@ -344,6 +346,7 @@ test('codemod: convert static exported class to named exports', () => {
 
       return APP_DOWNLOAD_ASSETS.DEFAULT_BRANCH_LINK;
     }
+
     export function getHideAppBanner() {
       return CookieHelper.get("hide_app_banner");
     }

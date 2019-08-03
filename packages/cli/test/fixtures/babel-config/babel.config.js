@@ -1,13 +1,16 @@
+/* eslint-env node */
+
 module.exports = function(api) {
   api.cache(true);
   return {
-    presets: [
-      [
-        '@babel/preset-env',
-        {
-          forceAllTransforms: true
+    plugins: [
+      {
+        visitor: {
+          NumericLiteral(path) {
+            path.node.value = 42;
+          }
         }
-      ]
+      }
     ]
-  }
+  };
 };

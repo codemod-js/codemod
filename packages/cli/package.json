@@ -1,10 +1,10 @@
 {
   "name": "@codemod/cli",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "description": "codemod rewrites JavaScript and TypeScript",
   "main": "src/index.js",
   "scripts": {
-    "prepare": "yarn test",
+    "prepare": "tsc",
     "test": "script/ci"
   },
   "lint-staged": {
@@ -62,12 +62,13 @@
   "dependencies": {
     "@babel/core": "^7.5.5",
     "@babel/generator": "^7.5.5",
-    "@babel/parser": "^7.5.5",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-typescript": "^7.3.3",
     "@babel/traverse": "^7.5.5",
     "@babel/types": "^7.5.5",
+    "@codemod/core": "^1.0.0",
+    "@codemod/parser": "^1.0.0",
     "core-js": "^3.1.4",
     "get-stream": "^4.0.0",
     "globby": "^8.0.1",
@@ -87,7 +88,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/square/babel-codemod.git"
+    "url": "https://github.com/codemod-js/codemod.git"
   },
   "husky": {
     "hooks": {

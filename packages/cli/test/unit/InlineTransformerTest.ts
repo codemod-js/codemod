@@ -1,9 +1,9 @@
 import { NodePath } from '@babel/traverse';
-import { Identifier, NumericLiteral, Program } from '@babel/types';
+import { NumericLiteral, Program } from '@babel/types';
 import { strictEqual } from 'assert';
 import { join } from 'path';
-import { PluginObj } from '../../src/BabelPluginTypes';
 import InlineTransformer from '../../src/InlineTransformer';
+import { PluginItem } from '@babel/core';
 
 describe('InlineTransformer', function() {
   it('passes source through as-is when there are no plugins', async function() {
@@ -19,14 +19,13 @@ describe('InlineTransformer', function() {
     const filepath = 'a.js';
     const content = '3 + 4;';
     const transformer = new InlineTransformer([
-      (): PluginObj =>
-        ({
-          visitor: {
-            NumericLiteral(path: NodePath<NumericLiteral>): void {
-              path.node.value++;
-            }
+      (): PluginItem => ({
+        visitor: {
+          NumericLiteral(path: NodePath<NumericLiteral>): void {
+            path.node.value++;
           }
-        } as PluginObj) /* conflicting definitions of `@babel/types`? */
+        }
+      })
     ]);
     const output = await transformer.transform(filepath, content);
 
@@ -47,19 +46,18 @@ describe('InlineTransformer', function() {
     const content = '3 + 4;';
     const transformer = new InlineTransformer([
       [
-        (): PluginObj =>
-          ({
-            visitor: {
-              NumericLiteral(
-                path: NodePath<NumericLiteral>,
-                state: { opts: { value?: number } }
-              ) {
-                if (state.opts.value === path.node.value) {
-                  path.node.value++;
-                }
+        (): PluginItem => ({
+          visitor: {
+            NumericLiteral(
+              path: NodePath<NumericLiteral>,
+              state: { opts: { value?: number } }
+            ) {
+              if (state.opts.value === path.node.value) {
+                path.node.value++;
               }
             }
-          } as PluginObj) /* conflicting definitions of `@babel/types`? */,
+          }
+        }),
         { value: 3 }
       ]
     ]);
@@ -74,52 +72,23 @@ describe('InlineTransformer', function() {
     let filename: string | undefined;
 
     const transformer = new InlineTransformer([
-      (): PluginObj =>
-        ({
-          visitor: {
-            Program(
-              path: NodePath<Program>,
-              state: {
-                file: { opts: { filename: string } };
-              }
-            ) {
-              filename = state.file.opts.filename;
+      (): PluginItem => ({
+        visitor: {
+          Program(
+            path: NodePath<Program>,
+            state: {
+              file: { opts: { filename: string } };
             }
+          ) {
+            filename = state.file.opts.filename;
           }
-        } as PluginObj) /* conflicting definitions of `@babel/types`? */
+        }
+      })
     ]);
 
     // Ignore the result since we only care about arguments to the visitor.
     await transformer.transform(filepath, content);
 
     strictEqual(filename, join(process.cwd(), 'a.js'));
-  });
-
-  it('does not add extra semicolons to "use strict" when removing the statement before it', async function() {
-    const filepath = 'a.js';
-    const content = `(function () {
-  "use strict";
-  hello;
-})();`;
-
-    const transformer = new InlineTransformer([
-      (): PluginObj =>
-        ({
-          visitor: {
-            Identifier(path: NodePath<Identifier>) {
-              path.remove();
-            }
-          }
-        } as PluginObj) /* conflicting definitions of `@babel/types`? */
-    ]);
-
-    const output = await transformer.transform(filepath, content);
-
-    strictEqual(
-      output,
-      `(function () {
-  "use strict";
-})();`
-    );
   });
 });

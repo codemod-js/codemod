@@ -3,14 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [2.1.6](https://github.com/square/babel-codemod/compare/@codemod/cli@2.1.5...@codemod/cli@2.1.6) (2019-07-31)
+## [2.1.7](https://github.com/codemod-js/codemod/compare/@codemod/cli@2.1.6...@codemod/cli@2.1.7) (2019-08-02)
 
 
-### Bug Fixes
+### Refactors
 
-* update babel dependencies ([6984c7c](https://github.com/square/babel-codemod/commit/6984c7c))
+* extract `@codemod/parser` and `@codemod/core` ([c43ecd52](https://github.com/codemod-js/codemod/commit/c43ecd52))
 
 
 ### Features
 
-* initial commit of [@codemod](https://github.com/codemod)/matchers ([84de839](https://github.com/square/babel-codemod/commit/84de839))
+* initial commit of [@codemod](https://github.com/codemod)/matchers ([84de839](https://github.com/codemod-js/codemod/commit/84de839))
+
+
+
+## [2.1.6](https://github.com/codemod-js/codemod/compare/@codemod/cli@2.1.5...@codemod/cli@2.1.6) (2019-07-31)
+
+
+### Bug Fixes
+
+* update babel dependencies ([6984c7c](https://github.com/codemod-js/codemod/commit/6984c7c))
+
+
+### Features
+
+* initial commit of `@codemod/matchers` ([84de839](https://github.com/codemod-js/codemod/commit/84de839))

@@ -1,6 +1,4 @@
-import rebuild, { MATCHERS_FILE_PATH } from '../_utils/rebuild';
-import { readFile } from 'mz/fs';
-import { join, relative } from 'path';
+import { join } from 'path';
 import runNodePackageBinary from '../../../../script/_utils/runNodePackageBinary';
 
 export default async function main(
@@ -15,16 +13,12 @@ export default async function main(
     case undefined:
       return (
         (await build([], stdin, stdout, stderr)) ||
-        (await verifyGeneratedMatchersUpToDate([], stdin, stdout, stderr)) ||
         (await lint([], stdin, stdout, stderr)) ||
         (await test([], stdin, stdout, stderr))
       );
 
     case 'build':
       return await build(rest, stdin, stdout, stderr);
-
-    case 'verify':
-      return await verifyGeneratedMatchersUpToDate(rest, stdin, stdout, stderr);
 
     case 'test':
       return await test(rest, stdin, stdout, stderr);
@@ -35,50 +29,6 @@ export default async function main(
     default:
       throw new Error(`unexpected command: ${args[0]}`);
   }
-}
-
-async function verifyGeneratedMatchersUpToDate(
-  args: Array<string>,
-  stdin: NodeJS.ReadStream,
-  stdout: NodeJS.WriteStream,
-  stderr: NodeJS.WriteStream
-): Promise<number> {
-  const expected = regenerateMatchersFileAsString();
-  const actual = await readFile(MATCHERS_FILE_PATH, 'utf8');
-
-  if (actual !== expected) {
-    stderr.write(
-      `\x1b[41;1;38;5;232m INVALID \x1b[0m ${relativeToCwd(
-        MATCHERS_FILE_PATH
-      )} is out of date. Please rebuild it by running ${relativeToCwd(
-        require.resolve('../rebuild')
-      )}.\n`
-    );
-    return 1;
-  } else {
-    stdout.write(
-      `\x1b[42;1;38;5;232m VALID \x1b[0m ${relativeToCwd(
-        MATCHERS_FILE_PATH
-      )} is up to date!\n`
-    );
-    return 0;
-  }
-}
-
-function relativeToCwd(path: string, cwd: string = process.cwd()): string {
-  return relative(cwd, path);
-}
-
-function regenerateMatchersFileAsString(): string {
-  let data = '';
-
-  rebuild({
-    write(chunk: string) {
-      data += chunk;
-    }
-  });
-
-  return data;
 }
 
 async function build(
@@ -122,7 +72,7 @@ async function lint(
   return await runNodePackageBinary(
     'eslint',
     [
-      'packages/matchers',
+      'packages/parser',
       '--ext',
       '.ts',
       ...(isCI()

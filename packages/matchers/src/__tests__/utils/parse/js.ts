@@ -1,5 +1,5 @@
 import * as t from '@babel/types';
-import { parse } from '@babel/parser';
+import { parse } from '@codemod/parser';
 import { NODE_FIELDS } from '../../../NodeTypes';
 
 function fieldsForNodeType(nodeType: string): Set<string> {

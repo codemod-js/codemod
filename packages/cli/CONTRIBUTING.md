@@ -11,13 +11,13 @@ This project is written with [TypeScript](https://www.typescriptlang.org/), a su
 
 ## Developing
 
-babel-codemod expects at least node 6 and yarn. You can check each of these with `node -v` and `yarn --version`. Look for instructions on installing node [here](https://nodejs.org) and yarn [here](https://yarnpkg.com/).
+codemod expects at least node 6 and yarn. You can check each of these with `node -v` and `yarn --version`. Look for instructions on installing node [here](https://nodejs.org) and yarn [here](https://yarnpkg.com/).
 
 ### Setup
 
 ```
-$ git clone https://github.com/square/babel-codemod
-$ cd babel-codemod
+$ git clone https://github.com/codemod-js/codemod
+$ cd codemod
 $ yarn
 ```
 

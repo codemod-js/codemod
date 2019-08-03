@@ -1,15 +1,10 @@
 import * as Babel from '@babel/core';
-import { ParserOptions } from '@babel/parser';
+import { ParserOptions } from '@codemod/parser';
 import { basename, extname } from 'path';
 import { install } from 'source-map-support';
-import buildAllSyntaxPlugin from './AllSyntaxPlugin';
-import { BabelPlugin, RawBabelPlugin } from './BabelPluginTypes';
-import BabelPrinterPlugin from './BabelPrinterPlugin';
 import { TransformableExtensions } from './extensions';
 import { PathPredicate } from './iterateSources';
 import PluginLoader from './PluginLoader';
-import PrettierPrinterPlugin from './PrettierPrinterPlugin';
-import RecastPlugin from './RecastPlugin';
 import AstExplorerResolver from './resolvers/AstExplorerResolver';
 import FileSystemResolver from './resolvers/FileSystemResolver';
 import NetworkResolver from './resolvers/NetworkResolver';
@@ -20,7 +15,7 @@ export class Plugin {
   readonly declaredName?: string;
 
   constructor(
-    readonly rawPlugin: RawBabelPlugin,
+    readonly rawPlugin: (babel: typeof Babel) => Babel.PluginObj,
     readonly inferredName: string,
     readonly source?: string,
     readonly resolvedPath?: string
@@ -140,22 +135,8 @@ export default class Config {
     return null;
   }
 
-  async getBabelPlugins(): Promise<Array<BabelPlugin>> {
-    const result: Array<BabelPlugin> = [buildAllSyntaxPlugin(this.sourceType)];
-
-    switch (this.printer) {
-      case Printer.Recast:
-        result.push(RecastPlugin);
-        break;
-
-      case Printer.Babel:
-        result.push(BabelPrinterPlugin);
-        break;
-
-      case Printer.Prettier:
-        result.push(PrettierPrinterPlugin);
-        break;
-    }
+  async getBabelPlugins(): Promise<Array<Babel.PluginItem>> {
+    const result: Array<Babel.PluginItem> = [];
 
     for (const plugin of await this.getPlugins()) {
       const options =
@@ -172,7 +153,7 @@ export default class Config {
     return result;
   }
 
-  async getBabelPlugin(name: string): Promise<BabelPlugin | null> {
+  async getBabelPlugin(name: string): Promise<Babel.PluginItem | null> {
     const plugin = await this.getPlugin(name);
 
     if (!plugin) {

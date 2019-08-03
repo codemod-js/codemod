@@ -1,5 +1,5 @@
 import { NodePath } from '@babel/traverse';
-import { PluginObj } from '../../../src/BabelPluginTypes';
+import { PluginObj } from '@babel/core';
 import * as t from '@babel/types';
 
 enum IncrementValues {

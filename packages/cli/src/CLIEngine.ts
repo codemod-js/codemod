@@ -1,5 +1,5 @@
 import getStream = require('get-stream');
-import { BabelPlugin } from './BabelPluginTypes';
+import { PluginItem } from '@babel/core';
 import Config from './Config';
 import InlineTransformer from './InlineTransformer';
 import iterateSources from './iterateSources';
@@ -30,9 +30,9 @@ export default class CLIEngine {
     readonly sys: System = RealSystem
   ) {}
 
-  private async loadPlugins(): Promise<Array<BabelPlugin>> {
+  private async loadPlugins(): Promise<Array<PluginItem>> {
     const snapshot = new ProcessSnapshot();
-    let plugins: Array<BabelPlugin>;
+    let plugins: Array<PluginItem>;
 
     try {
       this.config.loadBabelTranspile();
@@ -69,7 +69,11 @@ export default class CLIEngine {
 
     const runner = new TransformRunner(
       sourcesIterator,
-      new InlineTransformer(plugins, this.config.findBabelConfig)
+      new InlineTransformer(
+        plugins,
+        this.config.findBabelConfig,
+        this.config.printer
+      )
     );
 
     for await (const result of runner.run()) {
