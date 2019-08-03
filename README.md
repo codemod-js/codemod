@@ -26,7 +26,7 @@ This repository is a monorepo, or multi-package repository. See the READMEs for 
 
 ## License
 
-Copyright 2017-2018 Brian Donovan
+Copyright 2017-2019 Brian Donovan
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
