@@ -69,7 +69,7 @@ $ codemod --plugin ./my-plugin.ts src/
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for information on setting up the project for development and on contributing to the project.
+See [CONTRIBUTING.md](../../CONTRIBUTING.md) for information on setting up the project for development and on contributing to the project.
 
 ## Status
 
