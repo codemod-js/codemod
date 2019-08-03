@@ -6,6 +6,11 @@ set -euo pipefail
 
 IS_SHALLOW_REPOSITORY="$(git rev-parse --is-shallow-repository)"
 
+if [ "$IS_SHALLOW_REPOSITORY" = "--is-shallow-repository" ]; then
+  # this version of git is pre-v2.15, and doesn't understand this flag
+  IS_SHALLOW_REPOSITORY=$([ -f $(git rev-parse --git-dir)/shallow ] && echo true || echo false)
+fi
+
 case "$IS_SHALLOW_REPOSITORY" in
   false)
     # nothing to do
@@ -21,8 +26,8 @@ case "$IS_SHALLOW_REPOSITORY" in
   ;;
 esac
 
-if [ "${CI}" != true ]; then
-  exec ./node_modules/.bin/commitlint --from="$(git merge-base HEAD origin/master)"
+if [ "${CI:-}" != true ]; then
+  exec yarn commitlint --from="$(git merge-base HEAD origin/master)"
 fi
 
 git_fork_url() {
@@ -66,8 +71,8 @@ fi
 # Lint all commits in the PR
 # - Covers fork pull requests (when TO=slug/branch)
 # - Covers branch pull requests (when TO=branch)
-./node_modules/.bin/commitlint --from="$(git merge-base origin/master "$(git_commit_ref)")" --to="$TO"
+yarn commitlint --from="$(git merge-base origin/master "$(git_commit_ref)")" --to="$TO"
 
 # Always lint the triggering commit
 # - Covers direct commits
-./node_modules/.bin/commitlint --from="$(git_commit_ref)"
+yarn commitlint --from="$(git_commit_ref)"
