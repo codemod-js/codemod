@@ -22,7 +22,9 @@ Check out the docs for [@codemod/cli](packages/cli/README.md) for instructions o
 This repository is a monorepo, or multi-package repository. See the READMEs for the packages here:
 
 - [`@codemod/cli` README](packages/cli/README.md)
+- [`@codemod/core` README](packages/core/README.md)
 - [`@codemod/matchers` README](packages/matchers/README.md)
+- [`@codemod/parser` README](packages/parser/README.md)
 
 ## License
 
