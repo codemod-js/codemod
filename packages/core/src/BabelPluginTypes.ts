@@ -1,5 +1,6 @@
 import * as Babel from '@babel/core';
 import { File } from '@babel/types';
+import { ParserOptions } from '@codemod/parser';
 
 /**
  * Fixes the `PluginObj` type from `@babel/core` by making all fields optional
@@ -8,8 +9,8 @@ import { File } from '@babel/types';
 export interface PluginObj<S = File> extends Partial<Babel.PluginObj<S>> {
   parserOverride?(
     code: string,
-    options: Babel.ParserOptions,
-    parse: (code: string, options: Babel.ParserOptions) => File
+    options: ParserOptions,
+    parse: (code: string, options: ParserOptions) => File
   ): File;
 
   generatorOverride?(
