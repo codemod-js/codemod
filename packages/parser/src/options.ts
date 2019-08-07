@@ -1,35 +1,47 @@
 import {
   ParserOptions as BabelParserOptions,
-  ParserPlugin
+  ParserPlugin as BabelParserPlugin
 } from '@babel/parser';
+
+/**
+ * Add some type plugins that are in master but not yet published.
+ */
+export type ParserPlugin =
+  | BabelParserPlugin
+  | 'logicalAssignment'
+  | 'partialApplication'
+  | 'placeholders';
 
 type ParserPluginName = Extract<ParserPlugin, string>;
 
 const DefaultParserPlugins = new Set<ParserPlugin>([
-  'jsx',
-  'doExpressions',
-  'objectRestSpread',
-  'classProperties',
-  'classPrivateProperties',
+  'asyncGenerators',
+  'bigInt',
   'classPrivateMethods',
+  'classPrivateProperties',
+  'classProperties',
+  'doExpressions',
+  'dynamicImport',
   'exportDefaultFrom',
   'exportNamespaceFrom',
-  'asyncGenerators',
   'functionBind',
   'functionSent',
-  'dynamicImport',
-  'numericSeparator',
-  'optionalChaining',
   'importMeta',
-  'bigInt',
-  'optionalCatchBinding',
-  'throwExpressions',
+  'jsx',
+  'logicalAssignment',
   'nullishCoalescingOperator',
+  'numericSeparator',
+  'objectRestSpread',
+  'optionalCatchBinding',
+  'optionalChaining',
+  'partialApplication',
+  'placeholders',
+  'throwExpressions',
   ['decorators', { decoratorsBeforeExport: true }],
   ['pipelineOperator', { proposal: 'smart' }]
 ]);
 
-export interface ParserOptions extends BabelParserOptions {
+export interface ParserOptions extends Omit<BabelParserOptions, 'plugins'> {
   // TODO: remove this hack once `allowUndeclaredExports` is included in typings
   // https://github.com/babel/babel/pull/10263
   allowUndeclaredExports?: boolean;
@@ -37,6 +49,8 @@ export interface ParserOptions extends BabelParserOptions {
   // TODO: Remove this.
   // https://github.com/babel/babel/pull/10291
   sourceFileName?: string;
+
+  plugins?: Array<ParserPlugin>;
 }
 
 /**

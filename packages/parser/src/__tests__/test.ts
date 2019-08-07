@@ -1,4 +1,5 @@
 import { parse, buildOptions } from '..';
+import * as t from '@babel/types';
 
 test('defaults `sourceType` to "unambiguous"', () => {
   expect(buildOptions().sourceType).toBe('unambiguous');
@@ -90,10 +91,21 @@ test('parses with a very broad set of options', () => {
       export { a };
       // demonstrate 'typescript' plugin
       type Foo = Extract<PropertyKey, string>;
-  `).program.body.map(node => node.type)
+      // demonstrate 'placeholders' plugin
+      %%statement%%
+      // demonstrate 'logicalAssignment' plugin
+      a ||= b
+      // demonstrate 'partialApplication' plugin
+      a(?, b)
+  `).program.body.map(node =>
+      t.isExpressionStatement(node) ? node.expression.type : node.type
+    )
   ).toEqual([
     'ReturnStatement',
     'ExportNamedDeclaration',
-    'TSTypeAliasDeclaration'
+    'TSTypeAliasDeclaration',
+    'Placeholder',
+    'AssignmentExpression',
+    'CallExpression'
   ]);
 });
