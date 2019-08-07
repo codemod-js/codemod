@@ -1,4 +1,7 @@
-import { parse as babelParse } from '@babel/parser';
+import {
+  parse as babelParse,
+  ParserOptions as BabelParserOptions
+} from '@babel/parser';
 import { File } from '@babel/types';
 import buildOptions, { ParserOptions } from './options';
 
@@ -9,5 +12,5 @@ export { buildOptions, ParserOptions };
  * restrictions as possible are placed on the `input` code.
  */
 export function parse(input: string, options?: ParserOptions): File {
-  return babelParse(input, buildOptions(options));
+  return babelParse(input, buildOptions(options) as BabelParserOptions);
 }
