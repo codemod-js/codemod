@@ -4,7 +4,7 @@ import js from './utils/parse/js';
 import generate from '@babel/generator';
 import traverse, { NodePath } from '@babel/traverse';
 import dedent = require('dedent');
-import { BuildExpression as E } from './utils/builders';
+import { expression } from './utils/builders';
 import match from '../utils/match';
 import convertStaticClassToNamedExports from '../../examples/convert-static-class-to-named-exports';
 import convertQUnitAssertExpectToAssertAsync from '../../examples/convert-qunit-assert-expect-to-assert-async';
@@ -252,11 +252,14 @@ test('codemod: double-equal null to triple-equal', () => {
   const ast = js('a == null;');
   const left = m.capture(m.identifier());
   const eqeqNullMatcher = m.binaryExpression('==', left, m.nullLiteral());
+  const eqNullOrUndefined = expression<{
+    left: t.Expression;
+  }>('%%left%% === null || %%left%% === undefined');
 
   traverse(ast, {
     BinaryExpression(path: NodePath<t.BinaryExpression>): void {
       match(eqeqNullMatcher, { left }, path.node, ({ left }) => {
-        path.replaceWith(E`${left} === null || ${left} === undefined`);
+        path.replaceWith(eqNullOrUndefined({ left }));
       });
     }
   });
