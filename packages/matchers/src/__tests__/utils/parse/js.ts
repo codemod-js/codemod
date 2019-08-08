@@ -7,14 +7,7 @@ function fieldsForNodeType(nodeType: string): Set<string> {
 }
 
 export default function js(code: string): t.File {
-  return stripExtras(
-    parse(code, {
-      allowAwaitOutsideFunction: true,
-      allowImportExportEverywhere: true,
-      allowReturnOutsideFunction: true,
-      allowSuperOutsideMethod: true
-    })
-  );
+  return stripExtras(parse(code));
 }
 
 function stripExtras<N extends t.Node>(node: N): N {

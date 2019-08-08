@@ -93,12 +93,7 @@ export function BuildStatements<
     code += quasis[i + 1];
   }
 
-  const ast = parse(code, {
-    allowAwaitOutsideFunction: true,
-    allowImportExportEverywhere: true,
-    allowReturnOutsideFunction: true,
-    allowSuperOutsideMethod: true
-  });
+  const ast = parse(code);
   const replaced = new Map<number, InterpolationValue>();
 
   traverse(ast, {
