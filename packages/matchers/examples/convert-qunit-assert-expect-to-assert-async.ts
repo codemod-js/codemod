@@ -31,7 +31,7 @@ import * as t from '@babel/types';
 import * as m from '../src';
 import { PluginObj } from '@babel/core';
 import { NodePath } from '@babel/traverse';
-import { BuildStatement as S } from '../src/__tests__/utils/builders';
+import { statement } from '../src/__tests__/utils/builders';
 
 // capture name of `assert` parameter
 const assertBinding = m.capture(m.anyString());
@@ -99,6 +99,11 @@ const asyncTestMatcher = m.callExpression(m.identifier('test'), [
 ]);
 
 export default function(): PluginObj {
+  const makeDone = statement<{ assert: t.Identifier }>(
+    'const done = %%assert%%.async();'
+  );
+  const callDone = statement('done();');
+
   return {
     visitor: {
       CallExpression(path: NodePath<t.CallExpression>): void {
@@ -112,10 +117,9 @@ export default function(): PluginObj {
           path,
           ({ assertExpect, callbackAssertion, assertBinding }) => {
             assertExpect.replaceWith(
-              S`const done = ${t.identifier(assertBinding)}.async();`
+              makeDone({ assert: t.identifier(assertBinding) })
             );
-
-            callbackAssertion.insertAfter(S`done();`);
+            callbackAssertion.insertAfter(callDone());
           }
         );
       }
