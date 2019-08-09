@@ -1,6 +1,6 @@
 {
   "name": "@codemod/parser",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Wrapper around @babel/parser that allows parsing everything.",
   "main": "src/index.js",
   "types": "src/index.d.ts",

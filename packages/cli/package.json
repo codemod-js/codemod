@@ -1,6 +1,6 @@
 {
   "name": "@codemod/cli",
-  "version": "2.1.8",
+  "version": "2.1.9",
   "description": "codemod rewrites JavaScript and TypeScript",
   "main": "src/index.js",
   "types": "src/index.d.ts",
@@ -67,8 +67,8 @@
     "@babel/preset-typescript": "^7.3.3",
     "@babel/traverse": "^7.5.5",
     "@babel/types": "^7.5.5",
-    "@codemod/core": "^1.0.0",
-    "@codemod/parser": "^1.0.0",
+    "@codemod/core": "^1.0.1",
+    "@codemod/parser": "^1.0.2",
     "core-js": "^3.1.4",
     "get-stream": "^4.0.0",
     "globby": "^8.0.1",

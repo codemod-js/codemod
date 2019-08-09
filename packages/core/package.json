@@ -1,6 +1,6 @@
 {
   "name": "@codemod/core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Runs babel plugins for codemods, i.e. by preserving formatting using Recast.",
   "main": "src/index.js",
   "types": "src/index.d.ts",
@@ -18,7 +18,7 @@
   ],
   "dependencies": {
     "@babel/core": "^7.5.5",
-    "@codemod/parser": "^1.0.0",
+    "@codemod/parser": "^1.0.2",
     "recast": "^0.18.1",
     "resolve": "^1.12.0"
   },
