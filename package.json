@@ -12,6 +12,26 @@
   "scripts": {
     "test": "script/ci"
   },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e $GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.md": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.ts": [
+      "prettier --write",
+      "git add"
+    ],
+    "package.json": [
+      "sort-package-json",
+      "git add"
+    ]
+  },
   "dependencies": {},
   "devDependencies": {
     "@types/globby": "^8.0.0",
@@ -25,6 +45,7 @@
     "lerna": "^3.10.7",
     "mz": "^2.7.0",
     "prettier": "^1.15.3",
+    "sort-package-json": "^1.22.1",
     "ts-node": "^7.0.1",
     "typescript": "^3.5.3"
   },
