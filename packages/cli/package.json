@@ -100,7 +100,6 @@
     }
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.com/",
     "access": "public"
   }
 }
