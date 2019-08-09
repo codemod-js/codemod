@@ -1,4 +1,5 @@
 {
+  "name": "codemod",
   "private": true,
   "workspaces": {
     "packages": [
@@ -11,6 +12,7 @@
   "scripts": {
     "test": "script/ci"
   },
+  "dependencies": {},
   "devDependencies": {
     "@types/globby": "^8.0.0",
     "@types/mz": "^0.0.32",
@@ -26,11 +28,9 @@
     "ts-node": "^7.0.1",
     "typescript": "^3.5.3"
   },
-  "name": "codemod",
   "resolutions": {
-    "**/ip-regex": "^2.0.0",
     "**/@babel/parser": "7.5.5",
-    "**/@babel/types": "7.5.5"
-  },
-  "dependencies": {}
+    "**/@babel/types": "7.5.5",
+    "**/ip-regex": "^2.0.0"
+  }
 }

@@ -2,20 +2,20 @@
   "name": "@codemod/parser",
   "version": "1.0.2",
   "description": "Wrapper around @babel/parser that allows parsing everything.",
-  "main": "src/index.js",
-  "types": "src/index.d.ts",
   "repository": "https://github.com/codemod-js/codemod",
-  "author": "Brian Donovan",
   "license": "Apache-2.0",
-  "scripts": {
-    "prepare": "tsc",
-    "test": "jest"
-  },
+  "author": "Brian Donovan",
   "files": [
     "src/**/*.js",
     "src/**/*.d.ts",
     "src/**/*.js.map"
   ],
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "scripts": {
+    "prepare": "tsc",
+    "test": "jest"
+  },
   "dependencies": {
     "@babel/parser": "^7.5.5"
   },

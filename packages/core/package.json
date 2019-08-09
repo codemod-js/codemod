@@ -2,20 +2,20 @@
   "name": "@codemod/core",
   "version": "1.0.1",
   "description": "Runs babel plugins for codemods, i.e. by preserving formatting using Recast.",
-  "main": "src/index.js",
-  "types": "src/index.d.ts",
   "repository": "https://github.com/codemod-js/codemod",
-  "author": "Brian Donovan",
   "license": "Apache-2.0",
-  "scripts": {
-    "prepare": "tsc",
-    "test": "script/ci"
-  },
+  "author": "Brian Donovan",
   "files": [
     "src/**/*.js",
     "src/**/*.d.ts",
     "src/**/*.js.map"
   ],
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "scripts": {
+    "prepare": "tsc",
+    "test": "script/ci"
+  },
   "dependencies": {
     "@babel/core": "^7.5.5",
     "@codemod/parser": "^1.0.2",
