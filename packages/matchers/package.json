@@ -36,6 +36,7 @@
     "src/**/*.js.map",
     "!src/__tests__/**/*"
   ],
+  "types": "src/index.d.ts",
   "publishConfig": {
     "registry": "https://registry.npmjs.com/",
     "access": "public"

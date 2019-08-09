@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Runs babel plugins for codemods, i.e. by preserving formatting using Recast.",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "repository": "https://github.com/codemod-js/codemod",
   "author": "Brian Donovan",
   "license": "Apache-2.0",

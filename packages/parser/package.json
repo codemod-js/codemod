@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "description": "Wrapper around @babel/parser that allows parsing everything.",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "repository": "https://github.com/codemod-js/codemod",
   "author": "Brian Donovan",
   "license": "Apache-2.0",
