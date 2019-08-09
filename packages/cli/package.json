@@ -3,6 +3,7 @@
   "version": "2.1.8",
   "description": "codemod rewrites JavaScript and TypeScript",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "prepare": "tsc",
     "test": "script/ci"
