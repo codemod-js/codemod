@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.10](https://github.com/codemod-js/codemod/compare/@codemod/cli@2.1.9...@codemod/cli@2.1.10) (2019-08-09)
+
+
+### Bug Fixes
+
+* **license:** update outdated license files ([58e4b11](https://github.com/codemod-js/codemod/commit/58e4b11))
+
+
+
+
+
 ## [2.1.9](https://github.com/codemod-js/codemod/compare/@codemod/cli@2.1.8...@codemod/cli@2.1.9) (2019-08-09)
 
 

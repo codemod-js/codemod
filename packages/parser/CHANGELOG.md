@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.3](https://github.com/codemod-js/codemod/compare/@codemod/parser@1.0.2...@codemod/parser@1.0.3) (2019-08-09)
+
+
+### Bug Fixes
+
+* **license:** update outdated license files ([58e4b11](https://github.com/codemod-js/codemod/commit/58e4b11))
+
+
+
+
+
 ## [1.0.2](https://github.com/codemod-js/codemod/compare/@codemod/parser@1.0.1...@codemod/parser@1.0.2) (2019-08-09)
 
 
