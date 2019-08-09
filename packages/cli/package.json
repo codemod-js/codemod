@@ -2,33 +2,70 @@
   "name": "@codemod/cli",
   "version": "2.1.9",
   "description": "codemod rewrites JavaScript and TypeScript",
-  "main": "src/index.js",
-  "types": "src/index.d.ts",
-  "scripts": {
-    "prepare": "tsc",
-    "test": "script/ci"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codemod-js/codemod.git"
   },
-  "lint-staged": {
-    "*.ts": [
-      "prettier --write",
-      "git add"
-    ],
-    "*.md": [
-      "prettier --write",
-      "git add"
-    ]
-  },
-  "bin": {
-    "codemod": "./bin/codemod"
-  },
+  "license": "Apache-2.0",
+  "author": "Brian Donovan",
   "files": [
     "bin",
     "src/**/*.js",
     "src/**/*.d.ts",
     "src/**/*.js.map"
   ],
-  "author": "Brian Donovan",
-  "license": "Apache-2.0",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "bin": {
+    "codemod": "./bin/codemod"
+  },
+  "scripts": {
+    "prepare": "tsc",
+    "test": "script/ci"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e $GIT_PARAMS",
+      "post-checkout": "yarnhook",
+      "post-merge": "yarnhook",
+      "post-rewrite": "yarnhook",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.md": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.ts": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/generator": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "@babel/traverse": "^7.5.5",
+    "@babel/types": "^7.5.5",
+    "@codemod/core": "^1.0.1",
+    "@codemod/parser": "^1.0.2",
+    "core-js": "^3.1.4",
+    "get-stream": "^4.0.0",
+    "globby": "^8.0.1",
+    "got": "^8.3.1",
+    "mz": "^2.7.0",
+    "pirates": "^4.0.0",
+    "prettier": "^1.13.4",
+    "recast": "^0.16.1",
+    "regenerator-runtime": "^0.13.3",
+    "resolve": "^1.7.1",
+    "source-map-support": "^0.5.6",
+    "tmp": "^0.0.33",
+    "whatwg-url": "^7.0.0"
+  },
   "devDependencies": {
     "@commitlint/cli": "^7.2.1",
     "@commitlint/config-conventional": "^7.1.2",
@@ -59,45 +96,8 @@
     "semver": "^5.6.0",
     "yarnhook": "^0.3.0"
   },
-  "dependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/generator": "^7.5.5",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
-    "@babel/preset-typescript": "^7.3.3",
-    "@babel/traverse": "^7.5.5",
-    "@babel/types": "^7.5.5",
-    "@codemod/core": "^1.0.1",
-    "@codemod/parser": "^1.0.2",
-    "core-js": "^3.1.4",
-    "get-stream": "^4.0.0",
-    "globby": "^8.0.1",
-    "got": "^8.3.1",
-    "mz": "^2.7.0",
-    "pirates": "^4.0.0",
-    "prettier": "^1.13.4",
-    "recast": "^0.16.1",
-    "regenerator-runtime": "^0.13.3",
-    "resolve": "^1.7.1",
-    "source-map-support": "^0.5.6",
-    "tmp": "^0.0.33",
-    "whatwg-url": "^7.0.0"
-  },
   "engines": {
     "node": ">=6.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/codemod-js/codemod.git"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -e $GIT_PARAMS",
-      "post-checkout": "yarnhook",
-      "post-merge": "yarnhook",
-      "post-rewrite": "yarnhook",
-      "pre-commit": "lint-staged"
-    }
   },
   "publishConfig": {
     "access": "public"
