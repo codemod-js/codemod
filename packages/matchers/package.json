@@ -38,7 +38,6 @@
   ],
   "types": "src/index.d.ts",
   "publishConfig": {
-    "registry": "https://registry.npmjs.com/",
     "access": "public"
   }
 }

@@ -31,7 +31,6 @@
     "jest": "^24.8.0"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.com/",
     "access": "public"
   }
 }
