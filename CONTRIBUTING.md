@@ -1,7 +1,5 @@
 # Contributing
 
-> Before contributing, please read our [code of conduct](http://corner.squareup.com/codeofconduct.html).
-
 Much of the [prelude of the Babel contribution guide](https://github.com/babel/babel/blob/7.0/CONTRIBUTING.md#not-sure-where-to-start) also applies for this project, since it operates on and with Babel plugins. In particular:
 
 - [AST Explorer](http://astexplorer.net/#/scUfOmVOG5) is a very useful tool for examining ASTs and prototyping plugins.
@@ -15,7 +13,7 @@ codemod expects at least node 6 and yarn. You can check each of these with `node
 
 ### Setup
 
-```
+```sh
 $ git clone https://github.com/codemod-js/codemod
 $ cd codemod
 $ yarn
@@ -23,34 +21,34 @@ $ yarn
 
 Then make sure the tests pass:
 
-```
+```sh
 $ yarn test
-```
-
-To build a distributable version (in `dist`):
-
-```
-$ yarn prepublish
 ```
 
 ### Running linting/testing
 
 We use [ESLint](https://eslint.org/). To run ESLint on the project, run:
 
-```
+```sh
 $ script/ci lint
 ```
 
 To automatically fix some of the issues ESLint finds:
 
-```
+```sh
 $ script/ci lint --fix
 ```
 
 The tests in this project are written using [Mocha](https://mochajs.org/) and [Jest](https://jestjs.io/) and, like the non-test code, are also written in TypeScript. To run the tests:
 
-```
+```sh
 $ script/ci test
+```
+
+In the packages with Jest tests you can automatically run tests as you change files:
+
+```sh
+$ yarn jest --watch
 ```
 
 ## Submitting Changes
