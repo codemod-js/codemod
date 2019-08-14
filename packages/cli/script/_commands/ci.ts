@@ -66,9 +66,10 @@ async function test(
             'mocha-junit-reporter',
             '--reporter-options',
             'mochaFile=reports/junit/js-test-results.xml',
+            '--color',
             ...args
           ]
-        : args)
+        : ['--color', ...args])
     ],
     join(__dirname, '../..'),
     stdin,

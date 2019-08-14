@@ -55,7 +55,7 @@ async function test(
 ): Promise<number> {
   return await runNodePackageBinary(
     'jest',
-    ['--ci', ...args],
+    ['--ci', '--color', '--verbose', ...args],
     join(__dirname, '../..'),
     stdin,
     stdout,
