@@ -23,7 +23,8 @@
     "@babel/types": "^7.5.5",
     "@types/jest": "^24.0.16",
     "jest": "^24.8.0",
-    "ts-jest": "^24.0.2"
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.3"
   },
   "publishConfig": {
     "access": "public"

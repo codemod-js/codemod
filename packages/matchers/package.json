@@ -35,7 +35,8 @@
     "@types/node": "^10.12.18",
     "dedent": "^0.7.0",
     "jest": "^23.6.0",
-    "ts-jest": "^23.10.5"
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.5.3"
   },
   "publishConfig": {
     "access": "public"
