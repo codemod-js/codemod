@@ -18,9 +18,11 @@
   },
   "dependencies": {
     "@babel/core": "^7.5.5",
+    "@babel/generator": "^7.5.5",
     "@codemod/parser": "^1.0.3",
     "recast": "^0.18.1",
-    "resolve": "^1.12.0"
+    "resolve": "^1.12.0",
+    "ts-jest": "^24.0.2"
   },
   "devDependencies": {
     "@babel/types": "^7.5.5",
@@ -28,7 +30,8 @@
     "@types/jest": "^24.0.16",
     "@types/prettier": "^1.18.0",
     "@types/resolve": "^0.0.8",
-    "jest": "^24.8.0"
+    "jest": "^24.8.0",
+    "typescript": "^3.5.3"
   },
   "publishConfig": {
     "access": "public"
