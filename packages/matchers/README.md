@@ -25,7 +25,7 @@ import * as t from '@babel/types';
 // `matcher` only matches Identifier nodes named 'test'
 const matcher = m.identifier('test');
 
-matcher.match(t.identifier('test'));  // true
+matcher.match(t.identifier('test')); // true
 matcher.match(t.identifier('test2')); // false
 ```
 
@@ -40,9 +40,9 @@ import * as t from '@babel/types';
 // `matcher` matches any Identifier, regardless of name
 const matcher = m.identifier();
 
-matcher.match(t.identifier('test'));  // true
+matcher.match(t.identifier('test')); // true
 matcher.match(t.identifier('test2')); // true
-matcher.match(t.emptyStatement());    // false
+matcher.match(t.emptyStatement()); // false
 ```
 
 Here's a more complex example that matches any `console.log` calls. Assume that `expr` parses the given JS as an expression:
@@ -52,17 +52,13 @@ import * as m from '@codemod/matchers';
 
 // `matcher` matches any `console.log(…)` call
 const matcher = m.callExpression(
-  m.memberExpression(
-    m.identifier('console'),
-    m.identifier('log'),
-    false
-  )
+  m.memberExpression(m.identifier('console'), m.identifier('log'), false)
   // `arguments` is omitted to match anything, or we could pass `m.anything()`
 );
 
-matcher.match(expr('console.log()'));     // true
+matcher.match(expr('console.log()')); // true
 matcher.match(expr('console.log(1, 2)')); // true
-matcher.match(expr('console.log'));       // false
+matcher.match(expr('console.log')); // false
 ```
 
 There are a variety of fuzzy matchers that come with `@codemod/matchers`:
@@ -70,21 +66,21 @@ There are a variety of fuzzy matchers that come with `@codemod/matchers`:
 ```ts
 import * as m from '@codemod/matchers';
 
-m.anyString().match('a string');  // true
-m.anyString().match(1);           // false
+m.anyString().match('a string'); // true
+m.anyString().match(1); // false
 
-m.anyNumber().match(1);           // true
-m.anyNumber().match('a string');  // false
+m.anyNumber().match(1); // true
+m.anyNumber().match('a string'); // false
 
-m.anything().match(1);            // true
-m.anything().match('a string');   // true
-m.anything().match(expr('foo'));  // true
-m.anything().match(null);         // true
+m.anything().match(1); // true
+m.anything().match('a string'); // true
+m.anything().match(expr('foo')); // true
+m.anything().match(null); // true
 
 m.anyNode().match(expr('a + b')); // true
-m.anyNode().match(expr('!a'));    // true
-m.anyNode().match(1);             // false
-m.anyNode().match('a string');    // false
+m.anyNode().match(expr('!a')); // true
+m.anyNode().match(1); // false
+m.anyNode().match('a string'); // false
 ```
 
 ### Capturing Matches
@@ -97,11 +93,7 @@ import * as m from '@codemod/matchers';
 // matches `console.<consoleMethod>(…)` calls
 const consoleMethod = m.capture(m.identifier());
 const matcher = m.callExpression(
-  m.memberExpression(
-    m.identifier('console'),
-    consoleMethod,
-    false
-  )
+  m.memberExpression(m.identifier('console'), consoleMethod, false)
   // `arguments` is omitted to match anything, or we could pass `m.anything()`
 );
 
@@ -134,16 +126,14 @@ const matcher = m.functionExpression(
   m.anything(),
   [m.identifier(argumentNameMatcher)],
   m.blockStatement([
-    m.returnStatement(
-      m.fromCapture(m.identifier(argumentNameMatcher))
-    )
+    m.returnStatement(m.fromCapture(m.identifier(argumentNameMatcher)))
   ])
 );
 
-matcher.match(expr('function(a) { return a; })'));     // true
-matcher.match(expr('function id(a) { return a; })'));  // true
-matcher.match(expr('function(a) { return b; })'));     // false
-matcher.match(expr('function(a) { return 1; })'));     // false
+matcher.match(expr('function(a) { return a; })')); // true
+matcher.match(expr('function id(a) { return a; })')); // true
+matcher.match(expr('function(a) { return b; })')); // false
+matcher.match(expr('function(a) { return 1; })')); // false
 matcher.match(expr('function(a) { return a + a; })')); // false
 ```
 
@@ -154,11 +144,11 @@ All the previous examples have matchers testing a specific AST node. This is use
 ```ts
 /**
  * Replaces identity functions with `IDENTITY`:
- * 
+ *
  *   list.filter(function(a) { return a; });
- * 
+ *
  * becomes:
- * 
+ *
  *   list.filter(IDENTITY);
  */
 import * as m from '@codemod/matchers';
@@ -174,9 +164,7 @@ export default function() {
           m.anything(),
           [m.identifier(argumentNameMatcher)],
           m.blockStatement([
-            m.returnStatement(
-              m.fromCapture(m.identifier(argumentNameMatcher))
-            )
+            m.returnStatement(m.fromCapture(m.identifier(argumentNameMatcher)))
           ])
         );
 
@@ -186,7 +174,7 @@ export default function() {
       }
     }
   };
-};
+}
 ```
 
 Here is the same plugin again without using `@codemod/matchers`:
@@ -194,11 +182,11 @@ Here is the same plugin again without using `@codemod/matchers`:
 ```ts
 /**
  * Replaces identity functions with `IDENTITY`:
- * 
+ *
  *   list.filter(function(a) { return a; });
- * 
+ *
  * becomes:
- * 
+ *
  *   list.filter(IDENTITY);
  */
 import * as t from '@babel/types';
@@ -252,7 +240,7 @@ export default function() {
       }
     }
   };
-};
+}
 ```
 
 ### Deep Matches
@@ -263,23 +251,17 @@ Sometimes you know you want to match a node but don't know its depth in the tree
 import * as m from '@codemod/matchers';
 
 const doneParamName = m.capture(m.anyString());
-const matcher = m.callExpression(
-  m.identifier('test'),
-  [
-    m.anyString(),
-    m.function(
-      [m.identifier(doneParam)],
-      m.containerOf(
-        m.callExpression(
-          m.identifier(m.fromCapture(doneParamName))
-        )
-      )
-    )
-  ]
-);
+const matcher = m.callExpression(m.identifier('test'), [
+  m.anyString(),
+  m.function(
+    [m.identifier(doneParam)],
+    m.containerOf(m.callExpression(m.identifier(m.fromCapture(doneParamName))))
+  )
+]);
 
 // matches because there's a `done()` call
-matcher.match(expr(`
+matcher.match(
+  expr(`
   test('setTimeout calls back around N ms later', function(done) {
     const now = Date.now();
     const duration = 5;
@@ -289,14 +271,17 @@ matcher.match(expr(`
       done();
     }, duration);
   });
-`));
+`)
+);
 
 // does not match because there's no `done()` call
-matcher.match(expr(`
+matcher.match(
+  expr(`
   test('adds things', function() {
     assert.strictEqual(3 + 4, 7);
   });
-`));
+`)
+);
 ```
 
 ### Custom Matchers
@@ -317,10 +302,10 @@ function plusEqualOne() {
 
 const matcher = plusEqualOne();
 
-matcher.match(expr('a += 1'));   // true
+matcher.match(expr('a += 1')); // true
 matcher.match(expr('a.b += 1')); // true
-matcher.match(expr('a -= 1'));   // false
-matcher.match(expr('a += 2'));   // false
+matcher.match(expr('a -= 1')); // false
+matcher.match(expr('a += 2')); // false
 ```
 
 You can build simple custom matchers easily using a predicate:
@@ -332,13 +317,13 @@ const oddNumberMatcher = m.matcher(
   value => typeof value === 'number' && Math.abs(number % 2) === 1
 );
 
-oddNumberMatcher.match(expr('-1'));       // true
-oddNumberMatcher.match(expr('0'));        // false
-oddNumberMatcher.match(expr('1'));        // true
-oddNumberMatcher.match(expr('2'));        // true
-oddNumberMatcher.match(expr('3'));        // true
+oddNumberMatcher.match(expr('-1')); // true
+oddNumberMatcher.match(expr('0')); // false
+oddNumberMatcher.match(expr('1')); // true
+oddNumberMatcher.match(expr('2')); // true
+oddNumberMatcher.match(expr('3')); // true
 oddNumberMatcher.match(expr('Infinity')); // false
-oddNumberMatcher.match(expr('NaN'));      // false
+oddNumberMatcher.match(expr('NaN')); // false
 ```
 
 Such matchers are easily parameterized by wrapping it in a function:
@@ -370,9 +355,9 @@ import * as m from '@codemod/matchers';
 
 const matcher = m.or(m.anyString(), m.anyNumber());
 
-matcher.match(1);         // true
-matcher.match('string');  // true
-matcher.match({});        // false
+matcher.match(1); // true
+matcher.match('string'); // true
+matcher.match({}); // false
 matcher.match(expr('1')); // false
 ```
 
@@ -381,12 +366,12 @@ Matching one of a few values is common when dealing with things such as function
 ```ts
 /**
  * Replaces identity functions with `IDENTITY`:
- * 
+ *
  *   list.filter(function(a) { return a; });
  *   list2.filter(a => a);
- * 
+ *
  * becomes:
- * 
+ *
  *   list.filter(IDENTITY);
  *   list2.filter(IDENTITY);
  */
@@ -417,7 +402,7 @@ export default function() {
       }
     }
   };
-};
+}
 ```
 
 You probably won't need it, but you can build your own by subclassing `Matcher`. Here's the same `stringMatching` but as a subclass of `Matcher`:
@@ -432,29 +417,28 @@ class StringMatching extends m.Matcher<string> {
     super();
   }
 
-  matchValue(value: unknown, keys: ReadonlyArray<PropertyKey>): value is string {
+  matchValue(
+    value: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): value is string {
     return typeof value === 'string' && this.pattern.test(value);
   }
 }
 
 const startsWithRun = new StringMatching(/^run/);
 
-startsWithRun.match('run');     // true
-startsWithRun.match('runner');  // true
+startsWithRun.match('run'); // true
+startsWithRun.match('runner'); // true
 startsWithRun.match('running'); // true
 startsWithRun.match('ruining'); // false
-startsWithRun.match(' run');    // false
-startsWithRun.match('');        // false
-startsWithRun.match(1);         // false
+startsWithRun.match(' run'); // false
+startsWithRun.match(''); // false
+startsWithRun.match(1); // false
 ```
 
 ## Contributing
 
 See [CONTRIBUTING.md](../../CONTRIBUTING.md) for information on setting up the project for development and on contributing to the project.
-
-## Status
-
-[![Build Status](https://travis-ci.com/codemod-js/codemod.svg?branch=master)](https://travis-ci.com/codemod-js/codemod)
 
 ## License
 
