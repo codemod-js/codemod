@@ -22,10 +22,6 @@ console.log(parse('a ?? b').program.body[0].expression.operator); // '??'
 
 See [CONTRIBUTING.md](../../CONTRIBUTING.md) for information on setting up the project for development and on contributing to the project.
 
-## Status
-
-[![Build Status](https://travis-ci.com/codemod-js/codemod.svg?branch=master)](https://travis-ci.com/codemod-js/codemod)
-
 ## License
 
 Copyright 2019 Brian Donovan
