@@ -32,24 +32,24 @@ import * as m from '../../src/matchers';
  *   };
  * }
  */
-export default function match<T, C extends m.CaptureBase>(
+export default function match<T, C extends m.CaptureBase, R = void>(
   matcher: m.Matcher<T>,
   captures: { [K in keyof C]: m.CapturedMatcher<C[K]> },
   value: T,
-  callback: (captures: C) => void
-): void {
+  callback: (captures: C) => R
+): R | void {
   if (matcher.match(value)) {
     const capturedValues = {} as C;
 
     for (const key in captures) {
       if (Object.prototype.hasOwnProperty.call(captures, key)) {
-        const capturedValue = captures[key as keyof C].current;
-        if (capturedValue !== undefined) {
-          capturedValues[key as keyof C] = capturedValue;
+        const capturingMatcher = captures[key as keyof C];
+        if (capturingMatcher.hasCaptured) {
+          capturedValues[key as keyof C] = capturingMatcher.current;
         }
       }
     }
 
-    callback(capturedValues);
+    return callback(capturedValues);
   }
 }

@@ -63,12 +63,15 @@ export default function matchPath<Node extends t.Node, C extends m.CaptureBase>(
 
     for (const key in captures) {
       if (Object.prototype.hasOwnProperty.call(captures, key)) {
-        const { current, currentKeys } = captures[key as keyof C];
-        if (current !== undefined && currentKeys !== undefined) {
-          capturedPaths[key as keyof C] = extractCapturedPath(
-            value,
-            currentKeys
-          );
+        const capturingMatcher = captures[key as keyof C];
+        if (capturingMatcher.hasCaptured) {
+          const { current, currentKeys } = capturingMatcher;
+          if (current !== undefined && currentKeys !== undefined) {
+            capturedPaths[key as keyof C] = extractCapturedPath(
+              value,
+              currentKeys
+            );
+          }
         }
       }
     }

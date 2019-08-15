@@ -14,12 +14,19 @@ export class CapturedMatcher<C, M = C> extends Matcher<M> {
     super();
   }
 
-  get current(): C | undefined {
+  get current(): C {
+    if (typeof this._current === 'undefined') {
+      throw new Error('there is no currently-captured value');
+    }
     return this._current;
   }
 
   get currentKeys(): ReadonlyArray<PropertyKey> | undefined {
     return this._currentKeys;
+  }
+
+  get hasCaptured(): boolean {
+    return typeof this._current !== 'undefined';
   }
 
   matchValue(value: unknown, keys: ReadonlyArray<PropertyKey>): value is M {
@@ -42,3 +49,5 @@ export default function capture<C, M = C>(
 ): CapturedMatcher<C, M> {
   return new CapturedMatcher(matcher);
 }
+
+capture<undefined>();

@@ -1,6 +1,10 @@
 import * as m from '../matchers';
 import * as t from '@babel/types';
 import js from './utils/parse/js';
+import match from '../utils/match';
+import matchPath from '../utils/matchPath';
+import { traverse, NodePath } from '@babel/core';
+import { parse } from '@codemod/parser';
 
 test('anyString matches strings', () => {
   expect(m.anyString().match('')).toBeTruthy();
@@ -305,4 +309,42 @@ test('matcher builds a matcher based on a predicate', () => {
   expect(matcher.match('another')).toBeFalsy();
   expect(matcher.match({})).toBeFalsy();
   expect(matcher.match(42)).toBeFalsy();
+});
+
+test('match returns the result of the callback if a match occurs, undefined otherwise', () => {
+  const matcher = m.matcher<number>(a => a === 1);
+
+  expect(match(matcher, {}, 0, () => 'banana')).toBe(undefined);
+  expect(match(matcher, {}, 1, () => 'banana')).toBe('banana');
+});
+
+test('match can handle capturing matchers that do not capture anything', () => {
+  const captureZero = m.capture(m.matcher<number>(a => a === 0));
+  const captureOne = m.capture(m.matcher<number>(s => s === 1));
+  const matcher = m.or(captureZero, captureOne);
+
+  match(
+    matcher,
+    { captureZero, captureOne },
+    0,
+    ({ captureZero, captureOne }) => {
+      expect(captureZero).toBe(0);
+      expect(captureOne).toBe(undefined);
+    }
+  );
+});
+
+test('matchPath can handle capturing matchers that do not capture anything', () => {
+  const first = m.capture(m.identifier('a'));
+  const second = m.capture(m.identifier('b'));
+  const matcher = m.or(first, second);
+
+  traverse(parse('a'), {
+    Identifier(path: NodePath<t.Identifier>): void {
+      matchPath(matcher, { first, second }, path, ({ first, second }) => {
+        expect(first.node.name).toBe('a');
+        expect(second).toBe(undefined);
+      });
+    }
+  });
 });
