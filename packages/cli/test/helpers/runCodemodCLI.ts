@@ -20,7 +20,7 @@ function makeTestSystem(): System {
 
 export default async function runCodemodCLI(
   args: Array<string>,
-  stdin: string = '',
+  stdin = '',
   cwd?: string
 ): Promise<CLIResult> {
   const sys = makeTestSystem();

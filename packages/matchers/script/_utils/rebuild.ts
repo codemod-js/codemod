@@ -11,6 +11,7 @@ import {
 } from './utils';
 import dedent = require('dedent');
 import { NodeField, BUILDER_KEYS, NODE_FIELDS } from '../../src/NodeTypes';
+import format from './format';
 
 export const MATCHERS_FILE_PATH = join(__dirname, '../../src/matchers.ts');
 
@@ -61,11 +62,23 @@ function possiblePrimitiveTypesForField(field: NodeField): Array<string> {
   );
 }
 
-export interface SimpleWriter {
+interface SimpleWriter {
   write(data: string): void;
 }
 
-export default function rebuild(out: SimpleWriter): void {
+function writeToString(write: (writer: SimpleWriter) => void): string {
+  let data = '';
+
+  write({
+    write(chunk: string): void {
+      data += chunk;
+    }
+  });
+
+  return data;
+}
+
+function rebuildTo(out: SimpleWriter): string | void {
   out.write(`/* eslint-disable */\n`);
   out.write(`import * as t from '@babel/types';\n\n`);
 
@@ -192,4 +205,8 @@ export default function rebuild(out: SimpleWriter): void {
     out.write(`  );\n`);
     out.write(`}\n\n`);
   }
+}
+
+export default async function rebuild(): Promise<string> {
+  return await format(writeToString(rebuildTo), MATCHERS_FILE_PATH);
 }

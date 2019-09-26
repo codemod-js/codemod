@@ -3,7 +3,7 @@ import * as t from '@babel/types';
 import { NodePath } from '@babel/traverse';
 
 export type CapturedNodePaths<C> = {
-  [K in keyof C]: C[K] extends t.Node ? NodePath<C[K]> : C[K]
+  [K in keyof C]: C[K] extends t.Node ? NodePath<C[K]> : C[K];
 };
 export type CapturedMatchers<C> = { [K in keyof C]: m.CapturedMatcher<C[K]> };
 

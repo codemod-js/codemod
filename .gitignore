@@ -16,6 +16,7 @@ node_modules
 *.js
 *.d.ts
 *.map
+*.expected
 
 # allow fixtures
 !test/fixtures/**/*.js

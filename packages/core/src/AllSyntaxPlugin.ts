@@ -18,10 +18,7 @@ export default function buildPlugin(
           sourceType
         });
 
-        for (const key of Object.keys(options)) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (parserOpts as any)[key] = (options as any)[key];
-        }
+        Object.assign(parserOpts, options);
       }
     };
   };

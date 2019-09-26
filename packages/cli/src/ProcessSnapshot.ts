@@ -9,7 +9,7 @@ interface MapDiff<K, V> {
 type CacheSnapshot = Map<string, Module>;
 type ExtensionSnapshot = Map<string, typeof require.extensions['.js']>;
 type EventsSnapshot = Map<
-  string | symbol,
+  NodeJS.Signals,
   Array<(...args: Array<unknown>) => void>
 >;
 
@@ -153,8 +153,7 @@ export default class ProcessSnapshot {
       for (const originalEntry of original) {
         if (!updated.includes(originalEntry)) {
           this.log(`restoring removed '${event.toString()}' event listener`);
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          process.addListener(event as any, originalEntry);
+          process.addListener(event, originalEntry);
         }
       }
 
@@ -169,8 +168,7 @@ export default class ProcessSnapshot {
     for (const [event, callbacks] of deleted) {
       for (const callback of callbacks) {
         this.log(`restoring removed '${event.toString()}' event listener`);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        process.addListener(event as any, callback);
+        process.addListener(event, callback);
       }
     }
   }
@@ -219,11 +217,10 @@ export default class ProcessSnapshot {
    */
   private snapshotProcessEvents(): EventsSnapshot {
     const result: EventsSnapshot = new Map();
-    const events = this.processImpl.eventNames();
+    const events = this.processImpl.eventNames() as Array<NodeJS.Signals>;
 
     for (const name of events) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      result.set(name, this.processImpl.listeners(name as any));
+      result.set(name, this.processImpl.listeners(name));
     }
 
     return result;
