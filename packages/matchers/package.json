@@ -1,6 +1,6 @@
 {
   "name": "@codemod/matchers",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Matchers for JavaScript & TypeScript codemods.",
   "keywords": [],
   "license": "Apache-2.0",
@@ -24,8 +24,8 @@
     "@babel/core": "^7.6.2",
     "@babel/generator": "^7.6.2",
     "@babel/traverse": "^7.6.2",
-    "@codemod/core": "^1.0.2",
-    "@codemod/parser": "^1.0.3",
+    "@codemod/core": "^1.0.3",
+    "@codemod/parser": "^1.0.4",
     "@types/babel__core": "^7.1.3",
     "@types/babel__generator": "^7.6.0",
     "@types/babel__template": "^7.0.2",
