@@ -1887,12 +1887,14 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/got@^8.3.1":
-  version "8.3.5"
-  resolved "https://registry.npmjs.org/@types/got/-/got-8.3.5.tgz#d8a0e8fa7598681b332a4d27779b022b2e55fb7f"
-  integrity sha512-AaXSrIF99SjjtPVNmCmYb388HML+PKEJb/xmj4SbL2ZO0hHuETZZzyDIKfOqaEoAHZEuX4sC+FRFrHYJoIby6A==
+"@types/got@^9.6.7":
+  version "9.6.7"
+  resolved "https://registry.yarnpkg.com/@types/got/-/got-9.6.7.tgz#33d84c60cba83e3c904634a1ea7ea81d1549bea6"
+  integrity sha512-LMc2ja42bQorKpBxf38ZBPdT3FhYL0lyAqnZBo5vAPCtobYa8AiHwSLH5zDvR19r2Pr5Ojar3hT/QLLb2SoPYA==
   dependencies:
     "@types/node" "*"
+    "@types/tough-cookie" "*"
+    form-data "^2.5.0"
 
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0":
   version "2.0.1"
@@ -2016,6 +2018,11 @@
   version "0.0.33"
   resolved "https://registry.npmjs.org/@types/tmp/-/tmp-0.0.33.tgz#1073c4bc824754ae3d10cfab88ab0237ba964e4d"
   integrity sha1-EHPEvIJHVK49EM+riKsCN7qWTk0=
+
+"@types/tough-cookie@*":
+  version "2.3.5"
+  resolved "https://registry.yarnpkg.com/@types/tough-cookie/-/tough-cookie-2.3.5.tgz#9da44ed75571999b65c37b60c9b2b88db54c585d"
+  integrity sha512-SCcK7mvGi3+ZNz833RRjFIxrn4gI1PPR3NtuIS+6vMkvmsGjosqTJwRt5bAEFLRz+wtJMWv8+uOnZf2hi2QXTg==
 
 "@types/yargs@^12.0.2", "@types/yargs@^12.0.9":
   version "12.0.12"
@@ -4189,6 +4196,15 @@ forever-agent@~0.6.1:
   version "0.6.1"
   resolved "https://registry.npmjs.org/forever-agent/-/forever-agent-0.6.1.tgz#fbc71f0c41adeb37f96c577ad1ed42d8fdacca91"
   integrity sha1-+8cfDEGt6zf5bFd60e1C2P2sypE=
+
+form-data@^2.5.0:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/form-data/-/form-data-2.5.1.tgz#f2cbec57b5e59e23716e128fe44d4e5dd23895f4"
+  integrity sha512-m21N3WOmEEURgk6B9GLOE4RuWOFf28Lhh9qGYeNlGq4VDXUlJy2th2slBNU8Gp8EzloYZOibZJ7t5ecIrFSjVA==
+  dependencies:
+    asynckit "^0.4.0"
+    combined-stream "^1.0.6"
+    mime-types "^2.1.12"
 
 form-data@~2.3.2:
   version "2.3.3"
