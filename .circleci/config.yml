@@ -10,7 +10,7 @@ aliases:
   install_dependencies_step: &install_dependencies_step
     run:
       name: install-dependencies
-      command: yarn install
+      command: yarn install --frozen-lockfile
 
   unit_test: &unit_test
     steps:
