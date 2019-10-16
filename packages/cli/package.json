@@ -62,7 +62,7 @@
     "@types/prettier": "^1.15.1",
     "@types/rimraf": "2.0.2",
     "@types/semver": "^5.5.0",
-    "@types/source-map-support": "^0.4.1",
+    "@types/source-map-support": "^0.5.0",
     "@types/tmp": "^0.0.33",
     "commitlint": "^7.2.1",
     "get-port": "^4.0.0",
