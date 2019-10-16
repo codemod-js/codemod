@@ -32,10 +32,6 @@
       "git add"
     ]
   },
-  "dependencies": {
-    "jest": "^24.8.0",
-    "ts-jest": "^24.0.2"
-  },
   "devDependencies": {
     "@commitlint/cli": "^7.2.1",
     "@commitlint/config-conventional": "^7.1.2",
@@ -46,10 +42,12 @@
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-prettier": "^3.1.0",
     "husky": "^3.0.3",
+    "jest": "^24.8.0",
     "lerna": "^3.10.7",
     "lint-staged": "^9.2.1",
     "prettier": "^1.15.3",
     "sort-package-json": "^1.22.1",
+    "ts-jest": "^24.0.2",
     "ts-node": "^8.4.1",
     "typescript": "^3.6.4"
   },
