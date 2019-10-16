@@ -53,8 +53,8 @@
     "typescript": "^3.5.3"
   },
   "resolutions": {
-    "**/@babel/parser": "7.5.5",
-    "**/@babel/types": "7.5.5",
+    "**/@babel/parser": "7.6.3",
+    "**/@babel/types": "7.6.3",
     "**/ip-regex": "^2.0.0"
   }
 }
