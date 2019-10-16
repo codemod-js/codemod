@@ -31,7 +31,7 @@
     "@types/prettier": "^1.18.0",
     "@types/resolve": "^0.0.8",
     "jest": "^24.8.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.6.4"
   },
   "publishConfig": {
     "access": "public"

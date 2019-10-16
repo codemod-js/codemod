@@ -1,7 +1,10 @@
-import { stat } from 'mz/fs';
+import * as fs from 'fs';
 import { resolve } from 'path';
 import { PluginExtensions } from '../extensions';
 import Resolver from './Resolver';
+import { promisify } from 'util';
+
+const stat = promisify(fs.stat);
 
 async function isFile(path: string): Promise<boolean> {
   try {

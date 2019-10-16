@@ -1,6 +1,9 @@
-import { stat } from 'mz/fs';
+import * as fs from 'fs';
 import { join, dirname } from 'path';
 import runExtenalCommand from './runExternalCommand';
+import { promisify } from 'util';
+
+const stat = promisify(fs.stat);
 
 export default async function runNodePackageBinary(
   name: string,

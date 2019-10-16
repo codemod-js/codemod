@@ -1,11 +1,11 @@
+import { writeFile as writeFileCallback } from 'fs';
+import { promisify } from 'util';
 import rebuild, { MATCHERS_FILE_PATH } from '../_utils/rebuild';
-import { createWriteStream } from 'fs';
 
-export default function main(): Promise<number> {
-  return new Promise(resolve => {
-    const out = createWriteStream(MATCHERS_FILE_PATH, 'utf8');
-    out.once('close', () => resolve(0));
-    rebuild(out);
-    out.close();
-  });
+const writeFile = promisify(writeFileCallback);
+
+export default async function main(): Promise<number> {
+  await writeFile(MATCHERS_FILE_PATH, await rebuild(), 'utf8');
+
+  return 0;
 }

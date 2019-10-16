@@ -1,7 +1,7 @@
 import getStream = require('get-stream');
-import { PassThrough } from 'stream';
+import { Duplex, PassThrough } from 'stream';
 import run from '../../src/index';
-import { RealSystem, System } from '../../src/System';
+import { RealSystem } from '../../src/System';
 
 export interface CLIResult {
   status: number;
@@ -9,9 +9,14 @@ export interface CLIResult {
   stderr: string;
 }
 
-function makeTestSystem(): System {
+export interface TestIO {
+  stdin: Duplex;
+  stdout: Duplex;
+  stderr: Duplex;
+}
+
+function makeTestIO(): TestIO {
   return {
-    ...RealSystem,
     stdin: new PassThrough(),
     stdout: new PassThrough(),
     stderr: new PassThrough()
@@ -23,9 +28,9 @@ export default async function runCodemodCLI(
   stdin: string = '',
   cwd?: string
 ): Promise<CLIResult> {
-  const sys = makeTestSystem();
+  const io = makeTestIO();
 
-  sys.stdin.end(Buffer.from(stdin));
+  io.stdin.end(Buffer.from(stdin));
 
   const argv = [process.argv[0], require.resolve('../../bin/codemod'), ...args];
   let status: number;
@@ -36,16 +41,21 @@ export default async function runCodemodCLI(
       process.chdir(cwd);
     }
 
-    status = await run(argv, sys);
+    status = await run(argv, {
+      ...RealSystem,
+      stdin: io.stdin as typeof process.stdin,
+      stdout: io.stdout as typeof process.stdout,
+      stderr: io.stderr as typeof process.stderr
+    });
   } finally {
     process.chdir(oldCwd);
   }
 
-  sys.stdout.end();
-  sys.stderr.end();
+  io.stdout.end();
+  io.stderr.end();
 
-  const stdout = await getStream(sys.stdout);
-  const stderr = await getStream(sys.stderr);
+  const stdout = await getStream(io.stdout);
+  const stderr = await getStream(io.stderr);
 
   return { status, stdout, stderr };
 }

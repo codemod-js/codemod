@@ -1,6 +1,9 @@
-import { writeFile } from 'mz/fs';
+import * as fs from 'fs';
 import { basename, dirname, join } from 'path';
 import createTemporaryDirectory from './createTemporaryDirectory';
+import { promisify } from 'util';
+
+const writeFile = promisify(fs.writeFile);
 
 export default async function createTemporaryFile(
   path: string,

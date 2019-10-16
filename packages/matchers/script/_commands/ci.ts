@@ -1,7 +1,11 @@
 import rebuild, { MATCHERS_FILE_PATH } from '../_utils/rebuild';
-import { readFile } from 'mz/fs';
+import * as fs from 'fs';
 import { join, relative } from 'path';
 import runNodePackageBinary from '../../../../script/_utils/runNodePackageBinary';
+import { promisify } from 'util';
+
+const readFile = promisify(fs.readFile);
+const writeFile = promisify(fs.writeFile);
 
 export default async function main(
   args: Array<string>,
@@ -43,17 +47,22 @@ async function verifyGeneratedMatchersUpToDate(
   stdout: NodeJS.WriteStream,
   stderr: NodeJS.WriteStream
 ): Promise<number> {
-  const expected = regenerateMatchersFileAsString();
+  const expected = await rebuild();
   const actual = await readFile(MATCHERS_FILE_PATH, 'utf8');
 
   if (actual !== expected) {
+    const expectedPath = `${MATCHERS_FILE_PATH}.expected`;
+
+    await writeFile(expectedPath, expected, 'utf8');
+
     stderr.write(
       `\x1b[41;1;38;5;232m INVALID \x1b[0m ${relativeToCwd(
         MATCHERS_FILE_PATH
       )} is out of date. Please rebuild it by running ${relativeToCwd(
         require.resolve('../rebuild')
-      )}.\n`
+      )}.\n> Expected contents written to ${expectedPath}.`
     );
+
     return 1;
   } else {
     stdout.write(
@@ -67,18 +76,6 @@ async function verifyGeneratedMatchersUpToDate(
 
 function relativeToCwd(path: string, cwd: string = process.cwd()): string {
   return relative(cwd, path);
-}
-
-function regenerateMatchersFileAsString(): string {
-  let data = '';
-
-  rebuild({
-    write(chunk: string) {
-      data += chunk;
-    }
-  });
-
-  return data;
 }
 
 async function build(

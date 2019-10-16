@@ -1,8 +1,11 @@
 import { ok, strictEqual } from 'assert';
-import { readFile } from 'mz/fs';
+import * as fs from 'fs';
 import { join } from 'path';
 import AstExplorerResolver from '../../../src/resolvers/AstExplorerResolver';
 import { startServer } from '../../helpers/TestServer';
+import { promisify } from 'util';
+
+const readFile = promisify(fs.readFile);
 
 describe('AstExplorerResolver', function() {
   it('normalizes a gist+commit editor URL into an API URL', async function() {
