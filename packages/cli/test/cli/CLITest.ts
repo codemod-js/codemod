@@ -310,7 +310,7 @@ describe('CLI', function() {
       ok(false, 'this command should have failed');
     } catch (err) {
       ok(
-        /SyntaxError: Unexpected token export/.test(err.stack),
+        /SyntaxError: Unexpected token '?export'?/.test(err.stack),
         `error should reference invalid syntax: ${err.stack}`
       );
     }
