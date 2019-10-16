@@ -1,8 +1,11 @@
 import { get, Response } from 'got';
-import { writeFile } from 'mz/fs';
+import * as fs from 'fs';
 import { tmpNameSync as tmp } from 'tmp';
 import { URL } from 'whatwg-url';
 import Resolver from './Resolver';
+import { promisify } from 'util';
+
+const writeFile = promisify(fs.writeFile);
 
 export class NetworkLoadError extends Error {
   constructor(readonly response: Response<string>) {

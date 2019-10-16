@@ -1,9 +1,9 @@
 import { deepEqual, ok, strictEqual } from 'assert';
-import { readFile } from 'mz/fs';
+import * as fs from 'fs';
 import { dirname, join } from 'path';
 import { sync as rimraf } from 'rimraf';
 import { valid } from 'semver';
-import { inspect } from 'util';
+import { inspect, promisify } from 'util';
 import copyFixturesInto from '../helpers/copyFixturesInto';
 import createTemporaryDirectory from '../helpers/createTemporaryDirectory';
 import createTemporaryFile from '../helpers/createTemporaryFile';
@@ -11,6 +11,8 @@ import getTemporaryFilePath from '../helpers/getTemporaryFilePath';
 import plugin from '../helpers/plugin';
 import runCodemodCLI from '../helpers/runCodemodCLI';
 import { startServer } from '../helpers/TestServer';
+
+const readFile = promisify(fs.readFile);
 
 describe('CLI', function() {
   beforeEach(function() {

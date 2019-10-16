@@ -1,7 +1,10 @@
 import mkdirp = require('make-dir');
-import { writeFile } from 'mz/fs';
+import * as fs from 'fs';
 import { dirname, join, relative } from 'path';
 import iterateSources from '../../src/iterateSources';
+import { promisify } from 'util';
+
+const writeFile = promisify(fs.writeFile);
 
 export default async function copyFixturesInto(
   fixture: string,

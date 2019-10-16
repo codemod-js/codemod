@@ -1,7 +1,10 @@
 import { ok, strictEqual } from 'assert';
-import { readFile } from 'mz/fs';
+import * as fs from 'fs';
 import NetworkResolver from '../../../src/resolvers/NetworkResolver';
 import { startServer } from '../../helpers/TestServer';
+import { promisify } from 'util';
+
+const readFile = promisify(fs.readFile);
 
 describe('NetworkResolver', function() {
   it('can load data from a URL', async function() {

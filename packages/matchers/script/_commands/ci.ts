@@ -1,7 +1,10 @@
 import rebuild, { MATCHERS_FILE_PATH } from '../_utils/rebuild';
-import { readFile } from 'mz/fs';
+import * as fs from 'fs';
 import { join, relative } from 'path';
 import runNodePackageBinary from '../../../../script/_utils/runNodePackageBinary';
+import { promisify } from 'util';
+
+const readFile = promisify(fs.readFile);
 
 export default async function main(
   args: Array<string>,

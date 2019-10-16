@@ -1,6 +1,10 @@
-import { readFile, writeFile } from 'mz/fs';
+import * as fs from 'fs';
 import { URL } from 'whatwg-url';
 import NetworkResolver from './NetworkResolver';
+import { promisify } from 'util';
+
+const readFile = promisify(fs.readFile);
+const writeFile = promisify(fs.writeFile);
 
 const EDITOR_HASH_PATTERN = /^#\/gist\/(\w+)(?:\/(\w+))?$/;
 

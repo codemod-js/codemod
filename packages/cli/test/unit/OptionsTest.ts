@@ -89,8 +89,8 @@ describe('Options', function() {
   });
 
   it('interprets `--require` as expected', function() {
-    const config = getRunConfig(new Options(['--require', 'mz']).parse());
-    deepEqual(config.requires, ['mz'].map(name => require.resolve(name)));
+    const config = getRunConfig(new Options(['--require', 'tmp']).parse());
+    deepEqual(config.requires, ['tmp'].map(name => require.resolve(name)));
   });
 
   it('associates plugin options based on inferred name', async function() {
