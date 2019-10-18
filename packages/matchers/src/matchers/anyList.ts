@@ -57,9 +57,7 @@ export class AnyListMatcher<T> extends Matcher<Array<T>> {
       if (matchedAll) {
         if (toMatch.length > 0) {
           throw new Error(
-            `expected to consume all elements to match but ${
-              toMatch.length
-            } remain!`
+            `expected to consume all elements to match but ${toMatch.length} remain!`
           );
         }
 

@@ -176,9 +176,7 @@ export default async function run(
     }
 
     sys.stdout.write(
-      `${stats.total} file(s), ${stats.modified} modified, ${
-        stats.errors
-      } errors\n`
+      `${stats.total} file(s), ${stats.modified} modified, ${stats.errors} errors\n`
     );
   }
 
