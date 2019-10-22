@@ -18,12 +18,12 @@
     "test": "script/ci"
   },
   "dependencies": {
-    "@babel/types": "^7.5.5"
+    "@babel/types": "^7.6.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/generator": "^7.5.5",
-    "@babel/traverse": "^7.5.5",
+    "@babel/core": "^7.6.4",
+    "@babel/generator": "^7.6.4",
+    "@babel/traverse": "^7.6.3",
     "@codemod/core": "^1.0.2",
     "@codemod/parser": "^1.0.3",
     "@types/babel__core": "^7.1.2",
