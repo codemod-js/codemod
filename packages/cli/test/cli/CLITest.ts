@@ -61,8 +61,8 @@ describe('CLI', function() {
     strictEqual(status, 1);
     strictEqual(stdout, '');
     ok(
-      stderr.startsWith('Error: I am a bad plugin'),
-      `stderr should start with "Error: I am a bad plugin", got: ${stderr}`
+      stderr.includes('I am a bad plugin'),
+      `stderr should include "I am a bad plugin", got: ${stderr}`
     );
   });
 
