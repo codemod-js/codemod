@@ -25,7 +25,7 @@ function makeTestIO(): TestIO {
 
 export default async function runCodemodCLI(
   args: Array<string>,
-  stdin: string = '',
+  stdin = '',
   cwd?: string
 ): Promise<CLIResult> {
   const io = makeTestIO();
