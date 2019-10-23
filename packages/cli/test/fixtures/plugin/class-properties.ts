@@ -2,7 +2,7 @@ import { PluginObj } from '@babel/core';
 
 class Count {
   // This file exists to verify that class properties like ↓ can be loaded.
-  count: number = 0;
+  count = 0;
 
   incr(): void {
     this.count++;

@@ -10,6 +10,6 @@ export function oneOrMore(): Spacer {
   return new Spacer(1, Infinity);
 }
 
-export function spacer(min: number = 1, max: number = min): Spacer {
+export function spacer(min = 1, max = min): Spacer {
   return new Spacer(min, max);
 }

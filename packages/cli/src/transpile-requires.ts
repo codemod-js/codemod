@@ -50,7 +50,7 @@ export function hook(code: string, filename: string): string {
   return result.code as string;
 }
 
-export function enable(shouldUseBabelConfig: boolean = false): void {
+export function enable(shouldUseBabelConfig = false): void {
   disable();
   useBabelConfig = shouldUseBabelConfig;
   require('core-js');
