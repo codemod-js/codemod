@@ -112,7 +112,10 @@ function rebuildTo(out: SimpleWriter): string | void {
 
   out.write('// aliases for keyword-named functions\n');
 
-  const ALIASES = new Map([['Import', 'import'], ['Super', 'super']]);
+  const ALIASES = new Map([
+    ['Import', 'import'],
+    ['Super', 'super']
+  ]);
 
   for (const [original, alias] of ALIASES.entries()) {
     out.write(`export { ${original} as ${alias} }\n`);
