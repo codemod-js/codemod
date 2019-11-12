@@ -5790,10 +5790,9 @@ export class ObjectTypeAnnotationMatcher extends Matcher<
       return false;
     } else if (Array.isArray(this.callProperties)) {
       if (
-        !tupleOf<unknown>(...this.callProperties).matchValue(
-          node.callProperties,
-          [...keys, 'callProperties']
-        )
+        !tupleOf<unknown>(
+          ...this.callProperties
+        ).matchValue(node.callProperties, [...keys, 'callProperties'])
       ) {
         return false;
       }

@@ -18,7 +18,10 @@ test('allocates nothing if available is outside single spacer bounds', () => {
 test('allocates a single space across multiple spacers', () => {
   expect(
     Array.from(distributeAcrossSpacers([spacer(0, 1), spacer(0, 1)], 1))
-  ).toEqual([[1, 0], [0, 1]]);
+  ).toEqual([
+    [1, 0],
+    [0, 1]
+  ]);
 });
 
 test('allocates multiple spaces across multiple spacers', () => {
@@ -26,7 +29,11 @@ test('allocates multiple spaces across multiple spacers', () => {
     Array.from(
       distributeAcrossSpacers([spacer(1, 2), spacer(0, 1), spacer(2, 3)], 5)
     )
-  ).toEqual([[2, 1, 2], [2, 0, 3], [1, 1, 3]]);
+  ).toEqual([
+    [2, 1, 2],
+    [2, 0, 3],
+    [1, 1, 3]
+  ]);
 });
 
 test('never allocates to empty spacers', () => {
@@ -34,7 +41,10 @@ test('never allocates to empty spacers', () => {
     Array.from(
       distributeAcrossSpacers([spacer(0), spacer(0, 1), spacer(0, 1)], 1)
     )
-  ).toEqual([[0, 1, 0], [0, 0, 1]]);
+  ).toEqual([
+    [0, 1, 0],
+    [0, 0, 1]
+  ]);
 });
 
 test('allocates correctly when spacers have no upper bound', () => {
@@ -56,5 +66,8 @@ test('allocates correctly with a trailing unbounded spacer', () => {
     Array.from(
       distributeAcrossSpacers([zeroOrMore(), spacer(), oneOrMore()], 3)
     )
-  ).toEqual([[1, 1, 1], [0, 1, 2]]);
+  ).toEqual([
+    [1, 1, 1],
+    [0, 1, 2]
+  ]);
 });

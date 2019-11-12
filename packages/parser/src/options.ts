@@ -160,9 +160,10 @@ function shouldAddPlugin(
     return false;
   }
 
-  return !getMutuallyExclusivePluginsForPlugin(name).some(
-    mutuallyExclusivePlugin =>
-      pluginListIncludesPlugin(plugins, mutuallyExclusivePlugin)
+  return !getMutuallyExclusivePluginsForPlugin(
+    name
+  ).some(mutuallyExclusivePlugin =>
+    pluginListIncludesPlugin(plugins, mutuallyExclusivePlugin)
   );
 }
 

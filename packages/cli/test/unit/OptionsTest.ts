@@ -90,7 +90,10 @@ describe('Options', function() {
 
   it('interprets `--require` as expected', function() {
     const config = getRunConfig(new Options(['--require', 'tmp']).parse());
-    deepEqual(config.requires, ['tmp'].map(name => require.resolve(name)));
+    deepEqual(
+      config.requires,
+      ['tmp'].map(name => require.resolve(name))
+    );
   });
 
   it('associates plugin options based on inferred name', async function() {

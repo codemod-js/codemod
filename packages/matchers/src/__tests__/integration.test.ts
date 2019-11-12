@@ -48,10 +48,12 @@ test('codemod: unwrap unneeded IIFE', () => {
   let body: m.CapturedMatcher<t.Expression | t.BlockStatement>;
 
   const returnedIIFEMatcher = m.returnStatement(
-    m.callExpression(m.function(
-      [],
-      (body = m.capture(m.or(m.anyExpression(), m.blockStatement())))
-    ) as m.Matcher<t.Expression>)
+    m.callExpression(
+      m.function(
+        [],
+        (body = m.capture(m.or(m.anyExpression(), m.blockStatement())))
+      ) as m.Matcher<t.Expression>
+    )
   );
 
   traverse(ast, {
