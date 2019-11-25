@@ -63,7 +63,7 @@
     "@babel/traverse" "^7.7.4"
     "@babel/types" "^7.7.4"
 
-"@babel/helper-create-class-features-plugin@^7.7.0", "@babel/helper-create-class-features-plugin@^7.7.4":
+"@babel/helper-create-class-features-plugin@^7.7.4":
   version "7.7.4"
   resolved "https://registry.yarnpkg.com/@babel/helper-create-class-features-plugin/-/helper-create-class-features-plugin-7.7.4.tgz#fce60939fd50618610942320a8d951b3b639da2d"
   integrity sha512-l+OnKACG4uiDHQ/aJT8dwpR+LhCJALxL0mJ6nzjB25e5IPwqV1VOsY7ah6UB1DG+VOXAIMtuC54rFJGiHkxjgA==
@@ -343,10 +343,10 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
 
-"@babel/plugin-syntax-typescript@^7.2.0":
-  version "7.2.0"
-  resolved "https://registry.npmjs.org/@babel/plugin-syntax-typescript/-/plugin-syntax-typescript-7.2.0.tgz#55d240536bd314dcbbec70fd949c5cabaed1de29"
-  integrity sha512-WhKr6yu6yGpGcNMVgIBuI9MkredpVc7Y3YR4UzEZmDztHoL6wV56YBHLhWnjO1EvId1B32HrD3DRFc+zSoKI1g==
+"@babel/plugin-syntax-typescript@^7.7.4":
+  version "7.7.4"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-typescript/-/plugin-syntax-typescript-7.7.4.tgz#5d037ffa10f3b25a16f32570ebbe7a8c2efa304b"
+  integrity sha512-77blgY18Hud4NM1ggTA8xVT/dBENQf17OpiToSa2jSmEY3fWXD2jwrdVlO4kq5yzUTeF15WSQ6b4fByNvJcjpQ==
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
 
@@ -586,14 +586,14 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
 
-"@babel/plugin-transform-typescript@^7.7.2":
-  version "7.7.2"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-typescript/-/plugin-transform-typescript-7.7.2.tgz#eb9f14c516b5d36f4d6f3a9d7badae6d0fc313d4"
-  integrity sha512-UWhDaJRqdPUtdK1s0sKYdoRuqK0NepjZto2UZltvuCgMoMZmdjhgz5hcRokie/3aYEaSz3xvusyoayVaq4PjRg==
+"@babel/plugin-transform-typescript@^7.7.4":
+  version "7.7.4"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-typescript/-/plugin-transform-typescript-7.7.4.tgz#2974fd05f4e85c695acaf497f432342de9fc0636"
+  integrity sha512-X8e3tcPEKnwwPVG+vP/vSqEShkwODOEeyQGod82qrIuidwIrfnsGn11qPM1jBLF4MqguTXXYzm58d0dY+/wdpg==
   dependencies:
-    "@babel/helper-create-class-features-plugin" "^7.7.0"
+    "@babel/helper-create-class-features-plugin" "^7.7.4"
     "@babel/helper-plugin-utils" "^7.0.0"
-    "@babel/plugin-syntax-typescript" "^7.2.0"
+    "@babel/plugin-syntax-typescript" "^7.7.4"
 
 "@babel/plugin-transform-unicode-regex@^7.7.4":
   version "7.7.4"
@@ -661,12 +661,12 @@
     semver "^5.5.0"
 
 "@babel/preset-typescript@^7.6.0":
-  version "7.7.2"
-  resolved "https://registry.yarnpkg.com/@babel/preset-typescript/-/preset-typescript-7.7.2.tgz#f71c8bba2ae02f11b29dbf7d6a35f47bbe011632"
-  integrity sha512-1B4HthAelaLGfNRyrWqJtBEjXX1ulThCrLQ5B2VOtEAznWFIFXFJahgXImqppy66lx/Oh+cOSCQdJzZqh2Jh5g==
+  version "7.7.4"
+  resolved "https://registry.yarnpkg.com/@babel/preset-typescript/-/preset-typescript-7.7.4.tgz#780059a78e6fa7f7a4c87f027292a86b31ce080a"
+  integrity sha512-rqrjxfdiHPsnuPur0jKrIIGQCIgoTWMTjlbWE69G4QJ6TIOVnnRnIJhUxNTL/VwDmEAVX08Tq3B1nirer5341w==
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
-    "@babel/plugin-transform-typescript" "^7.7.2"
+    "@babel/plugin-transform-typescript" "^7.7.4"
 
 "@babel/template@^7.4.0", "@babel/template@^7.7.4":
   version "7.7.4"
