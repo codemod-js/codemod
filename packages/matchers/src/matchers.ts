@@ -2623,6 +2623,361 @@ export function emptyTypeAnnotation(): Matcher<t.EmptyTypeAnnotation> {
   return new EmptyTypeAnnotationMatcher();
 }
 
+export class EnumBooleanBodyMatcher extends Matcher<t.EnumBooleanBody> {
+  constructor(
+    private readonly members?:
+      | Matcher<Array<t.EnumBooleanMember>>
+      | Array<Matcher<t.EnumBooleanMember>>
+  ) {
+    super();
+  }
+
+  matchValue(
+    node: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): node is t.EnumBooleanBody {
+    if (!isNode(node) || !t.isEnumBooleanBody(node)) {
+      return false;
+    }
+
+    if (typeof this.members === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (Array.isArray(this.members)) {
+      if (
+        !tupleOf<unknown>(...this.members).matchValue(node.members, [
+          ...keys,
+          'members'
+        ])
+      ) {
+        return false;
+      }
+    } else if (!this.members.matchValue(node.members, [...keys, 'members'])) {
+      return false;
+    }
+
+    return true;
+  }
+}
+
+export function enumBooleanBody(
+  members?:
+    | Matcher<Array<t.EnumBooleanMember>>
+    | Array<Matcher<t.EnumBooleanMember>>
+): Matcher<t.EnumBooleanBody> {
+  return new EnumBooleanBodyMatcher(members);
+}
+
+export class EnumBooleanMemberMatcher extends Matcher<t.EnumBooleanMember> {
+  constructor(private readonly id?: Matcher<t.Identifier>) {
+    super();
+  }
+
+  matchValue(
+    node: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): node is t.EnumBooleanMember {
+    if (!isNode(node) || !t.isEnumBooleanMember(node)) {
+      return false;
+    }
+
+    if (typeof this.id === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
+      return false;
+    }
+
+    return true;
+  }
+}
+
+export function enumBooleanMember(
+  id?: Matcher<t.Identifier>
+): Matcher<t.EnumBooleanMember> {
+  return new EnumBooleanMemberMatcher(id);
+}
+
+export class EnumDeclarationMatcher extends Matcher<t.EnumDeclaration> {
+  constructor(
+    private readonly id?: Matcher<t.Identifier>,
+    private readonly body?: Matcher<
+      t.EnumBooleanBody | t.EnumNumberBody | t.EnumStringBody | t.EnumSymbolBody
+    >
+  ) {
+    super();
+  }
+
+  matchValue(
+    node: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): node is t.EnumDeclaration {
+    if (!isNode(node) || !t.isEnumDeclaration(node)) {
+      return false;
+    }
+
+    if (typeof this.id === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
+      return false;
+    }
+
+    if (typeof this.body === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
+      return false;
+    }
+
+    return true;
+  }
+}
+
+export function enumDeclaration(
+  id?: Matcher<t.Identifier>,
+  body?: Matcher<
+    t.EnumBooleanBody | t.EnumNumberBody | t.EnumStringBody | t.EnumSymbolBody
+  >
+): Matcher<t.EnumDeclaration> {
+  return new EnumDeclarationMatcher(id, body);
+}
+
+export class EnumDefaultedMemberMatcher extends Matcher<t.EnumDefaultedMember> {
+  constructor(private readonly id?: Matcher<t.Identifier>) {
+    super();
+  }
+
+  matchValue(
+    node: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): node is t.EnumDefaultedMember {
+    if (!isNode(node) || !t.isEnumDefaultedMember(node)) {
+      return false;
+    }
+
+    if (typeof this.id === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
+      return false;
+    }
+
+    return true;
+  }
+}
+
+export function enumDefaultedMember(
+  id?: Matcher<t.Identifier>
+): Matcher<t.EnumDefaultedMember> {
+  return new EnumDefaultedMemberMatcher(id);
+}
+
+export class EnumNumberBodyMatcher extends Matcher<t.EnumNumberBody> {
+  constructor(
+    private readonly members?:
+      | Matcher<Array<t.EnumNumberMember>>
+      | Array<Matcher<t.EnumNumberMember>>
+  ) {
+    super();
+  }
+
+  matchValue(
+    node: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): node is t.EnumNumberBody {
+    if (!isNode(node) || !t.isEnumNumberBody(node)) {
+      return false;
+    }
+
+    if (typeof this.members === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (Array.isArray(this.members)) {
+      if (
+        !tupleOf<unknown>(...this.members).matchValue(node.members, [
+          ...keys,
+          'members'
+        ])
+      ) {
+        return false;
+      }
+    } else if (!this.members.matchValue(node.members, [...keys, 'members'])) {
+      return false;
+    }
+
+    return true;
+  }
+}
+
+export function enumNumberBody(
+  members?:
+    | Matcher<Array<t.EnumNumberMember>>
+    | Array<Matcher<t.EnumNumberMember>>
+): Matcher<t.EnumNumberBody> {
+  return new EnumNumberBodyMatcher(members);
+}
+
+export class EnumNumberMemberMatcher extends Matcher<t.EnumNumberMember> {
+  constructor(
+    private readonly id?: Matcher<t.Identifier>,
+    private readonly init?: Matcher<t.NumericLiteral>
+  ) {
+    super();
+  }
+
+  matchValue(
+    node: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): node is t.EnumNumberMember {
+    if (!isNode(node) || !t.isEnumNumberMember(node)) {
+      return false;
+    }
+
+    if (typeof this.id === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
+      return false;
+    }
+
+    if (typeof this.init === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (!this.init.matchValue(node.init, [...keys, 'init'])) {
+      return false;
+    }
+
+    return true;
+  }
+}
+
+export function enumNumberMember(
+  id?: Matcher<t.Identifier>,
+  init?: Matcher<t.NumericLiteral>
+): Matcher<t.EnumNumberMember> {
+  return new EnumNumberMemberMatcher(id, init);
+}
+
+export class EnumStringBodyMatcher extends Matcher<t.EnumStringBody> {
+  constructor(
+    private readonly members?:
+      | Matcher<Array<t.EnumStringMember | t.EnumDefaultedMember>>
+      | Array<Matcher<t.EnumStringMember> | Matcher<t.EnumDefaultedMember>>
+  ) {
+    super();
+  }
+
+  matchValue(
+    node: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): node is t.EnumStringBody {
+    if (!isNode(node) || !t.isEnumStringBody(node)) {
+      return false;
+    }
+
+    if (typeof this.members === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (Array.isArray(this.members)) {
+      if (
+        !tupleOf<unknown>(...this.members).matchValue(node.members, [
+          ...keys,
+          'members'
+        ])
+      ) {
+        return false;
+      }
+    } else if (!this.members.matchValue(node.members, [...keys, 'members'])) {
+      return false;
+    }
+
+    return true;
+  }
+}
+
+export function enumStringBody(
+  members?:
+    | Matcher<Array<t.EnumStringMember | t.EnumDefaultedMember>>
+    | Array<Matcher<t.EnumStringMember> | Matcher<t.EnumDefaultedMember>>
+): Matcher<t.EnumStringBody> {
+  return new EnumStringBodyMatcher(members);
+}
+
+export class EnumStringMemberMatcher extends Matcher<t.EnumStringMember> {
+  constructor(
+    private readonly id?: Matcher<t.Identifier>,
+    private readonly init?: Matcher<t.StringLiteral>
+  ) {
+    super();
+  }
+
+  matchValue(
+    node: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): node is t.EnumStringMember {
+    if (!isNode(node) || !t.isEnumStringMember(node)) {
+      return false;
+    }
+
+    if (typeof this.id === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
+      return false;
+    }
+
+    if (typeof this.init === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (!this.init.matchValue(node.init, [...keys, 'init'])) {
+      return false;
+    }
+
+    return true;
+  }
+}
+
+export function enumStringMember(
+  id?: Matcher<t.Identifier>,
+  init?: Matcher<t.StringLiteral>
+): Matcher<t.EnumStringMember> {
+  return new EnumStringMemberMatcher(id, init);
+}
+
+export class EnumSymbolBodyMatcher extends Matcher<t.EnumSymbolBody> {
+  constructor(
+    private readonly members?:
+      | Matcher<Array<t.EnumDefaultedMember>>
+      | Array<Matcher<t.EnumDefaultedMember>>
+  ) {
+    super();
+  }
+
+  matchValue(
+    node: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): node is t.EnumSymbolBody {
+    if (!isNode(node) || !t.isEnumSymbolBody(node)) {
+      return false;
+    }
+
+    if (typeof this.members === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (Array.isArray(this.members)) {
+      if (
+        !tupleOf<unknown>(...this.members).matchValue(node.members, [
+          ...keys,
+          'members'
+        ])
+      ) {
+        return false;
+      }
+    } else if (!this.members.matchValue(node.members, [...keys, 'members'])) {
+      return false;
+    }
+
+    return true;
+  }
+}
+
+export function enumSymbolBody(
+  members?:
+    | Matcher<Array<t.EnumDefaultedMember>>
+    | Array<Matcher<t.EnumDefaultedMember>>
+): Matcher<t.EnumSymbolBody> {
+  return new EnumSymbolBodyMatcher(members);
+}
+
 export class ExistsTypeAnnotationMatcher extends Matcher<
   t.ExistsTypeAnnotation
 > {
@@ -9795,7 +10150,8 @@ export function tsTypeParameterInstantiation(
 export class TSTypePredicateMatcher extends Matcher<t.TSTypePredicate> {
   constructor(
     private readonly parameterName?: Matcher<t.Identifier | t.TSThisType>,
-    private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation>
+    private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
+    private readonly asserts?: Matcher<boolean> | boolean | null
   ) {
     super();
   }
@@ -9821,6 +10177,13 @@ export class TSTypePredicateMatcher extends Matcher<t.TSTypePredicate> {
 
     if (typeof this.typeAnnotation === 'undefined') {
       // undefined matcher means anything matches
+    } else if (this.typeAnnotation === null) {
+      // null matcher means we expect null value
+      if (node.typeAnnotation !== null) {
+        return false;
+      }
+    } else if (node.typeAnnotation === null) {
+      return false;
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
@@ -9830,15 +10193,33 @@ export class TSTypePredicateMatcher extends Matcher<t.TSTypePredicate> {
       return false;
     }
 
+    if (typeof this.asserts === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (typeof this.asserts === 'boolean') {
+      if (this.asserts !== node.asserts) {
+        return false;
+      }
+    } else if (this.asserts === null) {
+      // null matcher means we expect null value
+      if (node.asserts !== null) {
+        return false;
+      }
+    } else if (node.asserts === null) {
+      return false;
+    } else if (!this.asserts.matchValue(node.asserts, [...keys, 'asserts'])) {
+      return false;
+    }
+
     return true;
   }
 }
 
 export function tsTypePredicate(
   parameterName?: Matcher<t.Identifier | t.TSThisType>,
-  typeAnnotation?: Matcher<t.TSTypeAnnotation>
+  typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
+  asserts?: Matcher<boolean> | boolean | null
 ): Matcher<t.TSTypePredicate> {
-  return new TSTypePredicateMatcher(parameterName, typeAnnotation);
+  return new TSTypePredicateMatcher(parameterName, typeAnnotation, asserts);
 }
 
 export class TSTypeQueryMatcher extends Matcher<t.TSTypeQuery> {
