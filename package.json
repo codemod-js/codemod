@@ -53,8 +53,8 @@
     "typescript": "^3.6.4"
   },
   "resolutions": {
-    "**/@babel/parser": "7.6.4",
-    "**/@babel/types": "7.6.3",
+    "**/@babel/parser": "7.7.5",
+    "**/@babel/types": "7.7.4",
     "**/@types/node": "12.11.1"
   }
 }
