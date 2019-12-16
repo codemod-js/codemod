@@ -46,7 +46,7 @@ test('anything matches everything', () => {
   expect(m.anything().match('')).toBeTruthy();
   expect(m.anything().match([])).toBeTruthy();
   expect(m.anything().match({})).toBeTruthy();
-  expect(m.anything().match(() => {})).toBeTruthy();
+  expect(m.anything().match(Number)).toBeTruthy();
   expect(m.anything().match(null)).toBeTruthy();
   expect(m.anything().match(undefined)).toBeTruthy();
 
@@ -68,7 +68,7 @@ test('arrayOf matches a variable-length homogenous array', () => {
   expect(m.arrayOf(m.anything()).match(null)).toBeFalsy();
   expect(m.arrayOf(m.anything()).match(undefined)).toBeFalsy();
   expect(m.arrayOf(m.anything()).match({})).toBeFalsy();
-  expect(m.arrayOf(m.anything()).match(() => {})).toBeFalsy();
+  expect(m.arrayOf(m.anything()).match(Number)).toBeFalsy();
 
   // verify `match` acts as a type assertion
   const value: unknown = undefined;

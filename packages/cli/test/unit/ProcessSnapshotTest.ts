@@ -112,7 +112,9 @@ describe('ProcessSnapshot', function() {
     );
 
     // Add a require extension.
-    fakeRequire.extensions['.omg'] = () => {};
+    fakeRequire.extensions['.omg'] = () => {
+      // do nothing
+    };
 
     // Restore the snapshot.
     snapshot.restore();
@@ -123,7 +125,9 @@ describe('ProcessSnapshot', function() {
 
   it('adds removed require extensions', function() {
     // Add a require extension.
-    fakeRequire.extensions['.omg'] = () => {};
+    fakeRequire.extensions['.omg'] = () => {
+      // do nothing
+    };
 
     // Take a snapshot.
     const snapshot = new ProcessSnapshot(
@@ -145,7 +149,9 @@ describe('ProcessSnapshot', function() {
 
   it('replaces modified require extensions', function() {
     // Add a require extension.
-    const originalLoader = (): void => {};
+    const originalLoader = (): void => {
+      // do nothing
+    };
     fakeRequire.extensions['.omg'] = originalLoader;
 
     // Take a snapshot.
@@ -157,7 +163,9 @@ describe('ProcessSnapshot', function() {
     );
 
     // Replace a require extension.
-    fakeRequire.extensions['.omg'] = () => {};
+    fakeRequire.extensions['.omg'] = () => {
+      // do nothing
+    };
 
     // Restore the snapshot.
     snapshot.restore();
@@ -176,7 +184,9 @@ describe('ProcessSnapshot', function() {
     );
 
     // Add an event listener.
-    const listener = (): void => {};
+    const listener = (): void => {
+      // do nothing
+    };
     fakeProcess.on('exit', listener);
 
     // Restore the snapshot.
@@ -188,7 +198,9 @@ describe('ProcessSnapshot', function() {
 
   it('adds removed process event listeners', function() {
     // Add an event listener.
-    const listener = (): void => {};
+    const listener = (): void => {
+      // do nothing
+    };
     fakeProcess.on('exit', listener);
 
     // Take a snapshot.
@@ -211,7 +223,9 @@ describe('ProcessSnapshot', function() {
 
   it('removes an added event listener when there already is at least one', function() {
     // Start with an event listener.
-    const existingListener = (): void => {};
+    const existingListener = (): void => {
+      // do nothing
+    };
     fakeProcess.on('exit', existingListener);
 
     // Take a snapshot.
@@ -223,7 +237,9 @@ describe('ProcessSnapshot', function() {
     );
 
     // Add an event listener.
-    const listener = (): void => {};
+    const listener = (): void => {
+      // do nothing
+    };
     fakeProcess.on('exit', listener);
 
     // Restore the snapshot.

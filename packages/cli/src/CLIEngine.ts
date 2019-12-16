@@ -26,7 +26,9 @@ export class RunStats {
 export default class CLIEngine {
   constructor(
     readonly config: Config,
-    readonly onTransform: (result: SourceTransformResult) => void = () => {},
+    readonly onTransform: (result: SourceTransformResult) => void = () => {
+      // do nothing by default
+    },
     readonly sys: System = RealSystem
   ) {}
 

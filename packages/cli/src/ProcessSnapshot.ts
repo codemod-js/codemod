@@ -33,7 +33,9 @@ export default class ProcessSnapshot {
     private readonly requireImpl: typeof require = require,
     private readonly processImpl: typeof process = process,
     private readonly originalGlobal: typeof global = global,
-    private readonly log: typeof console.log = () => {}
+    private readonly log: typeof console.log = () => {
+      // no logging by default
+    }
   ) {
     this.cacheEntries = this.snapshotRequireCache();
     this.extensions = this.snapshotRequireExtensions();
