@@ -721,7 +721,7 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@commitlint/cli@^8.2.0":
+"@commitlint/cli@^8.2.0", "@commitlint/cli@^8.3.3":
   version "8.3.3"
   resolved "https://registry.yarnpkg.com/@commitlint/cli/-/cli-8.3.3.tgz#7a301924d9f361ec3aaf8094dcabbe9e90b51ec5"
   integrity sha512-7OqY1qPuVZ6R1NmBSBck2TyakOXGJBjJKW9+MJrYUcFvq7NYw3kRLlm9jEAB841n8XsVb1Vp+2QK0Lr+BewYJQ==
@@ -2973,12 +2973,12 @@ commander@~2.20.3:
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
 commitlint@^8.2.0:
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/commitlint/-/commitlint-8.2.0.tgz#c081639d09904af0f3f60db75e3afdf1ab2e523d"
-  integrity sha512-pFZQMMLCXvc7NfbI6KsCo1z51ul9503Tc4LvWI5/uPfUdU6gqgjzGQpYTIFhu4u9iMA9Sr8hKzJPD2EhNT3mcg==
+  version "8.3.3"
+  resolved "https://registry.yarnpkg.com/commitlint/-/commitlint-8.3.3.tgz#b7705bb746c330ccd46d6ea6debb6bec4e886701"
+  integrity sha512-YQlWO89tb6XqCeNUO1NbIlDohYtfaNch4Zq1SXeNxQWlDdGnU0YX6uMIIGNC4LVGRxLdeznsRPrwLs6iMfR4lQ==
   dependencies:
-    "@commitlint/cli" "^8.2.0"
-    read-pkg "3.0.0"
+    "@commitlint/cli" "^8.3.3"
+    read-pkg "5.2.0"
     resolve-pkg "2.0.0"
 
 compare-func@^1.3.1:
@@ -7267,14 +7267,15 @@ read-pkg-up@^4.0.0:
     find-up "^3.0.0"
     read-pkg "^3.0.0"
 
-read-pkg@3.0.0, read-pkg@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npmjs.org/read-pkg/-/read-pkg-3.0.0.tgz#9cbc686978fee65d16c00e2b19c237fcf6e38389"
-  integrity sha1-nLxoaXj+5l0WwA4rGcI3/Pbjg4k=
+read-pkg@5.2.0, read-pkg@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/read-pkg/-/read-pkg-5.2.0.tgz#7bf295438ca5a33e56cd30e053b34ee7250c93cc"
+  integrity sha512-Ug69mNOpfvKDAc2Q8DRpMjjzdtrnv9HcSMX+4VsZxD1aZ6ZzrIE7rlzXBtWTyhULSMKg076AW6WR5iZpD0JiOg==
   dependencies:
-    load-json-file "^4.0.0"
-    normalize-package-data "^2.3.2"
-    path-type "^3.0.0"
+    "@types/normalize-package-data" "^2.4.0"
+    normalize-package-data "^2.5.0"
+    parse-json "^5.0.0"
+    type-fest "^0.6.0"
 
 read-pkg@^1.0.0:
   version "1.1.0"
@@ -7285,15 +7286,14 @@ read-pkg@^1.0.0:
     normalize-package-data "^2.3.2"
     path-type "^1.0.0"
 
-read-pkg@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/read-pkg/-/read-pkg-5.2.0.tgz#7bf295438ca5a33e56cd30e053b34ee7250c93cc"
-  integrity sha512-Ug69mNOpfvKDAc2Q8DRpMjjzdtrnv9HcSMX+4VsZxD1aZ6ZzrIE7rlzXBtWTyhULSMKg076AW6WR5iZpD0JiOg==
+read-pkg@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/read-pkg/-/read-pkg-3.0.0.tgz#9cbc686978fee65d16c00e2b19c237fcf6e38389"
+  integrity sha1-nLxoaXj+5l0WwA4rGcI3/Pbjg4k=
   dependencies:
-    "@types/normalize-package-data" "^2.4.0"
-    normalize-package-data "^2.5.0"
-    parse-json "^5.0.0"
-    type-fest "^0.6.0"
+    load-json-file "^4.0.0"
+    normalize-package-data "^2.3.2"
+    path-type "^3.0.0"
 
 read@1, read@~1.0.1:
   version "1.0.7"
