@@ -63,7 +63,7 @@
     "get-port": "^5.0.0",
     "jest": "^24.8.0",
     "make-dir": "^3.0.0",
-    "mocha": "^6.2.2",
+    "mocha": "^7.0.0",
     "mocha-junit-reporter": "^1.18.0",
     "rimraf": "3.0.0",
     "semver": "^7.0.0",
