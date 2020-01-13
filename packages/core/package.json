@@ -1,6 +1,6 @@
 {
   "name": "@codemod/core",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Runs babel plugins for codemods, i.e. by preserving formatting using Recast.",
   "repository": "https://github.com/codemod-js/codemod",
   "license": "Apache-2.0",
