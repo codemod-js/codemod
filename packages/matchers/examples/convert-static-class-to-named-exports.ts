@@ -66,7 +66,7 @@ const className = m.capture(m.anyString());
 const classDeclaration = m.capture(
   m.classDeclaration(
     m.identifier(className),
-    null,
+    undefined,
     m.classBody(
       m.arrayOf(
         m.classMethod(
@@ -115,8 +115,11 @@ export default function(): PluginObj {
           path,
           ({ exportDeclaration, classDeclaration }) => {
             const replacements: Array<t.Statement> = [];
+            const classBody = classDeclaration.get('body') as NodePath<
+              t.ClassBody
+            >;
 
-            for (const property of classDeclaration.get('body').get('body')) {
+            for (const property of classBody.get('body')) {
               if (!property.isClassMethod()) {
                 throw new Error(
                   `unexpected ${property.type} while looking for ClassMethod`

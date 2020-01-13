@@ -114,7 +114,7 @@ test('oneOf matches a single-element array', () => {
 
 test('anyNode matches any known AST node type', () => {
   expect(m.anyNode().match(t.identifier('abc'))).toBeTruthy();
-  expect(m.anyNode().match(t.program([]))).toBeTruthy();
+  expect(m.anyNode().match(t.blockStatement([]))).toBeTruthy();
 
   expect(m.anyNode().match('Identifier')).toBeFalsy();
   expect(m.anyNode().match(0)).toBeFalsy();
@@ -132,8 +132,12 @@ test('anyExpression matches any known AST expression node type', () => {
       .match(t.functionExpression(null, [], t.blockStatement([])))
   ).toBeTruthy();
 
+  // There's a bug with @babel/types that is requiring more arguments to
+  // `t.program(…)` than are allowed.
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
   expect(m.anyExpression().match(t.file(t.program([]), [], []))).toBeFalsy();
-  expect(m.anyExpression().match(t.program([]))).toBeFalsy();
+  expect(m.anyExpression().match(t.blockStatement([]))).toBeFalsy();
   expect(m.anyExpression().match(t.emptyStatement())).toBeFalsy();
   expect(m.anyExpression().match(t.returnStatement())).toBeFalsy();
   expect(m.anyExpression().match(t.blockStatement([]))).toBeFalsy();
@@ -145,8 +149,20 @@ test('anyStatement matches any known AST statement node type', () => {
   expect(m.anyStatement().match(t.blockStatement([]))).toBeTruthy();
 
   expect(m.anyStatement().match(t.thisExpression())).toBeFalsy();
+  // There's a bug with @babel/types that is requiring more arguments to
+  // `t.program(…)` than are allowed.
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
   expect(m.anyStatement().match(t.program([]))).toBeFalsy();
+  // There's a bug with @babel/types that is requiring more arguments to
+  // `t.program(…)` than are allowed.
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
   expect(m.anyStatement().match(t.file(t.program([]), [], []))).toBeFalsy();
+  // There's a bug with @babel/types that is requiring more arguments to
+  // `t.program(…)` than are allowed.
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
   expect(m.anyStatement().match(t.program([]))).toBeFalsy();
 });
 
@@ -158,6 +174,10 @@ test('m.function( matches any known function node type', () => {
     m.function().match(t.functionExpression(null, [], t.blockStatement([])))
   ).toBeTruthy();
   expect(
+    // There's a bug with @babel/types that is requiring more arguments to
+    // `t.arrowFunctionExpression(…)` than are allowed.
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
     m.function().match(t.arrowFunctionExpression([], t.blockStatement([])))
   ).toBeTruthy();
 

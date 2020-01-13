@@ -29,3 +29,6 @@ test/fixtures/**/*-typescript.js
 
 # ignore tmp directory
 tmp
+
+# ignore custom build files
+packages/matchers/src/matchers.ts.expected
