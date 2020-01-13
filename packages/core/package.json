@@ -17,14 +17,14 @@
     "test": "script/ci"
   },
   "dependencies": {
-    "@babel/core": "^7.6.4",
-    "@babel/generator": "^7.6.4",
+    "@babel/core": "^7.8.0",
+    "@babel/generator": "^7.8.0",
     "@codemod/parser": "^1.0.4",
     "recast": "^0.18.1",
     "resolve": "^1.12.0"
   },
   "devDependencies": {
-    "@babel/types": "^7.7.4",
+    "@babel/types": "^7.8.0",
     "@types/babel__core": "^7.1.3",
     "@types/jest": "^24.0.16",
     "@types/prettier": "^1.18.0",
