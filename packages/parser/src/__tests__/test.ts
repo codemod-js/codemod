@@ -82,6 +82,15 @@ test('does not include "decorators" plugin if "decorators-legacy" is already ena
   );
 });
 
+test('enables `topLevelAwait` even if `allowAwaitOutsideFunction` is disabled', () => {
+  const options = buildOptions({ allowAwaitOutsideFunction: false });
+  expect(options.plugins).toContain('topLevelAwait');
+  expect(
+    (parse('await 0', options).program.body[0] as t.ExpressionStatement)
+      .expression.type
+  ).toEqual('AwaitExpression');
+});
+
 test('parses with a very broad set of options', () => {
   expect(
     parse(`

@@ -37,6 +37,7 @@ const DefaultParserPlugins = new Set<ParserPlugin>([
   'partialApplication',
   'placeholders',
   'throwExpressions',
+  'topLevelAwait',
   ['decorators', { decoratorsBeforeExport: true }],
   ['pipelineOperator', { proposal: 'smart' }]
 ]);
