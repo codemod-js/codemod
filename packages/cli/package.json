@@ -61,7 +61,7 @@
     "@types/tmp": "^0.1.0",
     "commitlint": "^8.2.0",
     "get-port": "^5.0.0",
-    "jest": "^24.8.0",
+    "jest": "^25.1.0",
     "make-dir": "^3.0.0",
     "mocha": "^7.0.0",
     "mocha-junit-reporter": "^1.18.0",
