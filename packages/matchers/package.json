@@ -35,7 +35,7 @@
     "@types/prettier": "^1.18.3",
     "dedent": "^0.7.0",
     "jest": "^25.1.0",
-    "ts-jest": "^23.10.5",
+    "ts-jest": "^25.2.0",
     "typescript": "^3.6.4"
   },
   "publishConfig": {
