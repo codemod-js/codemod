@@ -8,11 +8,11 @@ import {
  */
 export type ParserPlugin =
   | BabelParserPlugin
-  | 'logicalAssignment'
-  | 'partialApplication'
-  | 'placeholders';
+  | ['recordAndTuple', { syntaxType: 'hash' | 'bar' }];
 
-type ParserPluginName = Extract<ParserPlugin, string>;
+type ParserPluginName =
+  | Extract<ParserPlugin, string>
+  | Extract<ParserPlugin, [string, object]>[0];
 
 const DefaultParserPlugins = new Set<ParserPlugin>([
   'asyncGenerators',
@@ -39,18 +39,11 @@ const DefaultParserPlugins = new Set<ParserPlugin>([
   'throwExpressions',
   'topLevelAwait',
   ['decorators', { decoratorsBeforeExport: true }],
-  ['pipelineOperator', { proposal: 'smart' }]
+  ['pipelineOperator', { proposal: 'smart' }],
+  ['recordAndTuple', { syntaxType: 'hash' }]
 ]);
 
 export interface ParserOptions extends Omit<BabelParserOptions, 'plugins'> {
-  // TODO: remove this hack once `allowUndeclaredExports` is included in typings
-  // https://github.com/babel/babel/pull/10263
-  allowUndeclaredExports?: boolean;
-
-  // TODO: Remove this.
-  // https://github.com/babel/babel/pull/10291
-  sourceFileName?: string;
-
   plugins?: Array<ParserPlugin>;
 }
 
@@ -67,7 +60,6 @@ export default function buildOptions({
   allowUndeclaredExports = true,
   plugins = [],
   sourceFilename,
-  sourceFileName,
   ...rest
 }: ParserOptions = {}): ParserOptions {
   for (const plugin of DefaultParserPlugins) {
@@ -76,10 +68,7 @@ export default function buildOptions({
     }
   }
 
-  const typePlugin = typePluginForSourceFileName(
-    // https://github.com/babel/babel/pull/10291
-    sourceFileName || sourceFilename
-  );
+  const typePlugin = typePluginForSourceFileName(sourceFilename);
 
   if (shouldAddPlugin(plugins, typePlugin)) {
     plugins = [...plugins, typePlugin];
@@ -94,7 +83,6 @@ export default function buildOptions({
     allowUndeclaredExports,
     plugins,
     sourceFilename,
-    sourceFileName,
     ...rest
   };
 }

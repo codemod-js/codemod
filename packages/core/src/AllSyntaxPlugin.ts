@@ -13,8 +13,6 @@ export default function buildPlugin(
       ): void {
         const options = buildOptions({
           ...parserOpts,
-          sourceFileName:
-            parserOpts.sourceFileName || opts.filename || undefined,
           sourceType
         });
 
