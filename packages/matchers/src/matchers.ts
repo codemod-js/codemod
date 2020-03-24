@@ -7180,6 +7180,60 @@ export function qualifiedTypeIdentifier(
   return new QualifiedTypeIdentifierMatcher(id, qualification);
 }
 
+export class RecordExpressionMatcher extends Matcher<t.RecordExpression> {
+  constructor(
+    private readonly properties?:
+      | Matcher<Array<t.ObjectProperty | t.ObjectMethod | t.SpreadElement>>
+      | Array<
+          | Matcher<t.ObjectProperty>
+          | Matcher<t.ObjectMethod>
+          | Matcher<t.SpreadElement>
+        >
+  ) {
+    super();
+  }
+
+  matchValue(
+    node: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): node is t.RecordExpression {
+    if (!isNode(node) || !t.isRecordExpression(node)) {
+      return false;
+    }
+
+    if (typeof this.properties === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (Array.isArray(this.properties)) {
+      if (
+        !tupleOf<unknown>(...this.properties).matchValue(node.properties, [
+          ...keys,
+          'properties'
+        ])
+      ) {
+        return false;
+      }
+    } else if (
+      !this.properties.matchValue(node.properties, [...keys, 'properties'])
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+}
+
+export function recordExpression(
+  properties?:
+    | Matcher<Array<t.ObjectProperty | t.ObjectMethod | t.SpreadElement>>
+    | Array<
+        | Matcher<t.ObjectProperty>
+        | Matcher<t.ObjectMethod>
+        | Matcher<t.SpreadElement>
+      >
+): Matcher<t.RecordExpression> {
+  return new RecordExpressionMatcher(properties);
+}
+
 export class RegExpLiteralMatcher extends Matcher<t.RegExpLiteral> {
   constructor(
     private readonly pattern?: Matcher<string> | string,
@@ -7592,6 +7646,29 @@ export function switchStatement(
   cases?: Matcher<Array<t.SwitchCase>> | Array<Matcher<t.SwitchCase>>
 ): Matcher<t.SwitchStatement> {
   return new SwitchStatementMatcher(discriminant, cases);
+}
+
+export class SymbolTypeAnnotationMatcher extends Matcher<
+  t.SymbolTypeAnnotation
+> {
+  constructor() {
+    super();
+  }
+
+  matchValue(
+    node: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): node is t.SymbolTypeAnnotation {
+    if (!isNode(node) || !t.isSymbolTypeAnnotation(node)) {
+      return false;
+    }
+
+    return true;
+  }
+}
+
+export function symbolTypeAnnotation(): Matcher<t.SymbolTypeAnnotation> {
+  return new SymbolTypeAnnotationMatcher();
 }
 
 export class TSAnyKeywordMatcher extends Matcher<t.TSAnyKeyword> {
@@ -10776,6 +10853,52 @@ export function tryStatement(
   finalizer?: Matcher<t.BlockStatement> | null
 ): Matcher<t.TryStatement> {
   return new TryStatementMatcher(block, handler, finalizer);
+}
+
+export class TupleExpressionMatcher extends Matcher<t.TupleExpression> {
+  constructor(
+    private readonly elements?:
+      | Matcher<Array<null | t.Expression | t.SpreadElement>>
+      | Array<Matcher<null> | Matcher<t.Expression> | Matcher<t.SpreadElement>>
+  ) {
+    super();
+  }
+
+  matchValue(
+    node: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): node is t.TupleExpression {
+    if (!isNode(node) || !t.isTupleExpression(node)) {
+      return false;
+    }
+
+    if (typeof this.elements === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (Array.isArray(this.elements)) {
+      if (
+        !tupleOf<unknown>(...this.elements).matchValue(node.elements, [
+          ...keys,
+          'elements'
+        ])
+      ) {
+        return false;
+      }
+    } else if (
+      !this.elements.matchValue(node.elements, [...keys, 'elements'])
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+}
+
+export function tupleExpression(
+  elements?:
+    | Matcher<Array<null | t.Expression | t.SpreadElement>>
+    | Array<Matcher<null> | Matcher<t.Expression> | Matcher<t.SpreadElement>>
+): Matcher<t.TupleExpression> {
+  return new TupleExpressionMatcher(elements);
 }
 
 export class TupleTypeAnnotationMatcher extends Matcher<t.TupleTypeAnnotation> {

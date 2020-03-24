@@ -106,6 +106,8 @@ test('parses with a very broad set of options', () => {
       a ||= b
       // demonstrate 'partialApplication' plugin
       a(?, b)
+      // demonstrate 'recordAndTuple' plugin
+      #[1, 2, #{a: 3}]
   `).program.body.map(node =>
       t.isExpressionStatement(node) ? node.expression.type : node.type
     )
@@ -115,6 +117,17 @@ test('parses with a very broad set of options', () => {
     'TSTypeAliasDeclaration',
     'Placeholder',
     'AssignmentExpression',
-    'CallExpression'
+    'CallExpression',
+    'TupleExpression'
   ]);
+});
+
+test('allows parsing records and tuples with "bar" syntax', () => {
+  const tuple = (parse(`[|1, 2, {|a: 1|}|]`, {
+    plugins: [['recordAndTuple', { syntaxType: 'bar' }]]
+  }).program.body[0] as t.ExpressionStatement).expression;
+  expect(t.isTupleExpression(tuple)).toBe(true);
+  expect(t.isRecordExpression((tuple as t.TupleExpression).elements[2])).toBe(
+    true
+  );
 });
