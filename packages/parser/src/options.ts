@@ -1,18 +1,18 @@
 import {
   ParserOptions as BabelParserOptions,
-  ParserPlugin as BabelParserPlugin
-} from '@babel/parser';
+  ParserPlugin as BabelParserPlugin,
+} from '@babel/parser'
 
 /**
  * Add some type plugins that are in master but not yet published.
  */
 export type ParserPlugin =
   | BabelParserPlugin
-  | ['recordAndTuple', { syntaxType: 'hash' | 'bar' }];
+  | ['recordAndTuple', { syntaxType: 'hash' | 'bar' }]
 
 type ParserPluginName =
   | Extract<ParserPlugin, string>
-  | Extract<ParserPlugin, [string, object]>[0];
+  | Extract<ParserPlugin, [string, object]>[0]
 
 const DefaultParserPlugins = new Set<ParserPlugin>([
   'asyncGenerators',
@@ -40,11 +40,11 @@ const DefaultParserPlugins = new Set<ParserPlugin>([
   'topLevelAwait',
   ['decorators', { decoratorsBeforeExport: true }],
   ['pipelineOperator', { proposal: 'smart' }],
-  ['recordAndTuple', { syntaxType: 'hash' }]
-]);
+  ['recordAndTuple', { syntaxType: 'hash' }],
+])
 
 export interface ParserOptions extends Omit<BabelParserOptions, 'plugins'> {
-  plugins?: Array<ParserPlugin>;
+  plugins?: Array<ParserPlugin>
 }
 
 /**
@@ -64,14 +64,14 @@ export default function buildOptions({
 }: ParserOptions = {}): ParserOptions {
   for (const plugin of DefaultParserPlugins) {
     if (shouldAddPlugin(plugins, getPluginName(plugin))) {
-      plugins = [...plugins, plugin];
+      plugins = [...plugins, plugin]
     }
   }
 
-  const typePlugin = typePluginForSourceFileName(sourceFilename);
+  const typePlugin = typePluginForSourceFileName(sourceFilename)
 
   if (shouldAddPlugin(plugins, typePlugin)) {
-    plugins = [...plugins, typePlugin];
+    plugins = [...plugins, typePlugin]
   }
 
   return {
@@ -83,8 +83,8 @@ export default function buildOptions({
     allowUndeclaredExports,
     plugins,
     sourceFilename,
-    ...rest
-  };
+    ...rest,
+  }
 }
 
 /**
@@ -98,19 +98,19 @@ function getMutuallyExclusivePluginsForPlugin(
   switch (name) {
     case 'flow':
     case 'flowComments':
-      return ['typescript'];
+      return ['typescript']
 
     case 'typescript':
-      return ['flow', 'flowComments'];
+      return ['flow', 'flowComments']
 
     case 'decorators':
-      return ['decorators-legacy'];
+      return ['decorators-legacy']
 
     case 'decorators-legacy':
-      return ['decorators'];
+      return ['decorators']
 
     default:
-      return [];
+      return []
   }
 }
 
@@ -126,9 +126,9 @@ function typePluginForSourceFileName(
   sourceFileName?: string
 ): 'flow' | 'typescript' {
   if (typeof sourceFileName === 'string' && !/\.tsx?$/i.test(sourceFileName)) {
-    return 'flow';
+    return 'flow'
   } else {
-    return 'typescript';
+    return 'typescript'
   }
 }
 
@@ -146,14 +146,14 @@ function shouldAddPlugin(
   name: ParserPluginName
 ): boolean {
   if (pluginListIncludesPlugin(plugins, name)) {
-    return false;
+    return false
   }
 
   return !getMutuallyExclusivePluginsForPlugin(
     name
-  ).some(mutuallyExclusivePlugin =>
+  ).some((mutuallyExclusivePlugin) =>
     pluginListIncludesPlugin(plugins, mutuallyExclusivePlugin)
-  );
+  )
 }
 
 /**
@@ -169,7 +169,7 @@ function pluginListIncludesPlugin(
   plugins: Array<ParserPlugin>,
   name: ParserPluginName
 ): boolean {
-  return plugins.some(entry => getPluginName(entry) === name);
+  return plugins.some((entry) => getPluginName(entry) === name)
 }
 
 /**
@@ -181,5 +181,5 @@ function pluginListIncludesPlugin(
  *   getPluginName(['flow', { all: true }]); // 'flow'
  */
 function getPluginName(plugin: ParserPlugin): ParserPluginName {
-  return typeof plugin === 'string' ? plugin : plugin[0];
+  return typeof plugin === 'string' ? plugin : plugin[0]
 }

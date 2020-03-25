@@ -1,15 +1,15 @@
-import { get, Response } from 'got';
-import * as fs from 'fs';
-import { tmpNameSync as tmp } from 'tmp';
-import { URL } from 'whatwg-url';
-import Resolver from './Resolver';
-import { promisify } from 'util';
+import { get, Response } from 'got'
+import * as fs from 'fs'
+import { tmpNameSync as tmp } from 'tmp'
+import { URL } from 'whatwg-url'
+import Resolver from './Resolver'
+import { promisify } from 'util'
 
-const writeFile = promisify(fs.writeFile);
+const writeFile = promisify(fs.writeFile)
 
 export class NetworkLoadError extends Error {
   constructor(readonly response: Response<string>) {
-    super(`failed to load plugin from '${response.url}'`);
+    super(`failed to load plugin from '${response.url}'`)
   }
 }
 
@@ -21,22 +21,22 @@ export class NetworkLoadError extends Error {
 export default class NetworkResolver implements Resolver {
   async canResolve(source: string): Promise<boolean> {
     try {
-      const url = new URL(source);
-      return url.protocol === 'http:' || url.protocol === 'https:';
+      const url = new URL(source)
+      return url.protocol === 'http:' || url.protocol === 'https:'
     } catch {
-      return false;
+      return false
     }
   }
 
   async resolve(source: string): Promise<string> {
-    const response = await get(source, { followRedirect: true });
+    const response = await get(source, { followRedirect: true })
 
     if (response.statusCode !== 200) {
-      throw new NetworkLoadError(response);
+      throw new NetworkLoadError(response)
     }
 
-    const filename = tmp({ postfix: '.js' });
-    await writeFile(filename, response.body);
-    return filename;
+    const filename = tmp({ postfix: '.js' })
+    await writeFile(filename, response.body)
+    return filename
   }
 }

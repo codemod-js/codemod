@@ -1,4 +1,4 @@
-import runInPackages from '../_utils/runInPackages';
+import runInPackages from '../_utils/runInPackages'
 
 export default async function main(
   args: Array<string>,
@@ -6,5 +6,5 @@ export default async function main(
   stdout: NodeJS.WriteStream,
   stderr: NodeJS.WriteStream
 ): Promise<void> {
-  await runInPackages(stdin, stdout, stderr, 'npx', ['semantic-release']);
+  await runInPackages(stdin, stdout, stderr, 'npx', ['semantic-release'])
 }

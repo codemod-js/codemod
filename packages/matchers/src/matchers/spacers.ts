@@ -3,13 +3,13 @@ export class Spacer {
 }
 
 export function zeroOrMore(): Spacer {
-  return new Spacer(0, Infinity);
+  return new Spacer(0, Infinity)
 }
 
 export function oneOrMore(): Spacer {
-  return new Spacer(1, Infinity);
+  return new Spacer(1, Infinity)
 }
 
 export function spacer(min = 1, max = min): Spacer {
-  return new Spacer(min, max);
+  return new Spacer(min, max)
 }

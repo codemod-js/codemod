@@ -1,171 +1,171 @@
-import { existsSync, readFileSync } from 'fs';
-import { hasMagic as hasGlob, sync as globSync } from 'globby';
-import { resolve } from 'path';
-import { sync as resolveSync } from 'resolve';
-import Config, { ConfigBuilder, Printer } from './Config';
-import { RequireableExtensions } from './extensions';
+import { existsSync, readFileSync } from 'fs'
+import { hasMagic as hasGlob, sync as globSync } from 'globby'
+import { resolve } from 'path'
+import { sync as resolveSync } from 'resolve'
+import Config, { ConfigBuilder, Printer } from './Config'
+import { RequireableExtensions } from './extensions'
 
 export interface RunCommand {
-  kind: 'run';
-  config: Config;
+  kind: 'run'
+  config: Config
 }
 
 export interface HelpCommand {
-  kind: 'help';
+  kind: 'help'
 }
 
 export interface VersionCommand {
-  kind: 'version';
+  kind: 'version'
 }
 
-export type Command = RunCommand | HelpCommand | VersionCommand;
+export type Command = RunCommand | HelpCommand | VersionCommand
 
 export default class Options {
   constructor(readonly args: Array<string>) {}
 
   parse(): RunCommand | HelpCommand | VersionCommand {
-    const config = new ConfigBuilder();
+    const config = new ConfigBuilder()
 
     for (let i = 0; i < this.args.length; i++) {
-      const arg = this.args[i];
+      const arg = this.args[i]
 
       switch (arg) {
         case '-p':
         case '--plugin':
-          i++;
-          config.addLocalPlugin(this.args[i]);
-          break;
+          i++
+          config.addLocalPlugin(this.args[i])
+          break
 
         case '--remote-plugin':
-          i++;
-          config.addRemotePlugin(this.args[i]);
-          break;
+          i++
+          config.addRemotePlugin(this.args[i])
+          break
 
         case '-o':
         case '--plugin-options': {
-          i++;
-          const nameAndOptions = this.args[i].split('=');
-          const name = nameAndOptions[0];
-          let optionsRaw = nameAndOptions[1];
+          i++
+          const nameAndOptions = this.args[i].split('=')
+          const name = nameAndOptions[0]
+          let optionsRaw = nameAndOptions[1]
 
           if (optionsRaw && optionsRaw[0] === '@') {
             optionsRaw = readFileSync(optionsRaw.slice(1), {
-              encoding: 'utf8'
-            });
-            config.setOptionsForPlugin(JSON.parse(optionsRaw), name);
+              encoding: 'utf8',
+            })
+            config.setOptionsForPlugin(JSON.parse(optionsRaw), name)
           }
 
           try {
-            config.setOptionsForPlugin(JSON.parse(optionsRaw), name);
+            config.setOptionsForPlugin(JSON.parse(optionsRaw), name)
           } catch (err) {
             throw new Error(
               `unable to parse JSON config for ${name}: ${optionsRaw}`
-            );
+            )
           }
-          break;
+          break
         }
 
         case '--printer': {
-          i++;
-          const rawPrinter = this.args[i];
+          i++
+          const rawPrinter = this.args[i]
 
           if (rawPrinter === Printer.Babel) {
-            config.printer(Printer.Babel);
+            config.printer(Printer.Babel)
           } else if (rawPrinter === Printer.Prettier) {
-            config.printer(Printer.Prettier);
+            config.printer(Printer.Prettier)
           } else if (rawPrinter === Printer.Recast) {
-            config.printer(Printer.Recast);
+            config.printer(Printer.Recast)
           } else {
-            throw new Error(`unexpected printer value: ${rawPrinter}`);
+            throw new Error(`unexpected printer value: ${rawPrinter}`)
           }
-          break;
+          break
         }
 
         case '-r':
         case '--require':
-          i++;
-          config.addRequire(getRequirableModulePath(this.args[i]));
-          break;
+          i++
+          config.addRequire(getRequirableModulePath(this.args[i]))
+          break
 
         case '--transpile-plugins':
         case '--no-transpile-plugins':
-          config.transpilePlugins(arg === '--transpile-plugins');
-          break;
+          config.transpilePlugins(arg === '--transpile-plugins')
+          break
 
         case '--find-babel-config':
         case '--no-find-babel-config':
-          config.findBabelConfig(arg === '--find-babel-config');
-          break;
+          config.findBabelConfig(arg === '--find-babel-config')
+          break
 
         case '--extensions':
-          i++;
+          i++
           config.extensions(
             new Set(
               this.args[i]
                 .split(',')
-                .map(ext => (ext[0] === '.' ? ext : `.${ext}`))
+                .map((ext) => (ext[0] === '.' ? ext : `.${ext}`))
             )
-          );
-          break;
+          )
+          break
 
         case '--add-extension':
-          i++;
-          config.addExtension(this.args[i]);
-          break;
+          i++
+          config.addExtension(this.args[i])
+          break
 
         case '--source-type': {
-          i++;
-          const sourceType = this.args[i];
+          i++
+          const sourceType = this.args[i]
           if (
             sourceType === 'module' ||
             sourceType === 'script' ||
             sourceType === 'unambiguous'
           ) {
-            config.sourceType(sourceType);
+            config.sourceType(sourceType)
           } else {
             throw new Error(
               `expected '--source-type' to be one of "module", "script", ` +
                 `or "unambiguous" but got: "${sourceType}"`
-            );
+            )
           }
-          break;
+          break
         }
 
         case '-s':
         case '--stdio':
-          config.stdio(true);
-          break;
+          config.stdio(true)
+          break
 
         case '-h':
         case '--help':
-          return { kind: 'help' };
+          return { kind: 'help' }
 
         case '--version':
-          return { kind: 'version' };
+          return { kind: 'version' }
 
         case '-d':
         case '--dry':
-          config.dry(true);
-          break;
+          config.dry(true)
+          break
 
         default:
           if (arg[0] === '-') {
-            throw new Error(`unexpected option: ${arg}`);
+            throw new Error(`unexpected option: ${arg}`)
           } else {
             if (hasGlob(arg)) {
-              config.addSourcePaths(...globSync(arg));
+              config.addSourcePaths(...globSync(arg))
             } else {
-              config.addSourcePath(arg);
+              config.addSourcePath(arg)
             }
           }
-          break;
+          break
       }
     }
 
     return {
       kind: 'run',
-      config: config.build()
-    };
+      config: config.build(),
+    }
   }
 }
 
@@ -174,14 +174,14 @@ export default class Options {
  */
 function getRequirableModulePath(modulePath: string): string {
   if (existsSync(modulePath)) {
-    return resolve(modulePath);
+    return resolve(modulePath)
   }
 
   for (const ext of RequireableExtensions) {
     if (existsSync(modulePath + ext)) {
-      return resolve(modulePath + ext);
+      return resolve(modulePath + ext)
     }
   }
 
-  return resolveSync(modulePath, { basedir: process.cwd() });
+  return resolveSync(modulePath, { basedir: process.cwd() })
 }

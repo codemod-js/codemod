@@ -1,14 +1,14 @@
-import * as t from '@babel/types';
-import * as m from '../../src';
-import js from './utils/parse/js';
-import generate from '@babel/generator';
-import traverse, { NodePath } from '@babel/traverse';
-import dedent = require('dedent');
-import { expression } from './utils/builders';
-import match from '../utils/match';
-import convertStaticClassToNamedExports from '../../examples/convert-static-class-to-named-exports';
-import convertQUnitAssertExpectToAssertAsync from '../../examples/convert-qunit-assert-expect-to-assert-async';
-import { transform } from '@codemod/core';
+import * as t from '@babel/types'
+import * as m from '../../src'
+import js from './utils/parse/js'
+import generate from '@babel/generator'
+import traverse, { NodePath } from '@babel/traverse'
+import dedent = require('dedent')
+import { expression } from './utils/builders'
+import match from '../utils/match'
+import convertStaticClassToNamedExports from '../../examples/convert-static-class-to-named-exports'
+import convertQUnitAssertExpectToAssertAsync from '../../examples/convert-qunit-assert-expect-to-assert-async'
+import { transform } from '@codemod/core'
 
 /**
  * This test demonstrates using captures to extract parts of an AST for use in
@@ -43,9 +43,9 @@ test('codemod: unwrap unneeded IIFE', () => {
     function foo() {
       return (() => 1)();
     }
-  `);
+  `)
 
-  let body: m.CapturedMatcher<t.Expression | t.BlockStatement>;
+  let body: m.CapturedMatcher<t.Expression | t.BlockStatement>
 
   const returnedIIFEMatcher = m.returnStatement(
     m.callExpression(
@@ -54,26 +54,26 @@ test('codemod: unwrap unneeded IIFE', () => {
         (body = m.capture(m.or(m.anyExpression(), m.blockStatement())))
       ) as m.Matcher<t.Expression>
     )
-  );
+  )
 
   traverse(ast, {
     ReturnStatement(path: NodePath<t.ReturnStatement>): void {
       match(returnedIIFEMatcher, { body }, path.node, ({ body }) => {
         if (t.isExpression(body)) {
-          path.replaceWith(t.returnStatement(body));
+          path.replaceWith(t.returnStatement(body))
         } else {
-          path.replaceWithMultiple(body.body);
+          path.replaceWithMultiple(body.body)
         }
-      });
-    }
-  });
+      })
+    },
+  })
 
   expect(generate(ast).code).toEqual(dedent`
     function foo() {
       return 1;
     }
-  `);
-});
+  `)
+})
 
 test('codemod: remove return labels', () => {
   const ast = js(dedent`
@@ -83,11 +83,11 @@ test('codemod: remove return labels', () => {
       console.log("about to return");
       return (classlist = classes.join(" "));
     }
-  `);
-  let labelDeclaration: m.CapturedMatcher<t.VariableDeclaration>;
-  let label: m.CapturedMatcher<string>;
-  let returnStatement: m.CapturedMatcher<t.ReturnStatement>;
-  let value: m.CapturedMatcher<t.Expression>;
+  `)
+  let labelDeclaration: m.CapturedMatcher<t.VariableDeclaration>
+  let label: m.CapturedMatcher<string>
+  let returnStatement: m.CapturedMatcher<t.ReturnStatement>
+  let value: m.CapturedMatcher<t.Expression>
 
   const returnLabelFunctionMatcher = m.function(
     undefined,
@@ -118,7 +118,7 @@ test('codemod: remove return labels', () => {
         m.zeroOrMore()
       )
     )
-  );
+  )
 
   function processFunction(path: NodePath<t.Function>): void {
     match(
@@ -126,26 +126,26 @@ test('codemod: remove return labels', () => {
       { returnStatement, value, labelDeclaration },
       path.node,
       ({ returnStatement, value, labelDeclaration }) => {
-        const bodyPath = path.get('body');
+        const bodyPath = path.get('body')
         if (bodyPath.isBlockStatement()) {
           const labelDeclarationPath = bodyPath
             .get('body')
-            .find(statementPath => statementPath.node === labelDeclaration);
+            .find((statementPath) => statementPath.node === labelDeclaration)
 
           if (labelDeclarationPath) {
-            labelDeclarationPath.remove();
+            labelDeclarationPath.remove()
           }
         }
-        returnStatement.argument = value;
+        returnStatement.argument = value
       }
-    );
+    )
   }
 
   traverse(ast, {
     FunctionDeclaration: processFunction,
     FunctionExpression: processFunction,
-    ArrowFunctionExpression: processFunction
-  });
+    ArrowFunctionExpression: processFunction,
+  })
 
   expect(generate(ast).code).toEqual(dedent`
     function foo() {
@@ -153,8 +153,8 @@ test('codemod: remove return labels', () => {
       console.log("about to return");
       return classes.join(" ");
     }
-  `);
-});
+  `)
+})
 
 test('codemod: assert to jest expect', () => {
   const ast = js(dedent`
@@ -162,10 +162,10 @@ test('codemod: assert to jest expect', () => {
     assert.deepEqual(b, {});
     assert.ok(c);
     assert.ok(!d);
-  `);
+  `)
 
-  let actual: m.CapturedMatcher<t.Expression>;
-  let expected: m.CapturedMatcher<t.Expression>;
+  let actual: m.CapturedMatcher<t.Expression>
+  let expected: m.CapturedMatcher<t.Expression>
   const assertEqualMatcher = m.callExpression(
     m.memberExpression(
       m.identifier('assert'),
@@ -173,21 +173,21 @@ test('codemod: assert to jest expect', () => {
     ),
     [
       (actual = m.capture(m.anyExpression())),
-      (expected = m.capture(m.anyExpression()))
+      (expected = m.capture(m.anyExpression())),
     ]
-  );
+  )
 
-  let falsyValue: m.CapturedMatcher<t.Expression>;
+  let falsyValue: m.CapturedMatcher<t.Expression>
   const assertFalsyMatcher = m.callExpression(
     m.memberExpression(m.identifier('assert'), m.identifier('ok')),
     [m.unaryExpression('!', (falsyValue = m.capture(m.anyExpression())))]
-  );
+  )
 
-  let truthValue: m.CapturedMatcher<t.Expression>;
+  let truthValue: m.CapturedMatcher<t.Expression>
   const assertTruthyMatcher = m.callExpression(
     m.memberExpression(m.identifier('assert'), m.identifier('ok')),
     [(truthValue = m.capture())]
-  );
+  )
 
   traverse(ast, {
     CallExpression(path: NodePath<t.CallExpression>): void {
@@ -205,9 +205,9 @@ test('codemod: assert to jest expect', () => {
               ),
               [expected]
             )
-          );
+          )
         }
-      );
+      )
 
       // replace e.g. `assert.ok(!a)` with `expect(a).toBeFalsy()`
       match(assertFalsyMatcher, { falsyValue }, path.node, ({ falsyValue }) => {
@@ -219,8 +219,8 @@ test('codemod: assert to jest expect', () => {
             ),
             []
           )
-        );
-      });
+        )
+      })
 
       // replace e.g. `assert.ok(a)` with `expect(a).toBeTruthy()`
       match(
@@ -236,38 +236,38 @@ test('codemod: assert to jest expect', () => {
               ),
               []
             )
-          );
+          )
         }
-      );
-    }
-  });
+      )
+    },
+  })
 
   expect(generate(ast).code).toEqual(dedent`
     expect(a).toEqual(7);
     expect(b).toEqual({});
     expect(c).toBeTruthy();
     expect(d).toBeFalsy();
-  `);
-});
+  `)
+})
 
 test('codemod: double-equal null to triple-equal', () => {
-  const ast = js('a == null;');
-  const left = m.capture(m.identifier());
-  const eqeqNullMatcher = m.binaryExpression('==', left, m.nullLiteral());
+  const ast = js('a == null;')
+  const left = m.capture(m.identifier())
+  const eqeqNullMatcher = m.binaryExpression('==', left, m.nullLiteral())
   const eqNullOrUndefined = expression<{
-    left: t.Expression;
-  }>('%%left%% === null || %%left%% === undefined');
+    left: t.Expression
+  }>('%%left%% === null || %%left%% === undefined')
 
   traverse(ast, {
     BinaryExpression(path: NodePath<t.BinaryExpression>): void {
       match(eqeqNullMatcher, { left }, path.node, ({ left }) => {
-        path.replaceWith(eqNullOrUndefined({ left }));
-      });
-    }
-  });
+        path.replaceWith(eqNullOrUndefined({ left }))
+      })
+    },
+  })
 
-  expect(generate(ast).code).toEqual('a === null || a === undefined;');
-});
+  expect(generate(ast).code).toEqual('a === null || a === undefined;')
+})
 
 test('codemod: assert.expect to assert.async', () => {
   const input = dedent`
@@ -280,11 +280,11 @@ test('codemod: assert.expect to assert.async', () => {
       });
       doStuff();
     });
-  `;
+  `
 
   const output = transform(input, {
-    plugins: [convertQUnitAssertExpectToAssertAsync()]
-  });
+    plugins: [convertQUnitAssertExpectToAssertAsync()],
+  })
 
   expect(output && output.code).toEqual(dedent`
     test("my test", function (assert) {
@@ -297,8 +297,8 @@ test('codemod: assert.expect to assert.async', () => {
       });
       doStuff();
     });
-  `);
-});
+  `)
+})
 
 test('codemod: convert static exported class to named exports', () => {
   const code = dedent`
@@ -327,11 +327,11 @@ test('codemod: convert static exported class to named exports', () => {
     }
 
     export default MobileAppUpsellHelper;
-  `;
+  `
 
   const output = transform(code, {
-    plugins: [convertStaticClassToNamedExports()]
-  });
+    plugins: [convertStaticClassToNamedExports()],
+  })
 
   expect(output && output.code).toEqual(dedent`
     export function getIosAppLink(specialTrackingLink) {
@@ -355,5 +355,5 @@ test('codemod: convert static exported class to named exports', () => {
     export function getHideAppBanner() {
       return CookieHelper.get("hide_app_banner");
     }
-  `);
-});
+  `)
+})

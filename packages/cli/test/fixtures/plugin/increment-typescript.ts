@@ -1,18 +1,18 @@
-import { NodePath } from '@babel/traverse';
-import { PluginObj } from '@babel/core';
-import * as t from '@babel/types';
+import { NodePath } from '@babel/traverse'
+import { PluginObj } from '@babel/core'
+import * as t from '@babel/types'
 
 enum IncrementValues {
   One = 1,
-  Two = 2
+  Two = 2,
 }
 
-export default function(): PluginObj {
+export default function (): PluginObj {
   return {
     visitor: {
       NumericLiteral(path: NodePath<t.NumericLiteral>) {
-        path.node.value += IncrementValues.One;
-      }
-    }
-  };
+        path.node.value += IncrementValues.One
+      },
+    },
+  }
 }

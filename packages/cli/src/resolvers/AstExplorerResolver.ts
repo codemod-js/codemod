@@ -1,12 +1,12 @@
-import * as fs from 'fs';
-import { URL } from 'whatwg-url';
-import NetworkResolver from './NetworkResolver';
-import { promisify } from 'util';
+import * as fs from 'fs'
+import { URL } from 'whatwg-url'
+import NetworkResolver from './NetworkResolver'
+import { promisify } from 'util'
 
-const readFile = promisify(fs.readFile);
-const writeFile = promisify(fs.writeFile);
+const readFile = promisify(fs.readFile)
+const writeFile = promisify(fs.writeFile)
 
-const EDITOR_HASH_PATTERN = /^#\/gist\/(\w+)(?:\/(\w+))?$/;
+const EDITOR_HASH_PATTERN = /^#\/gist\/(\w+)(?:\/(\w+))?$/
 
 /**
  * Resolves plugins from AST Explorer transforms.
@@ -18,33 +18,33 @@ export default class AstExplorerResolver extends NetworkResolver {
   constructor(
     private readonly baseURL: URL = new URL('https://astexplorer.net/')
   ) {
-    super();
+    super()
   }
 
   async canResolve(source: string): Promise<boolean> {
     if (await super.canResolve(source)) {
-      const url = new URL(await this.normalize(source));
+      const url = new URL(await this.normalize(source))
 
       return (
         this.matchesHost(url) &&
         /^\/api\/v1\/gist\/[a-f0-9]+(\/[a-f0-9]+)?$/.test(url.pathname)
-      );
+      )
     }
 
-    return false;
+    return false
   }
 
   async resolve(source: string): Promise<string> {
-    const filename = await super.resolve(await this.normalize(source));
-    const text = await readFile(filename, { encoding: 'utf8' });
-    let data;
+    const filename = await super.resolve(await this.normalize(source))
+    const text = await readFile(filename, { encoding: 'utf8' })
+    let data
 
     try {
-      data = JSON.parse(text);
+      data = JSON.parse(text)
     } catch {
       throw new Error(
         `data loaded from ${source} is not JSON: ${text.slice(0, 100)}`
-      );
+      )
     }
 
     if (
@@ -55,44 +55,44 @@ export default class AstExplorerResolver extends NetworkResolver {
     ) {
       throw new Error(
         "'transform.js' could not be found, perhaps transform is disabled"
-      );
+      )
     }
 
     await writeFile(filename, data.files['transform.js'].content, {
-      encoding: 'utf8'
-    });
+      encoding: 'utf8',
+    })
 
-    return filename;
+    return filename
   }
 
   async normalize(source: string): Promise<string> {
-    const url = new URL(source);
+    const url = new URL(source)
 
     if (!this.matchesHost(url)) {
-      return source;
+      return source
     }
 
-    const match = url.hash.match(EDITOR_HASH_PATTERN);
+    const match = url.hash.match(EDITOR_HASH_PATTERN)
 
     if (!match) {
-      return source;
+      return source
     }
 
-    let path = `/api/v1/gist/${match[1]}`;
+    let path = `/api/v1/gist/${match[1]}`
 
     if (match[2]) {
-      path += `/${match[2]}`;
+      path += `/${match[2]}`
     }
 
-    return new URL(path, this.baseURL).toString();
+    return new URL(path, this.baseURL).toString()
   }
 
   private matchesHost(url: URL): boolean {
     if (url.host !== this.baseURL.host) {
-      return false;
+      return false
     }
 
     // use SSL even if the URL doesn't use it
-    return url.protocol === this.baseURL.protocol || url.protocol === 'http:';
+    return url.protocol === this.baseURL.protocol || url.protocol === 'http:'
   }
 }

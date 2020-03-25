@@ -1,4 +1,4 @@
-import { spawn } from 'child_process';
+import { spawn } from 'child_process'
 
 export default async function runExternalCommand(
   command: string,
@@ -10,13 +10,13 @@ export default async function runExternalCommand(
   env?: NodeJS.ProcessEnv
 ): Promise<number> {
   return new Promise((resolve, reject) => {
-    stdout.write(`\x1b[38;5;8m$ ${command} ${args.join(' ')}\x1b[0m\n`);
+    stdout.write(`\x1b[38;5;8m$ ${command} ${args.join(' ')}\x1b[0m\n`)
     const proc = spawn(command, args, {
       cwd,
       stdio: [stdin, stdout, stderr],
-      env
-    });
-    proc.once('close', resolve);
-    proc.once('error', reject);
-  });
+      env,
+    })
+    proc.once('close', resolve)
+    proc.once('error', reject)
+  })
 }

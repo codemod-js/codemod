@@ -1,13 +1,13 @@
-import { extname, join } from 'path';
-import { EntryType, RealSystem, System } from './System';
-import { Source } from './TransformRunner';
+import { extname, join } from 'path'
+import { EntryType, RealSystem, System } from './System'
+import { Source } from './TransformRunner'
 
 export type PathPredicate = (
   path: string,
   basename: string,
   root: string,
   type: EntryType
-) => boolean;
+) => boolean
 
 /**
  * Builds an iterator that loops through all the files in the given paths,
@@ -20,27 +20,27 @@ export default function* iterateSources(
   sys: System = RealSystem
 ): IterableIterator<Source> {
   for (const path of paths) {
-    const type = sys.getEntryType(path);
+    const type = sys.getEntryType(path)
 
     if (type === EntryType.Directory) {
       for (const child of sys.readdir(path)) {
-        const childPath = join(path, child);
-        const childType = sys.getEntryType(childPath);
+        const childPath = join(path, child)
+        const childType = sys.getEntryType(childPath)
 
         if (ignore(childPath, child, path, childType)) {
-          continue;
+          continue
         }
 
         if (childType === EntryType.File) {
           if (!extensions || extensions.has(extname(child))) {
-            yield* iterateSources([childPath], extensions, ignore, sys);
+            yield* iterateSources([childPath], extensions, ignore, sys)
           }
         } else if (childType === EntryType.Directory) {
-          yield* iterateSources([childPath], extensions, ignore, sys);
+          yield* iterateSources([childPath], extensions, ignore, sys)
         }
       }
     } else if (type === EntryType.File) {
-      yield new Source(path, sys.readFile(path, 'utf8'));
+      yield new Source(path, sys.readFile(path, 'utf8'))
     }
   }
 }

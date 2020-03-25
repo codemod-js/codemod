@@ -1,92 +1,87 @@
-import { ok, strictEqual } from 'assert';
-import * as fs from 'fs';
-import NetworkResolver from '../../../src/resolvers/NetworkResolver';
-import { startServer } from '../../helpers/TestServer';
-import { promisify } from 'util';
+import { ok, strictEqual } from 'assert'
+import * as fs from 'fs'
+import NetworkResolver from '../../../src/resolvers/NetworkResolver'
+import { startServer } from '../../helpers/TestServer'
+import { promisify } from 'util'
 
-const readFile = promisify(fs.readFile);
+const readFile = promisify(fs.readFile)
 
-describe('NetworkResolver', function() {
-  it('can load data from a URL', async function() {
+describe('NetworkResolver', function () {
+  it('can load data from a URL', async function () {
     const server = await startServer((req, res) => {
-      res.end('here you go!');
-    });
+      res.end('here you go!')
+    })
 
     try {
-      const resolver = new NetworkResolver();
-      const url = server.requestURL('/gimme');
+      const resolver = new NetworkResolver()
+      const url = server.requestURL('/gimme')
 
-      ok(
-        await resolver.canResolve(url.toString()),
-        `can load from URL: ${url}`
-      );
+      ok(await resolver.canResolve(url.toString()), `can load from URL: ${url}`)
 
-      const filename = await resolver.resolve(url.toString());
+      const filename = await resolver.resolve(url.toString())
 
       strictEqual(
         await readFile(filename, { encoding: 'utf8' }),
         'here you go!'
-      );
+      )
     } finally {
-      await server.stop();
+      await server.stop()
     }
-  });
+  })
 
-  it('only resolves absolute HTTP URLs', async function() {
-    const resolver = new NetworkResolver();
+  it('only resolves absolute HTTP URLs', async function () {
+    const resolver = new NetworkResolver()
 
-    ok(await resolver.canResolve('http://example.com/'));
-    ok(await resolver.canResolve('https://example.com/'));
-    ok(!(await resolver.canResolve('/')));
-    ok(!(await resolver.canResolve('afp://192.168.0.1/volume/folder/file.js')));
-    ok(!(await resolver.canResolve('data:,Hello%2C%20World!')));
-  });
+    ok(await resolver.canResolve('http://example.com/'))
+    ok(await resolver.canResolve('https://example.com/'))
+    ok(!(await resolver.canResolve('/')))
+    ok(!(await resolver.canResolve('afp://192.168.0.1/volume/folder/file.js')))
+    ok(!(await resolver.canResolve('data:,Hello%2C%20World!')))
+  })
 
-  it('follows redirects', async function() {
+  it('follows redirects', async function () {
     const server = await startServer((req, res) => {
       if (req.url === '/') {
-        res.writeHead(302, { Location: '/plugin' });
-        res.end();
+        res.writeHead(302, { Location: '/plugin' })
+        res.end()
       } else if (req.url === '/plugin') {
-        res.end('redirected successfully!');
+        res.end('redirected successfully!')
       } else {
-        res.writeHead(404);
-        res.end();
+        res.writeHead(404)
+        res.end()
       }
-    });
+    })
 
     try {
-      const resolver = new NetworkResolver();
-      const filename = await resolver.resolve(
-        server.requestURL('/').toString()
-      );
+      const resolver = new NetworkResolver()
+      const filename = await resolver.resolve(server.requestURL('/').toString())
 
       strictEqual(
         await readFile(filename, { encoding: 'utf8' }),
         'redirected successfully!'
-      );
+      )
     } finally {
-      await server.stop();
+      await server.stop()
     }
-  });
+  })
 
-  it('throws if it gets a non-200 response', async function() {
+  it('throws if it gets a non-200 response', async function () {
     const server = await startServer((req, res) => {
-      res.statusCode = 400;
-      res.end();
-    });
+      res.statusCode = 400
+      res.end()
+    })
 
     try {
-      const resolver = new NetworkResolver();
-      const url = server.requestURL('/');
+      const resolver = new NetworkResolver()
+      const url = server.requestURL('/')
 
-      await resolver.resolve(url.toString());
+      await resolver.resolve(url.toString())
 
-      ok(false, 'expected resolution to fail');
+      ok(false, 'expected resolution to fail')
     } catch (err) {
-      strictEqual(err.message, 'Response code 400 (Bad Request)');
+      strictEqual(err.message, 'Response code 400 (Bad Request)')
     } finally {
-      await server.stop();
+      await server.stop()
     }
-  });
-});
+  })
+})

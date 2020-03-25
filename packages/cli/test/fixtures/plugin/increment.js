@@ -1,9 +1,9 @@
-module.exports = function() {
+module.exports = function () {
   return {
     visitor: {
       NumericLiteral(path) {
-        path.node.value += 1;
-      }
-    }
-  };
-};
+        path.node.value += 1
+      },
+    },
+  }
+}

@@ -27,14 +27,14 @@
  * });
  */
 
-import * as t from '@babel/types';
-import * as m from '../src';
-import { PluginObj } from '@babel/core';
-import { NodePath } from '@babel/traverse';
-import { statement } from '../src/__tests__/utils/builders';
+import * as t from '@babel/types'
+import * as m from '../src'
+import { PluginObj } from '@babel/core'
+import { NodePath } from '@babel/traverse'
+import { statement } from '../src/__tests__/utils/builders'
 
 // capture name of `assert` parameter
-const assertBinding = m.capture(m.anyString());
+const assertBinding = m.capture(m.anyString())
 
 // capture `assert.expect(<number>);` inside the async test
 const assertExpect = m.capture(
@@ -47,7 +47,7 @@ const assertExpect = m.capture(
       [m.numericLiteral()]
     )
   )
-);
+)
 
 // capture `assert.<method>(…);` inside the callback
 const callbackAssertion = m.capture(
@@ -59,12 +59,12 @@ const callbackAssertion = m.capture(
       )
     )
   )
-);
+)
 
 // callback function body
 const callbackFunctionBody = m.containerOf(
   m.blockStatement(m.anyList(m.zeroOrMore(), callbackAssertion, m.zeroOrMore()))
-);
+)
 
 // async test function body
 const asyncTestFunctionBody = m.blockStatement(
@@ -86,7 +86,7 @@ const asyncTestFunctionBody = m.blockStatement(
     ),
     m.zeroOrMore()
   )
-);
+)
 
 // match the whole `test('description', function(assert) { … })`
 const asyncTestMatcher = m.callExpression(m.identifier('test'), [
@@ -95,14 +95,14 @@ const asyncTestMatcher = m.callExpression(m.identifier('test'), [
     undefined,
     [m.identifier(assertBinding)],
     asyncTestFunctionBody
-  )
-]);
+  ),
+])
 
-export default function(): PluginObj {
+export default function (): PluginObj {
   const makeDone = statement<{ assert: t.Identifier }>(
     'const done = %%assert%%.async();'
-  );
-  const callDone = statement('done();');
+  )
+  const callDone = statement('done();')
 
   return {
     visitor: {
@@ -112,17 +112,17 @@ export default function(): PluginObj {
           {
             assertExpect,
             callbackAssertion,
-            assertBinding
+            assertBinding,
           },
           path,
           ({ assertExpect, callbackAssertion, assertBinding }) => {
             assertExpect.replaceWith(
               makeDone({ assert: t.identifier(assertBinding) })
-            );
-            callbackAssertion.insertAfter(callDone());
+            )
+            callbackAssertion.insertAfter(callDone())
           }
-        );
-      }
-    }
-  };
+        )
+      },
+    },
+  }
 }

@@ -1,18 +1,18 @@
-import * as Babel from '@babel/core';
-import { ParserOptions } from '@codemod/parser';
-import { basename, extname } from 'path';
-import { install } from 'source-map-support';
-import { TransformableExtensions } from './extensions';
-import { PathPredicate } from './iterateSources';
-import PluginLoader from './PluginLoader';
-import AstExplorerResolver from './resolvers/AstExplorerResolver';
-import FileSystemResolver from './resolvers/FileSystemResolver';
-import NetworkResolver from './resolvers/NetworkResolver';
-import PackageResolver from './resolvers/PackageResolver';
-import { disable, enable } from './transpile-requires';
+import * as Babel from '@babel/core'
+import { ParserOptions } from '@codemod/parser'
+import { basename, extname } from 'path'
+import { install } from 'source-map-support'
+import { TransformableExtensions } from './extensions'
+import { PathPredicate } from './iterateSources'
+import PluginLoader from './PluginLoader'
+import AstExplorerResolver from './resolvers/AstExplorerResolver'
+import FileSystemResolver from './resolvers/FileSystemResolver'
+import NetworkResolver from './resolvers/NetworkResolver'
+import PackageResolver from './resolvers/PackageResolver'
+import { disable, enable } from './transpile-requires'
 
 export class Plugin {
-  readonly declaredName?: string;
+  readonly declaredName?: string
 
   constructor(
     readonly rawPlugin: (babel: typeof Babel) => Babel.PluginObj,
@@ -20,10 +20,10 @@ export class Plugin {
     readonly source?: string,
     readonly resolvedPath?: string
   ) {
-    const instance = rawPlugin(Babel);
+    const instance = rawPlugin(Babel)
 
     if (instance.name) {
-      this.declaredName = instance.name;
+      this.declaredName = instance.name
     }
   }
 }
@@ -34,13 +34,13 @@ function defaultIgnorePredicate(path: string, basename: string): boolean {
     basename.startsWith('.') ||
     // ignore TypeScript declaration files
     basename.endsWith('.d.ts')
-  );
+  )
 }
 
 export enum Printer {
   Recast = 'recast',
   Prettier = 'prettier',
-  Babel = 'babel'
+  Babel = 'babel',
 }
 
 export default class Config {
@@ -62,247 +62,245 @@ export default class Config {
 
   private pluginLoader = new PluginLoader([
     new FileSystemResolver(),
-    new PackageResolver()
-  ]);
+    new PackageResolver(),
+  ])
 
   private remotePluginLoader = new PluginLoader([
     new AstExplorerResolver(),
-    new NetworkResolver()
-  ]);
+    new NetworkResolver(),
+  ])
 
-  private _pluginCache?: Array<Plugin>;
+  private _pluginCache?: Array<Plugin>
 
   async getPlugins(): Promise<Array<Plugin>> {
     if (!this._pluginCache) {
       const localPlugins = Promise.all(
-        this.localPlugins.map(async localPlugin => {
-          const pluginExports = await this.pluginLoader.load(localPlugin);
-          const defaultExport = pluginExports['default'] || pluginExports;
+        this.localPlugins.map(async (localPlugin) => {
+          const pluginExports = await this.pluginLoader.load(localPlugin)
+          const defaultExport = pluginExports['default'] || pluginExports
 
           return new Plugin(
             defaultExport,
             basename(localPlugin, extname(localPlugin))
-          );
+          )
         })
-      );
+      )
 
       const remotePlugins = Promise.all(
-        this.remotePlugins.map(async remotePlugin => {
-          const pluginExports = await this.remotePluginLoader.load(
-            remotePlugin
-          );
-          const defaultExport = pluginExports['default'] || pluginExports;
+        this.remotePlugins.map(async (remotePlugin) => {
+          const pluginExports = await this.remotePluginLoader.load(remotePlugin)
+          const defaultExport = pluginExports['default'] || pluginExports
 
           return new Plugin(
             defaultExport,
             basename(remotePlugin, extname(remotePlugin))
-          );
+          )
         })
-      );
+      )
 
-      this._pluginCache = [...(await localPlugins), ...(await remotePlugins)];
+      this._pluginCache = [...(await localPlugins), ...(await remotePlugins)]
     }
 
-    return this._pluginCache;
+    return this._pluginCache
   }
 
   loadRequires(): void {
     for (const modulePath of this.requires) {
-      require(modulePath);
+      require(modulePath)
     }
   }
 
   loadBabelTranspile(): void {
     if (this.transpilePlugins) {
-      enable(this.findBabelConfig);
-      install();
+      enable(this.findBabelConfig)
+      install()
     }
   }
 
   unloadBabelTranspile(): void {
     if (this.transpilePlugins) {
-      disable();
+      disable()
     }
   }
 
   async getPlugin(name: string): Promise<Plugin | null> {
     for (const plugin of await this.getPlugins()) {
       if (plugin.declaredName === name || plugin.inferredName === name) {
-        return plugin;
+        return plugin
       }
     }
 
-    return null;
+    return null
   }
 
   async getBabelPlugins(): Promise<Array<Babel.PluginItem>> {
-    const result: Array<Babel.PluginItem> = [];
+    const result: Array<Babel.PluginItem> = []
 
     for (const plugin of await this.getPlugins()) {
       const options =
         (plugin.declaredName && this.pluginOptions.get(plugin.declaredName)) ||
-        this.pluginOptions.get(plugin.inferredName);
+        this.pluginOptions.get(plugin.inferredName)
 
       if (options) {
-        result.push([plugin.rawPlugin, options]);
+        result.push([plugin.rawPlugin, options])
       } else {
-        result.push(plugin.rawPlugin);
+        result.push(plugin.rawPlugin)
       }
     }
 
-    return result;
+    return result
   }
 
   async getBabelPlugin(name: string): Promise<Babel.PluginItem | null> {
-    const plugin = await this.getPlugin(name);
+    const plugin = await this.getPlugin(name)
 
     if (!plugin) {
-      return null;
+      return null
     }
 
-    const options = this.pluginOptions.get(name);
+    const options = this.pluginOptions.get(name)
 
     if (options) {
-      return [plugin.rawPlugin, options];
+      return [plugin.rawPlugin, options]
     } else {
-      return plugin.rawPlugin;
+      return plugin.rawPlugin
     }
   }
 }
 
 export class ConfigBuilder {
-  private _sourcePaths?: Array<string>;
-  private _localPlugins?: Array<string>;
-  private _remotePlugins?: Array<string>;
-  private _pluginOptions?: Map<string, object>;
-  private _printer?: Printer;
-  private _extensions: Set<string> = new Set(TransformableExtensions);
-  private _sourceType: ParserOptions['sourceType'] = 'module';
-  private _requires?: Array<string>;
-  private _transpilePlugins?: boolean;
-  private _findBabelConfig?: boolean;
-  private _ignore?: PathPredicate;
-  private _stdio?: boolean;
-  private _dry?: boolean;
+  private _sourcePaths?: Array<string>
+  private _localPlugins?: Array<string>
+  private _remotePlugins?: Array<string>
+  private _pluginOptions?: Map<string, object>
+  private _printer?: Printer
+  private _extensions: Set<string> = new Set(TransformableExtensions)
+  private _sourceType: ParserOptions['sourceType'] = 'module'
+  private _requires?: Array<string>
+  private _transpilePlugins?: boolean
+  private _findBabelConfig?: boolean
+  private _ignore?: PathPredicate
+  private _stdio?: boolean
+  private _dry?: boolean
 
   sourcePaths(value: Array<string>): this {
-    this._sourcePaths = value;
-    return this;
+    this._sourcePaths = value
+    return this
   }
 
   addSourcePath(value: string): this {
     if (!this._sourcePaths) {
-      this._sourcePaths = [];
+      this._sourcePaths = []
     }
-    this._sourcePaths.push(value);
-    return this;
+    this._sourcePaths.push(value)
+    return this
   }
 
   addSourcePaths(...values: Array<string>): this {
     for (const value of values) {
-      this.addSourcePath(value);
+      this.addSourcePath(value)
     }
-    return this;
+    return this
   }
 
   localPlugins(value: Array<string>): this {
-    this._localPlugins = value;
-    return this;
+    this._localPlugins = value
+    return this
   }
 
   addLocalPlugin(value: string): this {
     if (!this._localPlugins) {
-      this._localPlugins = [];
+      this._localPlugins = []
     }
-    this._localPlugins.push(value);
-    return this;
+    this._localPlugins.push(value)
+    return this
   }
 
   remotePlugins(value: Array<string>): this {
-    this._remotePlugins = value;
-    return this;
+    this._remotePlugins = value
+    return this
   }
 
   addRemotePlugin(value: string): this {
     if (!this._remotePlugins) {
-      this._remotePlugins = [];
+      this._remotePlugins = []
     }
-    this._remotePlugins.push(value);
-    return this;
+    this._remotePlugins.push(value)
+    return this
   }
 
   pluginOptions(value: Map<string, object>): this {
-    this._pluginOptions = value;
-    return this;
+    this._pluginOptions = value
+    return this
   }
 
   setOptionsForPlugin(options: object, plugin: string): this {
     if (!this._pluginOptions) {
-      this._pluginOptions = new Map();
+      this._pluginOptions = new Map()
     }
-    this._pluginOptions.set(plugin, options);
-    return this;
+    this._pluginOptions.set(plugin, options)
+    return this
   }
 
   printer(value: Printer): this {
-    this._printer = value;
-    return this;
+    this._printer = value
+    return this
   }
 
   extensions(value: Set<string>): this {
-    this._extensions = value;
-    return this;
+    this._extensions = value
+    return this
   }
 
   addExtension(value: string): this {
     if (!this._extensions) {
-      this._extensions = new Set();
+      this._extensions = new Set()
     }
-    this._extensions.add(value);
-    return this;
+    this._extensions.add(value)
+    return this
   }
 
   sourceType(value: ParserOptions['sourceType']): this {
-    this._sourceType = value;
-    return this;
+    this._sourceType = value
+    return this
   }
 
   requires(value: Array<string>): this {
-    this._requires = value;
-    return this;
+    this._requires = value
+    return this
   }
 
   addRequire(value: string): this {
     if (!this._requires) {
-      this._requires = [];
+      this._requires = []
     }
-    this._requires.push(value);
-    return this;
+    this._requires.push(value)
+    return this
   }
 
   transpilePlugins(value: boolean): this {
-    this._transpilePlugins = value;
-    return this;
+    this._transpilePlugins = value
+    return this
   }
 
   findBabelConfig(value: boolean): this {
-    this._findBabelConfig = value;
-    return this;
+    this._findBabelConfig = value
+    return this
   }
 
   ignore(value: PathPredicate): this {
-    this._ignore = value;
-    return this;
+    this._ignore = value
+    return this
   }
 
   stdio(value: boolean): this {
-    this._stdio = value;
-    return this;
+    this._stdio = value
+    return this
   }
 
   dry(value: boolean): this {
-    this._dry = value;
-    return this;
+    this._dry = value
+    return this
   }
 
   build(): Config {
@@ -320,6 +318,6 @@ export class ConfigBuilder {
       this._ignore,
       this._stdio,
       this._dry
-    );
+    )
   }
 }
