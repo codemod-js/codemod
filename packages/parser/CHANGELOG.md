@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.7](https://github.com/codemod-js/codemod/compare/@codemod/parser@1.0.5...@codemod/parser@1.0.7) (2020-03-25)
+
+### Bug Fixes
+
+- ensure `topLevelAwait` plugin is enabled ([fc07ce5](https://github.com/codemod-js/codemod/commit/fc07ce5edfe465938a24e59a5e4e9b851ca7e645))
+- update babel dependencies ([0d9d569](https://github.com/codemod-js/codemod/commit/0d9d56985dbc5d47621073561cd1617116685e5d))
+- upgrade babel to 7.9.0 ([bfdc402](https://github.com/codemod-js/codemod/commit/bfdc402a6ec0d5a1068c02c07107e8f7148e8a1a))
+- upgrade prettier ([4a22030](https://github.com/codemod-js/codemod/commit/4a22030af417911cad1efe44111f9da38c1cc102))
+
 ## [1.0.3](https://github.com/codemod-js/codemod/compare/@codemod/parser@1.0.2...@codemod/parser@1.0.3) (2019-08-09)
 
 ### Bug Fixes
