@@ -1,22 +1,22 @@
-import { PluginObj } from '@babel/core';
+import { PluginObj } from '@babel/core'
 
 class Count {
   // This file exists to verify that class properties like ↓ can be loaded.
-  count = 0;
+  count = 0
 
   incr(): void {
-    this.count++;
+    this.count++
   }
 }
 
-export default function(): PluginObj {
-  const debuggerCount = new Count();
+export default function (): PluginObj {
+  const debuggerCount = new Count()
 
   return {
     visitor: {
       DebuggerStatement(): void {
-        debuggerCount.incr();
-      }
-    }
-  };
+        debuggerCount.incr()
+      },
+    },
+  }
 }

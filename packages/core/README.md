@@ -13,13 +13,13 @@ $ npm install @codemod/core
 ## Usage
 
 ```ts
-import { transform } from '@codemod/core';
+import { transform } from '@codemod/core'
 
 const result = transform('a ?? b', {
-  plugins: ['@babel/plugin-proposal-nullish-coalescing-operator']
-});
+  plugins: ['@babel/plugin-proposal-nullish-coalescing-operator'],
+})
 
-console.log(result.code);
+console.log(result.code)
 /*
 var _a;
 (_a = a) !== null && _a !== void 0 ? _a : b

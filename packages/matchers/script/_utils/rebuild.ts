@@ -1,40 +1,40 @@
 #!/usr/bin/env ts-node
 
-import * as t from '@babel/types';
-import { join } from 'path';
+import * as t from '@babel/types'
+import { join } from 'path'
 import {
   stringifyValidator,
   isValidatorOfType,
   toFunctionName,
   typeForValidator,
-  stringifyType
-} from './utils';
-import dedent = require('dedent');
-import { NodeField, BUILDER_KEYS, NODE_FIELDS } from '../../src/NodeTypes';
-import format from './format';
+  stringifyType,
+} from './utils'
+import dedent = require('dedent')
+import { NodeField, BUILDER_KEYS, NODE_FIELDS } from '../../src/NodeTypes'
+import format from './format'
 
-export const MATCHERS_FILE_PATH = join(__dirname, '../../src/matchers.ts');
+export const MATCHERS_FILE_PATH = join(__dirname, '../../src/matchers.ts')
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const toBindingIdentifierName: (name: string) => string = (t as any)
-  .toBindingIdentifierName;
+  .toBindingIdentifierName
 
 function stringifyMatcherForField(field: NodeField): string {
   const types = [
     `Matcher<${stringifyValidator(field.validate, 't.', '')}>`,
-    ...possiblePrimitiveTypesForField(field)
-  ];
+    ...possiblePrimitiveTypesForField(field),
+  ]
 
   if (
     isValidatorOfType('array', field.validate) &&
     'chainOf' in field.validate
   ) {
-    const elementType = typeForValidator(field.validate.chainOf[1]);
+    const elementType = typeForValidator(field.validate.chainOf[1])
 
     types.push(
       stringifyType(elementType, (type, value) => {
         if (t.isTSTypeReference(type)) {
-          return `Matcher<t.${value}>`;
+          return `Matcher<t.${value}>`
         } else if (
           t.isTSLiteralType(type) ||
           t.isTSBooleanKeyword(type) ||
@@ -43,44 +43,44 @@ function stringifyMatcherForField(field: NodeField): string {
           t.isTSUndefinedKeyword(type) ||
           t.isTSNullKeyword(type)
         ) {
-          return `Matcher<${value}>`;
+          return `Matcher<${value}>`
         }
       })
-    );
+    )
   }
 
   if (field.optional) {
-    types.push('null');
+    types.push('null')
   }
 
-  return types.join(' | ');
+  return types.join(' | ')
 }
 
 function possiblePrimitiveTypesForField(field: NodeField): Array<string> {
-  return ['string', 'number', 'boolean'].filter(type =>
+  return ['string', 'number', 'boolean'].filter((type) =>
     isValidatorOfType(type, field.validate)
-  );
+  )
 }
 
 interface SimpleWriter {
-  write(data: string): void;
+  write(data: string): void
 }
 
 function writeToString(write: (writer: SimpleWriter) => void): string {
-  let data = '';
+  let data = ''
 
   write({
     write(chunk: string): void {
-      data += chunk;
-    }
-  });
+      data += chunk
+    },
+  })
 
-  return data;
+  return data
 }
 
 function rebuildTo(out: SimpleWriter): string | void {
-  out.write(`/* eslint-disable */\n`);
-  out.write(`import * as t from '@babel/types';\n\n`);
+  out.write(`/* eslint-disable */\n`)
+  out.write(`import * as t from '@babel/types';\n\n`)
 
   out.write(dedent`
     export * from './matchers/spacers';
@@ -106,110 +106,110 @@ function rebuildTo(out: SimpleWriter): string | void {
     import tupleOf from './matchers/tupleOf';
     import { isNode } from './NodeTypes';
     import Matcher from './matchers/Matcher';
-  `);
+  `)
 
-  out.write('\n\n');
+  out.write('\n\n')
 
-  out.write('// aliases for keyword-named functions\n');
+  out.write('// aliases for keyword-named functions\n')
 
   const ALIASES = new Map([
     ['Import', 'import'],
-    ['Super', 'super']
-  ]);
+    ['Super', 'super'],
+  ])
 
   for (const [original, alias] of ALIASES.entries()) {
-    out.write(`export { ${original} as ${alias} }\n`);
+    out.write(`export { ${original} as ${alias} }\n`)
   }
 
-  out.write('\n');
+  out.write('\n')
 
   for (const type of Object.keys(BUILDER_KEYS).sort()) {
-    const keys = BUILDER_KEYS[type];
-    const fields = NODE_FIELDS[type];
-    const name = ALIASES.has(type) ? type : toFunctionName(type);
+    const keys = BUILDER_KEYS[type]
+    const fields = NODE_FIELDS[type]
+    const name = ALIASES.has(type) ? type : toFunctionName(type)
 
-    out.write(`export class ${type}Matcher extends Matcher<t.${type}> {\n`);
-    out.write(`  constructor(\n`);
+    out.write(`export class ${type}Matcher extends Matcher<t.${type}> {\n`)
+    out.write(`  constructor(\n`)
     for (const key of keys) {
-      const field = fields[key];
-      const binding = toBindingIdentifierName(key);
+      const field = fields[key]
+      const binding = toBindingIdentifierName(key)
       out.write(
         `    private readonly ${binding}?: ${stringifyMatcherForField(
           field
         )},\n`
-      );
+      )
     }
-    out.write(`  ) {\n`);
-    out.write(`    super();\n`);
-    out.write(`  }\n`);
-    out.write(`\n`);
+    out.write(`  ) {\n`)
+    out.write(`    super();\n`)
+    out.write(`  }\n`)
+    out.write(`\n`)
     out.write(
       `  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.${type} {\n`
-    );
-    out.write(`    if (\n`);
-    out.write(`      !isNode(node) ||\n`);
-    out.write(`      !t.is${type}(node)\n`);
-    out.write(`    ) {\n`);
-    out.write(`      return false;\n`);
-    out.write(`    }\n`);
-    out.write(`\n`);
+    )
+    out.write(`    if (\n`)
+    out.write(`      !isNode(node) ||\n`)
+    out.write(`      !t.is${type}(node)\n`)
+    out.write(`    ) {\n`)
+    out.write(`      return false;\n`)
+    out.write(`    }\n`)
+    out.write(`\n`)
     for (const key of keys) {
-      const field = fields[key];
-      const keyString = `'${key}'`;
-      const binding = `this.${toBindingIdentifierName(key)}`;
-      out.write(`    if (typeof ${binding} === 'undefined') {\n`);
-      out.write(`      // undefined matcher means anything matches\n`);
+      const field = fields[key]
+      const keyString = `'${key}'`
+      const binding = `this.${toBindingIdentifierName(key)}`
+      out.write(`    if (typeof ${binding} === 'undefined') {\n`)
+      out.write(`      // undefined matcher means anything matches\n`)
       for (const type of possiblePrimitiveTypesForField(field)) {
-        out.write(`    } else if (typeof ${binding} === '${type}') {\n`);
-        out.write(`      if (${binding} !== node.${key}) {\n`);
-        out.write(`        return false;\n`);
-        out.write(`      }\n`);
+        out.write(`    } else if (typeof ${binding} === '${type}') {\n`)
+        out.write(`      if (${binding} !== node.${key}) {\n`)
+        out.write(`        return false;\n`)
+        out.write(`      }\n`)
       }
       if (field.optional) {
-        out.write(`    } else if (${binding} === null) {\n`);
-        out.write(`      // null matcher means we expect null value\n`);
-        out.write(`      if (node.${key} !== null) {\n`);
-        out.write(`        return false;\n`);
-        out.write(`      }\n`);
-        out.write(`    } else if (node.${key} === null) {\n`);
-        out.write(`      return false;\n`);
+        out.write(`    } else if (${binding} === null) {\n`)
+        out.write(`      // null matcher means we expect null value\n`)
+        out.write(`      if (node.${key} !== null) {\n`)
+        out.write(`        return false;\n`)
+        out.write(`      }\n`)
+        out.write(`    } else if (node.${key} === null) {\n`)
+        out.write(`      return false;\n`)
       }
       if (isValidatorOfType('array', field.validate)) {
-        out.write(`    } else if (Array.isArray(${binding})) {\n`);
+        out.write(`    } else if (Array.isArray(${binding})) {\n`)
         out.write(
           `      if (!tupleOf<unknown>(...${binding}).matchValue(node.${key}, [...keys, ${keyString}])) {\n`
-        );
-        out.write(`        return false;\n`);
-        out.write(`      }\n`);
+        )
+        out.write(`        return false;\n`)
+        out.write(`      }\n`)
       }
       out.write(
         `    } else if (!${binding}.matchValue(node.${key}, [...keys, ${keyString}])) {\n`
-      );
-      out.write(`      return false;\n`);
-      out.write(`    }\n`);
-      out.write(`\n`);
+      )
+      out.write(`      return false;\n`)
+      out.write(`    }\n`)
+      out.write(`\n`)
     }
-    out.write(`    return true;\n`);
-    out.write(`  }\n`);
-    out.write(`}\n\n`);
+    out.write(`    return true;\n`)
+    out.write(`  }\n`)
+    out.write(`}\n\n`)
 
-    out.write(`export function ${name}(\n`);
+    out.write(`export function ${name}(\n`)
     for (const key of keys) {
-      const field = fields[key];
-      const binding = toBindingIdentifierName(key);
-      out.write(`  ${binding}?: ${stringifyMatcherForField(field)},\n`);
+      const field = fields[key]
+      const binding = toBindingIdentifierName(key)
+      out.write(`  ${binding}?: ${stringifyMatcherForField(field)},\n`)
     }
-    out.write(`): Matcher<t.${type}> {\n`);
-    out.write(`  return new ${type}Matcher(\n`);
+    out.write(`): Matcher<t.${type}> {\n`)
+    out.write(`  return new ${type}Matcher(\n`)
     for (const key of keys) {
-      const binding = toBindingIdentifierName(key);
-      out.write(`    ${binding},\n`);
+      const binding = toBindingIdentifierName(key)
+      out.write(`    ${binding},\n`)
     }
-    out.write(`  );\n`);
-    out.write(`}\n\n`);
+    out.write(`  );\n`)
+    out.write(`}\n\n`)
   }
 }
 
 export default async function rebuild(): Promise<string> {
-  return await format(writeToString(rebuildTo), MATCHERS_FILE_PATH);
+  return await format(writeToString(rebuildTo), MATCHERS_FILE_PATH)
 }

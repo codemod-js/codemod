@@ -13,9 +13,9 @@ $ npm install @codemod/parser
 ## Usage
 
 ```ts
-import { parse } from '@codemod/parser';
+import { parse } from '@codemod/parser'
 
-console.log(parse('a ?? b').program.body[0].expression.operator); // '??'
+console.log(parse('a ?? b').program.body[0].expression.operator) // '??'
 ```
 
 ## Contributing

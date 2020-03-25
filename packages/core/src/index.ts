@@ -1,22 +1,22 @@
 import {
   TransformOptions as BabelTransformOptions,
   BabelFileResult,
-  transformSync
-} from '@babel/core';
-import RecastPlugin from './RecastPlugin';
-import { BabelPlugin } from './BabelPluginTypes';
-import PrettierPrinterPlugin from './PrettierPrinterPlugin';
-import BabelPrinterPlugin from './BabelPrinterPlugin';
-import buildAllSyntaxPlugin from './AllSyntaxPlugin';
+  transformSync,
+} from '@babel/core'
+import RecastPlugin from './RecastPlugin'
+import { BabelPlugin } from './BabelPluginTypes'
+import PrettierPrinterPlugin from './PrettierPrinterPlugin'
+import BabelPrinterPlugin from './BabelPrinterPlugin'
+import buildAllSyntaxPlugin from './AllSyntaxPlugin'
 
 export enum Printer {
   Recast = 'recast',
   Prettier = 'prettier',
-  Babel = 'babel'
+  Babel = 'babel',
 }
 
 export interface TransformOptions extends BabelTransformOptions {
-  printer?: Printer;
+  printer?: Printer
 }
 
 /**
@@ -33,24 +33,24 @@ export function transform(
     plugins: [
       ...(options.plugins || []),
       buildAllSyntaxPlugin(options.sourceType || 'unambiguous'),
-      loadPrinterPlugin(printer)
-    ]
-  }) as BabelFileResult;
+      loadPrinterPlugin(printer),
+    ],
+  }) as BabelFileResult
 }
 
 function loadPrinterPlugin(printer?: Printer): BabelPlugin {
   switch (printer) {
     case undefined:
     case Printer.Recast:
-      return RecastPlugin;
+      return RecastPlugin
 
     case Printer.Prettier:
-      return PrettierPrinterPlugin;
+      return PrettierPrinterPlugin
 
     case Printer.Babel:
-      return BabelPrinterPlugin;
+      return BabelPrinterPlugin
 
     default:
-      throw new Error(`unknown printer: ${printer}`);
+      throw new Error(`unknown printer: ${printer}`)
   }
 }

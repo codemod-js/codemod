@@ -1,15 +1,15 @@
-import getStream = require('get-stream');
-import { PluginItem } from '@babel/core';
-import Config from './Config';
-import InlineTransformer from './InlineTransformer';
-import iterateSources from './iterateSources';
-import ProcessSnapshot from './ProcessSnapshot';
-import { RealSystem, System } from './System';
+import getStream = require('get-stream')
+import { PluginItem } from '@babel/core'
+import Config from './Config'
+import InlineTransformer from './InlineTransformer'
+import iterateSources from './iterateSources'
+import ProcessSnapshot from './ProcessSnapshot'
+import { RealSystem, System } from './System'
 import TransformRunner, {
   Source,
   SourceTransformResult,
-  SourceTransformResultKind
-} from './TransformRunner';
+  SourceTransformResultKind,
+} from './TransformRunner'
 
 export class RunResult {
   constructor(readonly stats: RunStats) {}
@@ -33,40 +33,40 @@ export default class CLIEngine {
   ) {}
 
   private async loadPlugins(): Promise<Array<PluginItem>> {
-    const snapshot = new ProcessSnapshot();
-    let plugins: Array<PluginItem>;
+    const snapshot = new ProcessSnapshot()
+    let plugins: Array<PluginItem>
 
     try {
-      this.config.loadBabelTranspile();
-      this.config.loadRequires();
-      plugins = await this.config.getBabelPlugins();
+      this.config.loadBabelTranspile()
+      this.config.loadRequires()
+      plugins = await this.config.getBabelPlugins()
     } finally {
-      this.config.unloadBabelTranspile();
-      snapshot.restore();
+      this.config.unloadBabelTranspile()
+      snapshot.restore()
     }
 
-    return plugins;
+    return plugins
   }
 
   async run(): Promise<RunResult> {
-    const plugins = await this.loadPlugins();
-    let modified = 0;
-    let errors = 0;
-    let total = 0;
-    const dryRun = this.config.dry;
-    let sourcesIterator: IterableIterator<Source>;
+    const plugins = await this.loadPlugins()
+    let modified = 0
+    let errors = 0
+    let total = 0
+    const dryRun = this.config.dry
+    let sourcesIterator: IterableIterator<Source>
 
     if (this.config.stdio) {
       sourcesIterator = [
-        new Source('<stdin>', await getStream(this.sys.stdin))
-      ][Symbol.iterator]();
+        new Source('<stdin>', await getStream(this.sys.stdin)),
+      ][Symbol.iterator]()
     } else {
       sourcesIterator = iterateSources(
         this.config.sourcePaths,
         this.config.extensions,
         this.config.ignore,
         this.sys
-      );
+      )
     }
 
     const runner = new TransformRunner(
@@ -76,29 +76,29 @@ export default class CLIEngine {
         this.config.findBabelConfig,
         this.config.printer
       )
-    );
+    )
 
     for await (const result of runner.run()) {
-      this.onTransform(result);
+      this.onTransform(result)
 
       if (result.kind === SourceTransformResultKind.Transformed) {
         if (this.config.stdio) {
-          this.sys.stdout.write(result.output);
+          this.sys.stdout.write(result.output)
         } else {
           if (result.output !== result.source.content) {
-            modified++;
+            modified++
             if (!dryRun) {
-              this.sys.writeFile(result.source.path, result.output, 'utf8');
+              this.sys.writeFile(result.source.path, result.output, 'utf8')
             }
           }
         }
       } else if (result.error) {
-        errors++;
+        errors++
       }
 
-      total++;
+      total++
     }
 
-    return new RunResult(new RunStats(modified, errors, total));
+    return new RunResult(new RunStats(modified, errors, total))
   }
 }

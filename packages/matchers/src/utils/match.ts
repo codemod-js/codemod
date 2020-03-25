@@ -1,4 +1,4 @@
-import * as m from '../../src/matchers';
+import * as m from '../../src/matchers'
 
 /**
  * This helper makes it easier to use a matcher together with captured values,
@@ -39,17 +39,17 @@ export default function match<T, C extends m.CaptureBase>(
   callback: (captures: C) => void
 ): void {
   if (matcher.match(value)) {
-    const capturedValues = {} as C;
+    const capturedValues = {} as C
 
     for (const key in captures) {
       if (Object.prototype.hasOwnProperty.call(captures, key)) {
-        const capturedValue = captures[key as keyof C].current;
+        const capturedValue = captures[key as keyof C].current
         if (capturedValue !== undefined) {
-          capturedValues[key as keyof C] = capturedValue;
+          capturedValues[key as keyof C] = capturedValue
         }
       }
     }
 
-    callback(capturedValues);
+    callback(capturedValues)
   }
 }

@@ -1,5 +1,5 @@
-import { join } from 'path';
-import runNodePackageBinary from '../../../../script/_utils/runNodePackageBinary';
+import { join } from 'path'
+import runNodePackageBinary from '../../../../script/_utils/runNodePackageBinary'
 
 export default async function main(
   args: Array<string>,
@@ -7,7 +7,7 @@ export default async function main(
   stdout: NodeJS.WriteStream,
   stderr: NodeJS.WriteStream
 ): Promise<number> {
-  const rest = args.slice(1);
+  const rest = args.slice(1)
 
   switch (args[0]) {
     case undefined:
@@ -15,19 +15,19 @@ export default async function main(
         (await build([], stdin, stdout, stderr)) ||
         (await lint([], stdin, stdout, stderr)) ||
         (await test([], stdin, stdout, stderr))
-      );
+      )
 
     case 'build':
-      return await build(rest, stdin, stdout, stderr);
+      return await build(rest, stdin, stdout, stderr)
 
     case 'test':
-      return await test(rest, stdin, stdout, stderr);
+      return await test(rest, stdin, stdout, stderr)
 
     case 'lint':
-      return await lint(rest, stdin, stdout, stderr);
+      return await lint(rest, stdin, stdout, stderr)
 
     default:
-      throw new Error(`unexpected command: ${args[0]}`);
+      throw new Error(`unexpected command: ${args[0]}`)
   }
 }
 
@@ -44,7 +44,7 @@ async function build(
     stdin,
     stdout,
     stderr
-  );
+  )
 }
 
 async function test(
@@ -60,7 +60,7 @@ async function test(
     stdin,
     stdout,
     stderr
-  );
+  )
 }
 
 async function lint(
@@ -78,15 +78,15 @@ async function lint(
       ...(isCI()
         ? ['--format', 'junit', '-o', 'reports/junit/eslint-results.xml']
         : []),
-      ...args
+      ...args,
     ],
     join(__dirname, '../../../..'),
     stdin,
     stdout,
     stderr
-  );
+  )
 }
 
 function isCI(): boolean {
-  return process.env.CI === 'true';
+  return process.env.CI === 'true'
 }

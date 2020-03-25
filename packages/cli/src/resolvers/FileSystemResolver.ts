@@ -1,16 +1,16 @@
-import * as fs from 'fs';
-import { resolve } from 'path';
-import { PluginExtensions } from '../extensions';
-import Resolver from './Resolver';
-import { promisify } from 'util';
+import * as fs from 'fs'
+import { resolve } from 'path'
+import { PluginExtensions } from '../extensions'
+import Resolver from './Resolver'
+import { promisify } from 'util'
 
-const stat = promisify(fs.stat);
+const stat = promisify(fs.stat)
 
 async function isFile(path: string): Promise<boolean> {
   try {
-    return (await stat(path)).isFile();
+    return (await stat(path)).isFile()
   } catch {
-    return false;
+    return false
   }
 }
 
@@ -23,13 +23,13 @@ export default class FileSystemResolver implements Resolver {
   ) {}
 
   private *enumerateCandidateSources(source: string): IterableIterator<string> {
-    yield resolve(source);
+    yield resolve(source)
 
     for (const ext of this.optionalExtensions) {
       if (ext[0] !== '.') {
-        yield resolve(`${source}.${ext}`);
+        yield resolve(`${source}.${ext}`)
       } else {
-        yield resolve(source + ext);
+        yield resolve(source + ext)
       }
     }
   }
@@ -37,20 +37,20 @@ export default class FileSystemResolver implements Resolver {
   async canResolve(source: string): Promise<boolean> {
     for (const candidate of this.enumerateCandidateSources(source)) {
       if (await isFile(candidate)) {
-        return true;
+        return true
       }
     }
 
-    return false;
+    return false
   }
 
   async resolve(source: string): Promise<string> {
     for (const candidate of this.enumerateCandidateSources(source)) {
       if (await isFile(candidate)) {
-        return candidate;
+        return candidate
       }
     }
 
-    throw new Error(`unable to resolve file from source: ${source}`);
+    throw new Error(`unable to resolve file from source: ${source}`)
   }
 }

@@ -1,26 +1,26 @@
-import getStream = require('get-stream');
-import { Duplex, PassThrough } from 'stream';
-import run from '../../src/index';
-import { RealSystem } from '../../src/System';
+import getStream = require('get-stream')
+import { Duplex, PassThrough } from 'stream'
+import run from '../../src/index'
+import { RealSystem } from '../../src/System'
 
 export interface CLIResult {
-  status: number;
-  stdout: string;
-  stderr: string;
+  status: number
+  stdout: string
+  stderr: string
 }
 
 export interface TestIO {
-  stdin: Duplex;
-  stdout: Duplex;
-  stderr: Duplex;
+  stdin: Duplex
+  stdout: Duplex
+  stderr: Duplex
 }
 
 function makeTestIO(): TestIO {
   return {
     stdin: new PassThrough(),
     stdout: new PassThrough(),
-    stderr: new PassThrough()
-  };
+    stderr: new PassThrough(),
+  }
 }
 
 export default async function runCodemodCLI(
@@ -28,34 +28,34 @@ export default async function runCodemodCLI(
   stdin = '',
   cwd?: string
 ): Promise<CLIResult> {
-  const io = makeTestIO();
+  const io = makeTestIO()
 
-  io.stdin.end(Buffer.from(stdin));
+  io.stdin.end(Buffer.from(stdin))
 
-  const argv = [process.argv[0], require.resolve('../../bin/codemod'), ...args];
-  let status: number;
-  const oldCwd = process.cwd();
+  const argv = [process.argv[0], require.resolve('../../bin/codemod'), ...args]
+  let status: number
+  const oldCwd = process.cwd()
 
   try {
     if (cwd) {
-      process.chdir(cwd);
+      process.chdir(cwd)
     }
 
     status = await run(argv, {
       ...RealSystem,
       stdin: io.stdin as typeof process.stdin,
       stdout: io.stdout as typeof process.stdout,
-      stderr: io.stderr as typeof process.stderr
-    });
+      stderr: io.stderr as typeof process.stderr,
+    })
   } finally {
-    process.chdir(oldCwd);
+    process.chdir(oldCwd)
   }
 
-  io.stdout.end();
-  io.stderr.end();
+  io.stdout.end()
+  io.stderr.end()
 
-  const stdout = await getStream(io.stdout);
-  const stderr = await getStream(io.stderr);
+  const stdout = await getStream(io.stdout)
+  const stderr = await getStream(io.stderr)
 
-  return { status, stdout, stderr };
+  return { status, stdout, stderr }
 }

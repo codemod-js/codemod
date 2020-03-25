@@ -11,7 +11,7 @@ export default interface Resolver {
    * then this method might simply check that the URI is a valid `data:` URI
    * rather than actually decoding and handling the contents of said URI.
    */
-  canResolve(source: string): Promise<boolean>;
+  canResolve(source: string): Promise<boolean>
 
   /**
    * Determines a file path that, when loaded as JavaScript, exports a babel
@@ -19,5 +19,5 @@ export default interface Resolver {
    * actually resolve to a file already on disk, consider writing the contents
    * to disk in a temporary location.
    */
-  resolve(source: string): Promise<string>;
+  resolve(source: string): Promise<string>
 }

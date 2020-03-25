@@ -1,6 +1,6 @@
-import * as Babel from '@babel/core';
-import { File } from '@babel/types';
-import { ParserOptions } from '@codemod/parser';
+import * as Babel from '@babel/core'
+import { File } from '@babel/types'
+import { ParserOptions } from '@codemod/parser'
 
 /**
  * Fixes the `PluginObj` type from `@babel/core` by making all fields optional
@@ -11,16 +11,16 @@ export interface PluginObj<S = File> extends Partial<Babel.PluginObj<S>> {
     code: string,
     options: ParserOptions,
     parse: (code: string, options: ParserOptions) => File
-  ): File;
+  ): File
 
   generatorOverride?(
     ast: File,
     options: Babel.GeneratorOptions,
     code: string,
     generate: (ast: File, options: Babel.GeneratorOptions) => string
-  ): { code: string; map?: object };
+  ): { code: string; map?: object }
 }
 
-export type RawBabelPlugin = (babel: typeof Babel) => PluginObj;
-export type RawBabelPluginWithOptions = [RawBabelPlugin, object];
-export type BabelPlugin = RawBabelPlugin | RawBabelPluginWithOptions;
+export type RawBabelPlugin = (babel: typeof Babel) => PluginObj
+export type RawBabelPluginWithOptions = [RawBabelPlugin, object]
+export type BabelPlugin = RawBabelPlugin | RawBabelPluginWithOptions

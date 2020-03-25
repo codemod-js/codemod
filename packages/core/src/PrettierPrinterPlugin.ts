@@ -1,32 +1,32 @@
-import { GeneratorOptions } from '@babel/generator';
-import { File } from '@babel/types';
-import * as Prettier from 'prettier';
-import { sync as resolveSync } from 'resolve';
-import { generate, parse } from './RecastPlugin';
-import { PluginObj } from './BabelPluginTypes';
+import { GeneratorOptions } from '@babel/generator'
+import { File } from '@babel/types'
+import * as Prettier from 'prettier'
+import { sync as resolveSync } from 'resolve'
+import { generate, parse } from './RecastPlugin'
+import { PluginObj } from './BabelPluginTypes'
 
 function loadPrettier(): typeof Prettier {
   try {
-    return require(resolveSync('prettier', { basedir: process.cwd() }));
+    return require(resolveSync('prettier', { basedir: process.cwd() }))
   } catch {
-    return require('prettier');
+    return require('prettier')
   }
 }
 
-const DEFAULT_PARSER = 'babel';
+const DEFAULT_PARSER = 'babel'
 
-type PrettierParser = Prettier.Options['parser'];
+type PrettierParser = Prettier.Options['parser']
 
-export default function(): PluginObj {
-  const prettier = loadPrettier();
+export default function (): PluginObj {
+  const prettier = loadPrettier()
 
   function inferParser(filepath?: string): PrettierParser {
     if (!filepath) {
-      return DEFAULT_PARSER;
+      return DEFAULT_PARSER
     }
 
-    const { inferredParser } = prettier.getFileInfo.sync(filepath);
-    return (inferredParser || DEFAULT_PARSER) as PrettierParser;
+    const { inferredParser } = prettier.getFileInfo.sync(filepath)
+    return (inferredParser || DEFAULT_PARSER) as PrettierParser
   }
 
   function resolvePrettierConfig(filepath?: string): Prettier.Options {
@@ -35,8 +35,8 @@ export default function(): PluginObj {
       ...(typeof filepath === 'string'
         ? prettier.resolveConfig.sync(filepath)
         : undefined),
-      filepath
-    };
+      filepath,
+    }
   }
 
   return {
@@ -49,8 +49,8 @@ export default function(): PluginObj {
         code: prettier.format(
           generate(ast).code,
           resolvePrettierConfig(options.filename)
-        )
-      };
-    }
-  };
+        ),
+      }
+    },
+  }
 }

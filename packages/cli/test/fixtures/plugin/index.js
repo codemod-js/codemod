@@ -1,6 +1,6 @@
-module.exports = function() {
+module.exports = function () {
   return {
     name: 'basic-plugin',
-    visitor: {}
+    visitor: {},
   }
-};
+}

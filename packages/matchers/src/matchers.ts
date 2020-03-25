@@ -1,41 +1,41 @@
 /* eslint-disable */
-import * as t from '@babel/types';
+import * as t from '@babel/types'
 
-export * from './matchers/spacers';
-export { default as Function } from './matchers/Function';
-export { default as Matcher } from './matchers/Matcher';
-export { default as anyExpression } from './matchers/anyExpression';
-export { default as anyList } from './matchers/anyList';
-export { default as anyNode } from './matchers/anyNode';
-export { default as anyNumber } from './matchers/anyNumber';
-export { default as anyStatement } from './matchers/anyStatement';
-export { default as anyString } from './matchers/anyString';
-export { default as anything } from './matchers/anything';
-export { default as arrayOf } from './matchers/arrayOf';
+export * from './matchers/spacers'
+export { default as Function } from './matchers/Function'
+export { default as Matcher } from './matchers/Matcher'
+export { default as anyExpression } from './matchers/anyExpression'
+export { default as anyList } from './matchers/anyList'
+export { default as anyNode } from './matchers/anyNode'
+export { default as anyNumber } from './matchers/anyNumber'
+export { default as anyStatement } from './matchers/anyStatement'
+export { default as anyString } from './matchers/anyString'
+export { default as anything } from './matchers/anything'
+export { default as arrayOf } from './matchers/arrayOf'
 export {
   default as capture,
   CaptureBase,
-  CapturedMatcher
-} from './matchers/capture';
-export { default as containerOf } from './matchers/containerOf';
-export { default as fromCapture } from './matchers/fromCapture';
-export { default as function } from './matchers/Function';
-export { default as oneOf } from './matchers/oneOf';
-export { default as or } from './matchers/or';
-export { default as matcher } from './matchers/predicate';
-export { default as tupleOf } from './matchers/tupleOf';
+  CapturedMatcher,
+} from './matchers/capture'
+export { default as containerOf } from './matchers/containerOf'
+export { default as fromCapture } from './matchers/fromCapture'
+export { default as function } from './matchers/Function'
+export { default as oneOf } from './matchers/oneOf'
+export { default as or } from './matchers/or'
+export { default as matcher } from './matchers/predicate'
+export { default as tupleOf } from './matchers/tupleOf'
 
-import tupleOf from './matchers/tupleOf';
-import { isNode } from './NodeTypes';
-import Matcher from './matchers/Matcher';
+import tupleOf from './matchers/tupleOf'
+import { isNode } from './NodeTypes'
+import Matcher from './matchers/Matcher'
 
 // aliases for keyword-named functions
-export { Import as import };
-export { Super as super };
+export { Import as import }
+export { Super as super }
 
 export class AnyTypeAnnotationMatcher extends Matcher<t.AnyTypeAnnotation> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -43,20 +43,20 @@ export class AnyTypeAnnotationMatcher extends Matcher<t.AnyTypeAnnotation> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.AnyTypeAnnotation {
     if (!isNode(node) || !t.isAnyTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function anyTypeAnnotation(): Matcher<t.AnyTypeAnnotation> {
-  return new AnyTypeAnnotationMatcher();
+  return new AnyTypeAnnotationMatcher()
 }
 
 export class ArgumentPlaceholderMatcher extends Matcher<t.ArgumentPlaceholder> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -64,15 +64,15 @@ export class ArgumentPlaceholderMatcher extends Matcher<t.ArgumentPlaceholder> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ArgumentPlaceholder {
     if (!isNode(node) || !t.isArgumentPlaceholder(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function argumentPlaceholder(): Matcher<t.ArgumentPlaceholder> {
-  return new ArgumentPlaceholderMatcher();
+  return new ArgumentPlaceholderMatcher()
 }
 
 export class ArrayExpressionMatcher extends Matcher<t.ArrayExpression> {
@@ -81,7 +81,7 @@ export class ArrayExpressionMatcher extends Matcher<t.ArrayExpression> {
       | Matcher<Array<null | t.Expression | t.SpreadElement>>
       | Array<Matcher<null> | Matcher<t.Expression> | Matcher<t.SpreadElement>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -89,7 +89,7 @@ export class ArrayExpressionMatcher extends Matcher<t.ArrayExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ArrayExpression {
     if (!isNode(node) || !t.isArrayExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.elements === 'undefined') {
@@ -98,18 +98,18 @@ export class ArrayExpressionMatcher extends Matcher<t.ArrayExpression> {
       if (
         !tupleOf<unknown>(...this.elements).matchValue(node.elements, [
           ...keys,
-          'elements'
+          'elements',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.elements.matchValue(node.elements, [...keys, 'elements'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -118,7 +118,7 @@ export function arrayExpression(
     | Matcher<Array<null | t.Expression | t.SpreadElement>>
     | Array<Matcher<null> | Matcher<t.Expression> | Matcher<t.SpreadElement>>
 ): Matcher<t.ArrayExpression> {
-  return new ArrayExpressionMatcher(elements);
+  return new ArrayExpressionMatcher(elements)
 }
 
 export class ArrayPatternMatcher extends Matcher<t.ArrayPattern> {
@@ -127,7 +127,7 @@ export class ArrayPatternMatcher extends Matcher<t.ArrayPattern> {
       | Matcher<Array<null | t.PatternLike>>
       | Array<Matcher<null> | Matcher<t.PatternLike>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -135,7 +135,7 @@ export class ArrayPatternMatcher extends Matcher<t.ArrayPattern> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ArrayPattern {
     if (!isNode(node) || !t.isArrayPattern(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.elements === 'undefined') {
@@ -144,18 +144,18 @@ export class ArrayPatternMatcher extends Matcher<t.ArrayPattern> {
       if (
         !tupleOf<unknown>(...this.elements).matchValue(node.elements, [
           ...keys,
-          'elements'
+          'elements',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.elements.matchValue(node.elements, [...keys, 'elements'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -164,12 +164,12 @@ export function arrayPattern(
     | Matcher<Array<null | t.PatternLike>>
     | Array<Matcher<null> | Matcher<t.PatternLike>>
 ): Matcher<t.ArrayPattern> {
-  return new ArrayPatternMatcher(elements);
+  return new ArrayPatternMatcher(elements)
 }
 
 export class ArrayTypeAnnotationMatcher extends Matcher<t.ArrayTypeAnnotation> {
   constructor(private readonly elementType?: Matcher<t.FlowType>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -177,7 +177,7 @@ export class ArrayTypeAnnotationMatcher extends Matcher<t.ArrayTypeAnnotation> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ArrayTypeAnnotation {
     if (!isNode(node) || !t.isArrayTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.elementType === 'undefined') {
@@ -185,17 +185,17 @@ export class ArrayTypeAnnotationMatcher extends Matcher<t.ArrayTypeAnnotation> {
     } else if (
       !this.elementType.matchValue(node.elementType, [...keys, 'elementType'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function arrayTypeAnnotation(
   elementType?: Matcher<t.FlowType>
 ): Matcher<t.ArrayTypeAnnotation> {
-  return new ArrayTypeAnnotationMatcher(elementType);
+  return new ArrayTypeAnnotationMatcher(elementType)
 }
 
 export class ArrowFunctionExpressionMatcher extends Matcher<
@@ -217,7 +217,7 @@ export class ArrowFunctionExpressionMatcher extends Matcher<
     private readonly body?: Matcher<t.BlockStatement | t.Expression>,
     private readonly async?: Matcher<boolean> | boolean | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -225,7 +225,7 @@ export class ArrowFunctionExpressionMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ArrowFunctionExpression {
     if (!isNode(node) || !t.isArrowFunctionExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.params === 'undefined') {
@@ -234,39 +234,39 @@ export class ArrowFunctionExpressionMatcher extends Matcher<
       if (
         !tupleOf<unknown>(...this.params).matchValue(node.params, [
           ...keys,
-          'params'
+          'params',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
     if (typeof this.async === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.async === 'boolean') {
       if (this.async !== node.async) {
-        return false;
+        return false
       }
     } else if (this.async === null) {
       // null matcher means we expect null value
       if (node.async !== null) {
-        return false;
+        return false
       }
     } else if (node.async === null) {
-      return false;
+      return false
     } else if (!this.async.matchValue(node.async, [...keys, 'async'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -284,7 +284,7 @@ export function arrowFunctionExpression(
   body?: Matcher<t.BlockStatement | t.Expression>,
   async?: Matcher<boolean> | boolean | null
 ): Matcher<t.ArrowFunctionExpression> {
-  return new ArrowFunctionExpressionMatcher(params, body, async);
+  return new ArrowFunctionExpressionMatcher(params, body, async)
 }
 
 export class AssignmentExpressionMatcher extends Matcher<
@@ -295,7 +295,7 @@ export class AssignmentExpressionMatcher extends Matcher<
     private readonly left?: Matcher<t.LVal>,
     private readonly right?: Matcher<t.Expression>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -303,34 +303,34 @@ export class AssignmentExpressionMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.AssignmentExpression {
     if (!isNode(node) || !t.isAssignmentExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.operator === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.operator === 'string') {
       if (this.operator !== node.operator) {
-        return false;
+        return false
       }
     } else if (
       !this.operator.matchValue(node.operator, [...keys, 'operator'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.left === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.left.matchValue(node.left, [...keys, 'left'])) {
-      return false;
+      return false
     }
 
     if (typeof this.right === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.right.matchValue(node.right, [...keys, 'right'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -339,7 +339,7 @@ export function assignmentExpression(
   left?: Matcher<t.LVal>,
   right?: Matcher<t.Expression>
 ): Matcher<t.AssignmentExpression> {
-  return new AssignmentExpressionMatcher(operator, left, right);
+  return new AssignmentExpressionMatcher(operator, left, right)
 }
 
 export class AssignmentPatternMatcher extends Matcher<t.AssignmentPattern> {
@@ -349,7 +349,7 @@ export class AssignmentPatternMatcher extends Matcher<t.AssignmentPattern> {
     >,
     private readonly right?: Matcher<t.Expression>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -357,22 +357,22 @@ export class AssignmentPatternMatcher extends Matcher<t.AssignmentPattern> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.AssignmentPattern {
     if (!isNode(node) || !t.isAssignmentPattern(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.left === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.left.matchValue(node.left, [...keys, 'left'])) {
-      return false;
+      return false
     }
 
     if (typeof this.right === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.right.matchValue(node.right, [...keys, 'right'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -382,12 +382,12 @@ export function assignmentPattern(
   >,
   right?: Matcher<t.Expression>
 ): Matcher<t.AssignmentPattern> {
-  return new AssignmentPatternMatcher(left, right);
+  return new AssignmentPatternMatcher(left, right)
 }
 
 export class AwaitExpressionMatcher extends Matcher<t.AwaitExpression> {
   constructor(private readonly argument?: Matcher<t.Expression>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -395,7 +395,7 @@ export class AwaitExpressionMatcher extends Matcher<t.AwaitExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.AwaitExpression {
     if (!isNode(node) || !t.isAwaitExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.argument === 'undefined') {
@@ -403,22 +403,22 @@ export class AwaitExpressionMatcher extends Matcher<t.AwaitExpression> {
     } else if (
       !this.argument.matchValue(node.argument, [...keys, 'argument'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function awaitExpression(
   argument?: Matcher<t.Expression>
 ): Matcher<t.AwaitExpression> {
-  return new AwaitExpressionMatcher(argument);
+  return new AwaitExpressionMatcher(argument)
 }
 
 export class BigIntLiteralMatcher extends Matcher<t.BigIntLiteral> {
   constructor(private readonly value?: Matcher<string> | string) {
-    super();
+    super()
   }
 
   matchValue(
@@ -426,27 +426,27 @@ export class BigIntLiteralMatcher extends Matcher<t.BigIntLiteral> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.BigIntLiteral {
     if (!isNode(node) || !t.isBigIntLiteral(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.value === 'string') {
       if (this.value !== node.value) {
-        return false;
+        return false
       }
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function bigIntLiteral(
   value?: Matcher<string> | string
 ): Matcher<t.BigIntLiteral> {
-  return new BigIntLiteralMatcher(value);
+  return new BigIntLiteralMatcher(value)
 }
 
 export class BinaryExpressionMatcher extends Matcher<t.BinaryExpression> {
@@ -480,7 +480,7 @@ export class BinaryExpressionMatcher extends Matcher<t.BinaryExpression> {
     private readonly left?: Matcher<t.Expression>,
     private readonly right?: Matcher<t.Expression>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -488,34 +488,34 @@ export class BinaryExpressionMatcher extends Matcher<t.BinaryExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.BinaryExpression {
     if (!isNode(node) || !t.isBinaryExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.operator === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.operator === 'string') {
       if (this.operator !== node.operator) {
-        return false;
+        return false
       }
     } else if (
       !this.operator.matchValue(node.operator, [...keys, 'operator'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.left === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.left.matchValue(node.left, [...keys, 'left'])) {
-      return false;
+      return false
     }
 
     if (typeof this.right === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.right.matchValue(node.right, [...keys, 'right'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -549,7 +549,7 @@ export function binaryExpression(
   left?: Matcher<t.Expression>,
   right?: Matcher<t.Expression>
 ): Matcher<t.BinaryExpression> {
-  return new BinaryExpressionMatcher(operator, left, right);
+  return new BinaryExpressionMatcher(operator, left, right)
 }
 
 export class BindExpressionMatcher extends Matcher<t.BindExpression> {
@@ -557,7 +557,7 @@ export class BindExpressionMatcher extends Matcher<t.BindExpression> {
     private readonly object?: Matcher<any>,
     private readonly callee?: Matcher<any>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -565,22 +565,22 @@ export class BindExpressionMatcher extends Matcher<t.BindExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.BindExpression {
     if (!isNode(node) || !t.isBindExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.object === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.object.matchValue(node.object, [...keys, 'object'])) {
-      return false;
+      return false
     }
 
     if (typeof this.callee === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.callee.matchValue(node.callee, [...keys, 'callee'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -588,7 +588,7 @@ export function bindExpression(
   object?: Matcher<any>,
   callee?: Matcher<any>
 ): Matcher<t.BindExpression> {
-  return new BindExpressionMatcher(object, callee);
+  return new BindExpressionMatcher(object, callee)
 }
 
 export class BlockStatementMatcher extends Matcher<t.BlockStatement> {
@@ -600,7 +600,7 @@ export class BlockStatementMatcher extends Matcher<t.BlockStatement> {
       | Matcher<Array<t.Directive>>
       | Array<Matcher<t.Directive>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -608,7 +608,7 @@ export class BlockStatementMatcher extends Matcher<t.BlockStatement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.BlockStatement {
     if (!isNode(node) || !t.isBlockStatement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
@@ -617,10 +617,10 @@ export class BlockStatementMatcher extends Matcher<t.BlockStatement> {
       if (
         !tupleOf<unknown>(...this.body).matchValue(node.body, [...keys, 'body'])
       ) {
-        return false;
+        return false
       }
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
     if (typeof this.directives === 'undefined') {
@@ -629,18 +629,18 @@ export class BlockStatementMatcher extends Matcher<t.BlockStatement> {
       if (
         !tupleOf<unknown>(...this.directives).matchValue(node.directives, [
           ...keys,
-          'directives'
+          'directives',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.directives.matchValue(node.directives, [...keys, 'directives'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -648,12 +648,12 @@ export function blockStatement(
   body?: Matcher<Array<t.Statement>> | Array<Matcher<t.Statement>>,
   directives?: Matcher<Array<t.Directive>> | Array<Matcher<t.Directive>>
 ): Matcher<t.BlockStatement> {
-  return new BlockStatementMatcher(body, directives);
+  return new BlockStatementMatcher(body, directives)
 }
 
 export class BooleanLiteralMatcher extends Matcher<t.BooleanLiteral> {
   constructor(private readonly value?: Matcher<boolean> | boolean) {
-    super();
+    super()
   }
 
   matchValue(
@@ -661,34 +661,34 @@ export class BooleanLiteralMatcher extends Matcher<t.BooleanLiteral> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.BooleanLiteral {
     if (!isNode(node) || !t.isBooleanLiteral(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.value === 'boolean') {
       if (this.value !== node.value) {
-        return false;
+        return false
       }
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function booleanLiteral(
   value?: Matcher<boolean> | boolean
 ): Matcher<t.BooleanLiteral> {
-  return new BooleanLiteralMatcher(value);
+  return new BooleanLiteralMatcher(value)
 }
 
 export class BooleanLiteralTypeAnnotationMatcher extends Matcher<
   t.BooleanLiteralTypeAnnotation
 > {
   constructor(private readonly value?: Matcher<boolean> | boolean) {
-    super();
+    super()
   }
 
   matchValue(
@@ -696,34 +696,34 @@ export class BooleanLiteralTypeAnnotationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.BooleanLiteralTypeAnnotation {
     if (!isNode(node) || !t.isBooleanLiteralTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.value === 'boolean') {
       if (this.value !== node.value) {
-        return false;
+        return false
       }
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function booleanLiteralTypeAnnotation(
   value?: Matcher<boolean> | boolean
 ): Matcher<t.BooleanLiteralTypeAnnotation> {
-  return new BooleanLiteralTypeAnnotationMatcher(value);
+  return new BooleanLiteralTypeAnnotationMatcher(value)
 }
 
 export class BooleanTypeAnnotationMatcher extends Matcher<
   t.BooleanTypeAnnotation
 > {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -731,20 +731,20 @@ export class BooleanTypeAnnotationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.BooleanTypeAnnotation {
     if (!isNode(node) || !t.isBooleanTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function booleanTypeAnnotation(): Matcher<t.BooleanTypeAnnotation> {
-  return new BooleanTypeAnnotationMatcher();
+  return new BooleanTypeAnnotationMatcher()
 }
 
 export class BreakStatementMatcher extends Matcher<t.BreakStatement> {
   constructor(private readonly label?: Matcher<t.Identifier> | null) {
-    super();
+    super()
   }
 
   matchValue(
@@ -752,7 +752,7 @@ export class BreakStatementMatcher extends Matcher<t.BreakStatement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.BreakStatement {
     if (!isNode(node) || !t.isBreakStatement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.label === 'undefined') {
@@ -760,22 +760,22 @@ export class BreakStatementMatcher extends Matcher<t.BreakStatement> {
     } else if (this.label === null) {
       // null matcher means we expect null value
       if (node.label !== null) {
-        return false;
+        return false
       }
     } else if (node.label === null) {
-      return false;
+      return false
     } else if (!this.label.matchValue(node.label, [...keys, 'label'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function breakStatement(
   label?: Matcher<t.Identifier> | null
 ): Matcher<t.BreakStatement> {
-  return new BreakStatementMatcher(label);
+  return new BreakStatementMatcher(label)
 }
 
 export class CallExpressionMatcher extends Matcher<t.CallExpression> {
@@ -797,7 +797,7 @@ export class CallExpressionMatcher extends Matcher<t.CallExpression> {
           | Matcher<t.ArgumentPlaceholder>
         >
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -805,13 +805,13 @@ export class CallExpressionMatcher extends Matcher<t.CallExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.CallExpression {
     if (!isNode(node) || !t.isCallExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.callee === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.callee.matchValue(node.callee, [...keys, 'callee'])) {
-      return false;
+      return false
     }
 
     if (typeof this._arguments === 'undefined') {
@@ -820,18 +820,18 @@ export class CallExpressionMatcher extends Matcher<t.CallExpression> {
       if (
         !tupleOf<unknown>(...this._arguments).matchValue(node.arguments, [
           ...keys,
-          'arguments'
+          'arguments',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this._arguments.matchValue(node.arguments, [...keys, 'arguments'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -853,7 +853,7 @@ export function callExpression(
         | Matcher<t.ArgumentPlaceholder>
       >
 ): Matcher<t.CallExpression> {
-  return new CallExpressionMatcher(callee, _arguments);
+  return new CallExpressionMatcher(callee, _arguments)
 }
 
 export class CatchClauseMatcher extends Matcher<t.CatchClause> {
@@ -863,7 +863,7 @@ export class CatchClauseMatcher extends Matcher<t.CatchClause> {
     > | null,
     private readonly body?: Matcher<t.BlockStatement>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -871,7 +871,7 @@ export class CatchClauseMatcher extends Matcher<t.CatchClause> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.CatchClause {
     if (!isNode(node) || !t.isCatchClause(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.param === 'undefined') {
@@ -879,21 +879,21 @@ export class CatchClauseMatcher extends Matcher<t.CatchClause> {
     } else if (this.param === null) {
       // null matcher means we expect null value
       if (node.param !== null) {
-        return false;
+        return false
       }
     } else if (node.param === null) {
-      return false;
+      return false
     } else if (!this.param.matchValue(node.param, [...keys, 'param'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -901,7 +901,7 @@ export function catchClause(
   param?: Matcher<t.Identifier | t.ArrayPattern | t.ObjectPattern> | null,
   body?: Matcher<t.BlockStatement>
 ): Matcher<t.CatchClause> {
-  return new CatchClauseMatcher(param, body);
+  return new CatchClauseMatcher(param, body)
 }
 
 export class ClassBodyMatcher extends Matcher<t.ClassBody> {
@@ -926,7 +926,7 @@ export class ClassBodyMatcher extends Matcher<t.ClassBody> {
           | Matcher<t.TSIndexSignature>
         >
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -934,7 +934,7 @@ export class ClassBodyMatcher extends Matcher<t.ClassBody> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ClassBody {
     if (!isNode(node) || !t.isClassBody(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
@@ -943,13 +943,13 @@ export class ClassBodyMatcher extends Matcher<t.ClassBody> {
       if (
         !tupleOf<unknown>(...this.body).matchValue(node.body, [...keys, 'body'])
       ) {
-        return false;
+        return false
       }
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -974,7 +974,7 @@ export function classBody(
         | Matcher<t.TSIndexSignature>
       >
 ): Matcher<t.ClassBody> {
-  return new ClassBodyMatcher(body);
+  return new ClassBodyMatcher(body)
 }
 
 export class ClassDeclarationMatcher extends Matcher<t.ClassDeclaration> {
@@ -984,7 +984,7 @@ export class ClassDeclarationMatcher extends Matcher<t.ClassDeclaration> {
     private readonly body?: Matcher<any>,
     private readonly decorators?: Matcher<any>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -992,13 +992,13 @@ export class ClassDeclarationMatcher extends Matcher<t.ClassDeclaration> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ClassDeclaration {
     if (!isNode(node) || !t.isClassDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.superClass === 'undefined') {
@@ -1006,13 +1006,13 @@ export class ClassDeclarationMatcher extends Matcher<t.ClassDeclaration> {
     } else if (
       !this.superClass.matchValue(node.superClass, [...keys, 'superClass'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
     if (typeof this.decorators === 'undefined') {
@@ -1020,10 +1020,10 @@ export class ClassDeclarationMatcher extends Matcher<t.ClassDeclaration> {
     } else if (
       !this.decorators.matchValue(node.decorators, [...keys, 'decorators'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -1033,7 +1033,7 @@ export function classDeclaration(
   body?: Matcher<any>,
   decorators?: Matcher<any>
 ): Matcher<t.ClassDeclaration> {
-  return new ClassDeclarationMatcher(id, superClass, body, decorators);
+  return new ClassDeclarationMatcher(id, superClass, body, decorators)
 }
 
 export class ClassExpressionMatcher extends Matcher<t.ClassExpression> {
@@ -1046,7 +1046,7 @@ export class ClassExpressionMatcher extends Matcher<t.ClassExpression> {
       | Array<Matcher<t.Decorator>>
       | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -1054,7 +1054,7 @@ export class ClassExpressionMatcher extends Matcher<t.ClassExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ClassExpression {
     if (!isNode(node) || !t.isClassExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
@@ -1062,12 +1062,12 @@ export class ClassExpressionMatcher extends Matcher<t.ClassExpression> {
     } else if (this.id === null) {
       // null matcher means we expect null value
       if (node.id !== null) {
-        return false;
+        return false
       }
     } else if (node.id === null) {
-      return false;
+      return false
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.superClass === 'undefined') {
@@ -1075,20 +1075,20 @@ export class ClassExpressionMatcher extends Matcher<t.ClassExpression> {
     } else if (this.superClass === null) {
       // null matcher means we expect null value
       if (node.superClass !== null) {
-        return false;
+        return false
       }
     } else if (node.superClass === null) {
-      return false;
+      return false
     } else if (
       !this.superClass.matchValue(node.superClass, [...keys, 'superClass'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
     if (typeof this.decorators === 'undefined') {
@@ -1096,26 +1096,26 @@ export class ClassExpressionMatcher extends Matcher<t.ClassExpression> {
     } else if (this.decorators === null) {
       // null matcher means we expect null value
       if (node.decorators !== null) {
-        return false;
+        return false
       }
     } else if (node.decorators === null) {
-      return false;
+      return false
     } else if (Array.isArray(this.decorators)) {
       if (
         !tupleOf<unknown>(...this.decorators).matchValue(node.decorators, [
           ...keys,
-          'decorators'
+          'decorators',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.decorators.matchValue(node.decorators, [...keys, 'decorators'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -1125,7 +1125,7 @@ export function classExpression(
   body?: Matcher<t.ClassBody>,
   decorators?: Matcher<Array<t.Decorator>> | Array<Matcher<t.Decorator>> | null
 ): Matcher<t.ClassExpression> {
-  return new ClassExpressionMatcher(id, superClass, body, decorators);
+  return new ClassExpressionMatcher(id, superClass, body, decorators)
 }
 
 export class ClassImplementsMatcher extends Matcher<t.ClassImplements> {
@@ -1135,7 +1135,7 @@ export class ClassImplementsMatcher extends Matcher<t.ClassImplements> {
       t.TypeParameterInstantiation
     > | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -1143,13 +1143,13 @@ export class ClassImplementsMatcher extends Matcher<t.ClassImplements> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ClassImplements {
     if (!isNode(node) || !t.isClassImplements(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -1157,20 +1157,20 @@ export class ClassImplementsMatcher extends Matcher<t.ClassImplements> {
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -1178,7 +1178,7 @@ export function classImplements(
   id?: Matcher<t.Identifier>,
   typeParameters?: Matcher<t.TypeParameterInstantiation> | null
 ): Matcher<t.ClassImplements> {
-  return new ClassImplementsMatcher(id, typeParameters);
+  return new ClassImplementsMatcher(id, typeParameters)
 }
 
 export class ClassMethodMatcher extends Matcher<t.ClassMethod> {
@@ -1208,7 +1208,7 @@ export class ClassMethodMatcher extends Matcher<t.ClassMethod> {
     private readonly generator?: Matcher<boolean> | boolean | null,
     private readonly async?: Matcher<boolean> | boolean | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -1216,30 +1216,30 @@ export class ClassMethodMatcher extends Matcher<t.ClassMethod> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ClassMethod {
     if (!isNode(node) || !t.isClassMethod(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.kind === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.kind === 'string') {
       if (this.kind !== node.kind) {
-        return false;
+        return false
       }
     } else if (this.kind === null) {
       // null matcher means we expect null value
       if (node.kind !== null) {
-        return false;
+        return false
       }
     } else if (node.kind === null) {
-      return false;
+      return false
     } else if (!this.kind.matchValue(node.kind, [...keys, 'kind'])) {
-      return false;
+      return false
     }
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
-      return false;
+      return false
     }
 
     if (typeof this.params === 'undefined') {
@@ -1248,94 +1248,94 @@ export class ClassMethodMatcher extends Matcher<t.ClassMethod> {
       if (
         !tupleOf<unknown>(...this.params).matchValue(node.params, [
           ...keys,
-          'params'
+          'params',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
     if (typeof this.computed === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.computed === 'boolean') {
       if (this.computed !== node.computed) {
-        return false;
+        return false
       }
     } else if (this.computed === null) {
       // null matcher means we expect null value
       if (node.computed !== null) {
-        return false;
+        return false
       }
     } else if (node.computed === null) {
-      return false;
+      return false
     } else if (
       !this.computed.matchValue(node.computed, [...keys, 'computed'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this._static === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this._static === 'boolean') {
       if (this._static !== node.static) {
-        return false;
+        return false
       }
     } else if (this._static === null) {
       // null matcher means we expect null value
       if (node.static !== null) {
-        return false;
+        return false
       }
     } else if (node.static === null) {
-      return false;
+      return false
     } else if (!this._static.matchValue(node.static, [...keys, 'static'])) {
-      return false;
+      return false
     }
 
     if (typeof this.generator === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.generator === 'boolean') {
       if (this.generator !== node.generator) {
-        return false;
+        return false
       }
     } else if (this.generator === null) {
       // null matcher means we expect null value
       if (node.generator !== null) {
-        return false;
+        return false
       }
     } else if (node.generator === null) {
-      return false;
+      return false
     } else if (
       !this.generator.matchValue(node.generator, [...keys, 'generator'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.async === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.async === 'boolean') {
       if (this.async !== node.async) {
-        return false;
+        return false
       }
     } else if (this.async === null) {
       // null matcher means we expect null value
       if (node.async !== null) {
-        return false;
+        return false
       }
     } else if (node.async === null) {
-      return false;
+      return false
     } else if (!this.async.matchValue(node.async, [...keys, 'async'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -1369,7 +1369,7 @@ export function classMethod(
     _static,
     generator,
     async
-  );
+  )
 }
 
 export class ClassPrivateMethodMatcher extends Matcher<t.ClassPrivateMethod> {
@@ -1394,7 +1394,7 @@ export class ClassPrivateMethodMatcher extends Matcher<t.ClassPrivateMethod> {
     private readonly body?: Matcher<t.BlockStatement>,
     private readonly _static?: Matcher<boolean> | boolean | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -1402,30 +1402,30 @@ export class ClassPrivateMethodMatcher extends Matcher<t.ClassPrivateMethod> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ClassPrivateMethod {
     if (!isNode(node) || !t.isClassPrivateMethod(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.kind === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.kind === 'string') {
       if (this.kind !== node.kind) {
-        return false;
+        return false
       }
     } else if (this.kind === null) {
       // null matcher means we expect null value
       if (node.kind !== null) {
-        return false;
+        return false
       }
     } else if (node.kind === null) {
-      return false;
+      return false
     } else if (!this.kind.matchValue(node.kind, [...keys, 'kind'])) {
-      return false;
+      return false
     }
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
-      return false;
+      return false
     }
 
     if (typeof this.params === 'undefined') {
@@ -1434,39 +1434,39 @@ export class ClassPrivateMethodMatcher extends Matcher<t.ClassPrivateMethod> {
       if (
         !tupleOf<unknown>(...this.params).matchValue(node.params, [
           ...keys,
-          'params'
+          'params',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
     if (typeof this._static === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this._static === 'boolean') {
       if (this._static !== node.static) {
-        return false;
+        return false
       }
     } else if (this._static === null) {
       // null matcher means we expect null value
       if (node.static !== null) {
-        return false;
+        return false
       }
     } else if (node.static === null) {
-      return false;
+      return false
     } else if (!this._static.matchValue(node.static, [...keys, 'static'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -1486,7 +1486,7 @@ export function classPrivateMethod(
   body?: Matcher<t.BlockStatement>,
   _static?: Matcher<boolean> | boolean | null
 ): Matcher<t.ClassPrivateMethod> {
-  return new ClassPrivateMethodMatcher(kind, key, params, body, _static);
+  return new ClassPrivateMethodMatcher(kind, key, params, body, _static)
 }
 
 export class ClassPrivatePropertyMatcher extends Matcher<
@@ -1500,7 +1500,7 @@ export class ClassPrivatePropertyMatcher extends Matcher<
       | Array<Matcher<t.Decorator>>
       | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -1508,13 +1508,13 @@ export class ClassPrivatePropertyMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ClassPrivateProperty {
     if (!isNode(node) || !t.isClassPrivateProperty(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
@@ -1522,12 +1522,12 @@ export class ClassPrivatePropertyMatcher extends Matcher<
     } else if (this.value === null) {
       // null matcher means we expect null value
       if (node.value !== null) {
-        return false;
+        return false
       }
     } else if (node.value === null) {
-      return false;
+      return false
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
     if (typeof this.decorators === 'undefined') {
@@ -1535,26 +1535,26 @@ export class ClassPrivatePropertyMatcher extends Matcher<
     } else if (this.decorators === null) {
       // null matcher means we expect null value
       if (node.decorators !== null) {
-        return false;
+        return false
       }
     } else if (node.decorators === null) {
-      return false;
+      return false
     } else if (Array.isArray(this.decorators)) {
       if (
         !tupleOf<unknown>(...this.decorators).matchValue(node.decorators, [
           ...keys,
-          'decorators'
+          'decorators',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.decorators.matchValue(node.decorators, [...keys, 'decorators'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -1563,7 +1563,7 @@ export function classPrivateProperty(
   value?: Matcher<t.Expression> | null,
   decorators?: Matcher<Array<t.Decorator>> | Array<Matcher<t.Decorator>> | null
 ): Matcher<t.ClassPrivateProperty> {
-  return new ClassPrivatePropertyMatcher(key, value, decorators);
+  return new ClassPrivatePropertyMatcher(key, value, decorators)
 }
 
 export class ClassPropertyMatcher extends Matcher<t.ClassProperty> {
@@ -1582,7 +1582,7 @@ export class ClassPropertyMatcher extends Matcher<t.ClassProperty> {
     private readonly computed?: Matcher<boolean> | boolean | null,
     private readonly _static?: Matcher<boolean> | boolean | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -1590,13 +1590,13 @@ export class ClassPropertyMatcher extends Matcher<t.ClassProperty> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ClassProperty {
     if (!isNode(node) || !t.isClassProperty(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
@@ -1604,12 +1604,12 @@ export class ClassPropertyMatcher extends Matcher<t.ClassProperty> {
     } else if (this.value === null) {
       // null matcher means we expect null value
       if (node.value !== null) {
-        return false;
+        return false
       }
     } else if (node.value === null) {
-      return false;
+      return false
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -1617,17 +1617,17 @@ export class ClassPropertyMatcher extends Matcher<t.ClassProperty> {
     } else if (this.typeAnnotation === null) {
       // null matcher means we expect null value
       if (node.typeAnnotation !== null) {
-        return false;
+        return false
       }
     } else if (node.typeAnnotation === null) {
-      return false;
+      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.decorators === 'undefined') {
@@ -1635,62 +1635,62 @@ export class ClassPropertyMatcher extends Matcher<t.ClassProperty> {
     } else if (this.decorators === null) {
       // null matcher means we expect null value
       if (node.decorators !== null) {
-        return false;
+        return false
       }
     } else if (node.decorators === null) {
-      return false;
+      return false
     } else if (Array.isArray(this.decorators)) {
       if (
         !tupleOf<unknown>(...this.decorators).matchValue(node.decorators, [
           ...keys,
-          'decorators'
+          'decorators',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.decorators.matchValue(node.decorators, [...keys, 'decorators'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.computed === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.computed === 'boolean') {
       if (this.computed !== node.computed) {
-        return false;
+        return false
       }
     } else if (this.computed === null) {
       // null matcher means we expect null value
       if (node.computed !== null) {
-        return false;
+        return false
       }
     } else if (node.computed === null) {
-      return false;
+      return false
     } else if (
       !this.computed.matchValue(node.computed, [...keys, 'computed'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this._static === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this._static === 'boolean') {
       if (this._static !== node.static) {
-        return false;
+        return false
       }
     } else if (this._static === null) {
       // null matcher means we expect null value
       if (node.static !== null) {
-        return false;
+        return false
       }
     } else if (node.static === null) {
-      return false;
+      return false
     } else if (!this._static.matchValue(node.static, [...keys, 'static'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -1713,7 +1713,7 @@ export function classProperty(
     decorators,
     computed,
     _static
-  );
+  )
 }
 
 export class ConditionalExpressionMatcher extends Matcher<
@@ -1724,7 +1724,7 @@ export class ConditionalExpressionMatcher extends Matcher<
     private readonly consequent?: Matcher<t.Expression>,
     private readonly alternate?: Matcher<t.Expression>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -1732,13 +1732,13 @@ export class ConditionalExpressionMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ConditionalExpression {
     if (!isNode(node) || !t.isConditionalExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.test === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.test.matchValue(node.test, [...keys, 'test'])) {
-      return false;
+      return false
     }
 
     if (typeof this.consequent === 'undefined') {
@@ -1746,7 +1746,7 @@ export class ConditionalExpressionMatcher extends Matcher<
     } else if (
       !this.consequent.matchValue(node.consequent, [...keys, 'consequent'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.alternate === 'undefined') {
@@ -1754,10 +1754,10 @@ export class ConditionalExpressionMatcher extends Matcher<
     } else if (
       !this.alternate.matchValue(node.alternate, [...keys, 'alternate'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -1766,12 +1766,12 @@ export function conditionalExpression(
   consequent?: Matcher<t.Expression>,
   alternate?: Matcher<t.Expression>
 ): Matcher<t.ConditionalExpression> {
-  return new ConditionalExpressionMatcher(test, consequent, alternate);
+  return new ConditionalExpressionMatcher(test, consequent, alternate)
 }
 
 export class ContinueStatementMatcher extends Matcher<t.ContinueStatement> {
   constructor(private readonly label?: Matcher<t.Identifier> | null) {
-    super();
+    super()
   }
 
   matchValue(
@@ -1779,7 +1779,7 @@ export class ContinueStatementMatcher extends Matcher<t.ContinueStatement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ContinueStatement {
     if (!isNode(node) || !t.isContinueStatement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.label === 'undefined') {
@@ -1787,27 +1787,27 @@ export class ContinueStatementMatcher extends Matcher<t.ContinueStatement> {
     } else if (this.label === null) {
       // null matcher means we expect null value
       if (node.label !== null) {
-        return false;
+        return false
       }
     } else if (node.label === null) {
-      return false;
+      return false
     } else if (!this.label.matchValue(node.label, [...keys, 'label'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function continueStatement(
   label?: Matcher<t.Identifier> | null
 ): Matcher<t.ContinueStatement> {
-  return new ContinueStatementMatcher(label);
+  return new ContinueStatementMatcher(label)
 }
 
 export class DebuggerStatementMatcher extends Matcher<t.DebuggerStatement> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -1815,15 +1815,15 @@ export class DebuggerStatementMatcher extends Matcher<t.DebuggerStatement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.DebuggerStatement {
     if (!isNode(node) || !t.isDebuggerStatement(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function debuggerStatement(): Matcher<t.DebuggerStatement> {
-  return new DebuggerStatementMatcher();
+  return new DebuggerStatementMatcher()
 }
 
 export class DeclareClassMatcher extends Matcher<t.DeclareClass> {
@@ -1838,7 +1838,7 @@ export class DeclareClassMatcher extends Matcher<t.DeclareClass> {
       | null,
     private readonly body?: Matcher<t.ObjectTypeAnnotation>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -1846,13 +1846,13 @@ export class DeclareClassMatcher extends Matcher<t.DeclareClass> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.DeclareClass {
     if (!isNode(node) || !t.isDeclareClass(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -1860,17 +1860,17 @@ export class DeclareClassMatcher extends Matcher<t.DeclareClass> {
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this._extends === 'undefined') {
@@ -1878,30 +1878,30 @@ export class DeclareClassMatcher extends Matcher<t.DeclareClass> {
     } else if (this._extends === null) {
       // null matcher means we expect null value
       if (node.extends !== null) {
-        return false;
+        return false
       }
     } else if (node.extends === null) {
-      return false;
+      return false
     } else if (Array.isArray(this._extends)) {
       if (
         !tupleOf<unknown>(...this._extends).matchValue(node.extends, [
           ...keys,
-          'extends'
+          'extends',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this._extends.matchValue(node.extends, [...keys, 'extends'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -1914,14 +1914,14 @@ export function declareClass(
     | null,
   body?: Matcher<t.ObjectTypeAnnotation>
 ): Matcher<t.DeclareClass> {
-  return new DeclareClassMatcher(id, typeParameters, _extends, body);
+  return new DeclareClassMatcher(id, typeParameters, _extends, body)
 }
 
 export class DeclareExportAllDeclarationMatcher extends Matcher<
   t.DeclareExportAllDeclaration
 > {
   constructor(private readonly source?: Matcher<t.StringLiteral>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -1929,23 +1929,23 @@ export class DeclareExportAllDeclarationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.DeclareExportAllDeclaration {
     if (!isNode(node) || !t.isDeclareExportAllDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.source === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.source.matchValue(node.source, [...keys, 'source'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function declareExportAllDeclaration(
   source?: Matcher<t.StringLiteral>
 ): Matcher<t.DeclareExportAllDeclaration> {
-  return new DeclareExportAllDeclarationMatcher(source);
+  return new DeclareExportAllDeclarationMatcher(source)
 }
 
 export class DeclareExportDeclarationMatcher extends Matcher<
@@ -1959,7 +1959,7 @@ export class DeclareExportDeclarationMatcher extends Matcher<
       | null,
     private readonly source?: Matcher<t.StringLiteral> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -1967,7 +1967,7 @@ export class DeclareExportDeclarationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.DeclareExportDeclaration {
     if (!isNode(node) || !t.isDeclareExportDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.declaration === 'undefined') {
@@ -1975,14 +1975,14 @@ export class DeclareExportDeclarationMatcher extends Matcher<
     } else if (this.declaration === null) {
       // null matcher means we expect null value
       if (node.declaration !== null) {
-        return false;
+        return false
       }
     } else if (node.declaration === null) {
-      return false;
+      return false
     } else if (
       !this.declaration.matchValue(node.declaration, [...keys, 'declaration'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.specifiers === 'undefined') {
@@ -1990,23 +1990,23 @@ export class DeclareExportDeclarationMatcher extends Matcher<
     } else if (this.specifiers === null) {
       // null matcher means we expect null value
       if (node.specifiers !== null) {
-        return false;
+        return false
       }
     } else if (node.specifiers === null) {
-      return false;
+      return false
     } else if (Array.isArray(this.specifiers)) {
       if (
         !tupleOf<unknown>(...this.specifiers).matchValue(node.specifiers, [
           ...keys,
-          'specifiers'
+          'specifiers',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.specifiers.matchValue(node.specifiers, [...keys, 'specifiers'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.source === 'undefined') {
@@ -2014,15 +2014,15 @@ export class DeclareExportDeclarationMatcher extends Matcher<
     } else if (this.source === null) {
       // null matcher means we expect null value
       if (node.source !== null) {
-        return false;
+        return false
       }
     } else if (node.source === null) {
-      return false;
+      return false
     } else if (!this.source.matchValue(node.source, [...keys, 'source'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -2034,12 +2034,12 @@ export function declareExportDeclaration(
     | null,
   source?: Matcher<t.StringLiteral> | null
 ): Matcher<t.DeclareExportDeclaration> {
-  return new DeclareExportDeclarationMatcher(declaration, specifiers, source);
+  return new DeclareExportDeclarationMatcher(declaration, specifiers, source)
 }
 
 export class DeclareFunctionMatcher extends Matcher<t.DeclareFunction> {
   constructor(private readonly id?: Matcher<t.Identifier>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2047,23 +2047,23 @@ export class DeclareFunctionMatcher extends Matcher<t.DeclareFunction> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.DeclareFunction {
     if (!isNode(node) || !t.isDeclareFunction(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function declareFunction(
   id?: Matcher<t.Identifier>
 ): Matcher<t.DeclareFunction> {
-  return new DeclareFunctionMatcher(id);
+  return new DeclareFunctionMatcher(id)
 }
 
 export class DeclareInterfaceMatcher extends Matcher<t.DeclareInterface> {
@@ -2078,7 +2078,7 @@ export class DeclareInterfaceMatcher extends Matcher<t.DeclareInterface> {
       | null,
     private readonly body?: Matcher<t.ObjectTypeAnnotation>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2086,13 +2086,13 @@ export class DeclareInterfaceMatcher extends Matcher<t.DeclareInterface> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.DeclareInterface {
     if (!isNode(node) || !t.isDeclareInterface(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -2100,17 +2100,17 @@ export class DeclareInterfaceMatcher extends Matcher<t.DeclareInterface> {
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this._extends === 'undefined') {
@@ -2118,30 +2118,30 @@ export class DeclareInterfaceMatcher extends Matcher<t.DeclareInterface> {
     } else if (this._extends === null) {
       // null matcher means we expect null value
       if (node.extends !== null) {
-        return false;
+        return false
       }
     } else if (node.extends === null) {
-      return false;
+      return false
     } else if (Array.isArray(this._extends)) {
       if (
         !tupleOf<unknown>(...this._extends).matchValue(node.extends, [
           ...keys,
-          'extends'
+          'extends',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this._extends.matchValue(node.extends, [...keys, 'extends'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -2154,7 +2154,7 @@ export function declareInterface(
     | null,
   body?: Matcher<t.ObjectTypeAnnotation>
 ): Matcher<t.DeclareInterface> {
-  return new DeclareInterfaceMatcher(id, typeParameters, _extends, body);
+  return new DeclareInterfaceMatcher(id, typeParameters, _extends, body)
 }
 
 export class DeclareModuleMatcher extends Matcher<t.DeclareModule> {
@@ -2163,7 +2163,7 @@ export class DeclareModuleMatcher extends Matcher<t.DeclareModule> {
     private readonly body?: Matcher<t.BlockStatement>,
     private readonly kind?: Matcher<'CommonJS' | 'ES'> | string | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2171,39 +2171,39 @@ export class DeclareModuleMatcher extends Matcher<t.DeclareModule> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.DeclareModule {
     if (!isNode(node) || !t.isDeclareModule(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
     if (typeof this.kind === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.kind === 'string') {
       if (this.kind !== node.kind) {
-        return false;
+        return false
       }
     } else if (this.kind === null) {
       // null matcher means we expect null value
       if (node.kind !== null) {
-        return false;
+        return false
       }
     } else if (node.kind === null) {
-      return false;
+      return false
     } else if (!this.kind.matchValue(node.kind, [...keys, 'kind'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -2212,14 +2212,14 @@ export function declareModule(
   body?: Matcher<t.BlockStatement>,
   kind?: Matcher<'CommonJS' | 'ES'> | string | null
 ): Matcher<t.DeclareModule> {
-  return new DeclareModuleMatcher(id, body, kind);
+  return new DeclareModuleMatcher(id, body, kind)
 }
 
 export class DeclareModuleExportsMatcher extends Matcher<
   t.DeclareModuleExports
 > {
   constructor(private readonly typeAnnotation?: Matcher<t.TypeAnnotation>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2227,7 +2227,7 @@ export class DeclareModuleExportsMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.DeclareModuleExports {
     if (!isNode(node) || !t.isDeclareModuleExports(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -2235,20 +2235,20 @@ export class DeclareModuleExportsMatcher extends Matcher<
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function declareModuleExports(
   typeAnnotation?: Matcher<t.TypeAnnotation>
 ): Matcher<t.DeclareModuleExports> {
-  return new DeclareModuleExportsMatcher(typeAnnotation);
+  return new DeclareModuleExportsMatcher(typeAnnotation)
 }
 
 export class DeclareOpaqueTypeMatcher extends Matcher<t.DeclareOpaqueType> {
@@ -2259,7 +2259,7 @@ export class DeclareOpaqueTypeMatcher extends Matcher<t.DeclareOpaqueType> {
     > | null,
     private readonly supertype?: Matcher<t.FlowType> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2267,13 +2267,13 @@ export class DeclareOpaqueTypeMatcher extends Matcher<t.DeclareOpaqueType> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.DeclareOpaqueType {
     if (!isNode(node) || !t.isDeclareOpaqueType(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -2281,17 +2281,17 @@ export class DeclareOpaqueTypeMatcher extends Matcher<t.DeclareOpaqueType> {
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.supertype === 'undefined') {
@@ -2299,17 +2299,17 @@ export class DeclareOpaqueTypeMatcher extends Matcher<t.DeclareOpaqueType> {
     } else if (this.supertype === null) {
       // null matcher means we expect null value
       if (node.supertype !== null) {
-        return false;
+        return false
       }
     } else if (node.supertype === null) {
-      return false;
+      return false
     } else if (
       !this.supertype.matchValue(node.supertype, [...keys, 'supertype'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -2318,7 +2318,7 @@ export function declareOpaqueType(
   typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
   supertype?: Matcher<t.FlowType> | null
 ): Matcher<t.DeclareOpaqueType> {
-  return new DeclareOpaqueTypeMatcher(id, typeParameters, supertype);
+  return new DeclareOpaqueTypeMatcher(id, typeParameters, supertype)
 }
 
 export class DeclareTypeAliasMatcher extends Matcher<t.DeclareTypeAlias> {
@@ -2329,7 +2329,7 @@ export class DeclareTypeAliasMatcher extends Matcher<t.DeclareTypeAlias> {
     > | null,
     private readonly right?: Matcher<t.FlowType>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2337,13 +2337,13 @@ export class DeclareTypeAliasMatcher extends Matcher<t.DeclareTypeAlias> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.DeclareTypeAlias {
     if (!isNode(node) || !t.isDeclareTypeAlias(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -2351,26 +2351,26 @@ export class DeclareTypeAliasMatcher extends Matcher<t.DeclareTypeAlias> {
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.right === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.right.matchValue(node.right, [...keys, 'right'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -2379,12 +2379,12 @@ export function declareTypeAlias(
   typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
   right?: Matcher<t.FlowType>
 ): Matcher<t.DeclareTypeAlias> {
-  return new DeclareTypeAliasMatcher(id, typeParameters, right);
+  return new DeclareTypeAliasMatcher(id, typeParameters, right)
 }
 
 export class DeclareVariableMatcher extends Matcher<t.DeclareVariable> {
   constructor(private readonly id?: Matcher<t.Identifier>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2392,28 +2392,28 @@ export class DeclareVariableMatcher extends Matcher<t.DeclareVariable> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.DeclareVariable {
     if (!isNode(node) || !t.isDeclareVariable(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function declareVariable(
   id?: Matcher<t.Identifier>
 ): Matcher<t.DeclareVariable> {
-  return new DeclareVariableMatcher(id);
+  return new DeclareVariableMatcher(id)
 }
 
 export class DeclaredPredicateMatcher extends Matcher<t.DeclaredPredicate> {
   constructor(private readonly value?: Matcher<t.Flow>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2421,28 +2421,28 @@ export class DeclaredPredicateMatcher extends Matcher<t.DeclaredPredicate> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.DeclaredPredicate {
     if (!isNode(node) || !t.isDeclaredPredicate(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function declaredPredicate(
   value?: Matcher<t.Flow>
 ): Matcher<t.DeclaredPredicate> {
-  return new DeclaredPredicateMatcher(value);
+  return new DeclaredPredicateMatcher(value)
 }
 
 export class DecoratorMatcher extends Matcher<t.Decorator> {
   constructor(private readonly expression?: Matcher<t.Expression>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2450,7 +2450,7 @@ export class DecoratorMatcher extends Matcher<t.Decorator> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.Decorator {
     if (!isNode(node) || !t.isDecorator(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.expression === 'undefined') {
@@ -2458,22 +2458,22 @@ export class DecoratorMatcher extends Matcher<t.Decorator> {
     } else if (
       !this.expression.matchValue(node.expression, [...keys, 'expression'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function decorator(
   expression?: Matcher<t.Expression>
 ): Matcher<t.Decorator> {
-  return new DecoratorMatcher(expression);
+  return new DecoratorMatcher(expression)
 }
 
 export class DirectiveMatcher extends Matcher<t.Directive> {
   constructor(private readonly value?: Matcher<t.DirectiveLiteral>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2481,28 +2481,28 @@ export class DirectiveMatcher extends Matcher<t.Directive> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.Directive {
     if (!isNode(node) || !t.isDirective(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function directive(
   value?: Matcher<t.DirectiveLiteral>
 ): Matcher<t.Directive> {
-  return new DirectiveMatcher(value);
+  return new DirectiveMatcher(value)
 }
 
 export class DirectiveLiteralMatcher extends Matcher<t.DirectiveLiteral> {
   constructor(private readonly value?: Matcher<string> | string) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2510,32 +2510,32 @@ export class DirectiveLiteralMatcher extends Matcher<t.DirectiveLiteral> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.DirectiveLiteral {
     if (!isNode(node) || !t.isDirectiveLiteral(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.value === 'string') {
       if (this.value !== node.value) {
-        return false;
+        return false
       }
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function directiveLiteral(
   value?: Matcher<string> | string
 ): Matcher<t.DirectiveLiteral> {
-  return new DirectiveLiteralMatcher(value);
+  return new DirectiveLiteralMatcher(value)
 }
 
 export class DoExpressionMatcher extends Matcher<t.DoExpression> {
   constructor(private readonly body?: Matcher<t.BlockStatement>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2543,23 +2543,23 @@ export class DoExpressionMatcher extends Matcher<t.DoExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.DoExpression {
     if (!isNode(node) || !t.isDoExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function doExpression(
   body?: Matcher<t.BlockStatement>
 ): Matcher<t.DoExpression> {
-  return new DoExpressionMatcher(body);
+  return new DoExpressionMatcher(body)
 }
 
 export class DoWhileStatementMatcher extends Matcher<t.DoWhileStatement> {
@@ -2567,7 +2567,7 @@ export class DoWhileStatementMatcher extends Matcher<t.DoWhileStatement> {
     private readonly test?: Matcher<t.Expression>,
     private readonly body?: Matcher<t.Statement>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2575,22 +2575,22 @@ export class DoWhileStatementMatcher extends Matcher<t.DoWhileStatement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.DoWhileStatement {
     if (!isNode(node) || !t.isDoWhileStatement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.test === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.test.matchValue(node.test, [...keys, 'test'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -2598,12 +2598,12 @@ export function doWhileStatement(
   test?: Matcher<t.Expression>,
   body?: Matcher<t.Statement>
 ): Matcher<t.DoWhileStatement> {
-  return new DoWhileStatementMatcher(test, body);
+  return new DoWhileStatementMatcher(test, body)
 }
 
 export class EmptyStatementMatcher extends Matcher<t.EmptyStatement> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -2611,20 +2611,20 @@ export class EmptyStatementMatcher extends Matcher<t.EmptyStatement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.EmptyStatement {
     if (!isNode(node) || !t.isEmptyStatement(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function emptyStatement(): Matcher<t.EmptyStatement> {
-  return new EmptyStatementMatcher();
+  return new EmptyStatementMatcher()
 }
 
 export class EmptyTypeAnnotationMatcher extends Matcher<t.EmptyTypeAnnotation> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -2632,15 +2632,15 @@ export class EmptyTypeAnnotationMatcher extends Matcher<t.EmptyTypeAnnotation> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.EmptyTypeAnnotation {
     if (!isNode(node) || !t.isEmptyTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function emptyTypeAnnotation(): Matcher<t.EmptyTypeAnnotation> {
-  return new EmptyTypeAnnotationMatcher();
+  return new EmptyTypeAnnotationMatcher()
 }
 
 export class EnumBooleanBodyMatcher extends Matcher<t.EnumBooleanBody> {
@@ -2649,7 +2649,7 @@ export class EnumBooleanBodyMatcher extends Matcher<t.EnumBooleanBody> {
       | Matcher<Array<t.EnumBooleanMember>>
       | Array<Matcher<t.EnumBooleanMember>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2657,7 +2657,7 @@ export class EnumBooleanBodyMatcher extends Matcher<t.EnumBooleanBody> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.EnumBooleanBody {
     if (!isNode(node) || !t.isEnumBooleanBody(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.members === 'undefined') {
@@ -2666,16 +2666,16 @@ export class EnumBooleanBodyMatcher extends Matcher<t.EnumBooleanBody> {
       if (
         !tupleOf<unknown>(...this.members).matchValue(node.members, [
           ...keys,
-          'members'
+          'members',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.members.matchValue(node.members, [...keys, 'members'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -2684,12 +2684,12 @@ export function enumBooleanBody(
     | Matcher<Array<t.EnumBooleanMember>>
     | Array<Matcher<t.EnumBooleanMember>>
 ): Matcher<t.EnumBooleanBody> {
-  return new EnumBooleanBodyMatcher(members);
+  return new EnumBooleanBodyMatcher(members)
 }
 
 export class EnumBooleanMemberMatcher extends Matcher<t.EnumBooleanMember> {
   constructor(private readonly id?: Matcher<t.Identifier>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2697,23 +2697,23 @@ export class EnumBooleanMemberMatcher extends Matcher<t.EnumBooleanMember> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.EnumBooleanMember {
     if (!isNode(node) || !t.isEnumBooleanMember(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function enumBooleanMember(
   id?: Matcher<t.Identifier>
 ): Matcher<t.EnumBooleanMember> {
-  return new EnumBooleanMemberMatcher(id);
+  return new EnumBooleanMemberMatcher(id)
 }
 
 export class EnumDeclarationMatcher extends Matcher<t.EnumDeclaration> {
@@ -2723,7 +2723,7 @@ export class EnumDeclarationMatcher extends Matcher<t.EnumDeclaration> {
       t.EnumBooleanBody | t.EnumNumberBody | t.EnumStringBody | t.EnumSymbolBody
     >
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2731,22 +2731,22 @@ export class EnumDeclarationMatcher extends Matcher<t.EnumDeclaration> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.EnumDeclaration {
     if (!isNode(node) || !t.isEnumDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -2756,12 +2756,12 @@ export function enumDeclaration(
     t.EnumBooleanBody | t.EnumNumberBody | t.EnumStringBody | t.EnumSymbolBody
   >
 ): Matcher<t.EnumDeclaration> {
-  return new EnumDeclarationMatcher(id, body);
+  return new EnumDeclarationMatcher(id, body)
 }
 
 export class EnumDefaultedMemberMatcher extends Matcher<t.EnumDefaultedMember> {
   constructor(private readonly id?: Matcher<t.Identifier>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2769,23 +2769,23 @@ export class EnumDefaultedMemberMatcher extends Matcher<t.EnumDefaultedMember> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.EnumDefaultedMember {
     if (!isNode(node) || !t.isEnumDefaultedMember(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function enumDefaultedMember(
   id?: Matcher<t.Identifier>
 ): Matcher<t.EnumDefaultedMember> {
-  return new EnumDefaultedMemberMatcher(id);
+  return new EnumDefaultedMemberMatcher(id)
 }
 
 export class EnumNumberBodyMatcher extends Matcher<t.EnumNumberBody> {
@@ -2794,7 +2794,7 @@ export class EnumNumberBodyMatcher extends Matcher<t.EnumNumberBody> {
       | Matcher<Array<t.EnumNumberMember>>
       | Array<Matcher<t.EnumNumberMember>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2802,7 +2802,7 @@ export class EnumNumberBodyMatcher extends Matcher<t.EnumNumberBody> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.EnumNumberBody {
     if (!isNode(node) || !t.isEnumNumberBody(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.members === 'undefined') {
@@ -2811,16 +2811,16 @@ export class EnumNumberBodyMatcher extends Matcher<t.EnumNumberBody> {
       if (
         !tupleOf<unknown>(...this.members).matchValue(node.members, [
           ...keys,
-          'members'
+          'members',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.members.matchValue(node.members, [...keys, 'members'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -2829,7 +2829,7 @@ export function enumNumberBody(
     | Matcher<Array<t.EnumNumberMember>>
     | Array<Matcher<t.EnumNumberMember>>
 ): Matcher<t.EnumNumberBody> {
-  return new EnumNumberBodyMatcher(members);
+  return new EnumNumberBodyMatcher(members)
 }
 
 export class EnumNumberMemberMatcher extends Matcher<t.EnumNumberMember> {
@@ -2837,7 +2837,7 @@ export class EnumNumberMemberMatcher extends Matcher<t.EnumNumberMember> {
     private readonly id?: Matcher<t.Identifier>,
     private readonly init?: Matcher<t.NumericLiteral>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2845,22 +2845,22 @@ export class EnumNumberMemberMatcher extends Matcher<t.EnumNumberMember> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.EnumNumberMember {
     if (!isNode(node) || !t.isEnumNumberMember(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.init === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.init.matchValue(node.init, [...keys, 'init'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -2868,7 +2868,7 @@ export function enumNumberMember(
   id?: Matcher<t.Identifier>,
   init?: Matcher<t.NumericLiteral>
 ): Matcher<t.EnumNumberMember> {
-  return new EnumNumberMemberMatcher(id, init);
+  return new EnumNumberMemberMatcher(id, init)
 }
 
 export class EnumStringBodyMatcher extends Matcher<t.EnumStringBody> {
@@ -2877,7 +2877,7 @@ export class EnumStringBodyMatcher extends Matcher<t.EnumStringBody> {
       | Matcher<Array<t.EnumStringMember | t.EnumDefaultedMember>>
       | Array<Matcher<t.EnumStringMember> | Matcher<t.EnumDefaultedMember>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2885,7 +2885,7 @@ export class EnumStringBodyMatcher extends Matcher<t.EnumStringBody> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.EnumStringBody {
     if (!isNode(node) || !t.isEnumStringBody(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.members === 'undefined') {
@@ -2894,16 +2894,16 @@ export class EnumStringBodyMatcher extends Matcher<t.EnumStringBody> {
       if (
         !tupleOf<unknown>(...this.members).matchValue(node.members, [
           ...keys,
-          'members'
+          'members',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.members.matchValue(node.members, [...keys, 'members'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -2912,7 +2912,7 @@ export function enumStringBody(
     | Matcher<Array<t.EnumStringMember | t.EnumDefaultedMember>>
     | Array<Matcher<t.EnumStringMember> | Matcher<t.EnumDefaultedMember>>
 ): Matcher<t.EnumStringBody> {
-  return new EnumStringBodyMatcher(members);
+  return new EnumStringBodyMatcher(members)
 }
 
 export class EnumStringMemberMatcher extends Matcher<t.EnumStringMember> {
@@ -2920,7 +2920,7 @@ export class EnumStringMemberMatcher extends Matcher<t.EnumStringMember> {
     private readonly id?: Matcher<t.Identifier>,
     private readonly init?: Matcher<t.StringLiteral>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2928,22 +2928,22 @@ export class EnumStringMemberMatcher extends Matcher<t.EnumStringMember> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.EnumStringMember {
     if (!isNode(node) || !t.isEnumStringMember(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.init === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.init.matchValue(node.init, [...keys, 'init'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -2951,7 +2951,7 @@ export function enumStringMember(
   id?: Matcher<t.Identifier>,
   init?: Matcher<t.StringLiteral>
 ): Matcher<t.EnumStringMember> {
-  return new EnumStringMemberMatcher(id, init);
+  return new EnumStringMemberMatcher(id, init)
 }
 
 export class EnumSymbolBodyMatcher extends Matcher<t.EnumSymbolBody> {
@@ -2960,7 +2960,7 @@ export class EnumSymbolBodyMatcher extends Matcher<t.EnumSymbolBody> {
       | Matcher<Array<t.EnumDefaultedMember>>
       | Array<Matcher<t.EnumDefaultedMember>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -2968,7 +2968,7 @@ export class EnumSymbolBodyMatcher extends Matcher<t.EnumSymbolBody> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.EnumSymbolBody {
     if (!isNode(node) || !t.isEnumSymbolBody(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.members === 'undefined') {
@@ -2977,16 +2977,16 @@ export class EnumSymbolBodyMatcher extends Matcher<t.EnumSymbolBody> {
       if (
         !tupleOf<unknown>(...this.members).matchValue(node.members, [
           ...keys,
-          'members'
+          'members',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.members.matchValue(node.members, [...keys, 'members'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -2995,14 +2995,14 @@ export function enumSymbolBody(
     | Matcher<Array<t.EnumDefaultedMember>>
     | Array<Matcher<t.EnumDefaultedMember>>
 ): Matcher<t.EnumSymbolBody> {
-  return new EnumSymbolBodyMatcher(members);
+  return new EnumSymbolBodyMatcher(members)
 }
 
 export class ExistsTypeAnnotationMatcher extends Matcher<
   t.ExistsTypeAnnotation
 > {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -3010,22 +3010,22 @@ export class ExistsTypeAnnotationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ExistsTypeAnnotation {
     if (!isNode(node) || !t.isExistsTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function existsTypeAnnotation(): Matcher<t.ExistsTypeAnnotation> {
-  return new ExistsTypeAnnotationMatcher();
+  return new ExistsTypeAnnotationMatcher()
 }
 
 export class ExportAllDeclarationMatcher extends Matcher<
   t.ExportAllDeclaration
 > {
   constructor(private readonly source?: Matcher<t.StringLiteral>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -3033,23 +3033,23 @@ export class ExportAllDeclarationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ExportAllDeclaration {
     if (!isNode(node) || !t.isExportAllDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.source === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.source.matchValue(node.source, [...keys, 'source'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function exportAllDeclaration(
   source?: Matcher<t.StringLiteral>
 ): Matcher<t.ExportAllDeclaration> {
-  return new ExportAllDeclarationMatcher(source);
+  return new ExportAllDeclarationMatcher(source)
 }
 
 export class ExportDefaultDeclarationMatcher extends Matcher<
@@ -3063,7 +3063,7 @@ export class ExportDefaultDeclarationMatcher extends Matcher<
       | t.Expression
     >
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -3071,7 +3071,7 @@ export class ExportDefaultDeclarationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ExportDefaultDeclaration {
     if (!isNode(node) || !t.isExportDefaultDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.declaration === 'undefined') {
@@ -3079,10 +3079,10 @@ export class ExportDefaultDeclarationMatcher extends Matcher<
     } else if (
       !this.declaration.matchValue(node.declaration, [...keys, 'declaration'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -3094,14 +3094,14 @@ export function exportDefaultDeclaration(
     | t.Expression
   >
 ): Matcher<t.ExportDefaultDeclaration> {
-  return new ExportDefaultDeclarationMatcher(declaration);
+  return new ExportDefaultDeclarationMatcher(declaration)
 }
 
 export class ExportDefaultSpecifierMatcher extends Matcher<
   t.ExportDefaultSpecifier
 > {
   constructor(private readonly exported?: Matcher<t.Identifier>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -3109,7 +3109,7 @@ export class ExportDefaultSpecifierMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ExportDefaultSpecifier {
     if (!isNode(node) || !t.isExportDefaultSpecifier(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.exported === 'undefined') {
@@ -3117,17 +3117,17 @@ export class ExportDefaultSpecifierMatcher extends Matcher<
     } else if (
       !this.exported.matchValue(node.exported, [...keys, 'exported'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function exportDefaultSpecifier(
   exported?: Matcher<t.Identifier>
 ): Matcher<t.ExportDefaultSpecifier> {
-  return new ExportDefaultSpecifierMatcher(exported);
+  return new ExportDefaultSpecifierMatcher(exported)
 }
 
 export class ExportNamedDeclarationMatcher extends Matcher<
@@ -3150,7 +3150,7 @@ export class ExportNamedDeclarationMatcher extends Matcher<
         >,
     private readonly source?: Matcher<t.StringLiteral> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -3158,7 +3158,7 @@ export class ExportNamedDeclarationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ExportNamedDeclaration {
     if (!isNode(node) || !t.isExportNamedDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.declaration === 'undefined') {
@@ -3166,14 +3166,14 @@ export class ExportNamedDeclarationMatcher extends Matcher<
     } else if (this.declaration === null) {
       // null matcher means we expect null value
       if (node.declaration !== null) {
-        return false;
+        return false
       }
     } else if (node.declaration === null) {
-      return false;
+      return false
     } else if (
       !this.declaration.matchValue(node.declaration, [...keys, 'declaration'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.specifiers === 'undefined') {
@@ -3182,15 +3182,15 @@ export class ExportNamedDeclarationMatcher extends Matcher<
       if (
         !tupleOf<unknown>(...this.specifiers).matchValue(node.specifiers, [
           ...keys,
-          'specifiers'
+          'specifiers',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.specifiers.matchValue(node.specifiers, [...keys, 'specifiers'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.source === 'undefined') {
@@ -3198,15 +3198,15 @@ export class ExportNamedDeclarationMatcher extends Matcher<
     } else if (this.source === null) {
       // null matcher means we expect null value
       if (node.source !== null) {
-        return false;
+        return false
       }
     } else if (node.source === null) {
-      return false;
+      return false
     } else if (!this.source.matchValue(node.source, [...keys, 'source'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -3227,14 +3227,14 @@ export function exportNamedDeclaration(
       >,
   source?: Matcher<t.StringLiteral> | null
 ): Matcher<t.ExportNamedDeclaration> {
-  return new ExportNamedDeclarationMatcher(declaration, specifiers, source);
+  return new ExportNamedDeclarationMatcher(declaration, specifiers, source)
 }
 
 export class ExportNamespaceSpecifierMatcher extends Matcher<
   t.ExportNamespaceSpecifier
 > {
   constructor(private readonly exported?: Matcher<t.Identifier>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -3242,7 +3242,7 @@ export class ExportNamespaceSpecifierMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ExportNamespaceSpecifier {
     if (!isNode(node) || !t.isExportNamespaceSpecifier(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.exported === 'undefined') {
@@ -3250,17 +3250,17 @@ export class ExportNamespaceSpecifierMatcher extends Matcher<
     } else if (
       !this.exported.matchValue(node.exported, [...keys, 'exported'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function exportNamespaceSpecifier(
   exported?: Matcher<t.Identifier>
 ): Matcher<t.ExportNamespaceSpecifier> {
-  return new ExportNamespaceSpecifierMatcher(exported);
+  return new ExportNamespaceSpecifierMatcher(exported)
 }
 
 export class ExportSpecifierMatcher extends Matcher<t.ExportSpecifier> {
@@ -3268,7 +3268,7 @@ export class ExportSpecifierMatcher extends Matcher<t.ExportSpecifier> {
     private readonly local?: Matcher<t.Identifier>,
     private readonly exported?: Matcher<t.Identifier>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -3276,13 +3276,13 @@ export class ExportSpecifierMatcher extends Matcher<t.ExportSpecifier> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ExportSpecifier {
     if (!isNode(node) || !t.isExportSpecifier(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.local === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.local.matchValue(node.local, [...keys, 'local'])) {
-      return false;
+      return false
     }
 
     if (typeof this.exported === 'undefined') {
@@ -3290,10 +3290,10 @@ export class ExportSpecifierMatcher extends Matcher<t.ExportSpecifier> {
     } else if (
       !this.exported.matchValue(node.exported, [...keys, 'exported'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -3301,12 +3301,12 @@ export function exportSpecifier(
   local?: Matcher<t.Identifier>,
   exported?: Matcher<t.Identifier>
 ): Matcher<t.ExportSpecifier> {
-  return new ExportSpecifierMatcher(local, exported);
+  return new ExportSpecifierMatcher(local, exported)
 }
 
 export class ExpressionStatementMatcher extends Matcher<t.ExpressionStatement> {
   constructor(private readonly expression?: Matcher<t.Expression>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -3314,7 +3314,7 @@ export class ExpressionStatementMatcher extends Matcher<t.ExpressionStatement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ExpressionStatement {
     if (!isNode(node) || !t.isExpressionStatement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.expression === 'undefined') {
@@ -3322,17 +3322,17 @@ export class ExpressionStatementMatcher extends Matcher<t.ExpressionStatement> {
     } else if (
       !this.expression.matchValue(node.expression, [...keys, 'expression'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function expressionStatement(
   expression?: Matcher<t.Expression>
 ): Matcher<t.ExpressionStatement> {
-  return new ExpressionStatementMatcher(expression);
+  return new ExpressionStatementMatcher(expression)
 }
 
 export class FileMatcher extends Matcher<t.File> {
@@ -3341,18 +3341,18 @@ export class FileMatcher extends Matcher<t.File> {
     private readonly comments?: Matcher<any>,
     private readonly tokens?: Matcher<any>
   ) {
-    super();
+    super()
   }
 
   matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.File {
     if (!isNode(node) || !t.isFile(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.program === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.program.matchValue(node.program, [...keys, 'program'])) {
-      return false;
+      return false
     }
 
     if (typeof this.comments === 'undefined') {
@@ -3360,16 +3360,16 @@ export class FileMatcher extends Matcher<t.File> {
     } else if (
       !this.comments.matchValue(node.comments, [...keys, 'comments'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.tokens === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.tokens.matchValue(node.tokens, [...keys, 'tokens'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -3378,7 +3378,7 @@ export function file(
   comments?: Matcher<any>,
   tokens?: Matcher<any>
 ): Matcher<t.File> {
-  return new FileMatcher(program, comments, tokens);
+  return new FileMatcher(program, comments, tokens)
 }
 
 export class ForInStatementMatcher extends Matcher<t.ForInStatement> {
@@ -3387,7 +3387,7 @@ export class ForInStatementMatcher extends Matcher<t.ForInStatement> {
     private readonly right?: Matcher<t.Expression>,
     private readonly body?: Matcher<t.Statement>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -3395,28 +3395,28 @@ export class ForInStatementMatcher extends Matcher<t.ForInStatement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ForInStatement {
     if (!isNode(node) || !t.isForInStatement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.left === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.left.matchValue(node.left, [...keys, 'left'])) {
-      return false;
+      return false
     }
 
     if (typeof this.right === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.right.matchValue(node.right, [...keys, 'right'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -3425,7 +3425,7 @@ export function forInStatement(
   right?: Matcher<t.Expression>,
   body?: Matcher<t.Statement>
 ): Matcher<t.ForInStatement> {
-  return new ForInStatementMatcher(left, right, body);
+  return new ForInStatementMatcher(left, right, body)
 }
 
 export class ForOfStatementMatcher extends Matcher<t.ForOfStatement> {
@@ -3435,7 +3435,7 @@ export class ForOfStatementMatcher extends Matcher<t.ForOfStatement> {
     private readonly body?: Matcher<t.Statement>,
     private readonly _await?: Matcher<boolean> | boolean
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -3443,38 +3443,38 @@ export class ForOfStatementMatcher extends Matcher<t.ForOfStatement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ForOfStatement {
     if (!isNode(node) || !t.isForOfStatement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.left === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.left.matchValue(node.left, [...keys, 'left'])) {
-      return false;
+      return false
     }
 
     if (typeof this.right === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.right.matchValue(node.right, [...keys, 'right'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
     if (typeof this._await === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this._await === 'boolean') {
       if (this._await !== node.await) {
-        return false;
+        return false
       }
     } else if (!this._await.matchValue(node.await, [...keys, 'await'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -3484,7 +3484,7 @@ export function forOfStatement(
   body?: Matcher<t.Statement>,
   _await?: Matcher<boolean> | boolean
 ): Matcher<t.ForOfStatement> {
-  return new ForOfStatementMatcher(left, right, body, _await);
+  return new ForOfStatementMatcher(left, right, body, _await)
 }
 
 export class ForStatementMatcher extends Matcher<t.ForStatement> {
@@ -3496,7 +3496,7 @@ export class ForStatementMatcher extends Matcher<t.ForStatement> {
     private readonly update?: Matcher<t.Expression> | null,
     private readonly body?: Matcher<t.Statement>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -3504,7 +3504,7 @@ export class ForStatementMatcher extends Matcher<t.ForStatement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ForStatement {
     if (!isNode(node) || !t.isForStatement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.init === 'undefined') {
@@ -3512,12 +3512,12 @@ export class ForStatementMatcher extends Matcher<t.ForStatement> {
     } else if (this.init === null) {
       // null matcher means we expect null value
       if (node.init !== null) {
-        return false;
+        return false
       }
     } else if (node.init === null) {
-      return false;
+      return false
     } else if (!this.init.matchValue(node.init, [...keys, 'init'])) {
-      return false;
+      return false
     }
 
     if (typeof this.test === 'undefined') {
@@ -3525,12 +3525,12 @@ export class ForStatementMatcher extends Matcher<t.ForStatement> {
     } else if (this.test === null) {
       // null matcher means we expect null value
       if (node.test !== null) {
-        return false;
+        return false
       }
     } else if (node.test === null) {
-      return false;
+      return false
     } else if (!this.test.matchValue(node.test, [...keys, 'test'])) {
-      return false;
+      return false
     }
 
     if (typeof this.update === 'undefined') {
@@ -3538,21 +3538,21 @@ export class ForStatementMatcher extends Matcher<t.ForStatement> {
     } else if (this.update === null) {
       // null matcher means we expect null value
       if (node.update !== null) {
-        return false;
+        return false
       }
     } else if (node.update === null) {
-      return false;
+      return false
     } else if (!this.update.matchValue(node.update, [...keys, 'update'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -3562,7 +3562,7 @@ export function forStatement(
   update?: Matcher<t.Expression> | null,
   body?: Matcher<t.Statement>
 ): Matcher<t.ForStatement> {
-  return new ForStatementMatcher(init, test, update, body);
+  return new ForStatementMatcher(init, test, update, body)
 }
 
 export class FunctionDeclarationMatcher extends Matcher<t.FunctionDeclaration> {
@@ -3584,7 +3584,7 @@ export class FunctionDeclarationMatcher extends Matcher<t.FunctionDeclaration> {
     private readonly generator?: Matcher<boolean> | boolean | null,
     private readonly async?: Matcher<boolean> | boolean | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -3592,7 +3592,7 @@ export class FunctionDeclarationMatcher extends Matcher<t.FunctionDeclaration> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.FunctionDeclaration {
     if (!isNode(node) || !t.isFunctionDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
@@ -3600,12 +3600,12 @@ export class FunctionDeclarationMatcher extends Matcher<t.FunctionDeclaration> {
     } else if (this.id === null) {
       // null matcher means we expect null value
       if (node.id !== null) {
-        return false;
+        return false
       }
     } else if (node.id === null) {
-      return false;
+      return false
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.params === 'undefined') {
@@ -3614,58 +3614,58 @@ export class FunctionDeclarationMatcher extends Matcher<t.FunctionDeclaration> {
       if (
         !tupleOf<unknown>(...this.params).matchValue(node.params, [
           ...keys,
-          'params'
+          'params',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
     if (typeof this.generator === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.generator === 'boolean') {
       if (this.generator !== node.generator) {
-        return false;
+        return false
       }
     } else if (this.generator === null) {
       // null matcher means we expect null value
       if (node.generator !== null) {
-        return false;
+        return false
       }
     } else if (node.generator === null) {
-      return false;
+      return false
     } else if (
       !this.generator.matchValue(node.generator, [...keys, 'generator'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.async === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.async === 'boolean') {
       if (this.async !== node.async) {
-        return false;
+        return false
       }
     } else if (this.async === null) {
       // null matcher means we expect null value
       if (node.async !== null) {
-        return false;
+        return false
       }
     } else if (node.async === null) {
-      return false;
+      return false
     } else if (!this.async.matchValue(node.async, [...keys, 'async'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -3685,7 +3685,7 @@ export function functionDeclaration(
   generator?: Matcher<boolean> | boolean | null,
   async?: Matcher<boolean> | boolean | null
 ): Matcher<t.FunctionDeclaration> {
-  return new FunctionDeclarationMatcher(id, params, body, generator, async);
+  return new FunctionDeclarationMatcher(id, params, body, generator, async)
 }
 
 export class FunctionExpressionMatcher extends Matcher<t.FunctionExpression> {
@@ -3707,7 +3707,7 @@ export class FunctionExpressionMatcher extends Matcher<t.FunctionExpression> {
     private readonly generator?: Matcher<boolean> | boolean | null,
     private readonly async?: Matcher<boolean> | boolean | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -3715,7 +3715,7 @@ export class FunctionExpressionMatcher extends Matcher<t.FunctionExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.FunctionExpression {
     if (!isNode(node) || !t.isFunctionExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
@@ -3723,12 +3723,12 @@ export class FunctionExpressionMatcher extends Matcher<t.FunctionExpression> {
     } else if (this.id === null) {
       // null matcher means we expect null value
       if (node.id !== null) {
-        return false;
+        return false
       }
     } else if (node.id === null) {
-      return false;
+      return false
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.params === 'undefined') {
@@ -3737,58 +3737,58 @@ export class FunctionExpressionMatcher extends Matcher<t.FunctionExpression> {
       if (
         !tupleOf<unknown>(...this.params).matchValue(node.params, [
           ...keys,
-          'params'
+          'params',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
     if (typeof this.generator === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.generator === 'boolean') {
       if (this.generator !== node.generator) {
-        return false;
+        return false
       }
     } else if (this.generator === null) {
       // null matcher means we expect null value
       if (node.generator !== null) {
-        return false;
+        return false
       }
     } else if (node.generator === null) {
-      return false;
+      return false
     } else if (
       !this.generator.matchValue(node.generator, [...keys, 'generator'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.async === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.async === 'boolean') {
       if (this.async !== node.async) {
-        return false;
+        return false
       }
     } else if (this.async === null) {
       // null matcher means we expect null value
       if (node.async !== null) {
-        return false;
+        return false
       }
     } else if (node.async === null) {
-      return false;
+      return false
     } else if (!this.async.matchValue(node.async, [...keys, 'async'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -3808,7 +3808,7 @@ export function functionExpression(
   generator?: Matcher<boolean> | boolean | null,
   async?: Matcher<boolean> | boolean | null
 ): Matcher<t.FunctionExpression> {
-  return new FunctionExpressionMatcher(id, params, body, generator, async);
+  return new FunctionExpressionMatcher(id, params, body, generator, async)
 }
 
 export class FunctionTypeAnnotationMatcher extends Matcher<
@@ -3824,7 +3824,7 @@ export class FunctionTypeAnnotationMatcher extends Matcher<
     private readonly rest?: Matcher<t.FunctionTypeParam> | null,
     private readonly returnType?: Matcher<t.FlowType>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -3832,7 +3832,7 @@ export class FunctionTypeAnnotationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.FunctionTypeAnnotation {
     if (!isNode(node) || !t.isFunctionTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -3840,17 +3840,17 @@ export class FunctionTypeAnnotationMatcher extends Matcher<
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.params === 'undefined') {
@@ -3859,13 +3859,13 @@ export class FunctionTypeAnnotationMatcher extends Matcher<
       if (
         !tupleOf<unknown>(...this.params).matchValue(node.params, [
           ...keys,
-          'params'
+          'params',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
-      return false;
+      return false
     }
 
     if (typeof this.rest === 'undefined') {
@@ -3873,12 +3873,12 @@ export class FunctionTypeAnnotationMatcher extends Matcher<
     } else if (this.rest === null) {
       // null matcher means we expect null value
       if (node.rest !== null) {
-        return false;
+        return false
       }
     } else if (node.rest === null) {
-      return false;
+      return false
     } else if (!this.rest.matchValue(node.rest, [...keys, 'rest'])) {
-      return false;
+      return false
     }
 
     if (typeof this.returnType === 'undefined') {
@@ -3886,10 +3886,10 @@ export class FunctionTypeAnnotationMatcher extends Matcher<
     } else if (
       !this.returnType.matchValue(node.returnType, [...keys, 'returnType'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -3906,7 +3906,7 @@ export function functionTypeAnnotation(
     params,
     rest,
     returnType
-  );
+  )
 }
 
 export class FunctionTypeParamMatcher extends Matcher<t.FunctionTypeParam> {
@@ -3914,7 +3914,7 @@ export class FunctionTypeParamMatcher extends Matcher<t.FunctionTypeParam> {
     private readonly name?: Matcher<t.Identifier> | null,
     private readonly typeAnnotation?: Matcher<t.FlowType>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -3922,7 +3922,7 @@ export class FunctionTypeParamMatcher extends Matcher<t.FunctionTypeParam> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.FunctionTypeParam {
     if (!isNode(node) || !t.isFunctionTypeParam(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.name === 'undefined') {
@@ -3930,12 +3930,12 @@ export class FunctionTypeParamMatcher extends Matcher<t.FunctionTypeParam> {
     } else if (this.name === null) {
       // null matcher means we expect null value
       if (node.name !== null) {
-        return false;
+        return false
       }
     } else if (node.name === null) {
-      return false;
+      return false
     } else if (!this.name.matchValue(node.name, [...keys, 'name'])) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -3943,13 +3943,13 @@ export class FunctionTypeParamMatcher extends Matcher<t.FunctionTypeParam> {
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -3957,7 +3957,7 @@ export function functionTypeParam(
   name?: Matcher<t.Identifier> | null,
   typeAnnotation?: Matcher<t.FlowType>
 ): Matcher<t.FunctionTypeParam> {
-  return new FunctionTypeParamMatcher(name, typeAnnotation);
+  return new FunctionTypeParamMatcher(name, typeAnnotation)
 }
 
 export class GenericTypeAnnotationMatcher extends Matcher<
@@ -3969,7 +3969,7 @@ export class GenericTypeAnnotationMatcher extends Matcher<
       t.TypeParameterInstantiation
     > | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -3977,13 +3977,13 @@ export class GenericTypeAnnotationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.GenericTypeAnnotation {
     if (!isNode(node) || !t.isGenericTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -3991,20 +3991,20 @@ export class GenericTypeAnnotationMatcher extends Matcher<
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -4012,12 +4012,12 @@ export function genericTypeAnnotation(
   id?: Matcher<t.Identifier | t.QualifiedTypeIdentifier>,
   typeParameters?: Matcher<t.TypeParameterInstantiation> | null
 ): Matcher<t.GenericTypeAnnotation> {
-  return new GenericTypeAnnotationMatcher(id, typeParameters);
+  return new GenericTypeAnnotationMatcher(id, typeParameters)
 }
 
 export class IdentifierMatcher extends Matcher<t.Identifier> {
   constructor(private readonly name?: Matcher<any> | string) {
-    super();
+    super()
   }
 
   matchValue(
@@ -4025,27 +4025,27 @@ export class IdentifierMatcher extends Matcher<t.Identifier> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.Identifier {
     if (!isNode(node) || !t.isIdentifier(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.name === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.name === 'string') {
       if (this.name !== node.name) {
-        return false;
+        return false
       }
     } else if (!this.name.matchValue(node.name, [...keys, 'name'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function identifier(
   name?: Matcher<any> | string
 ): Matcher<t.Identifier> {
-  return new IdentifierMatcher(name);
+  return new IdentifierMatcher(name)
 }
 
 export class IfStatementMatcher extends Matcher<t.IfStatement> {
@@ -4054,7 +4054,7 @@ export class IfStatementMatcher extends Matcher<t.IfStatement> {
     private readonly consequent?: Matcher<t.Statement>,
     private readonly alternate?: Matcher<t.Statement> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -4062,13 +4062,13 @@ export class IfStatementMatcher extends Matcher<t.IfStatement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.IfStatement {
     if (!isNode(node) || !t.isIfStatement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.test === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.test.matchValue(node.test, [...keys, 'test'])) {
-      return false;
+      return false
     }
 
     if (typeof this.consequent === 'undefined') {
@@ -4076,7 +4076,7 @@ export class IfStatementMatcher extends Matcher<t.IfStatement> {
     } else if (
       !this.consequent.matchValue(node.consequent, [...keys, 'consequent'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.alternate === 'undefined') {
@@ -4084,17 +4084,17 @@ export class IfStatementMatcher extends Matcher<t.IfStatement> {
     } else if (this.alternate === null) {
       // null matcher means we expect null value
       if (node.alternate !== null) {
-        return false;
+        return false
       }
     } else if (node.alternate === null) {
-      return false;
+      return false
     } else if (
       !this.alternate.matchValue(node.alternate, [...keys, 'alternate'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -4103,12 +4103,12 @@ export function ifStatement(
   consequent?: Matcher<t.Statement>,
   alternate?: Matcher<t.Statement> | null
 ): Matcher<t.IfStatement> {
-  return new IfStatementMatcher(test, consequent, alternate);
+  return new IfStatementMatcher(test, consequent, alternate)
 }
 
 export class ImportMatcher extends Matcher<t.Import> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -4116,15 +4116,15 @@ export class ImportMatcher extends Matcher<t.Import> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.Import {
     if (!isNode(node) || !t.isImport(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function Import(): Matcher<t.Import> {
-  return new ImportMatcher();
+  return new ImportMatcher()
 }
 
 export class ImportDeclarationMatcher extends Matcher<t.ImportDeclaration> {
@@ -4144,7 +4144,7 @@ export class ImportDeclarationMatcher extends Matcher<t.ImportDeclaration> {
         >,
     private readonly source?: Matcher<t.StringLiteral>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -4152,7 +4152,7 @@ export class ImportDeclarationMatcher extends Matcher<t.ImportDeclaration> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ImportDeclaration {
     if (!isNode(node) || !t.isImportDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.specifiers === 'undefined') {
@@ -4161,24 +4161,24 @@ export class ImportDeclarationMatcher extends Matcher<t.ImportDeclaration> {
       if (
         !tupleOf<unknown>(...this.specifiers).matchValue(node.specifiers, [
           ...keys,
-          'specifiers'
+          'specifiers',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.specifiers.matchValue(node.specifiers, [...keys, 'specifiers'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.source === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.source.matchValue(node.source, [...keys, 'source'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -4198,14 +4198,14 @@ export function importDeclaration(
       >,
   source?: Matcher<t.StringLiteral>
 ): Matcher<t.ImportDeclaration> {
-  return new ImportDeclarationMatcher(specifiers, source);
+  return new ImportDeclarationMatcher(specifiers, source)
 }
 
 export class ImportDefaultSpecifierMatcher extends Matcher<
   t.ImportDefaultSpecifier
 > {
   constructor(private readonly local?: Matcher<t.Identifier>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -4213,30 +4213,30 @@ export class ImportDefaultSpecifierMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ImportDefaultSpecifier {
     if (!isNode(node) || !t.isImportDefaultSpecifier(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.local === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.local.matchValue(node.local, [...keys, 'local'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function importDefaultSpecifier(
   local?: Matcher<t.Identifier>
 ): Matcher<t.ImportDefaultSpecifier> {
-  return new ImportDefaultSpecifierMatcher(local);
+  return new ImportDefaultSpecifierMatcher(local)
 }
 
 export class ImportNamespaceSpecifierMatcher extends Matcher<
   t.ImportNamespaceSpecifier
 > {
   constructor(private readonly local?: Matcher<t.Identifier>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -4244,23 +4244,23 @@ export class ImportNamespaceSpecifierMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ImportNamespaceSpecifier {
     if (!isNode(node) || !t.isImportNamespaceSpecifier(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.local === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.local.matchValue(node.local, [...keys, 'local'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function importNamespaceSpecifier(
   local?: Matcher<t.Identifier>
 ): Matcher<t.ImportNamespaceSpecifier> {
-  return new ImportNamespaceSpecifierMatcher(local);
+  return new ImportNamespaceSpecifierMatcher(local)
 }
 
 export class ImportSpecifierMatcher extends Matcher<t.ImportSpecifier> {
@@ -4268,7 +4268,7 @@ export class ImportSpecifierMatcher extends Matcher<t.ImportSpecifier> {
     private readonly local?: Matcher<t.Identifier>,
     private readonly imported?: Matcher<t.Identifier>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -4276,13 +4276,13 @@ export class ImportSpecifierMatcher extends Matcher<t.ImportSpecifier> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ImportSpecifier {
     if (!isNode(node) || !t.isImportSpecifier(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.local === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.local.matchValue(node.local, [...keys, 'local'])) {
-      return false;
+      return false
     }
 
     if (typeof this.imported === 'undefined') {
@@ -4290,10 +4290,10 @@ export class ImportSpecifierMatcher extends Matcher<t.ImportSpecifier> {
     } else if (
       !this.imported.matchValue(node.imported, [...keys, 'imported'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -4301,12 +4301,12 @@ export function importSpecifier(
   local?: Matcher<t.Identifier>,
   imported?: Matcher<t.Identifier>
 ): Matcher<t.ImportSpecifier> {
-  return new ImportSpecifierMatcher(local, imported);
+  return new ImportSpecifierMatcher(local, imported)
 }
 
 export class InferredPredicateMatcher extends Matcher<t.InferredPredicate> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -4314,15 +4314,15 @@ export class InferredPredicateMatcher extends Matcher<t.InferredPredicate> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.InferredPredicate {
     if (!isNode(node) || !t.isInferredPredicate(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function inferredPredicate(): Matcher<t.InferredPredicate> {
-  return new InferredPredicateMatcher();
+  return new InferredPredicateMatcher()
 }
 
 export class InterfaceDeclarationMatcher extends Matcher<
@@ -4339,7 +4339,7 @@ export class InterfaceDeclarationMatcher extends Matcher<
       | null,
     private readonly body?: Matcher<t.ObjectTypeAnnotation>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -4347,13 +4347,13 @@ export class InterfaceDeclarationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.InterfaceDeclaration {
     if (!isNode(node) || !t.isInterfaceDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -4361,17 +4361,17 @@ export class InterfaceDeclarationMatcher extends Matcher<
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this._extends === 'undefined') {
@@ -4379,30 +4379,30 @@ export class InterfaceDeclarationMatcher extends Matcher<
     } else if (this._extends === null) {
       // null matcher means we expect null value
       if (node.extends !== null) {
-        return false;
+        return false
       }
     } else if (node.extends === null) {
-      return false;
+      return false
     } else if (Array.isArray(this._extends)) {
       if (
         !tupleOf<unknown>(...this._extends).matchValue(node.extends, [
           ...keys,
-          'extends'
+          'extends',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this._extends.matchValue(node.extends, [...keys, 'extends'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -4415,7 +4415,7 @@ export function interfaceDeclaration(
     | null,
   body?: Matcher<t.ObjectTypeAnnotation>
 ): Matcher<t.InterfaceDeclaration> {
-  return new InterfaceDeclarationMatcher(id, typeParameters, _extends, body);
+  return new InterfaceDeclarationMatcher(id, typeParameters, _extends, body)
 }
 
 export class InterfaceExtendsMatcher extends Matcher<t.InterfaceExtends> {
@@ -4425,7 +4425,7 @@ export class InterfaceExtendsMatcher extends Matcher<t.InterfaceExtends> {
       t.TypeParameterInstantiation
     > | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -4433,13 +4433,13 @@ export class InterfaceExtendsMatcher extends Matcher<t.InterfaceExtends> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.InterfaceExtends {
     if (!isNode(node) || !t.isInterfaceExtends(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -4447,20 +4447,20 @@ export class InterfaceExtendsMatcher extends Matcher<t.InterfaceExtends> {
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -4468,7 +4468,7 @@ export function interfaceExtends(
   id?: Matcher<t.Identifier | t.QualifiedTypeIdentifier>,
   typeParameters?: Matcher<t.TypeParameterInstantiation> | null
 ): Matcher<t.InterfaceExtends> {
-  return new InterfaceExtendsMatcher(id, typeParameters);
+  return new InterfaceExtendsMatcher(id, typeParameters)
 }
 
 export class InterfaceTypeAnnotationMatcher extends Matcher<
@@ -4481,7 +4481,7 @@ export class InterfaceTypeAnnotationMatcher extends Matcher<
       | null,
     private readonly body?: Matcher<t.ObjectTypeAnnotation>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -4489,7 +4489,7 @@ export class InterfaceTypeAnnotationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.InterfaceTypeAnnotation {
     if (!isNode(node) || !t.isInterfaceTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
     if (typeof this._extends === 'undefined') {
@@ -4497,30 +4497,30 @@ export class InterfaceTypeAnnotationMatcher extends Matcher<
     } else if (this._extends === null) {
       // null matcher means we expect null value
       if (node.extends !== null) {
-        return false;
+        return false
       }
     } else if (node.extends === null) {
-      return false;
+      return false
     } else if (Array.isArray(this._extends)) {
       if (
         !tupleOf<unknown>(...this._extends).matchValue(node.extends, [
           ...keys,
-          'extends'
+          'extends',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this._extends.matchValue(node.extends, [...keys, 'extends'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -4531,14 +4531,14 @@ export function interfaceTypeAnnotation(
     | null,
   body?: Matcher<t.ObjectTypeAnnotation>
 ): Matcher<t.InterfaceTypeAnnotation> {
-  return new InterfaceTypeAnnotationMatcher(_extends, body);
+  return new InterfaceTypeAnnotationMatcher(_extends, body)
 }
 
 export class InterpreterDirectiveMatcher extends Matcher<
   t.InterpreterDirective
 > {
   constructor(private readonly value?: Matcher<string> | string) {
-    super();
+    super()
   }
 
   matchValue(
@@ -4546,27 +4546,27 @@ export class InterpreterDirectiveMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.InterpreterDirective {
     if (!isNode(node) || !t.isInterpreterDirective(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.value === 'string') {
       if (this.value !== node.value) {
-        return false;
+        return false
       }
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function interpreterDirective(
   value?: Matcher<string> | string
 ): Matcher<t.InterpreterDirective> {
-  return new InterpreterDirectiveMatcher(value);
+  return new InterpreterDirectiveMatcher(value)
 }
 
 export class IntersectionTypeAnnotationMatcher extends Matcher<
@@ -4577,7 +4577,7 @@ export class IntersectionTypeAnnotationMatcher extends Matcher<
       | Matcher<Array<t.FlowType>>
       | Array<Matcher<t.FlowType>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -4585,7 +4585,7 @@ export class IntersectionTypeAnnotationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.IntersectionTypeAnnotation {
     if (!isNode(node) || !t.isIntersectionTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.types === 'undefined') {
@@ -4594,23 +4594,23 @@ export class IntersectionTypeAnnotationMatcher extends Matcher<
       if (
         !tupleOf<unknown>(...this.types).matchValue(node.types, [
           ...keys,
-          'types'
+          'types',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.types.matchValue(node.types, [...keys, 'types'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function intersectionTypeAnnotation(
   types?: Matcher<Array<t.FlowType>> | Array<Matcher<t.FlowType>>
 ): Matcher<t.IntersectionTypeAnnotation> {
-  return new IntersectionTypeAnnotationMatcher(types);
+  return new IntersectionTypeAnnotationMatcher(types)
 }
 
 export class JSXAttributeMatcher extends Matcher<t.JSXAttribute> {
@@ -4620,7 +4620,7 @@ export class JSXAttributeMatcher extends Matcher<t.JSXAttribute> {
       t.JSXElement | t.JSXFragment | t.StringLiteral | t.JSXExpressionContainer
     > | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -4628,13 +4628,13 @@ export class JSXAttributeMatcher extends Matcher<t.JSXAttribute> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.JSXAttribute {
     if (!isNode(node) || !t.isJSXAttribute(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.name === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.name.matchValue(node.name, [...keys, 'name'])) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
@@ -4642,15 +4642,15 @@ export class JSXAttributeMatcher extends Matcher<t.JSXAttribute> {
     } else if (this.value === null) {
       // null matcher means we expect null value
       if (node.value !== null) {
-        return false;
+        return false
       }
     } else if (node.value === null) {
-      return false;
+      return false
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -4660,7 +4660,7 @@ export function jsxAttribute(
     t.JSXElement | t.JSXFragment | t.StringLiteral | t.JSXExpressionContainer
   > | null
 ): Matcher<t.JSXAttribute> {
-  return new JSXAttributeMatcher(name, value);
+  return new JSXAttributeMatcher(name, value)
 }
 
 export class JSXClosingElementMatcher extends Matcher<t.JSXClosingElement> {
@@ -4669,7 +4669,7 @@ export class JSXClosingElementMatcher extends Matcher<t.JSXClosingElement> {
       t.JSXIdentifier | t.JSXMemberExpression | t.JSXNamespacedName
     >
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -4677,28 +4677,28 @@ export class JSXClosingElementMatcher extends Matcher<t.JSXClosingElement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.JSXClosingElement {
     if (!isNode(node) || !t.isJSXClosingElement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.name === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.name.matchValue(node.name, [...keys, 'name'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function jsxClosingElement(
   name?: Matcher<t.JSXIdentifier | t.JSXMemberExpression | t.JSXNamespacedName>
 ): Matcher<t.JSXClosingElement> {
-  return new JSXClosingElementMatcher(name);
+  return new JSXClosingElementMatcher(name)
 }
 
 export class JSXClosingFragmentMatcher extends Matcher<t.JSXClosingFragment> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -4706,15 +4706,15 @@ export class JSXClosingFragmentMatcher extends Matcher<t.JSXClosingFragment> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.JSXClosingFragment {
     if (!isNode(node) || !t.isJSXClosingFragment(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function jsxClosingFragment(): Matcher<t.JSXClosingFragment> {
-  return new JSXClosingFragmentMatcher();
+  return new JSXClosingFragmentMatcher()
 }
 
 export class JSXElementMatcher extends Matcher<t.JSXElement> {
@@ -4740,7 +4740,7 @@ export class JSXElementMatcher extends Matcher<t.JSXElement> {
         >,
     private readonly selfClosing?: Matcher<any>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -4748,7 +4748,7 @@ export class JSXElementMatcher extends Matcher<t.JSXElement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.JSXElement {
     if (!isNode(node) || !t.isJSXElement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.openingElement === 'undefined') {
@@ -4756,10 +4756,10 @@ export class JSXElementMatcher extends Matcher<t.JSXElement> {
     } else if (
       !this.openingElement.matchValue(node.openingElement, [
         ...keys,
-        'openingElement'
+        'openingElement',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.closingElement === 'undefined') {
@@ -4767,17 +4767,17 @@ export class JSXElementMatcher extends Matcher<t.JSXElement> {
     } else if (this.closingElement === null) {
       // null matcher means we expect null value
       if (node.closingElement !== null) {
-        return false;
+        return false
       }
     } else if (node.closingElement === null) {
-      return false;
+      return false
     } else if (
       !this.closingElement.matchValue(node.closingElement, [
         ...keys,
-        'closingElement'
+        'closingElement',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.children === 'undefined') {
@@ -4786,15 +4786,15 @@ export class JSXElementMatcher extends Matcher<t.JSXElement> {
       if (
         !tupleOf<unknown>(...this.children).matchValue(node.children, [
           ...keys,
-          'children'
+          'children',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.children.matchValue(node.children, [...keys, 'children'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.selfClosing === 'undefined') {
@@ -4802,10 +4802,10 @@ export class JSXElementMatcher extends Matcher<t.JSXElement> {
     } else if (
       !this.selfClosing.matchValue(node.selfClosing, [...keys, 'selfClosing'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -4836,12 +4836,12 @@ export function jsxElement(
     closingElement,
     children,
     selfClosing
-  );
+  )
 }
 
 export class JSXEmptyExpressionMatcher extends Matcher<t.JSXEmptyExpression> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -4849,15 +4849,15 @@ export class JSXEmptyExpressionMatcher extends Matcher<t.JSXEmptyExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.JSXEmptyExpression {
     if (!isNode(node) || !t.isJSXEmptyExpression(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function jsxEmptyExpression(): Matcher<t.JSXEmptyExpression> {
-  return new JSXEmptyExpressionMatcher();
+  return new JSXEmptyExpressionMatcher()
 }
 
 export class JSXExpressionContainerMatcher extends Matcher<
@@ -4866,7 +4866,7 @@ export class JSXExpressionContainerMatcher extends Matcher<
   constructor(
     private readonly expression?: Matcher<t.Expression | t.JSXEmptyExpression>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -4874,7 +4874,7 @@ export class JSXExpressionContainerMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.JSXExpressionContainer {
     if (!isNode(node) || !t.isJSXExpressionContainer(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.expression === 'undefined') {
@@ -4882,17 +4882,17 @@ export class JSXExpressionContainerMatcher extends Matcher<
     } else if (
       !this.expression.matchValue(node.expression, [...keys, 'expression'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function jsxExpressionContainer(
   expression?: Matcher<t.Expression | t.JSXEmptyExpression>
 ): Matcher<t.JSXExpressionContainer> {
-  return new JSXExpressionContainerMatcher(expression);
+  return new JSXExpressionContainerMatcher(expression)
 }
 
 export class JSXFragmentMatcher extends Matcher<t.JSXFragment> {
@@ -4917,7 +4917,7 @@ export class JSXFragmentMatcher extends Matcher<t.JSXFragment> {
           | Matcher<t.JSXFragment>
         >
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -4925,7 +4925,7 @@ export class JSXFragmentMatcher extends Matcher<t.JSXFragment> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.JSXFragment {
     if (!isNode(node) || !t.isJSXFragment(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.openingFragment === 'undefined') {
@@ -4933,10 +4933,10 @@ export class JSXFragmentMatcher extends Matcher<t.JSXFragment> {
     } else if (
       !this.openingFragment.matchValue(node.openingFragment, [
         ...keys,
-        'openingFragment'
+        'openingFragment',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.closingFragment === 'undefined') {
@@ -4944,10 +4944,10 @@ export class JSXFragmentMatcher extends Matcher<t.JSXFragment> {
     } else if (
       !this.closingFragment.matchValue(node.closingFragment, [
         ...keys,
-        'closingFragment'
+        'closingFragment',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.children === 'undefined') {
@@ -4956,18 +4956,18 @@ export class JSXFragmentMatcher extends Matcher<t.JSXFragment> {
       if (
         !tupleOf<unknown>(...this.children).matchValue(node.children, [
           ...keys,
-          'children'
+          'children',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.children.matchValue(node.children, [...keys, 'children'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -4992,12 +4992,12 @@ export function jsxFragment(
         | Matcher<t.JSXFragment>
       >
 ): Matcher<t.JSXFragment> {
-  return new JSXFragmentMatcher(openingFragment, closingFragment, children);
+  return new JSXFragmentMatcher(openingFragment, closingFragment, children)
 }
 
 export class JSXIdentifierMatcher extends Matcher<t.JSXIdentifier> {
   constructor(private readonly name?: Matcher<string> | string) {
-    super();
+    super()
   }
 
   matchValue(
@@ -5005,27 +5005,27 @@ export class JSXIdentifierMatcher extends Matcher<t.JSXIdentifier> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.JSXIdentifier {
     if (!isNode(node) || !t.isJSXIdentifier(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.name === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.name === 'string') {
       if (this.name !== node.name) {
-        return false;
+        return false
       }
     } else if (!this.name.matchValue(node.name, [...keys, 'name'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function jsxIdentifier(
   name?: Matcher<string> | string
 ): Matcher<t.JSXIdentifier> {
-  return new JSXIdentifierMatcher(name);
+  return new JSXIdentifierMatcher(name)
 }
 
 export class JSXMemberExpressionMatcher extends Matcher<t.JSXMemberExpression> {
@@ -5033,7 +5033,7 @@ export class JSXMemberExpressionMatcher extends Matcher<t.JSXMemberExpression> {
     private readonly object?: Matcher<t.JSXMemberExpression | t.JSXIdentifier>,
     private readonly property?: Matcher<t.JSXIdentifier>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -5041,13 +5041,13 @@ export class JSXMemberExpressionMatcher extends Matcher<t.JSXMemberExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.JSXMemberExpression {
     if (!isNode(node) || !t.isJSXMemberExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.object === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.object.matchValue(node.object, [...keys, 'object'])) {
-      return false;
+      return false
     }
 
     if (typeof this.property === 'undefined') {
@@ -5055,10 +5055,10 @@ export class JSXMemberExpressionMatcher extends Matcher<t.JSXMemberExpression> {
     } else if (
       !this.property.matchValue(node.property, [...keys, 'property'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -5066,7 +5066,7 @@ export function jsxMemberExpression(
   object?: Matcher<t.JSXMemberExpression | t.JSXIdentifier>,
   property?: Matcher<t.JSXIdentifier>
 ): Matcher<t.JSXMemberExpression> {
-  return new JSXMemberExpressionMatcher(object, property);
+  return new JSXMemberExpressionMatcher(object, property)
 }
 
 export class JSXNamespacedNameMatcher extends Matcher<t.JSXNamespacedName> {
@@ -5074,7 +5074,7 @@ export class JSXNamespacedNameMatcher extends Matcher<t.JSXNamespacedName> {
     private readonly namespace?: Matcher<t.JSXIdentifier>,
     private readonly name?: Matcher<t.JSXIdentifier>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -5082,7 +5082,7 @@ export class JSXNamespacedNameMatcher extends Matcher<t.JSXNamespacedName> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.JSXNamespacedName {
     if (!isNode(node) || !t.isJSXNamespacedName(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.namespace === 'undefined') {
@@ -5090,16 +5090,16 @@ export class JSXNamespacedNameMatcher extends Matcher<t.JSXNamespacedName> {
     } else if (
       !this.namespace.matchValue(node.namespace, [...keys, 'namespace'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.name === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.name.matchValue(node.name, [...keys, 'name'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -5107,7 +5107,7 @@ export function jsxNamespacedName(
   namespace?: Matcher<t.JSXIdentifier>,
   name?: Matcher<t.JSXIdentifier>
 ): Matcher<t.JSXNamespacedName> {
-  return new JSXNamespacedNameMatcher(namespace, name);
+  return new JSXNamespacedNameMatcher(namespace, name)
 }
 
 export class JSXOpeningElementMatcher extends Matcher<t.JSXOpeningElement> {
@@ -5120,7 +5120,7 @@ export class JSXOpeningElementMatcher extends Matcher<t.JSXOpeningElement> {
       | Array<Matcher<t.JSXAttribute> | Matcher<t.JSXSpreadAttribute>>,
     private readonly selfClosing?: Matcher<boolean> | boolean
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -5128,13 +5128,13 @@ export class JSXOpeningElementMatcher extends Matcher<t.JSXOpeningElement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.JSXOpeningElement {
     if (!isNode(node) || !t.isJSXOpeningElement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.name === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.name.matchValue(node.name, [...keys, 'name'])) {
-      return false;
+      return false
     }
 
     if (typeof this.attributes === 'undefined') {
@@ -5143,30 +5143,30 @@ export class JSXOpeningElementMatcher extends Matcher<t.JSXOpeningElement> {
       if (
         !tupleOf<unknown>(...this.attributes).matchValue(node.attributes, [
           ...keys,
-          'attributes'
+          'attributes',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.attributes.matchValue(node.attributes, [...keys, 'attributes'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.selfClosing === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.selfClosing === 'boolean') {
       if (this.selfClosing !== node.selfClosing) {
-        return false;
+        return false
       }
     } else if (
       !this.selfClosing.matchValue(node.selfClosing, [...keys, 'selfClosing'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -5177,12 +5177,12 @@ export function jsxOpeningElement(
     | Array<Matcher<t.JSXAttribute> | Matcher<t.JSXSpreadAttribute>>,
   selfClosing?: Matcher<boolean> | boolean
 ): Matcher<t.JSXOpeningElement> {
-  return new JSXOpeningElementMatcher(name, attributes, selfClosing);
+  return new JSXOpeningElementMatcher(name, attributes, selfClosing)
 }
 
 export class JSXOpeningFragmentMatcher extends Matcher<t.JSXOpeningFragment> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -5190,20 +5190,20 @@ export class JSXOpeningFragmentMatcher extends Matcher<t.JSXOpeningFragment> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.JSXOpeningFragment {
     if (!isNode(node) || !t.isJSXOpeningFragment(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function jsxOpeningFragment(): Matcher<t.JSXOpeningFragment> {
-  return new JSXOpeningFragmentMatcher();
+  return new JSXOpeningFragmentMatcher()
 }
 
 export class JSXSpreadAttributeMatcher extends Matcher<t.JSXSpreadAttribute> {
   constructor(private readonly argument?: Matcher<t.Expression>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -5211,7 +5211,7 @@ export class JSXSpreadAttributeMatcher extends Matcher<t.JSXSpreadAttribute> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.JSXSpreadAttribute {
     if (!isNode(node) || !t.isJSXSpreadAttribute(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.argument === 'undefined') {
@@ -5219,22 +5219,22 @@ export class JSXSpreadAttributeMatcher extends Matcher<t.JSXSpreadAttribute> {
     } else if (
       !this.argument.matchValue(node.argument, [...keys, 'argument'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function jsxSpreadAttribute(
   argument?: Matcher<t.Expression>
 ): Matcher<t.JSXSpreadAttribute> {
-  return new JSXSpreadAttributeMatcher(argument);
+  return new JSXSpreadAttributeMatcher(argument)
 }
 
 export class JSXSpreadChildMatcher extends Matcher<t.JSXSpreadChild> {
   constructor(private readonly expression?: Matcher<t.Expression>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -5242,7 +5242,7 @@ export class JSXSpreadChildMatcher extends Matcher<t.JSXSpreadChild> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.JSXSpreadChild {
     if (!isNode(node) || !t.isJSXSpreadChild(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.expression === 'undefined') {
@@ -5250,22 +5250,22 @@ export class JSXSpreadChildMatcher extends Matcher<t.JSXSpreadChild> {
     } else if (
       !this.expression.matchValue(node.expression, [...keys, 'expression'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function jsxSpreadChild(
   expression?: Matcher<t.Expression>
 ): Matcher<t.JSXSpreadChild> {
-  return new JSXSpreadChildMatcher(expression);
+  return new JSXSpreadChildMatcher(expression)
 }
 
 export class JSXTextMatcher extends Matcher<t.JSXText> {
   constructor(private readonly value?: Matcher<string> | string) {
-    super();
+    super()
   }
 
   matchValue(
@@ -5273,25 +5273,25 @@ export class JSXTextMatcher extends Matcher<t.JSXText> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.JSXText {
     if (!isNode(node) || !t.isJSXText(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.value === 'string') {
       if (this.value !== node.value) {
-        return false;
+        return false
       }
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function jsxText(value?: Matcher<string> | string): Matcher<t.JSXText> {
-  return new JSXTextMatcher(value);
+  return new JSXTextMatcher(value)
 }
 
 export class LabeledStatementMatcher extends Matcher<t.LabeledStatement> {
@@ -5299,7 +5299,7 @@ export class LabeledStatementMatcher extends Matcher<t.LabeledStatement> {
     private readonly label?: Matcher<t.Identifier>,
     private readonly body?: Matcher<t.Statement>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -5307,22 +5307,22 @@ export class LabeledStatementMatcher extends Matcher<t.LabeledStatement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.LabeledStatement {
     if (!isNode(node) || !t.isLabeledStatement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.label === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.label.matchValue(node.label, [...keys, 'label'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -5330,7 +5330,7 @@ export function labeledStatement(
   label?: Matcher<t.Identifier>,
   body?: Matcher<t.Statement>
 ): Matcher<t.LabeledStatement> {
-  return new LabeledStatementMatcher(label, body);
+  return new LabeledStatementMatcher(label, body)
 }
 
 export class LogicalExpressionMatcher extends Matcher<t.LogicalExpression> {
@@ -5339,7 +5339,7 @@ export class LogicalExpressionMatcher extends Matcher<t.LogicalExpression> {
     private readonly left?: Matcher<t.Expression>,
     private readonly right?: Matcher<t.Expression>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -5347,34 +5347,34 @@ export class LogicalExpressionMatcher extends Matcher<t.LogicalExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.LogicalExpression {
     if (!isNode(node) || !t.isLogicalExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.operator === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.operator === 'string') {
       if (this.operator !== node.operator) {
-        return false;
+        return false
       }
     } else if (
       !this.operator.matchValue(node.operator, [...keys, 'operator'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.left === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.left.matchValue(node.left, [...keys, 'left'])) {
-      return false;
+      return false
     }
 
     if (typeof this.right === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.right.matchValue(node.right, [...keys, 'right'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -5383,7 +5383,7 @@ export function logicalExpression(
   left?: Matcher<t.Expression>,
   right?: Matcher<t.Expression>
 ): Matcher<t.LogicalExpression> {
-  return new LogicalExpressionMatcher(operator, left, right);
+  return new LogicalExpressionMatcher(operator, left, right)
 }
 
 export class MemberExpressionMatcher extends Matcher<t.MemberExpression> {
@@ -5393,7 +5393,7 @@ export class MemberExpressionMatcher extends Matcher<t.MemberExpression> {
     private readonly computed?: Matcher<boolean> | boolean,
     private readonly optional?: Matcher<true | false> | boolean | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -5401,13 +5401,13 @@ export class MemberExpressionMatcher extends Matcher<t.MemberExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.MemberExpression {
     if (!isNode(node) || !t.isMemberExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.object === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.object.matchValue(node.object, [...keys, 'object'])) {
-      return false;
+      return false
     }
 
     if (typeof this.property === 'undefined') {
@@ -5415,41 +5415,41 @@ export class MemberExpressionMatcher extends Matcher<t.MemberExpression> {
     } else if (
       !this.property.matchValue(node.property, [...keys, 'property'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.computed === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.computed === 'boolean') {
       if (this.computed !== node.computed) {
-        return false;
+        return false
       }
     } else if (
       !this.computed.matchValue(node.computed, [...keys, 'computed'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.optional === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.optional === 'boolean') {
       if (this.optional !== node.optional) {
-        return false;
+        return false
       }
     } else if (this.optional === null) {
       // null matcher means we expect null value
       if (node.optional !== null) {
-        return false;
+        return false
       }
     } else if (node.optional === null) {
-      return false;
+      return false
     } else if (
       !this.optional.matchValue(node.optional, [...keys, 'optional'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -5459,7 +5459,7 @@ export function memberExpression(
   computed?: Matcher<boolean> | boolean,
   optional?: Matcher<true | false> | boolean | null
 ): Matcher<t.MemberExpression> {
-  return new MemberExpressionMatcher(object, property, computed, optional);
+  return new MemberExpressionMatcher(object, property, computed, optional)
 }
 
 export class MetaPropertyMatcher extends Matcher<t.MetaProperty> {
@@ -5467,7 +5467,7 @@ export class MetaPropertyMatcher extends Matcher<t.MetaProperty> {
     private readonly meta?: Matcher<any>,
     private readonly property?: Matcher<t.Identifier>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -5475,13 +5475,13 @@ export class MetaPropertyMatcher extends Matcher<t.MetaProperty> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.MetaProperty {
     if (!isNode(node) || !t.isMetaProperty(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.meta === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.meta.matchValue(node.meta, [...keys, 'meta'])) {
-      return false;
+      return false
     }
 
     if (typeof this.property === 'undefined') {
@@ -5489,10 +5489,10 @@ export class MetaPropertyMatcher extends Matcher<t.MetaProperty> {
     } else if (
       !this.property.matchValue(node.property, [...keys, 'property'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -5500,12 +5500,12 @@ export function metaProperty(
   meta?: Matcher<any>,
   property?: Matcher<t.Identifier>
 ): Matcher<t.MetaProperty> {
-  return new MetaPropertyMatcher(meta, property);
+  return new MetaPropertyMatcher(meta, property)
 }
 
 export class MixedTypeAnnotationMatcher extends Matcher<t.MixedTypeAnnotation> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -5513,15 +5513,15 @@ export class MixedTypeAnnotationMatcher extends Matcher<t.MixedTypeAnnotation> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.MixedTypeAnnotation {
     if (!isNode(node) || !t.isMixedTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function mixedTypeAnnotation(): Matcher<t.MixedTypeAnnotation> {
-  return new MixedTypeAnnotationMatcher();
+  return new MixedTypeAnnotationMatcher()
 }
 
 export class NewExpressionMatcher extends Matcher<t.NewExpression> {
@@ -5543,7 +5543,7 @@ export class NewExpressionMatcher extends Matcher<t.NewExpression> {
           | Matcher<t.ArgumentPlaceholder>
         >
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -5551,13 +5551,13 @@ export class NewExpressionMatcher extends Matcher<t.NewExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.NewExpression {
     if (!isNode(node) || !t.isNewExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.callee === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.callee.matchValue(node.callee, [...keys, 'callee'])) {
-      return false;
+      return false
     }
 
     if (typeof this._arguments === 'undefined') {
@@ -5566,18 +5566,18 @@ export class NewExpressionMatcher extends Matcher<t.NewExpression> {
       if (
         !tupleOf<unknown>(...this._arguments).matchValue(node.arguments, [
           ...keys,
-          'arguments'
+          'arguments',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this._arguments.matchValue(node.arguments, [...keys, 'arguments'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -5599,30 +5599,30 @@ export function newExpression(
         | Matcher<t.ArgumentPlaceholder>
       >
 ): Matcher<t.NewExpression> {
-  return new NewExpressionMatcher(callee, _arguments);
+  return new NewExpressionMatcher(callee, _arguments)
 }
 
 export class NoopMatcher extends Matcher<t.Noop> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.Noop {
     if (!isNode(node) || !t.isNoop(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function noop(): Matcher<t.Noop> {
-  return new NoopMatcher();
+  return new NoopMatcher()
 }
 
 export class NullLiteralMatcher extends Matcher<t.NullLiteral> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -5630,22 +5630,22 @@ export class NullLiteralMatcher extends Matcher<t.NullLiteral> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.NullLiteral {
     if (!isNode(node) || !t.isNullLiteral(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function nullLiteral(): Matcher<t.NullLiteral> {
-  return new NullLiteralMatcher();
+  return new NullLiteralMatcher()
 }
 
 export class NullLiteralTypeAnnotationMatcher extends Matcher<
   t.NullLiteralTypeAnnotation
 > {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -5653,24 +5653,24 @@ export class NullLiteralTypeAnnotationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.NullLiteralTypeAnnotation {
     if (!isNode(node) || !t.isNullLiteralTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function nullLiteralTypeAnnotation(): Matcher<
   t.NullLiteralTypeAnnotation
 > {
-  return new NullLiteralTypeAnnotationMatcher();
+  return new NullLiteralTypeAnnotationMatcher()
 }
 
 export class NullableTypeAnnotationMatcher extends Matcher<
   t.NullableTypeAnnotation
 > {
   constructor(private readonly typeAnnotation?: Matcher<t.FlowType>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -5678,7 +5678,7 @@ export class NullableTypeAnnotationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.NullableTypeAnnotation {
     if (!isNode(node) || !t.isNullableTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -5686,27 +5686,27 @@ export class NullableTypeAnnotationMatcher extends Matcher<
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function nullableTypeAnnotation(
   typeAnnotation?: Matcher<t.FlowType>
 ): Matcher<t.NullableTypeAnnotation> {
-  return new NullableTypeAnnotationMatcher(typeAnnotation);
+  return new NullableTypeAnnotationMatcher(typeAnnotation)
 }
 
 export class NumberLiteralTypeAnnotationMatcher extends Matcher<
   t.NumberLiteralTypeAnnotation
 > {
   constructor(private readonly value?: Matcher<number> | number) {
-    super();
+    super()
   }
 
   matchValue(
@@ -5714,34 +5714,34 @@ export class NumberLiteralTypeAnnotationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.NumberLiteralTypeAnnotation {
     if (!isNode(node) || !t.isNumberLiteralTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.value === 'number') {
       if (this.value !== node.value) {
-        return false;
+        return false
       }
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function numberLiteralTypeAnnotation(
   value?: Matcher<number> | number
 ): Matcher<t.NumberLiteralTypeAnnotation> {
-  return new NumberLiteralTypeAnnotationMatcher(value);
+  return new NumberLiteralTypeAnnotationMatcher(value)
 }
 
 export class NumberTypeAnnotationMatcher extends Matcher<
   t.NumberTypeAnnotation
 > {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -5749,20 +5749,20 @@ export class NumberTypeAnnotationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.NumberTypeAnnotation {
     if (!isNode(node) || !t.isNumberTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function numberTypeAnnotation(): Matcher<t.NumberTypeAnnotation> {
-  return new NumberTypeAnnotationMatcher();
+  return new NumberTypeAnnotationMatcher()
 }
 
 export class NumericLiteralMatcher extends Matcher<t.NumericLiteral> {
   constructor(private readonly value?: Matcher<number> | number) {
-    super();
+    super()
   }
 
   matchValue(
@@ -5770,27 +5770,27 @@ export class NumericLiteralMatcher extends Matcher<t.NumericLiteral> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.NumericLiteral {
     if (!isNode(node) || !t.isNumericLiteral(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.value === 'number') {
       if (this.value !== node.value) {
-        return false;
+        return false
       }
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function numericLiteral(
   value?: Matcher<number> | number
 ): Matcher<t.NumericLiteral> {
-  return new NumericLiteralMatcher(value);
+  return new NumericLiteralMatcher(value)
 }
 
 export class ObjectExpressionMatcher extends Matcher<t.ObjectExpression> {
@@ -5803,7 +5803,7 @@ export class ObjectExpressionMatcher extends Matcher<t.ObjectExpression> {
           | Matcher<t.SpreadElement>
         >
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -5811,7 +5811,7 @@ export class ObjectExpressionMatcher extends Matcher<t.ObjectExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ObjectExpression {
     if (!isNode(node) || !t.isObjectExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.properties === 'undefined') {
@@ -5820,18 +5820,18 @@ export class ObjectExpressionMatcher extends Matcher<t.ObjectExpression> {
       if (
         !tupleOf<unknown>(...this.properties).matchValue(node.properties, [
           ...keys,
-          'properties'
+          'properties',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.properties.matchValue(node.properties, [...keys, 'properties'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -5844,7 +5844,7 @@ export function objectExpression(
         | Matcher<t.SpreadElement>
       >
 ): Matcher<t.ObjectExpression> {
-  return new ObjectExpressionMatcher(properties);
+  return new ObjectExpressionMatcher(properties)
 }
 
 export class ObjectMethodMatcher extends Matcher<t.ObjectMethod> {
@@ -5868,7 +5868,7 @@ export class ObjectMethodMatcher extends Matcher<t.ObjectMethod> {
     private readonly generator?: Matcher<boolean> | boolean | null,
     private readonly async?: Matcher<boolean> | boolean | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -5876,23 +5876,23 @@ export class ObjectMethodMatcher extends Matcher<t.ObjectMethod> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ObjectMethod {
     if (!isNode(node) || !t.isObjectMethod(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.kind === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.kind === 'string') {
       if (this.kind !== node.kind) {
-        return false;
+        return false
       }
     } else if (!this.kind.matchValue(node.kind, [...keys, 'kind'])) {
-      return false;
+      return false
     }
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
-      return false;
+      return false
     }
 
     if (typeof this.params === 'undefined') {
@@ -5901,70 +5901,70 @@ export class ObjectMethodMatcher extends Matcher<t.ObjectMethod> {
       if (
         !tupleOf<unknown>(...this.params).matchValue(node.params, [
           ...keys,
-          'params'
+          'params',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
     if (typeof this.computed === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.computed === 'boolean') {
       if (this.computed !== node.computed) {
-        return false;
+        return false
       }
     } else if (
       !this.computed.matchValue(node.computed, [...keys, 'computed'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.generator === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.generator === 'boolean') {
       if (this.generator !== node.generator) {
-        return false;
+        return false
       }
     } else if (this.generator === null) {
       // null matcher means we expect null value
       if (node.generator !== null) {
-        return false;
+        return false
       }
     } else if (node.generator === null) {
-      return false;
+      return false
     } else if (
       !this.generator.matchValue(node.generator, [...keys, 'generator'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.async === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.async === 'boolean') {
       if (this.async !== node.async) {
-        return false;
+        return false
       }
     } else if (this.async === null) {
       // null matcher means we expect null value
       if (node.async !== null) {
-        return false;
+        return false
       }
     } else if (node.async === null) {
-      return false;
+      return false
     } else if (!this.async.matchValue(node.async, [...keys, 'async'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -5994,7 +5994,7 @@ export function objectMethod(
     computed,
     generator,
     async
-  );
+  )
 }
 
 export class ObjectPatternMatcher extends Matcher<t.ObjectPattern> {
@@ -6003,7 +6003,7 @@ export class ObjectPatternMatcher extends Matcher<t.ObjectPattern> {
       | Matcher<Array<t.RestElement | t.ObjectProperty>>
       | Array<Matcher<t.RestElement> | Matcher<t.ObjectProperty>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -6011,7 +6011,7 @@ export class ObjectPatternMatcher extends Matcher<t.ObjectPattern> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ObjectPattern {
     if (!isNode(node) || !t.isObjectPattern(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.properties === 'undefined') {
@@ -6020,18 +6020,18 @@ export class ObjectPatternMatcher extends Matcher<t.ObjectPattern> {
       if (
         !tupleOf<unknown>(...this.properties).matchValue(node.properties, [
           ...keys,
-          'properties'
+          'properties',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.properties.matchValue(node.properties, [...keys, 'properties'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -6040,7 +6040,7 @@ export function objectPattern(
     | Matcher<Array<t.RestElement | t.ObjectProperty>>
     | Array<Matcher<t.RestElement> | Matcher<t.ObjectProperty>>
 ): Matcher<t.ObjectPattern> {
-  return new ObjectPatternMatcher(properties);
+  return new ObjectPatternMatcher(properties)
 }
 
 export class ObjectPropertyMatcher extends Matcher<t.ObjectProperty> {
@@ -6054,7 +6054,7 @@ export class ObjectPropertyMatcher extends Matcher<t.ObjectProperty> {
       | Array<Matcher<t.Decorator>>
       | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -6062,43 +6062,43 @@ export class ObjectPropertyMatcher extends Matcher<t.ObjectProperty> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ObjectProperty {
     if (!isNode(node) || !t.isObjectProperty(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
     if (typeof this.computed === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.computed === 'boolean') {
       if (this.computed !== node.computed) {
-        return false;
+        return false
       }
     } else if (
       !this.computed.matchValue(node.computed, [...keys, 'computed'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.shorthand === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.shorthand === 'boolean') {
       if (this.shorthand !== node.shorthand) {
-        return false;
+        return false
       }
     } else if (
       !this.shorthand.matchValue(node.shorthand, [...keys, 'shorthand'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.decorators === 'undefined') {
@@ -6106,26 +6106,26 @@ export class ObjectPropertyMatcher extends Matcher<t.ObjectProperty> {
     } else if (this.decorators === null) {
       // null matcher means we expect null value
       if (node.decorators !== null) {
-        return false;
+        return false
       }
     } else if (node.decorators === null) {
-      return false;
+      return false
     } else if (Array.isArray(this.decorators)) {
       if (
         !tupleOf<unknown>(...this.decorators).matchValue(node.decorators, [
           ...keys,
-          'decorators'
+          'decorators',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.decorators.matchValue(node.decorators, [...keys, 'decorators'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -6136,7 +6136,7 @@ export function objectProperty(
   shorthand?: Matcher<any> | boolean,
   decorators?: Matcher<Array<t.Decorator>> | Array<Matcher<t.Decorator>> | null
 ): Matcher<t.ObjectProperty> {
-  return new ObjectPropertyMatcher(key, value, computed, shorthand, decorators);
+  return new ObjectPropertyMatcher(key, value, computed, shorthand, decorators)
 }
 
 export class ObjectTypeAnnotationMatcher extends Matcher<
@@ -6162,7 +6162,7 @@ export class ObjectTypeAnnotationMatcher extends Matcher<
       | null,
     private readonly exact?: Matcher<boolean> | boolean
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -6170,7 +6170,7 @@ export class ObjectTypeAnnotationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ObjectTypeAnnotation {
     if (!isNode(node) || !t.isObjectTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.properties === 'undefined') {
@@ -6179,15 +6179,15 @@ export class ObjectTypeAnnotationMatcher extends Matcher<
       if (
         !tupleOf<unknown>(...this.properties).matchValue(node.properties, [
           ...keys,
-          'properties'
+          'properties',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.properties.matchValue(node.properties, [...keys, 'properties'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.indexers === 'undefined') {
@@ -6195,23 +6195,23 @@ export class ObjectTypeAnnotationMatcher extends Matcher<
     } else if (this.indexers === null) {
       // null matcher means we expect null value
       if (node.indexers !== null) {
-        return false;
+        return false
       }
     } else if (node.indexers === null) {
-      return false;
+      return false
     } else if (Array.isArray(this.indexers)) {
       if (
         !tupleOf<unknown>(...this.indexers).matchValue(node.indexers, [
           ...keys,
-          'indexers'
+          'indexers',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.indexers.matchValue(node.indexers, [...keys, 'indexers'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.callProperties === 'undefined') {
@@ -6219,25 +6219,25 @@ export class ObjectTypeAnnotationMatcher extends Matcher<
     } else if (this.callProperties === null) {
       // null matcher means we expect null value
       if (node.callProperties !== null) {
-        return false;
+        return false
       }
     } else if (node.callProperties === null) {
-      return false;
+      return false
     } else if (Array.isArray(this.callProperties)) {
       if (
         !tupleOf<unknown>(
           ...this.callProperties
         ).matchValue(node.callProperties, [...keys, 'callProperties'])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.callProperties.matchValue(node.callProperties, [
         ...keys,
-        'callProperties'
+        'callProperties',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.internalSlots === 'undefined') {
@@ -6245,10 +6245,10 @@ export class ObjectTypeAnnotationMatcher extends Matcher<
     } else if (this.internalSlots === null) {
       // null matcher means we expect null value
       if (node.internalSlots !== null) {
-        return false;
+        return false
       }
     } else if (node.internalSlots === null) {
-      return false;
+      return false
     } else if (Array.isArray(this.internalSlots)) {
       if (
         !tupleOf<unknown>(...this.internalSlots).matchValue(
@@ -6256,28 +6256,28 @@ export class ObjectTypeAnnotationMatcher extends Matcher<
           [...keys, 'internalSlots']
         )
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.internalSlots.matchValue(node.internalSlots, [
         ...keys,
-        'internalSlots'
+        'internalSlots',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.exact === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.exact === 'boolean') {
       if (this.exact !== node.exact) {
-        return false;
+        return false
       }
     } else if (!this.exact.matchValue(node.exact, [...keys, 'exact'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -6307,14 +6307,14 @@ export function objectTypeAnnotation(
     callProperties,
     internalSlots,
     exact
-  );
+  )
 }
 
 export class ObjectTypeCallPropertyMatcher extends Matcher<
   t.ObjectTypeCallProperty
 > {
   constructor(private readonly value?: Matcher<t.FlowType>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -6322,23 +6322,23 @@ export class ObjectTypeCallPropertyMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ObjectTypeCallProperty {
     if (!isNode(node) || !t.isObjectTypeCallProperty(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function objectTypeCallProperty(
   value?: Matcher<t.FlowType>
 ): Matcher<t.ObjectTypeCallProperty> {
-  return new ObjectTypeCallPropertyMatcher(value);
+  return new ObjectTypeCallPropertyMatcher(value)
 }
 
 export class ObjectTypeIndexerMatcher extends Matcher<t.ObjectTypeIndexer> {
@@ -6348,7 +6348,7 @@ export class ObjectTypeIndexerMatcher extends Matcher<t.ObjectTypeIndexer> {
     private readonly value?: Matcher<t.FlowType>,
     private readonly variance?: Matcher<t.Variance> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -6356,7 +6356,7 @@ export class ObjectTypeIndexerMatcher extends Matcher<t.ObjectTypeIndexer> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ObjectTypeIndexer {
     if (!isNode(node) || !t.isObjectTypeIndexer(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
@@ -6364,24 +6364,24 @@ export class ObjectTypeIndexerMatcher extends Matcher<t.ObjectTypeIndexer> {
     } else if (this.id === null) {
       // null matcher means we expect null value
       if (node.id !== null) {
-        return false;
+        return false
       }
     } else if (node.id === null) {
-      return false;
+      return false
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
     if (typeof this.variance === 'undefined') {
@@ -6389,17 +6389,17 @@ export class ObjectTypeIndexerMatcher extends Matcher<t.ObjectTypeIndexer> {
     } else if (this.variance === null) {
       // null matcher means we expect null value
       if (node.variance !== null) {
-        return false;
+        return false
       }
     } else if (node.variance === null) {
-      return false;
+      return false
     } else if (
       !this.variance.matchValue(node.variance, [...keys, 'variance'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -6409,7 +6409,7 @@ export function objectTypeIndexer(
   value?: Matcher<t.FlowType>,
   variance?: Matcher<t.Variance> | null
 ): Matcher<t.ObjectTypeIndexer> {
-  return new ObjectTypeIndexerMatcher(id, key, value, variance);
+  return new ObjectTypeIndexerMatcher(id, key, value, variance)
 }
 
 export class ObjectTypeInternalSlotMatcher extends Matcher<
@@ -6422,7 +6422,7 @@ export class ObjectTypeInternalSlotMatcher extends Matcher<
     private readonly _static?: Matcher<boolean> | boolean,
     private readonly method?: Matcher<boolean> | boolean
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -6430,54 +6430,54 @@ export class ObjectTypeInternalSlotMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ObjectTypeInternalSlot {
     if (!isNode(node) || !t.isObjectTypeInternalSlot(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
     if (typeof this.optional === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.optional === 'boolean') {
       if (this.optional !== node.optional) {
-        return false;
+        return false
       }
     } else if (
       !this.optional.matchValue(node.optional, [...keys, 'optional'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this._static === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this._static === 'boolean') {
       if (this._static !== node.static) {
-        return false;
+        return false
       }
     } else if (!this._static.matchValue(node.static, [...keys, 'static'])) {
-      return false;
+      return false
     }
 
     if (typeof this.method === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.method === 'boolean') {
       if (this.method !== node.method) {
-        return false;
+        return false
       }
     } else if (!this.method.matchValue(node.method, [...keys, 'method'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -6488,13 +6488,7 @@ export function objectTypeInternalSlot(
   _static?: Matcher<boolean> | boolean,
   method?: Matcher<boolean> | boolean
 ): Matcher<t.ObjectTypeInternalSlot> {
-  return new ObjectTypeInternalSlotMatcher(
-    id,
-    value,
-    optional,
-    _static,
-    method
-  );
+  return new ObjectTypeInternalSlotMatcher(id, value, optional, _static, method)
 }
 
 export class ObjectTypePropertyMatcher extends Matcher<t.ObjectTypeProperty> {
@@ -6503,7 +6497,7 @@ export class ObjectTypePropertyMatcher extends Matcher<t.ObjectTypeProperty> {
     private readonly value?: Matcher<t.FlowType>,
     private readonly variance?: Matcher<t.Variance> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -6511,19 +6505,19 @@ export class ObjectTypePropertyMatcher extends Matcher<t.ObjectTypeProperty> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ObjectTypeProperty {
     if (!isNode(node) || !t.isObjectTypeProperty(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
     if (typeof this.variance === 'undefined') {
@@ -6531,17 +6525,17 @@ export class ObjectTypePropertyMatcher extends Matcher<t.ObjectTypeProperty> {
     } else if (this.variance === null) {
       // null matcher means we expect null value
       if (node.variance !== null) {
-        return false;
+        return false
       }
     } else if (node.variance === null) {
-      return false;
+      return false
     } else if (
       !this.variance.matchValue(node.variance, [...keys, 'variance'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -6550,14 +6544,14 @@ export function objectTypeProperty(
   value?: Matcher<t.FlowType>,
   variance?: Matcher<t.Variance> | null
 ): Matcher<t.ObjectTypeProperty> {
-  return new ObjectTypePropertyMatcher(key, value, variance);
+  return new ObjectTypePropertyMatcher(key, value, variance)
 }
 
 export class ObjectTypeSpreadPropertyMatcher extends Matcher<
   t.ObjectTypeSpreadProperty
 > {
   constructor(private readonly argument?: Matcher<t.FlowType>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -6565,7 +6559,7 @@ export class ObjectTypeSpreadPropertyMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ObjectTypeSpreadProperty {
     if (!isNode(node) || !t.isObjectTypeSpreadProperty(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.argument === 'undefined') {
@@ -6573,17 +6567,17 @@ export class ObjectTypeSpreadPropertyMatcher extends Matcher<
     } else if (
       !this.argument.matchValue(node.argument, [...keys, 'argument'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function objectTypeSpreadProperty(
   argument?: Matcher<t.FlowType>
 ): Matcher<t.ObjectTypeSpreadProperty> {
-  return new ObjectTypeSpreadPropertyMatcher(argument);
+  return new ObjectTypeSpreadPropertyMatcher(argument)
 }
 
 export class OpaqueTypeMatcher extends Matcher<t.OpaqueType> {
@@ -6595,7 +6589,7 @@ export class OpaqueTypeMatcher extends Matcher<t.OpaqueType> {
     private readonly supertype?: Matcher<t.FlowType> | null,
     private readonly impltype?: Matcher<t.FlowType>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -6603,13 +6597,13 @@ export class OpaqueTypeMatcher extends Matcher<t.OpaqueType> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.OpaqueType {
     if (!isNode(node) || !t.isOpaqueType(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -6617,17 +6611,17 @@ export class OpaqueTypeMatcher extends Matcher<t.OpaqueType> {
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.supertype === 'undefined') {
@@ -6635,14 +6629,14 @@ export class OpaqueTypeMatcher extends Matcher<t.OpaqueType> {
     } else if (this.supertype === null) {
       // null matcher means we expect null value
       if (node.supertype !== null) {
-        return false;
+        return false
       }
     } else if (node.supertype === null) {
-      return false;
+      return false
     } else if (
       !this.supertype.matchValue(node.supertype, [...keys, 'supertype'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.impltype === 'undefined') {
@@ -6650,10 +6644,10 @@ export class OpaqueTypeMatcher extends Matcher<t.OpaqueType> {
     } else if (
       !this.impltype.matchValue(node.impltype, [...keys, 'impltype'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -6663,7 +6657,7 @@ export function opaqueType(
   supertype?: Matcher<t.FlowType> | null,
   impltype?: Matcher<t.FlowType>
 ): Matcher<t.OpaqueType> {
-  return new OpaqueTypeMatcher(id, typeParameters, supertype, impltype);
+  return new OpaqueTypeMatcher(id, typeParameters, supertype, impltype)
 }
 
 export class OptionalCallExpressionMatcher extends Matcher<
@@ -6680,7 +6674,7 @@ export class OptionalCallExpressionMatcher extends Matcher<
         >,
     private readonly optional?: Matcher<boolean> | boolean
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -6688,13 +6682,13 @@ export class OptionalCallExpressionMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.OptionalCallExpression {
     if (!isNode(node) || !t.isOptionalCallExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.callee === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.callee.matchValue(node.callee, [...keys, 'callee'])) {
-      return false;
+      return false
     }
 
     if (typeof this._arguments === 'undefined') {
@@ -6703,30 +6697,30 @@ export class OptionalCallExpressionMatcher extends Matcher<
       if (
         !tupleOf<unknown>(...this._arguments).matchValue(node.arguments, [
           ...keys,
-          'arguments'
+          'arguments',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this._arguments.matchValue(node.arguments, [...keys, 'arguments'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.optional === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.optional === 'boolean') {
       if (this.optional !== node.optional) {
-        return false;
+        return false
       }
     } else if (
       !this.optional.matchValue(node.optional, [...keys, 'optional'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -6741,7 +6735,7 @@ export function optionalCallExpression(
       >,
   optional?: Matcher<boolean> | boolean
 ): Matcher<t.OptionalCallExpression> {
-  return new OptionalCallExpressionMatcher(callee, _arguments, optional);
+  return new OptionalCallExpressionMatcher(callee, _arguments, optional)
 }
 
 export class OptionalMemberExpressionMatcher extends Matcher<
@@ -6753,7 +6747,7 @@ export class OptionalMemberExpressionMatcher extends Matcher<
     private readonly computed?: Matcher<boolean> | boolean,
     private readonly optional?: Matcher<boolean> | boolean
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -6761,13 +6755,13 @@ export class OptionalMemberExpressionMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.OptionalMemberExpression {
     if (!isNode(node) || !t.isOptionalMemberExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.object === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.object.matchValue(node.object, [...keys, 'object'])) {
-      return false;
+      return false
     }
 
     if (typeof this.property === 'undefined') {
@@ -6775,34 +6769,34 @@ export class OptionalMemberExpressionMatcher extends Matcher<
     } else if (
       !this.property.matchValue(node.property, [...keys, 'property'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.computed === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.computed === 'boolean') {
       if (this.computed !== node.computed) {
-        return false;
+        return false
       }
     } else if (
       !this.computed.matchValue(node.computed, [...keys, 'computed'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.optional === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.optional === 'boolean') {
       if (this.optional !== node.optional) {
-        return false;
+        return false
       }
     } else if (
       !this.optional.matchValue(node.optional, [...keys, 'optional'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -6817,14 +6811,14 @@ export function optionalMemberExpression(
     property,
     computed,
     optional
-  );
+  )
 }
 
 export class ParenthesizedExpressionMatcher extends Matcher<
   t.ParenthesizedExpression
 > {
   constructor(private readonly expression?: Matcher<t.Expression>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -6832,7 +6826,7 @@ export class ParenthesizedExpressionMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ParenthesizedExpression {
     if (!isNode(node) || !t.isParenthesizedExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.expression === 'undefined') {
@@ -6840,24 +6834,24 @@ export class ParenthesizedExpressionMatcher extends Matcher<
     } else if (
       !this.expression.matchValue(node.expression, [...keys, 'expression'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function parenthesizedExpression(
   expression?: Matcher<t.Expression>
 ): Matcher<t.ParenthesizedExpression> {
-  return new ParenthesizedExpressionMatcher(expression);
+  return new ParenthesizedExpressionMatcher(expression)
 }
 
 export class PipelineBareFunctionMatcher extends Matcher<
   t.PipelineBareFunction
 > {
   constructor(private readonly callee?: Matcher<t.Expression>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -6865,30 +6859,30 @@ export class PipelineBareFunctionMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.PipelineBareFunction {
     if (!isNode(node) || !t.isPipelineBareFunction(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.callee === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.callee.matchValue(node.callee, [...keys, 'callee'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function pipelineBareFunction(
   callee?: Matcher<t.Expression>
 ): Matcher<t.PipelineBareFunction> {
-  return new PipelineBareFunctionMatcher(callee);
+  return new PipelineBareFunctionMatcher(callee)
 }
 
 export class PipelinePrimaryTopicReferenceMatcher extends Matcher<
   t.PipelinePrimaryTopicReference
 > {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -6896,24 +6890,24 @@ export class PipelinePrimaryTopicReferenceMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.PipelinePrimaryTopicReference {
     if (!isNode(node) || !t.isPipelinePrimaryTopicReference(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function pipelinePrimaryTopicReference(): Matcher<
   t.PipelinePrimaryTopicReference
 > {
-  return new PipelinePrimaryTopicReferenceMatcher();
+  return new PipelinePrimaryTopicReferenceMatcher()
 }
 
 export class PipelineTopicExpressionMatcher extends Matcher<
   t.PipelineTopicExpression
 > {
   constructor(private readonly expression?: Matcher<t.Expression>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -6921,7 +6915,7 @@ export class PipelineTopicExpressionMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.PipelineTopicExpression {
     if (!isNode(node) || !t.isPipelineTopicExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.expression === 'undefined') {
@@ -6929,17 +6923,17 @@ export class PipelineTopicExpressionMatcher extends Matcher<
     } else if (
       !this.expression.matchValue(node.expression, [...keys, 'expression'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function pipelineTopicExpression(
   expression?: Matcher<t.Expression>
 ): Matcher<t.PipelineTopicExpression> {
-  return new PipelineTopicExpressionMatcher(expression);
+  return new PipelineTopicExpressionMatcher(expression)
 }
 
 export class PlaceholderMatcher extends Matcher<t.Placeholder> {
@@ -6958,7 +6952,7 @@ export class PlaceholderMatcher extends Matcher<t.Placeholder> {
       | string,
     private readonly name?: Matcher<t.Identifier>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -6966,31 +6960,31 @@ export class PlaceholderMatcher extends Matcher<t.Placeholder> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.Placeholder {
     if (!isNode(node) || !t.isPlaceholder(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.expectedNode === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.expectedNode === 'string') {
       if (this.expectedNode !== node.expectedNode) {
-        return false;
+        return false
       }
     } else if (
       !this.expectedNode.matchValue(node.expectedNode, [
         ...keys,
-        'expectedNode'
+        'expectedNode',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.name === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.name.matchValue(node.name, [...keys, 'name'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -7009,12 +7003,12 @@ export function placeholder(
     | string,
   name?: Matcher<t.Identifier>
 ): Matcher<t.Placeholder> {
-  return new PlaceholderMatcher(expectedNode, name);
+  return new PlaceholderMatcher(expectedNode, name)
 }
 
 export class PrivateNameMatcher extends Matcher<t.PrivateName> {
   constructor(private readonly id?: Matcher<t.Identifier>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -7022,23 +7016,23 @@ export class PrivateNameMatcher extends Matcher<t.PrivateName> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.PrivateName {
     if (!isNode(node) || !t.isPrivateName(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function privateName(
   id?: Matcher<t.Identifier>
 ): Matcher<t.PrivateName> {
-  return new PrivateNameMatcher(id);
+  return new PrivateNameMatcher(id)
 }
 
 export class ProgramMatcher extends Matcher<t.Program> {
@@ -7052,7 +7046,7 @@ export class ProgramMatcher extends Matcher<t.Program> {
     private readonly sourceType?: Matcher<'script' | 'module'> | string,
     private readonly interpreter?: Matcher<t.InterpreterDirective> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -7060,7 +7054,7 @@ export class ProgramMatcher extends Matcher<t.Program> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.Program {
     if (!isNode(node) || !t.isProgram(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
@@ -7069,10 +7063,10 @@ export class ProgramMatcher extends Matcher<t.Program> {
       if (
         !tupleOf<unknown>(...this.body).matchValue(node.body, [...keys, 'body'])
       ) {
-        return false;
+        return false
       }
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
     if (typeof this.directives === 'undefined') {
@@ -7081,27 +7075,27 @@ export class ProgramMatcher extends Matcher<t.Program> {
       if (
         !tupleOf<unknown>(...this.directives).matchValue(node.directives, [
           ...keys,
-          'directives'
+          'directives',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.directives.matchValue(node.directives, [...keys, 'directives'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.sourceType === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.sourceType === 'string') {
       if (this.sourceType !== node.sourceType) {
-        return false;
+        return false
       }
     } else if (
       !this.sourceType.matchValue(node.sourceType, [...keys, 'sourceType'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.interpreter === 'undefined') {
@@ -7109,17 +7103,17 @@ export class ProgramMatcher extends Matcher<t.Program> {
     } else if (this.interpreter === null) {
       // null matcher means we expect null value
       if (node.interpreter !== null) {
-        return false;
+        return false
       }
     } else if (node.interpreter === null) {
-      return false;
+      return false
     } else if (
       !this.interpreter.matchValue(node.interpreter, [...keys, 'interpreter'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -7129,7 +7123,7 @@ export function program(
   sourceType?: Matcher<'script' | 'module'> | string,
   interpreter?: Matcher<t.InterpreterDirective> | null
 ): Matcher<t.Program> {
-  return new ProgramMatcher(body, directives, sourceType, interpreter);
+  return new ProgramMatcher(body, directives, sourceType, interpreter)
 }
 
 export class QualifiedTypeIdentifierMatcher extends Matcher<
@@ -7141,7 +7135,7 @@ export class QualifiedTypeIdentifierMatcher extends Matcher<
       t.Identifier | t.QualifiedTypeIdentifier
     >
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -7149,13 +7143,13 @@ export class QualifiedTypeIdentifierMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.QualifiedTypeIdentifier {
     if (!isNode(node) || !t.isQualifiedTypeIdentifier(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.qualification === 'undefined') {
@@ -7163,13 +7157,13 @@ export class QualifiedTypeIdentifierMatcher extends Matcher<
     } else if (
       !this.qualification.matchValue(node.qualification, [
         ...keys,
-        'qualification'
+        'qualification',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -7177,7 +7171,7 @@ export function qualifiedTypeIdentifier(
   id?: Matcher<t.Identifier>,
   qualification?: Matcher<t.Identifier | t.QualifiedTypeIdentifier>
 ): Matcher<t.QualifiedTypeIdentifier> {
-  return new QualifiedTypeIdentifierMatcher(id, qualification);
+  return new QualifiedTypeIdentifierMatcher(id, qualification)
 }
 
 export class RecordExpressionMatcher extends Matcher<t.RecordExpression> {
@@ -7190,7 +7184,7 @@ export class RecordExpressionMatcher extends Matcher<t.RecordExpression> {
           | Matcher<t.SpreadElement>
         >
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -7198,7 +7192,7 @@ export class RecordExpressionMatcher extends Matcher<t.RecordExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.RecordExpression {
     if (!isNode(node) || !t.isRecordExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.properties === 'undefined') {
@@ -7207,18 +7201,18 @@ export class RecordExpressionMatcher extends Matcher<t.RecordExpression> {
       if (
         !tupleOf<unknown>(...this.properties).matchValue(node.properties, [
           ...keys,
-          'properties'
+          'properties',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.properties.matchValue(node.properties, [...keys, 'properties'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -7231,7 +7225,7 @@ export function recordExpression(
         | Matcher<t.SpreadElement>
       >
 ): Matcher<t.RecordExpression> {
-  return new RecordExpressionMatcher(properties);
+  return new RecordExpressionMatcher(properties)
 }
 
 export class RegExpLiteralMatcher extends Matcher<t.RegExpLiteral> {
@@ -7239,7 +7233,7 @@ export class RegExpLiteralMatcher extends Matcher<t.RegExpLiteral> {
     private readonly pattern?: Matcher<string> | string,
     private readonly flags?: Matcher<any> | string
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -7247,30 +7241,30 @@ export class RegExpLiteralMatcher extends Matcher<t.RegExpLiteral> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.RegExpLiteral {
     if (!isNode(node) || !t.isRegExpLiteral(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.pattern === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.pattern === 'string') {
       if (this.pattern !== node.pattern) {
-        return false;
+        return false
       }
     } else if (!this.pattern.matchValue(node.pattern, [...keys, 'pattern'])) {
-      return false;
+      return false
     }
 
     if (typeof this.flags === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.flags === 'string') {
       if (this.flags !== node.flags) {
-        return false;
+        return false
       }
     } else if (!this.flags.matchValue(node.flags, [...keys, 'flags'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -7278,12 +7272,12 @@ export function regExpLiteral(
   pattern?: Matcher<string> | string,
   flags?: Matcher<any> | string
 ): Matcher<t.RegExpLiteral> {
-  return new RegExpLiteralMatcher(pattern, flags);
+  return new RegExpLiteralMatcher(pattern, flags)
 }
 
 export class RestElementMatcher extends Matcher<t.RestElement> {
   constructor(private readonly argument?: Matcher<t.LVal>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -7291,7 +7285,7 @@ export class RestElementMatcher extends Matcher<t.RestElement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.RestElement {
     if (!isNode(node) || !t.isRestElement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.argument === 'undefined') {
@@ -7299,22 +7293,22 @@ export class RestElementMatcher extends Matcher<t.RestElement> {
     } else if (
       !this.argument.matchValue(node.argument, [...keys, 'argument'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function restElement(
   argument?: Matcher<t.LVal>
 ): Matcher<t.RestElement> {
-  return new RestElementMatcher(argument);
+  return new RestElementMatcher(argument)
 }
 
 export class ReturnStatementMatcher extends Matcher<t.ReturnStatement> {
   constructor(private readonly argument?: Matcher<t.Expression> | null) {
-    super();
+    super()
   }
 
   matchValue(
@@ -7322,7 +7316,7 @@ export class ReturnStatementMatcher extends Matcher<t.ReturnStatement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ReturnStatement {
     if (!isNode(node) || !t.isReturnStatement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.argument === 'undefined') {
@@ -7330,24 +7324,24 @@ export class ReturnStatementMatcher extends Matcher<t.ReturnStatement> {
     } else if (this.argument === null) {
       // null matcher means we expect null value
       if (node.argument !== null) {
-        return false;
+        return false
       }
     } else if (node.argument === null) {
-      return false;
+      return false
     } else if (
       !this.argument.matchValue(node.argument, [...keys, 'argument'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function returnStatement(
   argument?: Matcher<t.Expression> | null
 ): Matcher<t.ReturnStatement> {
-  return new ReturnStatementMatcher(argument);
+  return new ReturnStatementMatcher(argument)
 }
 
 export class SequenceExpressionMatcher extends Matcher<t.SequenceExpression> {
@@ -7356,7 +7350,7 @@ export class SequenceExpressionMatcher extends Matcher<t.SequenceExpression> {
       | Matcher<Array<t.Expression>>
       | Array<Matcher<t.Expression>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -7364,7 +7358,7 @@ export class SequenceExpressionMatcher extends Matcher<t.SequenceExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.SequenceExpression {
     if (!isNode(node) || !t.isSequenceExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.expressions === 'undefined') {
@@ -7373,30 +7367,30 @@ export class SequenceExpressionMatcher extends Matcher<t.SequenceExpression> {
       if (
         !tupleOf<unknown>(...this.expressions).matchValue(node.expressions, [
           ...keys,
-          'expressions'
+          'expressions',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.expressions.matchValue(node.expressions, [...keys, 'expressions'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function sequenceExpression(
   expressions?: Matcher<Array<t.Expression>> | Array<Matcher<t.Expression>>
 ): Matcher<t.SequenceExpression> {
-  return new SequenceExpressionMatcher(expressions);
+  return new SequenceExpressionMatcher(expressions)
 }
 
 export class SpreadElementMatcher extends Matcher<t.SpreadElement> {
   constructor(private readonly argument?: Matcher<t.Expression>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -7404,7 +7398,7 @@ export class SpreadElementMatcher extends Matcher<t.SpreadElement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.SpreadElement {
     if (!isNode(node) || !t.isSpreadElement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.argument === 'undefined') {
@@ -7412,22 +7406,22 @@ export class SpreadElementMatcher extends Matcher<t.SpreadElement> {
     } else if (
       !this.argument.matchValue(node.argument, [...keys, 'argument'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function spreadElement(
   argument?: Matcher<t.Expression>
 ): Matcher<t.SpreadElement> {
-  return new SpreadElementMatcher(argument);
+  return new SpreadElementMatcher(argument)
 }
 
 export class StringLiteralMatcher extends Matcher<t.StringLiteral> {
   constructor(private readonly value?: Matcher<string> | string) {
-    super();
+    super()
   }
 
   matchValue(
@@ -7435,34 +7429,34 @@ export class StringLiteralMatcher extends Matcher<t.StringLiteral> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.StringLiteral {
     if (!isNode(node) || !t.isStringLiteral(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.value === 'string') {
       if (this.value !== node.value) {
-        return false;
+        return false
       }
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function stringLiteral(
   value?: Matcher<string> | string
 ): Matcher<t.StringLiteral> {
-  return new StringLiteralMatcher(value);
+  return new StringLiteralMatcher(value)
 }
 
 export class StringLiteralTypeAnnotationMatcher extends Matcher<
   t.StringLiteralTypeAnnotation
 > {
   constructor(private readonly value?: Matcher<string> | string) {
-    super();
+    super()
   }
 
   matchValue(
@@ -7470,34 +7464,34 @@ export class StringLiteralTypeAnnotationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.StringLiteralTypeAnnotation {
     if (!isNode(node) || !t.isStringLiteralTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.value === 'string') {
       if (this.value !== node.value) {
-        return false;
+        return false
       }
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function stringLiteralTypeAnnotation(
   value?: Matcher<string> | string
 ): Matcher<t.StringLiteralTypeAnnotation> {
-  return new StringLiteralTypeAnnotationMatcher(value);
+  return new StringLiteralTypeAnnotationMatcher(value)
 }
 
 export class StringTypeAnnotationMatcher extends Matcher<
   t.StringTypeAnnotation
 > {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -7505,33 +7499,33 @@ export class StringTypeAnnotationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.StringTypeAnnotation {
     if (!isNode(node) || !t.isStringTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function stringTypeAnnotation(): Matcher<t.StringTypeAnnotation> {
-  return new StringTypeAnnotationMatcher();
+  return new StringTypeAnnotationMatcher()
 }
 
 export class SuperMatcher extends Matcher<t.Super> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.Super {
     if (!isNode(node) || !t.isSuper(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function Super(): Matcher<t.Super> {
-  return new SuperMatcher();
+  return new SuperMatcher()
 }
 
 export class SwitchCaseMatcher extends Matcher<t.SwitchCase> {
@@ -7541,7 +7535,7 @@ export class SwitchCaseMatcher extends Matcher<t.SwitchCase> {
       | Matcher<Array<t.Statement>>
       | Array<Matcher<t.Statement>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -7549,7 +7543,7 @@ export class SwitchCaseMatcher extends Matcher<t.SwitchCase> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.SwitchCase {
     if (!isNode(node) || !t.isSwitchCase(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.test === 'undefined') {
@@ -7557,12 +7551,12 @@ export class SwitchCaseMatcher extends Matcher<t.SwitchCase> {
     } else if (this.test === null) {
       // null matcher means we expect null value
       if (node.test !== null) {
-        return false;
+        return false
       }
     } else if (node.test === null) {
-      return false;
+      return false
     } else if (!this.test.matchValue(node.test, [...keys, 'test'])) {
-      return false;
+      return false
     }
 
     if (typeof this.consequent === 'undefined') {
@@ -7571,18 +7565,18 @@ export class SwitchCaseMatcher extends Matcher<t.SwitchCase> {
       if (
         !tupleOf<unknown>(...this.consequent).matchValue(node.consequent, [
           ...keys,
-          'consequent'
+          'consequent',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.consequent.matchValue(node.consequent, [...keys, 'consequent'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -7590,7 +7584,7 @@ export function switchCase(
   test?: Matcher<t.Expression> | null,
   consequent?: Matcher<Array<t.Statement>> | Array<Matcher<t.Statement>>
 ): Matcher<t.SwitchCase> {
-  return new SwitchCaseMatcher(test, consequent);
+  return new SwitchCaseMatcher(test, consequent)
 }
 
 export class SwitchStatementMatcher extends Matcher<t.SwitchStatement> {
@@ -7600,7 +7594,7 @@ export class SwitchStatementMatcher extends Matcher<t.SwitchStatement> {
       | Matcher<Array<t.SwitchCase>>
       | Array<Matcher<t.SwitchCase>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -7608,7 +7602,7 @@ export class SwitchStatementMatcher extends Matcher<t.SwitchStatement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.SwitchStatement {
     if (!isNode(node) || !t.isSwitchStatement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.discriminant === 'undefined') {
@@ -7616,10 +7610,10 @@ export class SwitchStatementMatcher extends Matcher<t.SwitchStatement> {
     } else if (
       !this.discriminant.matchValue(node.discriminant, [
         ...keys,
-        'discriminant'
+        'discriminant',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.cases === 'undefined') {
@@ -7628,16 +7622,16 @@ export class SwitchStatementMatcher extends Matcher<t.SwitchStatement> {
       if (
         !tupleOf<unknown>(...this.cases).matchValue(node.cases, [
           ...keys,
-          'cases'
+          'cases',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.cases.matchValue(node.cases, [...keys, 'cases'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -7645,14 +7639,14 @@ export function switchStatement(
   discriminant?: Matcher<t.Expression>,
   cases?: Matcher<Array<t.SwitchCase>> | Array<Matcher<t.SwitchCase>>
 ): Matcher<t.SwitchStatement> {
-  return new SwitchStatementMatcher(discriminant, cases);
+  return new SwitchStatementMatcher(discriminant, cases)
 }
 
 export class SymbolTypeAnnotationMatcher extends Matcher<
   t.SymbolTypeAnnotation
 > {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -7660,20 +7654,20 @@ export class SymbolTypeAnnotationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.SymbolTypeAnnotation {
     if (!isNode(node) || !t.isSymbolTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function symbolTypeAnnotation(): Matcher<t.SymbolTypeAnnotation> {
-  return new SymbolTypeAnnotationMatcher();
+  return new SymbolTypeAnnotationMatcher()
 }
 
 export class TSAnyKeywordMatcher extends Matcher<t.TSAnyKeyword> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -7681,20 +7675,20 @@ export class TSAnyKeywordMatcher extends Matcher<t.TSAnyKeyword> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSAnyKeyword {
     if (!isNode(node) || !t.isTSAnyKeyword(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsAnyKeyword(): Matcher<t.TSAnyKeyword> {
-  return new TSAnyKeywordMatcher();
+  return new TSAnyKeywordMatcher()
 }
 
 export class TSArrayTypeMatcher extends Matcher<t.TSArrayType> {
   constructor(private readonly elementType?: Matcher<t.TSType>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -7702,7 +7696,7 @@ export class TSArrayTypeMatcher extends Matcher<t.TSArrayType> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSArrayType {
     if (!isNode(node) || !t.isTSArrayType(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.elementType === 'undefined') {
@@ -7710,17 +7704,17 @@ export class TSArrayTypeMatcher extends Matcher<t.TSArrayType> {
     } else if (
       !this.elementType.matchValue(node.elementType, [...keys, 'elementType'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsArrayType(
   elementType?: Matcher<t.TSType>
 ): Matcher<t.TSArrayType> {
-  return new TSArrayTypeMatcher(elementType);
+  return new TSArrayTypeMatcher(elementType)
 }
 
 export class TSAsExpressionMatcher extends Matcher<t.TSAsExpression> {
@@ -7728,7 +7722,7 @@ export class TSAsExpressionMatcher extends Matcher<t.TSAsExpression> {
     private readonly expression?: Matcher<t.Expression>,
     private readonly typeAnnotation?: Matcher<t.TSType>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -7736,7 +7730,7 @@ export class TSAsExpressionMatcher extends Matcher<t.TSAsExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSAsExpression {
     if (!isNode(node) || !t.isTSAsExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.expression === 'undefined') {
@@ -7744,7 +7738,7 @@ export class TSAsExpressionMatcher extends Matcher<t.TSAsExpression> {
     } else if (
       !this.expression.matchValue(node.expression, [...keys, 'expression'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -7752,13 +7746,13 @@ export class TSAsExpressionMatcher extends Matcher<t.TSAsExpression> {
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -7766,12 +7760,12 @@ export function tsAsExpression(
   expression?: Matcher<t.Expression>,
   typeAnnotation?: Matcher<t.TSType>
 ): Matcher<t.TSAsExpression> {
-  return new TSAsExpressionMatcher(expression, typeAnnotation);
+  return new TSAsExpressionMatcher(expression, typeAnnotation)
 }
 
 export class TSBigIntKeywordMatcher extends Matcher<t.TSBigIntKeyword> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -7779,20 +7773,20 @@ export class TSBigIntKeywordMatcher extends Matcher<t.TSBigIntKeyword> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSBigIntKeyword {
     if (!isNode(node) || !t.isTSBigIntKeyword(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsBigIntKeyword(): Matcher<t.TSBigIntKeyword> {
-  return new TSBigIntKeywordMatcher();
+  return new TSBigIntKeywordMatcher()
 }
 
 export class TSBooleanKeywordMatcher extends Matcher<t.TSBooleanKeyword> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -7800,15 +7794,15 @@ export class TSBooleanKeywordMatcher extends Matcher<t.TSBooleanKeyword> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSBooleanKeyword {
     if (!isNode(node) || !t.isTSBooleanKeyword(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsBooleanKeyword(): Matcher<t.TSBooleanKeyword> {
-  return new TSBooleanKeywordMatcher();
+  return new TSBooleanKeywordMatcher()
 }
 
 export class TSCallSignatureDeclarationMatcher extends Matcher<
@@ -7823,7 +7817,7 @@ export class TSCallSignatureDeclarationMatcher extends Matcher<
       | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
     private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -7831,7 +7825,7 @@ export class TSCallSignatureDeclarationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSCallSignatureDeclaration {
     if (!isNode(node) || !t.isTSCallSignatureDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -7839,17 +7833,17 @@ export class TSCallSignatureDeclarationMatcher extends Matcher<
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.parameters === 'undefined') {
@@ -7858,15 +7852,15 @@ export class TSCallSignatureDeclarationMatcher extends Matcher<
       if (
         !tupleOf<unknown>(...this.parameters).matchValue(node.parameters, [
           ...keys,
-          'parameters'
+          'parameters',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.parameters.matchValue(node.parameters, [...keys, 'parameters'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -7874,20 +7868,20 @@ export class TSCallSignatureDeclarationMatcher extends Matcher<
     } else if (this.typeAnnotation === null) {
       // null matcher means we expect null value
       if (node.typeAnnotation !== null) {
-        return false;
+        return false
       }
     } else if (node.typeAnnotation === null) {
-      return false;
+      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -7902,7 +7896,7 @@ export function tsCallSignatureDeclaration(
     typeParameters,
     parameters,
     typeAnnotation
-  );
+  )
 }
 
 export class TSConditionalTypeMatcher extends Matcher<t.TSConditionalType> {
@@ -7912,7 +7906,7 @@ export class TSConditionalTypeMatcher extends Matcher<t.TSConditionalType> {
     private readonly trueType?: Matcher<t.TSType>,
     private readonly falseType?: Matcher<t.TSType>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -7920,7 +7914,7 @@ export class TSConditionalTypeMatcher extends Matcher<t.TSConditionalType> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSConditionalType {
     if (!isNode(node) || !t.isTSConditionalType(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.checkType === 'undefined') {
@@ -7928,7 +7922,7 @@ export class TSConditionalTypeMatcher extends Matcher<t.TSConditionalType> {
     } else if (
       !this.checkType.matchValue(node.checkType, [...keys, 'checkType'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.extendsType === 'undefined') {
@@ -7936,7 +7930,7 @@ export class TSConditionalTypeMatcher extends Matcher<t.TSConditionalType> {
     } else if (
       !this.extendsType.matchValue(node.extendsType, [...keys, 'extendsType'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.trueType === 'undefined') {
@@ -7944,7 +7938,7 @@ export class TSConditionalTypeMatcher extends Matcher<t.TSConditionalType> {
     } else if (
       !this.trueType.matchValue(node.trueType, [...keys, 'trueType'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.falseType === 'undefined') {
@@ -7952,10 +7946,10 @@ export class TSConditionalTypeMatcher extends Matcher<t.TSConditionalType> {
     } else if (
       !this.falseType.matchValue(node.falseType, [...keys, 'falseType'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -7970,7 +7964,7 @@ export function tsConditionalType(
     extendsType,
     trueType,
     falseType
-  );
+  )
 }
 
 export class TSConstructSignatureDeclarationMatcher extends Matcher<
@@ -7985,7 +7979,7 @@ export class TSConstructSignatureDeclarationMatcher extends Matcher<
       | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
     private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -7993,7 +7987,7 @@ export class TSConstructSignatureDeclarationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSConstructSignatureDeclaration {
     if (!isNode(node) || !t.isTSConstructSignatureDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -8001,17 +7995,17 @@ export class TSConstructSignatureDeclarationMatcher extends Matcher<
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.parameters === 'undefined') {
@@ -8020,15 +8014,15 @@ export class TSConstructSignatureDeclarationMatcher extends Matcher<
       if (
         !tupleOf<unknown>(...this.parameters).matchValue(node.parameters, [
           ...keys,
-          'parameters'
+          'parameters',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.parameters.matchValue(node.parameters, [...keys, 'parameters'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -8036,20 +8030,20 @@ export class TSConstructSignatureDeclarationMatcher extends Matcher<
     } else if (this.typeAnnotation === null) {
       // null matcher means we expect null value
       if (node.typeAnnotation !== null) {
-        return false;
+        return false
       }
     } else if (node.typeAnnotation === null) {
-      return false;
+      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -8064,7 +8058,7 @@ export function tsConstructSignatureDeclaration(
     typeParameters,
     parameters,
     typeAnnotation
-  );
+  )
 }
 
 export class TSConstructorTypeMatcher extends Matcher<t.TSConstructorType> {
@@ -8077,7 +8071,7 @@ export class TSConstructorTypeMatcher extends Matcher<t.TSConstructorType> {
       | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
     private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -8085,7 +8079,7 @@ export class TSConstructorTypeMatcher extends Matcher<t.TSConstructorType> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSConstructorType {
     if (!isNode(node) || !t.isTSConstructorType(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -8093,17 +8087,17 @@ export class TSConstructorTypeMatcher extends Matcher<t.TSConstructorType> {
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.parameters === 'undefined') {
@@ -8112,15 +8106,15 @@ export class TSConstructorTypeMatcher extends Matcher<t.TSConstructorType> {
       if (
         !tupleOf<unknown>(...this.parameters).matchValue(node.parameters, [
           ...keys,
-          'parameters'
+          'parameters',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.parameters.matchValue(node.parameters, [...keys, 'parameters'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -8128,20 +8122,20 @@ export class TSConstructorTypeMatcher extends Matcher<t.TSConstructorType> {
     } else if (this.typeAnnotation === null) {
       // null matcher means we expect null value
       if (node.typeAnnotation !== null) {
-        return false;
+        return false
       }
     } else if (node.typeAnnotation === null) {
-      return false;
+      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -8156,7 +8150,7 @@ export function tsConstructorType(
     typeParameters,
     parameters,
     typeAnnotation
-  );
+  )
 }
 
 export class TSDeclareFunctionMatcher extends Matcher<t.TSDeclareFunction> {
@@ -8179,7 +8173,7 @@ export class TSDeclareFunctionMatcher extends Matcher<t.TSDeclareFunction> {
         >,
     private readonly returnType?: Matcher<t.TSTypeAnnotation | t.Noop> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -8187,7 +8181,7 @@ export class TSDeclareFunctionMatcher extends Matcher<t.TSDeclareFunction> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSDeclareFunction {
     if (!isNode(node) || !t.isTSDeclareFunction(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
@@ -8195,12 +8189,12 @@ export class TSDeclareFunctionMatcher extends Matcher<t.TSDeclareFunction> {
     } else if (this.id === null) {
       // null matcher means we expect null value
       if (node.id !== null) {
-        return false;
+        return false
       }
     } else if (node.id === null) {
-      return false;
+      return false
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -8208,17 +8202,17 @@ export class TSDeclareFunctionMatcher extends Matcher<t.TSDeclareFunction> {
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.params === 'undefined') {
@@ -8227,13 +8221,13 @@ export class TSDeclareFunctionMatcher extends Matcher<t.TSDeclareFunction> {
       if (
         !tupleOf<unknown>(...this.params).matchValue(node.params, [
           ...keys,
-          'params'
+          'params',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
-      return false;
+      return false
     }
 
     if (typeof this.returnType === 'undefined') {
@@ -8241,17 +8235,17 @@ export class TSDeclareFunctionMatcher extends Matcher<t.TSDeclareFunction> {
     } else if (this.returnType === null) {
       // null matcher means we expect null value
       if (node.returnType !== null) {
-        return false;
+        return false
       }
     } else if (node.returnType === null) {
-      return false;
+      return false
     } else if (
       !this.returnType.matchValue(node.returnType, [...keys, 'returnType'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -8270,7 +8264,7 @@ export function tsDeclareFunction(
       >,
   returnType?: Matcher<t.TSTypeAnnotation | t.Noop> | null
 ): Matcher<t.TSDeclareFunction> {
-  return new TSDeclareFunctionMatcher(id, typeParameters, params, returnType);
+  return new TSDeclareFunctionMatcher(id, typeParameters, params, returnType)
 }
 
 export class TSDeclareMethodMatcher extends Matcher<t.TSDeclareMethod> {
@@ -8299,7 +8293,7 @@ export class TSDeclareMethodMatcher extends Matcher<t.TSDeclareMethod> {
         >,
     private readonly returnType?: Matcher<t.TSTypeAnnotation | t.Noop> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -8307,7 +8301,7 @@ export class TSDeclareMethodMatcher extends Matcher<t.TSDeclareMethod> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSDeclareMethod {
     if (!isNode(node) || !t.isTSDeclareMethod(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.decorators === 'undefined') {
@@ -8315,29 +8309,29 @@ export class TSDeclareMethodMatcher extends Matcher<t.TSDeclareMethod> {
     } else if (this.decorators === null) {
       // null matcher means we expect null value
       if (node.decorators !== null) {
-        return false;
+        return false
       }
     } else if (node.decorators === null) {
-      return false;
+      return false
     } else if (Array.isArray(this.decorators)) {
       if (
         !tupleOf<unknown>(...this.decorators).matchValue(node.decorators, [
           ...keys,
-          'decorators'
+          'decorators',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.decorators.matchValue(node.decorators, [...keys, 'decorators'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -8345,17 +8339,17 @@ export class TSDeclareMethodMatcher extends Matcher<t.TSDeclareMethod> {
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.params === 'undefined') {
@@ -8364,13 +8358,13 @@ export class TSDeclareMethodMatcher extends Matcher<t.TSDeclareMethod> {
       if (
         !tupleOf<unknown>(...this.params).matchValue(node.params, [
           ...keys,
-          'params'
+          'params',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
-      return false;
+      return false
     }
 
     if (typeof this.returnType === 'undefined') {
@@ -8378,17 +8372,17 @@ export class TSDeclareMethodMatcher extends Matcher<t.TSDeclareMethod> {
     } else if (this.returnType === null) {
       // null matcher means we expect null value
       if (node.returnType !== null) {
-        return false;
+        return false
       }
     } else if (node.returnType === null) {
-      return false;
+      return false
     } else if (
       !this.returnType.matchValue(node.returnType, [...keys, 'returnType'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -8416,7 +8410,7 @@ export function tsDeclareMethod(
     typeParameters,
     params,
     returnType
-  );
+  )
 }
 
 export class TSEnumDeclarationMatcher extends Matcher<t.TSEnumDeclaration> {
@@ -8426,7 +8420,7 @@ export class TSEnumDeclarationMatcher extends Matcher<t.TSEnumDeclaration> {
       | Matcher<Array<t.TSEnumMember>>
       | Array<Matcher<t.TSEnumMember>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -8434,13 +8428,13 @@ export class TSEnumDeclarationMatcher extends Matcher<t.TSEnumDeclaration> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSEnumDeclaration {
     if (!isNode(node) || !t.isTSEnumDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.members === 'undefined') {
@@ -8449,16 +8443,16 @@ export class TSEnumDeclarationMatcher extends Matcher<t.TSEnumDeclaration> {
       if (
         !tupleOf<unknown>(...this.members).matchValue(node.members, [
           ...keys,
-          'members'
+          'members',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.members.matchValue(node.members, [...keys, 'members'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -8466,7 +8460,7 @@ export function tsEnumDeclaration(
   id?: Matcher<t.Identifier>,
   members?: Matcher<Array<t.TSEnumMember>> | Array<Matcher<t.TSEnumMember>>
 ): Matcher<t.TSEnumDeclaration> {
-  return new TSEnumDeclarationMatcher(id, members);
+  return new TSEnumDeclarationMatcher(id, members)
 }
 
 export class TSEnumMemberMatcher extends Matcher<t.TSEnumMember> {
@@ -8474,7 +8468,7 @@ export class TSEnumMemberMatcher extends Matcher<t.TSEnumMember> {
     private readonly id?: Matcher<t.Identifier | t.StringLiteral>,
     private readonly initializer?: Matcher<t.Expression> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -8482,13 +8476,13 @@ export class TSEnumMemberMatcher extends Matcher<t.TSEnumMember> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSEnumMember {
     if (!isNode(node) || !t.isTSEnumMember(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.initializer === 'undefined') {
@@ -8496,17 +8490,17 @@ export class TSEnumMemberMatcher extends Matcher<t.TSEnumMember> {
     } else if (this.initializer === null) {
       // null matcher means we expect null value
       if (node.initializer !== null) {
-        return false;
+        return false
       }
     } else if (node.initializer === null) {
-      return false;
+      return false
     } else if (
       !this.initializer.matchValue(node.initializer, [...keys, 'initializer'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -8514,12 +8508,12 @@ export function tsEnumMember(
   id?: Matcher<t.Identifier | t.StringLiteral>,
   initializer?: Matcher<t.Expression> | null
 ): Matcher<t.TSEnumMember> {
-  return new TSEnumMemberMatcher(id, initializer);
+  return new TSEnumMemberMatcher(id, initializer)
 }
 
 export class TSExportAssignmentMatcher extends Matcher<t.TSExportAssignment> {
   constructor(private readonly expression?: Matcher<t.Expression>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -8527,7 +8521,7 @@ export class TSExportAssignmentMatcher extends Matcher<t.TSExportAssignment> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSExportAssignment {
     if (!isNode(node) || !t.isTSExportAssignment(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.expression === 'undefined') {
@@ -8535,17 +8529,17 @@ export class TSExportAssignmentMatcher extends Matcher<t.TSExportAssignment> {
     } else if (
       !this.expression.matchValue(node.expression, [...keys, 'expression'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsExportAssignment(
   expression?: Matcher<t.Expression>
 ): Matcher<t.TSExportAssignment> {
-  return new TSExportAssignmentMatcher(expression);
+  return new TSExportAssignmentMatcher(expression)
 }
 
 export class TSExpressionWithTypeArgumentsMatcher extends Matcher<
@@ -8557,7 +8551,7 @@ export class TSExpressionWithTypeArgumentsMatcher extends Matcher<
       t.TSTypeParameterInstantiation
     > | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -8565,7 +8559,7 @@ export class TSExpressionWithTypeArgumentsMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSExpressionWithTypeArguments {
     if (!isNode(node) || !t.isTSExpressionWithTypeArguments(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.expression === 'undefined') {
@@ -8573,7 +8567,7 @@ export class TSExpressionWithTypeArgumentsMatcher extends Matcher<
     } else if (
       !this.expression.matchValue(node.expression, [...keys, 'expression'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -8581,20 +8575,20 @@ export class TSExpressionWithTypeArgumentsMatcher extends Matcher<
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -8602,14 +8596,14 @@ export function tsExpressionWithTypeArguments(
   expression?: Matcher<t.TSEntityName>,
   typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null
 ): Matcher<t.TSExpressionWithTypeArguments> {
-  return new TSExpressionWithTypeArgumentsMatcher(expression, typeParameters);
+  return new TSExpressionWithTypeArgumentsMatcher(expression, typeParameters)
 }
 
 export class TSExternalModuleReferenceMatcher extends Matcher<
   t.TSExternalModuleReference
 > {
   constructor(private readonly expression?: Matcher<t.StringLiteral>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -8617,7 +8611,7 @@ export class TSExternalModuleReferenceMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSExternalModuleReference {
     if (!isNode(node) || !t.isTSExternalModuleReference(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.expression === 'undefined') {
@@ -8625,17 +8619,17 @@ export class TSExternalModuleReferenceMatcher extends Matcher<
     } else if (
       !this.expression.matchValue(node.expression, [...keys, 'expression'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsExternalModuleReference(
   expression?: Matcher<t.StringLiteral>
 ): Matcher<t.TSExternalModuleReference> {
-  return new TSExternalModuleReferenceMatcher(expression);
+  return new TSExternalModuleReferenceMatcher(expression)
 }
 
 export class TSFunctionTypeMatcher extends Matcher<t.TSFunctionType> {
@@ -8648,7 +8642,7 @@ export class TSFunctionTypeMatcher extends Matcher<t.TSFunctionType> {
       | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
     private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -8656,7 +8650,7 @@ export class TSFunctionTypeMatcher extends Matcher<t.TSFunctionType> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSFunctionType {
     if (!isNode(node) || !t.isTSFunctionType(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -8664,17 +8658,17 @@ export class TSFunctionTypeMatcher extends Matcher<t.TSFunctionType> {
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.parameters === 'undefined') {
@@ -8683,15 +8677,15 @@ export class TSFunctionTypeMatcher extends Matcher<t.TSFunctionType> {
       if (
         !tupleOf<unknown>(...this.parameters).matchValue(node.parameters, [
           ...keys,
-          'parameters'
+          'parameters',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.parameters.matchValue(node.parameters, [...keys, 'parameters'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -8699,20 +8693,20 @@ export class TSFunctionTypeMatcher extends Matcher<t.TSFunctionType> {
     } else if (this.typeAnnotation === null) {
       // null matcher means we expect null value
       if (node.typeAnnotation !== null) {
-        return false;
+        return false
       }
     } else if (node.typeAnnotation === null) {
-      return false;
+      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -8723,7 +8717,7 @@ export function tsFunctionType(
     | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
   typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
 ): Matcher<t.TSFunctionType> {
-  return new TSFunctionTypeMatcher(typeParameters, parameters, typeAnnotation);
+  return new TSFunctionTypeMatcher(typeParameters, parameters, typeAnnotation)
 }
 
 export class TSImportEqualsDeclarationMatcher extends Matcher<
@@ -8735,7 +8729,7 @@ export class TSImportEqualsDeclarationMatcher extends Matcher<
       t.TSEntityName | t.TSExternalModuleReference
     >
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -8743,13 +8737,13 @@ export class TSImportEqualsDeclarationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSImportEqualsDeclaration {
     if (!isNode(node) || !t.isTSImportEqualsDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.moduleReference === 'undefined') {
@@ -8757,13 +8751,13 @@ export class TSImportEqualsDeclarationMatcher extends Matcher<
     } else if (
       !this.moduleReference.matchValue(node.moduleReference, [
         ...keys,
-        'moduleReference'
+        'moduleReference',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -8771,7 +8765,7 @@ export function tsImportEqualsDeclaration(
   id?: Matcher<t.Identifier>,
   moduleReference?: Matcher<t.TSEntityName | t.TSExternalModuleReference>
 ): Matcher<t.TSImportEqualsDeclaration> {
-  return new TSImportEqualsDeclarationMatcher(id, moduleReference);
+  return new TSImportEqualsDeclarationMatcher(id, moduleReference)
 }
 
 export class TSImportTypeMatcher extends Matcher<t.TSImportType> {
@@ -8782,7 +8776,7 @@ export class TSImportTypeMatcher extends Matcher<t.TSImportType> {
       t.TSTypeParameterInstantiation
     > | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -8790,7 +8784,7 @@ export class TSImportTypeMatcher extends Matcher<t.TSImportType> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSImportType {
     if (!isNode(node) || !t.isTSImportType(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.argument === 'undefined') {
@@ -8798,7 +8792,7 @@ export class TSImportTypeMatcher extends Matcher<t.TSImportType> {
     } else if (
       !this.argument.matchValue(node.argument, [...keys, 'argument'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.qualifier === 'undefined') {
@@ -8806,14 +8800,14 @@ export class TSImportTypeMatcher extends Matcher<t.TSImportType> {
     } else if (this.qualifier === null) {
       // null matcher means we expect null value
       if (node.qualifier !== null) {
-        return false;
+        return false
       }
     } else if (node.qualifier === null) {
-      return false;
+      return false
     } else if (
       !this.qualifier.matchValue(node.qualifier, [...keys, 'qualifier'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -8821,20 +8815,20 @@ export class TSImportTypeMatcher extends Matcher<t.TSImportType> {
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -8843,7 +8837,7 @@ export function tsImportType(
   qualifier?: Matcher<t.TSEntityName> | null,
   typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null
 ): Matcher<t.TSImportType> {
-  return new TSImportTypeMatcher(argument, qualifier, typeParameters);
+  return new TSImportTypeMatcher(argument, qualifier, typeParameters)
 }
 
 export class TSIndexSignatureMatcher extends Matcher<t.TSIndexSignature> {
@@ -8853,7 +8847,7 @@ export class TSIndexSignatureMatcher extends Matcher<t.TSIndexSignature> {
       | Array<Matcher<t.Identifier>>,
     private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -8861,7 +8855,7 @@ export class TSIndexSignatureMatcher extends Matcher<t.TSIndexSignature> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSIndexSignature {
     if (!isNode(node) || !t.isTSIndexSignature(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.parameters === 'undefined') {
@@ -8870,15 +8864,15 @@ export class TSIndexSignatureMatcher extends Matcher<t.TSIndexSignature> {
       if (
         !tupleOf<unknown>(...this.parameters).matchValue(node.parameters, [
           ...keys,
-          'parameters'
+          'parameters',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.parameters.matchValue(node.parameters, [...keys, 'parameters'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -8886,20 +8880,20 @@ export class TSIndexSignatureMatcher extends Matcher<t.TSIndexSignature> {
     } else if (this.typeAnnotation === null) {
       // null matcher means we expect null value
       if (node.typeAnnotation !== null) {
-        return false;
+        return false
       }
     } else if (node.typeAnnotation === null) {
-      return false;
+      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -8907,7 +8901,7 @@ export function tsIndexSignature(
   parameters?: Matcher<Array<t.Identifier>> | Array<Matcher<t.Identifier>>,
   typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
 ): Matcher<t.TSIndexSignature> {
-  return new TSIndexSignatureMatcher(parameters, typeAnnotation);
+  return new TSIndexSignatureMatcher(parameters, typeAnnotation)
 }
 
 export class TSIndexedAccessTypeMatcher extends Matcher<t.TSIndexedAccessType> {
@@ -8915,7 +8909,7 @@ export class TSIndexedAccessTypeMatcher extends Matcher<t.TSIndexedAccessType> {
     private readonly objectType?: Matcher<t.TSType>,
     private readonly indexType?: Matcher<t.TSType>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -8923,7 +8917,7 @@ export class TSIndexedAccessTypeMatcher extends Matcher<t.TSIndexedAccessType> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSIndexedAccessType {
     if (!isNode(node) || !t.isTSIndexedAccessType(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.objectType === 'undefined') {
@@ -8931,7 +8925,7 @@ export class TSIndexedAccessTypeMatcher extends Matcher<t.TSIndexedAccessType> {
     } else if (
       !this.objectType.matchValue(node.objectType, [...keys, 'objectType'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.indexType === 'undefined') {
@@ -8939,10 +8933,10 @@ export class TSIndexedAccessTypeMatcher extends Matcher<t.TSIndexedAccessType> {
     } else if (
       !this.indexType.matchValue(node.indexType, [...keys, 'indexType'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -8950,12 +8944,12 @@ export function tsIndexedAccessType(
   objectType?: Matcher<t.TSType>,
   indexType?: Matcher<t.TSType>
 ): Matcher<t.TSIndexedAccessType> {
-  return new TSIndexedAccessTypeMatcher(objectType, indexType);
+  return new TSIndexedAccessTypeMatcher(objectType, indexType)
 }
 
 export class TSInferTypeMatcher extends Matcher<t.TSInferType> {
   constructor(private readonly typeParameter?: Matcher<t.TSTypeParameter>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -8963,7 +8957,7 @@ export class TSInferTypeMatcher extends Matcher<t.TSInferType> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSInferType {
     if (!isNode(node) || !t.isTSInferType(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameter === 'undefined') {
@@ -8971,20 +8965,20 @@ export class TSInferTypeMatcher extends Matcher<t.TSInferType> {
     } else if (
       !this.typeParameter.matchValue(node.typeParameter, [
         ...keys,
-        'typeParameter'
+        'typeParameter',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsInferType(
   typeParameter?: Matcher<t.TSTypeParameter>
 ): Matcher<t.TSInferType> {
-  return new TSInferTypeMatcher(typeParameter);
+  return new TSInferTypeMatcher(typeParameter)
 }
 
 export class TSInterfaceBodyMatcher extends Matcher<t.TSInterfaceBody> {
@@ -8993,7 +8987,7 @@ export class TSInterfaceBodyMatcher extends Matcher<t.TSInterfaceBody> {
       | Matcher<Array<t.TSTypeElement>>
       | Array<Matcher<t.TSTypeElement>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -9001,7 +8995,7 @@ export class TSInterfaceBodyMatcher extends Matcher<t.TSInterfaceBody> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSInterfaceBody {
     if (!isNode(node) || !t.isTSInterfaceBody(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
@@ -9010,20 +9004,20 @@ export class TSInterfaceBodyMatcher extends Matcher<t.TSInterfaceBody> {
       if (
         !tupleOf<unknown>(...this.body).matchValue(node.body, [...keys, 'body'])
       ) {
-        return false;
+        return false
       }
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsInterfaceBody(
   body?: Matcher<Array<t.TSTypeElement>> | Array<Matcher<t.TSTypeElement>>
 ): Matcher<t.TSInterfaceBody> {
-  return new TSInterfaceBodyMatcher(body);
+  return new TSInterfaceBodyMatcher(body)
 }
 
 export class TSInterfaceDeclarationMatcher extends Matcher<
@@ -9040,7 +9034,7 @@ export class TSInterfaceDeclarationMatcher extends Matcher<
       | null,
     private readonly body?: Matcher<t.TSInterfaceBody>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -9048,13 +9042,13 @@ export class TSInterfaceDeclarationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSInterfaceDeclaration {
     if (!isNode(node) || !t.isTSInterfaceDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -9062,17 +9056,17 @@ export class TSInterfaceDeclarationMatcher extends Matcher<
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this._extends === 'undefined') {
@@ -9080,30 +9074,30 @@ export class TSInterfaceDeclarationMatcher extends Matcher<
     } else if (this._extends === null) {
       // null matcher means we expect null value
       if (node.extends !== null) {
-        return false;
+        return false
       }
     } else if (node.extends === null) {
-      return false;
+      return false
     } else if (Array.isArray(this._extends)) {
       if (
         !tupleOf<unknown>(...this._extends).matchValue(node.extends, [
           ...keys,
-          'extends'
+          'extends',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this._extends.matchValue(node.extends, [...keys, 'extends'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -9116,14 +9110,14 @@ export function tsInterfaceDeclaration(
     | null,
   body?: Matcher<t.TSInterfaceBody>
 ): Matcher<t.TSInterfaceDeclaration> {
-  return new TSInterfaceDeclarationMatcher(id, typeParameters, _extends, body);
+  return new TSInterfaceDeclarationMatcher(id, typeParameters, _extends, body)
 }
 
 export class TSIntersectionTypeMatcher extends Matcher<t.TSIntersectionType> {
   constructor(
     private readonly types?: Matcher<Array<t.TSType>> | Array<Matcher<t.TSType>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -9131,7 +9125,7 @@ export class TSIntersectionTypeMatcher extends Matcher<t.TSIntersectionType> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSIntersectionType {
     if (!isNode(node) || !t.isTSIntersectionType(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.types === 'undefined') {
@@ -9140,23 +9134,23 @@ export class TSIntersectionTypeMatcher extends Matcher<t.TSIntersectionType> {
       if (
         !tupleOf<unknown>(...this.types).matchValue(node.types, [
           ...keys,
-          'types'
+          'types',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.types.matchValue(node.types, [...keys, 'types'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsIntersectionType(
   types?: Matcher<Array<t.TSType>> | Array<Matcher<t.TSType>>
 ): Matcher<t.TSIntersectionType> {
-  return new TSIntersectionTypeMatcher(types);
+  return new TSIntersectionTypeMatcher(types)
 }
 
 export class TSLiteralTypeMatcher extends Matcher<t.TSLiteralType> {
@@ -9165,7 +9159,7 @@ export class TSLiteralTypeMatcher extends Matcher<t.TSLiteralType> {
       t.NumericLiteral | t.StringLiteral | t.BooleanLiteral
     >
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -9173,23 +9167,23 @@ export class TSLiteralTypeMatcher extends Matcher<t.TSLiteralType> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSLiteralType {
     if (!isNode(node) || !t.isTSLiteralType(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.literal === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.literal.matchValue(node.literal, [...keys, 'literal'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsLiteralType(
   literal?: Matcher<t.NumericLiteral | t.StringLiteral | t.BooleanLiteral>
 ): Matcher<t.TSLiteralType> {
-  return new TSLiteralTypeMatcher(literal);
+  return new TSLiteralTypeMatcher(literal)
 }
 
 export class TSMappedTypeMatcher extends Matcher<t.TSMappedType> {
@@ -9197,7 +9191,7 @@ export class TSMappedTypeMatcher extends Matcher<t.TSMappedType> {
     private readonly typeParameter?: Matcher<t.TSTypeParameter>,
     private readonly typeAnnotation?: Matcher<t.TSType> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -9205,7 +9199,7 @@ export class TSMappedTypeMatcher extends Matcher<t.TSMappedType> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSMappedType {
     if (!isNode(node) || !t.isTSMappedType(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameter === 'undefined') {
@@ -9213,10 +9207,10 @@ export class TSMappedTypeMatcher extends Matcher<t.TSMappedType> {
     } else if (
       !this.typeParameter.matchValue(node.typeParameter, [
         ...keys,
-        'typeParameter'
+        'typeParameter',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -9224,20 +9218,20 @@ export class TSMappedTypeMatcher extends Matcher<t.TSMappedType> {
     } else if (this.typeAnnotation === null) {
       // null matcher means we expect null value
       if (node.typeAnnotation !== null) {
-        return false;
+        return false
       }
     } else if (node.typeAnnotation === null) {
-      return false;
+      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -9245,7 +9239,7 @@ export function tsMappedType(
   typeParameter?: Matcher<t.TSTypeParameter>,
   typeAnnotation?: Matcher<t.TSType> | null
 ): Matcher<t.TSMappedType> {
-  return new TSMappedTypeMatcher(typeParameter, typeAnnotation);
+  return new TSMappedTypeMatcher(typeParameter, typeAnnotation)
 }
 
 export class TSMethodSignatureMatcher extends Matcher<t.TSMethodSignature> {
@@ -9259,7 +9253,7 @@ export class TSMethodSignatureMatcher extends Matcher<t.TSMethodSignature> {
       | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
     private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -9267,13 +9261,13 @@ export class TSMethodSignatureMatcher extends Matcher<t.TSMethodSignature> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSMethodSignature {
     if (!isNode(node) || !t.isTSMethodSignature(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -9281,17 +9275,17 @@ export class TSMethodSignatureMatcher extends Matcher<t.TSMethodSignature> {
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.parameters === 'undefined') {
@@ -9300,15 +9294,15 @@ export class TSMethodSignatureMatcher extends Matcher<t.TSMethodSignature> {
       if (
         !tupleOf<unknown>(...this.parameters).matchValue(node.parameters, [
           ...keys,
-          'parameters'
+          'parameters',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.parameters.matchValue(node.parameters, [...keys, 'parameters'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -9316,20 +9310,20 @@ export class TSMethodSignatureMatcher extends Matcher<t.TSMethodSignature> {
     } else if (this.typeAnnotation === null) {
       // null matcher means we expect null value
       if (node.typeAnnotation !== null) {
-        return false;
+        return false
       }
     } else if (node.typeAnnotation === null) {
-      return false;
+      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -9346,7 +9340,7 @@ export function tsMethodSignature(
     typeParameters,
     parameters,
     typeAnnotation
-  );
+  )
 }
 
 export class TSModuleBlockMatcher extends Matcher<t.TSModuleBlock> {
@@ -9355,7 +9349,7 @@ export class TSModuleBlockMatcher extends Matcher<t.TSModuleBlock> {
       | Matcher<Array<t.Statement>>
       | Array<Matcher<t.Statement>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -9363,7 +9357,7 @@ export class TSModuleBlockMatcher extends Matcher<t.TSModuleBlock> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSModuleBlock {
     if (!isNode(node) || !t.isTSModuleBlock(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
@@ -9372,20 +9366,20 @@ export class TSModuleBlockMatcher extends Matcher<t.TSModuleBlock> {
       if (
         !tupleOf<unknown>(...this.body).matchValue(node.body, [...keys, 'body'])
       ) {
-        return false;
+        return false
       }
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsModuleBlock(
   body?: Matcher<Array<t.Statement>> | Array<Matcher<t.Statement>>
 ): Matcher<t.TSModuleBlock> {
-  return new TSModuleBlockMatcher(body);
+  return new TSModuleBlockMatcher(body)
 }
 
 export class TSModuleDeclarationMatcher extends Matcher<t.TSModuleDeclaration> {
@@ -9393,7 +9387,7 @@ export class TSModuleDeclarationMatcher extends Matcher<t.TSModuleDeclaration> {
     private readonly id?: Matcher<t.Identifier | t.StringLiteral>,
     private readonly body?: Matcher<t.TSModuleBlock | t.TSModuleDeclaration>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -9401,22 +9395,22 @@ export class TSModuleDeclarationMatcher extends Matcher<t.TSModuleDeclaration> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSModuleDeclaration {
     if (!isNode(node) || !t.isTSModuleDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -9424,14 +9418,14 @@ export function tsModuleDeclaration(
   id?: Matcher<t.Identifier | t.StringLiteral>,
   body?: Matcher<t.TSModuleBlock | t.TSModuleDeclaration>
 ): Matcher<t.TSModuleDeclaration> {
-  return new TSModuleDeclarationMatcher(id, body);
+  return new TSModuleDeclarationMatcher(id, body)
 }
 
 export class TSNamespaceExportDeclarationMatcher extends Matcher<
   t.TSNamespaceExportDeclaration
 > {
   constructor(private readonly id?: Matcher<t.Identifier>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -9439,28 +9433,28 @@ export class TSNamespaceExportDeclarationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSNamespaceExportDeclaration {
     if (!isNode(node) || !t.isTSNamespaceExportDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsNamespaceExportDeclaration(
   id?: Matcher<t.Identifier>
 ): Matcher<t.TSNamespaceExportDeclaration> {
-  return new TSNamespaceExportDeclarationMatcher(id);
+  return new TSNamespaceExportDeclarationMatcher(id)
 }
 
 export class TSNeverKeywordMatcher extends Matcher<t.TSNeverKeyword> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -9468,20 +9462,20 @@ export class TSNeverKeywordMatcher extends Matcher<t.TSNeverKeyword> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSNeverKeyword {
     if (!isNode(node) || !t.isTSNeverKeyword(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsNeverKeyword(): Matcher<t.TSNeverKeyword> {
-  return new TSNeverKeywordMatcher();
+  return new TSNeverKeywordMatcher()
 }
 
 export class TSNonNullExpressionMatcher extends Matcher<t.TSNonNullExpression> {
   constructor(private readonly expression?: Matcher<t.Expression>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -9489,7 +9483,7 @@ export class TSNonNullExpressionMatcher extends Matcher<t.TSNonNullExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSNonNullExpression {
     if (!isNode(node) || !t.isTSNonNullExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.expression === 'undefined') {
@@ -9497,22 +9491,22 @@ export class TSNonNullExpressionMatcher extends Matcher<t.TSNonNullExpression> {
     } else if (
       !this.expression.matchValue(node.expression, [...keys, 'expression'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsNonNullExpression(
   expression?: Matcher<t.Expression>
 ): Matcher<t.TSNonNullExpression> {
-  return new TSNonNullExpressionMatcher(expression);
+  return new TSNonNullExpressionMatcher(expression)
 }
 
 export class TSNullKeywordMatcher extends Matcher<t.TSNullKeyword> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -9520,20 +9514,20 @@ export class TSNullKeywordMatcher extends Matcher<t.TSNullKeyword> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSNullKeyword {
     if (!isNode(node) || !t.isTSNullKeyword(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsNullKeyword(): Matcher<t.TSNullKeyword> {
-  return new TSNullKeywordMatcher();
+  return new TSNullKeywordMatcher()
 }
 
 export class TSNumberKeywordMatcher extends Matcher<t.TSNumberKeyword> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -9541,20 +9535,20 @@ export class TSNumberKeywordMatcher extends Matcher<t.TSNumberKeyword> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSNumberKeyword {
     if (!isNode(node) || !t.isTSNumberKeyword(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsNumberKeyword(): Matcher<t.TSNumberKeyword> {
-  return new TSNumberKeywordMatcher();
+  return new TSNumberKeywordMatcher()
 }
 
 export class TSObjectKeywordMatcher extends Matcher<t.TSObjectKeyword> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -9562,20 +9556,20 @@ export class TSObjectKeywordMatcher extends Matcher<t.TSObjectKeyword> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSObjectKeyword {
     if (!isNode(node) || !t.isTSObjectKeyword(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsObjectKeyword(): Matcher<t.TSObjectKeyword> {
-  return new TSObjectKeywordMatcher();
+  return new TSObjectKeywordMatcher()
 }
 
 export class TSOptionalTypeMatcher extends Matcher<t.TSOptionalType> {
   constructor(private readonly typeAnnotation?: Matcher<t.TSType>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -9583,7 +9577,7 @@ export class TSOptionalTypeMatcher extends Matcher<t.TSOptionalType> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSOptionalType {
     if (!isNode(node) || !t.isTSOptionalType(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -9591,27 +9585,27 @@ export class TSOptionalTypeMatcher extends Matcher<t.TSOptionalType> {
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsOptionalType(
   typeAnnotation?: Matcher<t.TSType>
 ): Matcher<t.TSOptionalType> {
-  return new TSOptionalTypeMatcher(typeAnnotation);
+  return new TSOptionalTypeMatcher(typeAnnotation)
 }
 
 export class TSParameterPropertyMatcher extends Matcher<t.TSParameterProperty> {
   constructor(
     private readonly parameter?: Matcher<t.Identifier | t.AssignmentPattern>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -9619,7 +9613,7 @@ export class TSParameterPropertyMatcher extends Matcher<t.TSParameterProperty> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSParameterProperty {
     if (!isNode(node) || !t.isTSParameterProperty(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.parameter === 'undefined') {
@@ -9627,22 +9621,22 @@ export class TSParameterPropertyMatcher extends Matcher<t.TSParameterProperty> {
     } else if (
       !this.parameter.matchValue(node.parameter, [...keys, 'parameter'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsParameterProperty(
   parameter?: Matcher<t.Identifier | t.AssignmentPattern>
 ): Matcher<t.TSParameterProperty> {
-  return new TSParameterPropertyMatcher(parameter);
+  return new TSParameterPropertyMatcher(parameter)
 }
 
 export class TSParenthesizedTypeMatcher extends Matcher<t.TSParenthesizedType> {
   constructor(private readonly typeAnnotation?: Matcher<t.TSType>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -9650,7 +9644,7 @@ export class TSParenthesizedTypeMatcher extends Matcher<t.TSParenthesizedType> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSParenthesizedType {
     if (!isNode(node) || !t.isTSParenthesizedType(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -9658,20 +9652,20 @@ export class TSParenthesizedTypeMatcher extends Matcher<t.TSParenthesizedType> {
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsParenthesizedType(
   typeAnnotation?: Matcher<t.TSType>
 ): Matcher<t.TSParenthesizedType> {
-  return new TSParenthesizedTypeMatcher(typeAnnotation);
+  return new TSParenthesizedTypeMatcher(typeAnnotation)
 }
 
 export class TSPropertySignatureMatcher extends Matcher<t.TSPropertySignature> {
@@ -9680,7 +9674,7 @@ export class TSPropertySignatureMatcher extends Matcher<t.TSPropertySignature> {
     private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
     private readonly initializer?: Matcher<t.Expression> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -9688,13 +9682,13 @@ export class TSPropertySignatureMatcher extends Matcher<t.TSPropertySignature> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSPropertySignature {
     if (!isNode(node) || !t.isTSPropertySignature(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.key === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -9702,17 +9696,17 @@ export class TSPropertySignatureMatcher extends Matcher<t.TSPropertySignature> {
     } else if (this.typeAnnotation === null) {
       // null matcher means we expect null value
       if (node.typeAnnotation !== null) {
-        return false;
+        return false
       }
     } else if (node.typeAnnotation === null) {
-      return false;
+      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.initializer === 'undefined') {
@@ -9720,17 +9714,17 @@ export class TSPropertySignatureMatcher extends Matcher<t.TSPropertySignature> {
     } else if (this.initializer === null) {
       // null matcher means we expect null value
       if (node.initializer !== null) {
-        return false;
+        return false
       }
     } else if (node.initializer === null) {
-      return false;
+      return false
     } else if (
       !this.initializer.matchValue(node.initializer, [...keys, 'initializer'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -9739,7 +9733,7 @@ export function tsPropertySignature(
   typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
   initializer?: Matcher<t.Expression> | null
 ): Matcher<t.TSPropertySignature> {
-  return new TSPropertySignatureMatcher(key, typeAnnotation, initializer);
+  return new TSPropertySignatureMatcher(key, typeAnnotation, initializer)
 }
 
 export class TSQualifiedNameMatcher extends Matcher<t.TSQualifiedName> {
@@ -9747,7 +9741,7 @@ export class TSQualifiedNameMatcher extends Matcher<t.TSQualifiedName> {
     private readonly left?: Matcher<t.TSEntityName>,
     private readonly right?: Matcher<t.Identifier>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -9755,22 +9749,22 @@ export class TSQualifiedNameMatcher extends Matcher<t.TSQualifiedName> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSQualifiedName {
     if (!isNode(node) || !t.isTSQualifiedName(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.left === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.left.matchValue(node.left, [...keys, 'left'])) {
-      return false;
+      return false
     }
 
     if (typeof this.right === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.right.matchValue(node.right, [...keys, 'right'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -9778,12 +9772,12 @@ export function tsQualifiedName(
   left?: Matcher<t.TSEntityName>,
   right?: Matcher<t.Identifier>
 ): Matcher<t.TSQualifiedName> {
-  return new TSQualifiedNameMatcher(left, right);
+  return new TSQualifiedNameMatcher(left, right)
 }
 
 export class TSRestTypeMatcher extends Matcher<t.TSRestType> {
   constructor(private readonly typeAnnotation?: Matcher<t.TSType>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -9791,7 +9785,7 @@ export class TSRestTypeMatcher extends Matcher<t.TSRestType> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSRestType {
     if (!isNode(node) || !t.isTSRestType(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -9799,25 +9793,25 @@ export class TSRestTypeMatcher extends Matcher<t.TSRestType> {
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsRestType(
   typeAnnotation?: Matcher<t.TSType>
 ): Matcher<t.TSRestType> {
-  return new TSRestTypeMatcher(typeAnnotation);
+  return new TSRestTypeMatcher(typeAnnotation)
 }
 
 export class TSStringKeywordMatcher extends Matcher<t.TSStringKeyword> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -9825,20 +9819,20 @@ export class TSStringKeywordMatcher extends Matcher<t.TSStringKeyword> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSStringKeyword {
     if (!isNode(node) || !t.isTSStringKeyword(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsStringKeyword(): Matcher<t.TSStringKeyword> {
-  return new TSStringKeywordMatcher();
+  return new TSStringKeywordMatcher()
 }
 
 export class TSSymbolKeywordMatcher extends Matcher<t.TSSymbolKeyword> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -9846,20 +9840,20 @@ export class TSSymbolKeywordMatcher extends Matcher<t.TSSymbolKeyword> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSSymbolKeyword {
     if (!isNode(node) || !t.isTSSymbolKeyword(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsSymbolKeyword(): Matcher<t.TSSymbolKeyword> {
-  return new TSSymbolKeywordMatcher();
+  return new TSSymbolKeywordMatcher()
 }
 
 export class TSThisTypeMatcher extends Matcher<t.TSThisType> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -9867,15 +9861,15 @@ export class TSThisTypeMatcher extends Matcher<t.TSThisType> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSThisType {
     if (!isNode(node) || !t.isTSThisType(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsThisType(): Matcher<t.TSThisType> {
-  return new TSThisTypeMatcher();
+  return new TSThisTypeMatcher()
 }
 
 export class TSTupleTypeMatcher extends Matcher<t.TSTupleType> {
@@ -9884,7 +9878,7 @@ export class TSTupleTypeMatcher extends Matcher<t.TSTupleType> {
       | Matcher<Array<t.TSType>>
       | Array<Matcher<t.TSType>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -9892,7 +9886,7 @@ export class TSTupleTypeMatcher extends Matcher<t.TSTupleType> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSTupleType {
     if (!isNode(node) || !t.isTSTupleType(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.elementTypes === 'undefined') {
@@ -9901,28 +9895,28 @@ export class TSTupleTypeMatcher extends Matcher<t.TSTupleType> {
       if (
         !tupleOf<unknown>(...this.elementTypes).matchValue(node.elementTypes, [
           ...keys,
-          'elementTypes'
+          'elementTypes',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.elementTypes.matchValue(node.elementTypes, [
         ...keys,
-        'elementTypes'
+        'elementTypes',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsTupleType(
   elementTypes?: Matcher<Array<t.TSType>> | Array<Matcher<t.TSType>>
 ): Matcher<t.TSTupleType> {
-  return new TSTupleTypeMatcher(elementTypes);
+  return new TSTupleTypeMatcher(elementTypes)
 }
 
 export class TSTypeAliasDeclarationMatcher extends Matcher<
@@ -9935,7 +9929,7 @@ export class TSTypeAliasDeclarationMatcher extends Matcher<
     > | null,
     private readonly typeAnnotation?: Matcher<t.TSType>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -9943,13 +9937,13 @@ export class TSTypeAliasDeclarationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSTypeAliasDeclaration {
     if (!isNode(node) || !t.isTSTypeAliasDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -9957,17 +9951,17 @@ export class TSTypeAliasDeclarationMatcher extends Matcher<
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -9975,13 +9969,13 @@ export class TSTypeAliasDeclarationMatcher extends Matcher<
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -9990,12 +9984,12 @@ export function tsTypeAliasDeclaration(
   typeParameters?: Matcher<t.TSTypeParameterDeclaration> | null,
   typeAnnotation?: Matcher<t.TSType>
 ): Matcher<t.TSTypeAliasDeclaration> {
-  return new TSTypeAliasDeclarationMatcher(id, typeParameters, typeAnnotation);
+  return new TSTypeAliasDeclarationMatcher(id, typeParameters, typeAnnotation)
 }
 
 export class TSTypeAnnotationMatcher extends Matcher<t.TSTypeAnnotation> {
   constructor(private readonly typeAnnotation?: Matcher<t.TSType>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10003,7 +9997,7 @@ export class TSTypeAnnotationMatcher extends Matcher<t.TSTypeAnnotation> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSTypeAnnotation {
     if (!isNode(node) || !t.isTSTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -10011,20 +10005,20 @@ export class TSTypeAnnotationMatcher extends Matcher<t.TSTypeAnnotation> {
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsTypeAnnotation(
   typeAnnotation?: Matcher<t.TSType>
 ): Matcher<t.TSTypeAnnotation> {
-  return new TSTypeAnnotationMatcher(typeAnnotation);
+  return new TSTypeAnnotationMatcher(typeAnnotation)
 }
 
 export class TSTypeAssertionMatcher extends Matcher<t.TSTypeAssertion> {
@@ -10032,7 +10026,7 @@ export class TSTypeAssertionMatcher extends Matcher<t.TSTypeAssertion> {
     private readonly typeAnnotation?: Matcher<t.TSType>,
     private readonly expression?: Matcher<t.Expression>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10040,7 +10034,7 @@ export class TSTypeAssertionMatcher extends Matcher<t.TSTypeAssertion> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSTypeAssertion {
     if (!isNode(node) || !t.isTSTypeAssertion(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -10048,10 +10042,10 @@ export class TSTypeAssertionMatcher extends Matcher<t.TSTypeAssertion> {
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.expression === 'undefined') {
@@ -10059,10 +10053,10 @@ export class TSTypeAssertionMatcher extends Matcher<t.TSTypeAssertion> {
     } else if (
       !this.expression.matchValue(node.expression, [...keys, 'expression'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -10070,7 +10064,7 @@ export function tsTypeAssertion(
   typeAnnotation?: Matcher<t.TSType>,
   expression?: Matcher<t.Expression>
 ): Matcher<t.TSTypeAssertion> {
-  return new TSTypeAssertionMatcher(typeAnnotation, expression);
+  return new TSTypeAssertionMatcher(typeAnnotation, expression)
 }
 
 export class TSTypeLiteralMatcher extends Matcher<t.TSTypeLiteral> {
@@ -10079,7 +10073,7 @@ export class TSTypeLiteralMatcher extends Matcher<t.TSTypeLiteral> {
       | Matcher<Array<t.TSTypeElement>>
       | Array<Matcher<t.TSTypeElement>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10087,7 +10081,7 @@ export class TSTypeLiteralMatcher extends Matcher<t.TSTypeLiteral> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSTypeLiteral {
     if (!isNode(node) || !t.isTSTypeLiteral(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.members === 'undefined') {
@@ -10096,28 +10090,28 @@ export class TSTypeLiteralMatcher extends Matcher<t.TSTypeLiteral> {
       if (
         !tupleOf<unknown>(...this.members).matchValue(node.members, [
           ...keys,
-          'members'
+          'members',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.members.matchValue(node.members, [...keys, 'members'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsTypeLiteral(
   members?: Matcher<Array<t.TSTypeElement>> | Array<Matcher<t.TSTypeElement>>
 ): Matcher<t.TSTypeLiteral> {
-  return new TSTypeLiteralMatcher(members);
+  return new TSTypeLiteralMatcher(members)
 }
 
 export class TSTypeOperatorMatcher extends Matcher<t.TSTypeOperator> {
   constructor(private readonly typeAnnotation?: Matcher<t.TSType>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10125,7 +10119,7 @@ export class TSTypeOperatorMatcher extends Matcher<t.TSTypeOperator> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSTypeOperator {
     if (!isNode(node) || !t.isTSTypeOperator(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -10133,20 +10127,20 @@ export class TSTypeOperatorMatcher extends Matcher<t.TSTypeOperator> {
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsTypeOperator(
   typeAnnotation?: Matcher<t.TSType>
 ): Matcher<t.TSTypeOperator> {
-  return new TSTypeOperatorMatcher(typeAnnotation);
+  return new TSTypeOperatorMatcher(typeAnnotation)
 }
 
 export class TSTypeParameterMatcher extends Matcher<t.TSTypeParameter> {
@@ -10155,7 +10149,7 @@ export class TSTypeParameterMatcher extends Matcher<t.TSTypeParameter> {
     private readonly _default?: Matcher<t.TSType> | null,
     private readonly name?: Matcher<string> | string
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10163,7 +10157,7 @@ export class TSTypeParameterMatcher extends Matcher<t.TSTypeParameter> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSTypeParameter {
     if (!isNode(node) || !t.isTSTypeParameter(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.constraint === 'undefined') {
@@ -10171,14 +10165,14 @@ export class TSTypeParameterMatcher extends Matcher<t.TSTypeParameter> {
     } else if (this.constraint === null) {
       // null matcher means we expect null value
       if (node.constraint !== null) {
-        return false;
+        return false
       }
     } else if (node.constraint === null) {
-      return false;
+      return false
     } else if (
       !this.constraint.matchValue(node.constraint, [...keys, 'constraint'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this._default === 'undefined') {
@@ -10186,25 +10180,25 @@ export class TSTypeParameterMatcher extends Matcher<t.TSTypeParameter> {
     } else if (this._default === null) {
       // null matcher means we expect null value
       if (node.default !== null) {
-        return false;
+        return false
       }
     } else if (node.default === null) {
-      return false;
+      return false
     } else if (!this._default.matchValue(node.default, [...keys, 'default'])) {
-      return false;
+      return false
     }
 
     if (typeof this.name === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.name === 'string') {
       if (this.name !== node.name) {
-        return false;
+        return false
       }
     } else if (!this.name.matchValue(node.name, [...keys, 'name'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -10213,7 +10207,7 @@ export function tsTypeParameter(
   _default?: Matcher<t.TSType> | null,
   name?: Matcher<string> | string
 ): Matcher<t.TSTypeParameter> {
-  return new TSTypeParameterMatcher(constraint, _default, name);
+  return new TSTypeParameterMatcher(constraint, _default, name)
 }
 
 export class TSTypeParameterDeclarationMatcher extends Matcher<
@@ -10224,7 +10218,7 @@ export class TSTypeParameterDeclarationMatcher extends Matcher<
       | Matcher<Array<t.TSTypeParameter>>
       | Array<Matcher<t.TSTypeParameter>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10232,7 +10226,7 @@ export class TSTypeParameterDeclarationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSTypeParameterDeclaration {
     if (!isNode(node) || !t.isTSTypeParameterDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.params === 'undefined') {
@@ -10241,23 +10235,23 @@ export class TSTypeParameterDeclarationMatcher extends Matcher<
       if (
         !tupleOf<unknown>(...this.params).matchValue(node.params, [
           ...keys,
-          'params'
+          'params',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsTypeParameterDeclaration(
   params?: Matcher<Array<t.TSTypeParameter>> | Array<Matcher<t.TSTypeParameter>>
 ): Matcher<t.TSTypeParameterDeclaration> {
-  return new TSTypeParameterDeclarationMatcher(params);
+  return new TSTypeParameterDeclarationMatcher(params)
 }
 
 export class TSTypeParameterInstantiationMatcher extends Matcher<
@@ -10268,7 +10262,7 @@ export class TSTypeParameterInstantiationMatcher extends Matcher<
       | Matcher<Array<t.TSType>>
       | Array<Matcher<t.TSType>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10276,7 +10270,7 @@ export class TSTypeParameterInstantiationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSTypeParameterInstantiation {
     if (!isNode(node) || !t.isTSTypeParameterInstantiation(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.params === 'undefined') {
@@ -10285,23 +10279,23 @@ export class TSTypeParameterInstantiationMatcher extends Matcher<
       if (
         !tupleOf<unknown>(...this.params).matchValue(node.params, [
           ...keys,
-          'params'
+          'params',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsTypeParameterInstantiation(
   params?: Matcher<Array<t.TSType>> | Array<Matcher<t.TSType>>
 ): Matcher<t.TSTypeParameterInstantiation> {
-  return new TSTypeParameterInstantiationMatcher(params);
+  return new TSTypeParameterInstantiationMatcher(params)
 }
 
 export class TSTypePredicateMatcher extends Matcher<t.TSTypePredicate> {
@@ -10310,7 +10304,7 @@ export class TSTypePredicateMatcher extends Matcher<t.TSTypePredicate> {
     private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
     private readonly asserts?: Matcher<boolean> | boolean | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10318,7 +10312,7 @@ export class TSTypePredicateMatcher extends Matcher<t.TSTypePredicate> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSTypePredicate {
     if (!isNode(node) || !t.isTSTypePredicate(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.parameterName === 'undefined') {
@@ -10326,10 +10320,10 @@ export class TSTypePredicateMatcher extends Matcher<t.TSTypePredicate> {
     } else if (
       !this.parameterName.matchValue(node.parameterName, [
         ...keys,
-        'parameterName'
+        'parameterName',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -10337,37 +10331,37 @@ export class TSTypePredicateMatcher extends Matcher<t.TSTypePredicate> {
     } else if (this.typeAnnotation === null) {
       // null matcher means we expect null value
       if (node.typeAnnotation !== null) {
-        return false;
+        return false
       }
     } else if (node.typeAnnotation === null) {
-      return false;
+      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.asserts === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.asserts === 'boolean') {
       if (this.asserts !== node.asserts) {
-        return false;
+        return false
       }
     } else if (this.asserts === null) {
       // null matcher means we expect null value
       if (node.asserts !== null) {
-        return false;
+        return false
       }
     } else if (node.asserts === null) {
-      return false;
+      return false
     } else if (!this.asserts.matchValue(node.asserts, [...keys, 'asserts'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -10376,14 +10370,14 @@ export function tsTypePredicate(
   typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
   asserts?: Matcher<boolean> | boolean | null
 ): Matcher<t.TSTypePredicate> {
-  return new TSTypePredicateMatcher(parameterName, typeAnnotation, asserts);
+  return new TSTypePredicateMatcher(parameterName, typeAnnotation, asserts)
 }
 
 export class TSTypeQueryMatcher extends Matcher<t.TSTypeQuery> {
   constructor(
     private readonly exprName?: Matcher<t.TSEntityName | t.TSImportType>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10391,7 +10385,7 @@ export class TSTypeQueryMatcher extends Matcher<t.TSTypeQuery> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSTypeQuery {
     if (!isNode(node) || !t.isTSTypeQuery(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.exprName === 'undefined') {
@@ -10399,17 +10393,17 @@ export class TSTypeQueryMatcher extends Matcher<t.TSTypeQuery> {
     } else if (
       !this.exprName.matchValue(node.exprName, [...keys, 'exprName'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsTypeQuery(
   exprName?: Matcher<t.TSEntityName | t.TSImportType>
 ): Matcher<t.TSTypeQuery> {
-  return new TSTypeQueryMatcher(exprName);
+  return new TSTypeQueryMatcher(exprName)
 }
 
 export class TSTypeReferenceMatcher extends Matcher<t.TSTypeReference> {
@@ -10419,7 +10413,7 @@ export class TSTypeReferenceMatcher extends Matcher<t.TSTypeReference> {
       t.TSTypeParameterInstantiation
     > | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10427,7 +10421,7 @@ export class TSTypeReferenceMatcher extends Matcher<t.TSTypeReference> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSTypeReference {
     if (!isNode(node) || !t.isTSTypeReference(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.typeName === 'undefined') {
@@ -10435,7 +10429,7 @@ export class TSTypeReferenceMatcher extends Matcher<t.TSTypeReference> {
     } else if (
       !this.typeName.matchValue(node.typeName, [...keys, 'typeName'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -10443,20 +10437,20 @@ export class TSTypeReferenceMatcher extends Matcher<t.TSTypeReference> {
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -10464,12 +10458,12 @@ export function tsTypeReference(
   typeName?: Matcher<t.TSEntityName>,
   typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null
 ): Matcher<t.TSTypeReference> {
-  return new TSTypeReferenceMatcher(typeName, typeParameters);
+  return new TSTypeReferenceMatcher(typeName, typeParameters)
 }
 
 export class TSUndefinedKeywordMatcher extends Matcher<t.TSUndefinedKeyword> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -10477,22 +10471,22 @@ export class TSUndefinedKeywordMatcher extends Matcher<t.TSUndefinedKeyword> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSUndefinedKeyword {
     if (!isNode(node) || !t.isTSUndefinedKeyword(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsUndefinedKeyword(): Matcher<t.TSUndefinedKeyword> {
-  return new TSUndefinedKeywordMatcher();
+  return new TSUndefinedKeywordMatcher()
 }
 
 export class TSUnionTypeMatcher extends Matcher<t.TSUnionType> {
   constructor(
     private readonly types?: Matcher<Array<t.TSType>> | Array<Matcher<t.TSType>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10500,7 +10494,7 @@ export class TSUnionTypeMatcher extends Matcher<t.TSUnionType> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSUnionType {
     if (!isNode(node) || !t.isTSUnionType(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.types === 'undefined') {
@@ -10509,28 +10503,28 @@ export class TSUnionTypeMatcher extends Matcher<t.TSUnionType> {
       if (
         !tupleOf<unknown>(...this.types).matchValue(node.types, [
           ...keys,
-          'types'
+          'types',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.types.matchValue(node.types, [...keys, 'types'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsUnionType(
   types?: Matcher<Array<t.TSType>> | Array<Matcher<t.TSType>>
 ): Matcher<t.TSUnionType> {
-  return new TSUnionTypeMatcher(types);
+  return new TSUnionTypeMatcher(types)
 }
 
 export class TSUnknownKeywordMatcher extends Matcher<t.TSUnknownKeyword> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -10538,20 +10532,20 @@ export class TSUnknownKeywordMatcher extends Matcher<t.TSUnknownKeyword> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSUnknownKeyword {
     if (!isNode(node) || !t.isTSUnknownKeyword(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsUnknownKeyword(): Matcher<t.TSUnknownKeyword> {
-  return new TSUnknownKeywordMatcher();
+  return new TSUnknownKeywordMatcher()
 }
 
 export class TSVoidKeywordMatcher extends Matcher<t.TSVoidKeyword> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -10559,15 +10553,15 @@ export class TSVoidKeywordMatcher extends Matcher<t.TSVoidKeyword> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TSVoidKeyword {
     if (!isNode(node) || !t.isTSVoidKeyword(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tsVoidKeyword(): Matcher<t.TSVoidKeyword> {
-  return new TSVoidKeywordMatcher();
+  return new TSVoidKeywordMatcher()
 }
 
 export class TaggedTemplateExpressionMatcher extends Matcher<
@@ -10577,7 +10571,7 @@ export class TaggedTemplateExpressionMatcher extends Matcher<
     private readonly tag?: Matcher<t.Expression>,
     private readonly quasi?: Matcher<t.TemplateLiteral>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10585,22 +10579,22 @@ export class TaggedTemplateExpressionMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TaggedTemplateExpression {
     if (!isNode(node) || !t.isTaggedTemplateExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.tag === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.tag.matchValue(node.tag, [...keys, 'tag'])) {
-      return false;
+      return false
     }
 
     if (typeof this.quasi === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.quasi.matchValue(node.quasi, [...keys, 'quasi'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -10608,7 +10602,7 @@ export function taggedTemplateExpression(
   tag?: Matcher<t.Expression>,
   quasi?: Matcher<t.TemplateLiteral>
 ): Matcher<t.TaggedTemplateExpression> {
-  return new TaggedTemplateExpressionMatcher(tag, quasi);
+  return new TaggedTemplateExpressionMatcher(tag, quasi)
 }
 
 export class TemplateElementMatcher extends Matcher<t.TemplateElement> {
@@ -10616,7 +10610,7 @@ export class TemplateElementMatcher extends Matcher<t.TemplateElement> {
     private readonly value?: Matcher<any>,
     private readonly tail?: Matcher<boolean> | boolean
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10624,26 +10618,26 @@ export class TemplateElementMatcher extends Matcher<t.TemplateElement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TemplateElement {
     if (!isNode(node) || !t.isTemplateElement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.value === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
-      return false;
+      return false
     }
 
     if (typeof this.tail === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.tail === 'boolean') {
       if (this.tail !== node.tail) {
-        return false;
+        return false
       }
     } else if (!this.tail.matchValue(node.tail, [...keys, 'tail'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -10651,7 +10645,7 @@ export function templateElement(
   value?: Matcher<any>,
   tail?: Matcher<boolean> | boolean
 ): Matcher<t.TemplateElement> {
-  return new TemplateElementMatcher(value, tail);
+  return new TemplateElementMatcher(value, tail)
 }
 
 export class TemplateLiteralMatcher extends Matcher<t.TemplateLiteral> {
@@ -10663,7 +10657,7 @@ export class TemplateLiteralMatcher extends Matcher<t.TemplateLiteral> {
       | Matcher<Array<t.Expression>>
       | Array<Matcher<t.Expression>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10671,7 +10665,7 @@ export class TemplateLiteralMatcher extends Matcher<t.TemplateLiteral> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TemplateLiteral {
     if (!isNode(node) || !t.isTemplateLiteral(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.quasis === 'undefined') {
@@ -10680,13 +10674,13 @@ export class TemplateLiteralMatcher extends Matcher<t.TemplateLiteral> {
       if (
         !tupleOf<unknown>(...this.quasis).matchValue(node.quasis, [
           ...keys,
-          'quasis'
+          'quasis',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.quasis.matchValue(node.quasis, [...keys, 'quasis'])) {
-      return false;
+      return false
     }
 
     if (typeof this.expressions === 'undefined') {
@@ -10695,18 +10689,18 @@ export class TemplateLiteralMatcher extends Matcher<t.TemplateLiteral> {
       if (
         !tupleOf<unknown>(...this.expressions).matchValue(node.expressions, [
           ...keys,
-          'expressions'
+          'expressions',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.expressions.matchValue(node.expressions, [...keys, 'expressions'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -10716,12 +10710,12 @@ export function templateLiteral(
     | Array<Matcher<t.TemplateElement>>,
   expressions?: Matcher<Array<t.Expression>> | Array<Matcher<t.Expression>>
 ): Matcher<t.TemplateLiteral> {
-  return new TemplateLiteralMatcher(quasis, expressions);
+  return new TemplateLiteralMatcher(quasis, expressions)
 }
 
 export class ThisExpressionMatcher extends Matcher<t.ThisExpression> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -10729,20 +10723,20 @@ export class ThisExpressionMatcher extends Matcher<t.ThisExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ThisExpression {
     if (!isNode(node) || !t.isThisExpression(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function thisExpression(): Matcher<t.ThisExpression> {
-  return new ThisExpressionMatcher();
+  return new ThisExpressionMatcher()
 }
 
 export class ThisTypeAnnotationMatcher extends Matcher<t.ThisTypeAnnotation> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -10750,20 +10744,20 @@ export class ThisTypeAnnotationMatcher extends Matcher<t.ThisTypeAnnotation> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ThisTypeAnnotation {
     if (!isNode(node) || !t.isThisTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function thisTypeAnnotation(): Matcher<t.ThisTypeAnnotation> {
-  return new ThisTypeAnnotationMatcher();
+  return new ThisTypeAnnotationMatcher()
 }
 
 export class ThrowStatementMatcher extends Matcher<t.ThrowStatement> {
   constructor(private readonly argument?: Matcher<t.Expression>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10771,7 +10765,7 @@ export class ThrowStatementMatcher extends Matcher<t.ThrowStatement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.ThrowStatement {
     if (!isNode(node) || !t.isThrowStatement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.argument === 'undefined') {
@@ -10779,17 +10773,17 @@ export class ThrowStatementMatcher extends Matcher<t.ThrowStatement> {
     } else if (
       !this.argument.matchValue(node.argument, [...keys, 'argument'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function throwStatement(
   argument?: Matcher<t.Expression>
 ): Matcher<t.ThrowStatement> {
-  return new ThrowStatementMatcher(argument);
+  return new ThrowStatementMatcher(argument)
 }
 
 export class TryStatementMatcher extends Matcher<t.TryStatement> {
@@ -10798,7 +10792,7 @@ export class TryStatementMatcher extends Matcher<t.TryStatement> {
     private readonly handler?: Matcher<t.CatchClause> | null,
     private readonly finalizer?: Matcher<t.BlockStatement> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10806,13 +10800,13 @@ export class TryStatementMatcher extends Matcher<t.TryStatement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TryStatement {
     if (!isNode(node) || !t.isTryStatement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.block === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.block.matchValue(node.block, [...keys, 'block'])) {
-      return false;
+      return false
     }
 
     if (typeof this.handler === 'undefined') {
@@ -10820,12 +10814,12 @@ export class TryStatementMatcher extends Matcher<t.TryStatement> {
     } else if (this.handler === null) {
       // null matcher means we expect null value
       if (node.handler !== null) {
-        return false;
+        return false
       }
     } else if (node.handler === null) {
-      return false;
+      return false
     } else if (!this.handler.matchValue(node.handler, [...keys, 'handler'])) {
-      return false;
+      return false
     }
 
     if (typeof this.finalizer === 'undefined') {
@@ -10833,17 +10827,17 @@ export class TryStatementMatcher extends Matcher<t.TryStatement> {
     } else if (this.finalizer === null) {
       // null matcher means we expect null value
       if (node.finalizer !== null) {
-        return false;
+        return false
       }
     } else if (node.finalizer === null) {
-      return false;
+      return false
     } else if (
       !this.finalizer.matchValue(node.finalizer, [...keys, 'finalizer'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -10852,7 +10846,7 @@ export function tryStatement(
   handler?: Matcher<t.CatchClause> | null,
   finalizer?: Matcher<t.BlockStatement> | null
 ): Matcher<t.TryStatement> {
-  return new TryStatementMatcher(block, handler, finalizer);
+  return new TryStatementMatcher(block, handler, finalizer)
 }
 
 export class TupleExpressionMatcher extends Matcher<t.TupleExpression> {
@@ -10861,7 +10855,7 @@ export class TupleExpressionMatcher extends Matcher<t.TupleExpression> {
       | Matcher<Array<null | t.Expression | t.SpreadElement>>
       | Array<Matcher<null> | Matcher<t.Expression> | Matcher<t.SpreadElement>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10869,7 +10863,7 @@ export class TupleExpressionMatcher extends Matcher<t.TupleExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TupleExpression {
     if (!isNode(node) || !t.isTupleExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.elements === 'undefined') {
@@ -10878,18 +10872,18 @@ export class TupleExpressionMatcher extends Matcher<t.TupleExpression> {
       if (
         !tupleOf<unknown>(...this.elements).matchValue(node.elements, [
           ...keys,
-          'elements'
+          'elements',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.elements.matchValue(node.elements, [...keys, 'elements'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -10898,7 +10892,7 @@ export function tupleExpression(
     | Matcher<Array<null | t.Expression | t.SpreadElement>>
     | Array<Matcher<null> | Matcher<t.Expression> | Matcher<t.SpreadElement>>
 ): Matcher<t.TupleExpression> {
-  return new TupleExpressionMatcher(elements);
+  return new TupleExpressionMatcher(elements)
 }
 
 export class TupleTypeAnnotationMatcher extends Matcher<t.TupleTypeAnnotation> {
@@ -10907,7 +10901,7 @@ export class TupleTypeAnnotationMatcher extends Matcher<t.TupleTypeAnnotation> {
       | Matcher<Array<t.FlowType>>
       | Array<Matcher<t.FlowType>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10915,7 +10909,7 @@ export class TupleTypeAnnotationMatcher extends Matcher<t.TupleTypeAnnotation> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TupleTypeAnnotation {
     if (!isNode(node) || !t.isTupleTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.types === 'undefined') {
@@ -10924,23 +10918,23 @@ export class TupleTypeAnnotationMatcher extends Matcher<t.TupleTypeAnnotation> {
       if (
         !tupleOf<unknown>(...this.types).matchValue(node.types, [
           ...keys,
-          'types'
+          'types',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.types.matchValue(node.types, [...keys, 'types'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function tupleTypeAnnotation(
   types?: Matcher<Array<t.FlowType>> | Array<Matcher<t.FlowType>>
 ): Matcher<t.TupleTypeAnnotation> {
-  return new TupleTypeAnnotationMatcher(types);
+  return new TupleTypeAnnotationMatcher(types)
 }
 
 export class TypeAliasMatcher extends Matcher<t.TypeAlias> {
@@ -10951,7 +10945,7 @@ export class TypeAliasMatcher extends Matcher<t.TypeAlias> {
     > | null,
     private readonly right?: Matcher<t.FlowType>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -10959,13 +10953,13 @@ export class TypeAliasMatcher extends Matcher<t.TypeAlias> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TypeAlias {
     if (!isNode(node) || !t.isTypeAlias(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.typeParameters === 'undefined') {
@@ -10973,26 +10967,26 @@ export class TypeAliasMatcher extends Matcher<t.TypeAlias> {
     } else if (this.typeParameters === null) {
       // null matcher means we expect null value
       if (node.typeParameters !== null) {
-        return false;
+        return false
       }
     } else if (node.typeParameters === null) {
-      return false;
+      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
-        'typeParameters'
+        'typeParameters',
       ])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.right === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.right.matchValue(node.right, [...keys, 'right'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -11001,12 +10995,12 @@ export function typeAlias(
   typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
   right?: Matcher<t.FlowType>
 ): Matcher<t.TypeAlias> {
-  return new TypeAliasMatcher(id, typeParameters, right);
+  return new TypeAliasMatcher(id, typeParameters, right)
 }
 
 export class TypeAnnotationMatcher extends Matcher<t.TypeAnnotation> {
   constructor(private readonly typeAnnotation?: Matcher<t.FlowType>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -11014,7 +11008,7 @@ export class TypeAnnotationMatcher extends Matcher<t.TypeAnnotation> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TypeAnnotation {
     if (!isNode(node) || !t.isTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -11022,20 +11016,20 @@ export class TypeAnnotationMatcher extends Matcher<t.TypeAnnotation> {
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function typeAnnotation(
   typeAnnotation?: Matcher<t.FlowType>
 ): Matcher<t.TypeAnnotation> {
-  return new TypeAnnotationMatcher(typeAnnotation);
+  return new TypeAnnotationMatcher(typeAnnotation)
 }
 
 export class TypeCastExpressionMatcher extends Matcher<t.TypeCastExpression> {
@@ -11043,7 +11037,7 @@ export class TypeCastExpressionMatcher extends Matcher<t.TypeCastExpression> {
     private readonly expression?: Matcher<t.Expression>,
     private readonly typeAnnotation?: Matcher<t.TypeAnnotation>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -11051,7 +11045,7 @@ export class TypeCastExpressionMatcher extends Matcher<t.TypeCastExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TypeCastExpression {
     if (!isNode(node) || !t.isTypeCastExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.expression === 'undefined') {
@@ -11059,7 +11053,7 @@ export class TypeCastExpressionMatcher extends Matcher<t.TypeCastExpression> {
     } else if (
       !this.expression.matchValue(node.expression, [...keys, 'expression'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.typeAnnotation === 'undefined') {
@@ -11067,13 +11061,13 @@ export class TypeCastExpressionMatcher extends Matcher<t.TypeCastExpression> {
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
-        'typeAnnotation'
+        'typeAnnotation',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -11081,7 +11075,7 @@ export function typeCastExpression(
   expression?: Matcher<t.Expression>,
   typeAnnotation?: Matcher<t.TypeAnnotation>
 ): Matcher<t.TypeCastExpression> {
-  return new TypeCastExpressionMatcher(expression, typeAnnotation);
+  return new TypeCastExpressionMatcher(expression, typeAnnotation)
 }
 
 export class TypeParameterMatcher extends Matcher<t.TypeParameter> {
@@ -11090,7 +11084,7 @@ export class TypeParameterMatcher extends Matcher<t.TypeParameter> {
     private readonly _default?: Matcher<t.FlowType> | null,
     private readonly variance?: Matcher<t.Variance> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -11098,7 +11092,7 @@ export class TypeParameterMatcher extends Matcher<t.TypeParameter> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TypeParameter {
     if (!isNode(node) || !t.isTypeParameter(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.bound === 'undefined') {
@@ -11106,12 +11100,12 @@ export class TypeParameterMatcher extends Matcher<t.TypeParameter> {
     } else if (this.bound === null) {
       // null matcher means we expect null value
       if (node.bound !== null) {
-        return false;
+        return false
       }
     } else if (node.bound === null) {
-      return false;
+      return false
     } else if (!this.bound.matchValue(node.bound, [...keys, 'bound'])) {
-      return false;
+      return false
     }
 
     if (typeof this._default === 'undefined') {
@@ -11119,12 +11113,12 @@ export class TypeParameterMatcher extends Matcher<t.TypeParameter> {
     } else if (this._default === null) {
       // null matcher means we expect null value
       if (node.default !== null) {
-        return false;
+        return false
       }
     } else if (node.default === null) {
-      return false;
+      return false
     } else if (!this._default.matchValue(node.default, [...keys, 'default'])) {
-      return false;
+      return false
     }
 
     if (typeof this.variance === 'undefined') {
@@ -11132,17 +11126,17 @@ export class TypeParameterMatcher extends Matcher<t.TypeParameter> {
     } else if (this.variance === null) {
       // null matcher means we expect null value
       if (node.variance !== null) {
-        return false;
+        return false
       }
     } else if (node.variance === null) {
-      return false;
+      return false
     } else if (
       !this.variance.matchValue(node.variance, [...keys, 'variance'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -11151,7 +11145,7 @@ export function typeParameter(
   _default?: Matcher<t.FlowType> | null,
   variance?: Matcher<t.Variance> | null
 ): Matcher<t.TypeParameter> {
-  return new TypeParameterMatcher(bound, _default, variance);
+  return new TypeParameterMatcher(bound, _default, variance)
 }
 
 export class TypeParameterDeclarationMatcher extends Matcher<
@@ -11162,7 +11156,7 @@ export class TypeParameterDeclarationMatcher extends Matcher<
       | Matcher<Array<t.TypeParameter>>
       | Array<Matcher<t.TypeParameter>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -11170,7 +11164,7 @@ export class TypeParameterDeclarationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TypeParameterDeclaration {
     if (!isNode(node) || !t.isTypeParameterDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.params === 'undefined') {
@@ -11179,23 +11173,23 @@ export class TypeParameterDeclarationMatcher extends Matcher<
       if (
         !tupleOf<unknown>(...this.params).matchValue(node.params, [
           ...keys,
-          'params'
+          'params',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function typeParameterDeclaration(
   params?: Matcher<Array<t.TypeParameter>> | Array<Matcher<t.TypeParameter>>
 ): Matcher<t.TypeParameterDeclaration> {
-  return new TypeParameterDeclarationMatcher(params);
+  return new TypeParameterDeclarationMatcher(params)
 }
 
 export class TypeParameterInstantiationMatcher extends Matcher<
@@ -11206,7 +11200,7 @@ export class TypeParameterInstantiationMatcher extends Matcher<
       | Matcher<Array<t.FlowType>>
       | Array<Matcher<t.FlowType>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -11214,7 +11208,7 @@ export class TypeParameterInstantiationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TypeParameterInstantiation {
     if (!isNode(node) || !t.isTypeParameterInstantiation(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.params === 'undefined') {
@@ -11223,30 +11217,30 @@ export class TypeParameterInstantiationMatcher extends Matcher<
       if (
         !tupleOf<unknown>(...this.params).matchValue(node.params, [
           ...keys,
-          'params'
+          'params',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.params.matchValue(node.params, [...keys, 'params'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function typeParameterInstantiation(
   params?: Matcher<Array<t.FlowType>> | Array<Matcher<t.FlowType>>
 ): Matcher<t.TypeParameterInstantiation> {
-  return new TypeParameterInstantiationMatcher(params);
+  return new TypeParameterInstantiationMatcher(params)
 }
 
 export class TypeofTypeAnnotationMatcher extends Matcher<
   t.TypeofTypeAnnotation
 > {
   constructor(private readonly argument?: Matcher<t.FlowType>) {
-    super();
+    super()
   }
 
   matchValue(
@@ -11254,7 +11248,7 @@ export class TypeofTypeAnnotationMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.TypeofTypeAnnotation {
     if (!isNode(node) || !t.isTypeofTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.argument === 'undefined') {
@@ -11262,17 +11256,17 @@ export class TypeofTypeAnnotationMatcher extends Matcher<
     } else if (
       !this.argument.matchValue(node.argument, [...keys, 'argument'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function typeofTypeAnnotation(
   argument?: Matcher<t.FlowType>
 ): Matcher<t.TypeofTypeAnnotation> {
-  return new TypeofTypeAnnotationMatcher(argument);
+  return new TypeofTypeAnnotationMatcher(argument)
 }
 
 export class UnaryExpressionMatcher extends Matcher<t.UnaryExpression> {
@@ -11283,7 +11277,7 @@ export class UnaryExpressionMatcher extends Matcher<t.UnaryExpression> {
     private readonly argument?: Matcher<t.Expression>,
     private readonly prefix?: Matcher<boolean> | boolean
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -11291,19 +11285,19 @@ export class UnaryExpressionMatcher extends Matcher<t.UnaryExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.UnaryExpression {
     if (!isNode(node) || !t.isUnaryExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.operator === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.operator === 'string') {
       if (this.operator !== node.operator) {
-        return false;
+        return false
       }
     } else if (
       !this.operator.matchValue(node.operator, [...keys, 'operator'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.argument === 'undefined') {
@@ -11311,20 +11305,20 @@ export class UnaryExpressionMatcher extends Matcher<t.UnaryExpression> {
     } else if (
       !this.argument.matchValue(node.argument, [...keys, 'argument'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.prefix === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.prefix === 'boolean') {
       if (this.prefix !== node.prefix) {
-        return false;
+        return false
       }
     } else if (!this.prefix.matchValue(node.prefix, [...keys, 'prefix'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -11335,7 +11329,7 @@ export function unaryExpression(
   argument?: Matcher<t.Expression>,
   prefix?: Matcher<boolean> | boolean
 ): Matcher<t.UnaryExpression> {
-  return new UnaryExpressionMatcher(operator, argument, prefix);
+  return new UnaryExpressionMatcher(operator, argument, prefix)
 }
 
 export class UnionTypeAnnotationMatcher extends Matcher<t.UnionTypeAnnotation> {
@@ -11344,7 +11338,7 @@ export class UnionTypeAnnotationMatcher extends Matcher<t.UnionTypeAnnotation> {
       | Matcher<Array<t.FlowType>>
       | Array<Matcher<t.FlowType>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -11352,7 +11346,7 @@ export class UnionTypeAnnotationMatcher extends Matcher<t.UnionTypeAnnotation> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.UnionTypeAnnotation {
     if (!isNode(node) || !t.isUnionTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.types === 'undefined') {
@@ -11361,23 +11355,23 @@ export class UnionTypeAnnotationMatcher extends Matcher<t.UnionTypeAnnotation> {
       if (
         !tupleOf<unknown>(...this.types).matchValue(node.types, [
           ...keys,
-          'types'
+          'types',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (!this.types.matchValue(node.types, [...keys, 'types'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function unionTypeAnnotation(
   types?: Matcher<Array<t.FlowType>> | Array<Matcher<t.FlowType>>
 ): Matcher<t.UnionTypeAnnotation> {
-  return new UnionTypeAnnotationMatcher(types);
+  return new UnionTypeAnnotationMatcher(types)
 }
 
 export class UpdateExpressionMatcher extends Matcher<t.UpdateExpression> {
@@ -11386,7 +11380,7 @@ export class UpdateExpressionMatcher extends Matcher<t.UpdateExpression> {
     private readonly argument?: Matcher<t.Expression>,
     private readonly prefix?: Matcher<boolean> | boolean
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -11394,19 +11388,19 @@ export class UpdateExpressionMatcher extends Matcher<t.UpdateExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.UpdateExpression {
     if (!isNode(node) || !t.isUpdateExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.operator === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.operator === 'string') {
       if (this.operator !== node.operator) {
-        return false;
+        return false
       }
     } else if (
       !this.operator.matchValue(node.operator, [...keys, 'operator'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.argument === 'undefined') {
@@ -11414,20 +11408,20 @@ export class UpdateExpressionMatcher extends Matcher<t.UpdateExpression> {
     } else if (
       !this.argument.matchValue(node.argument, [...keys, 'argument'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.prefix === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.prefix === 'boolean') {
       if (this.prefix !== node.prefix) {
-        return false;
+        return false
       }
     } else if (!this.prefix.matchValue(node.prefix, [...keys, 'prefix'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -11436,14 +11430,14 @@ export function updateExpression(
   argument?: Matcher<t.Expression>,
   prefix?: Matcher<boolean> | boolean
 ): Matcher<t.UpdateExpression> {
-  return new UpdateExpressionMatcher(operator, argument, prefix);
+  return new UpdateExpressionMatcher(operator, argument, prefix)
 }
 
 export class V8IntrinsicIdentifierMatcher extends Matcher<
   t.V8IntrinsicIdentifier
 > {
   constructor(private readonly name?: Matcher<string> | string) {
-    super();
+    super()
   }
 
   matchValue(
@@ -11451,27 +11445,27 @@ export class V8IntrinsicIdentifierMatcher extends Matcher<
     keys: ReadonlyArray<PropertyKey>
   ): node is t.V8IntrinsicIdentifier {
     if (!isNode(node) || !t.isV8IntrinsicIdentifier(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.name === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.name === 'string') {
       if (this.name !== node.name) {
-        return false;
+        return false
       }
     } else if (!this.name.matchValue(node.name, [...keys, 'name'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function v8IntrinsicIdentifier(
   name?: Matcher<string> | string
 ): Matcher<t.V8IntrinsicIdentifier> {
-  return new V8IntrinsicIdentifierMatcher(name);
+  return new V8IntrinsicIdentifierMatcher(name)
 }
 
 export class VariableDeclarationMatcher extends Matcher<t.VariableDeclaration> {
@@ -11481,7 +11475,7 @@ export class VariableDeclarationMatcher extends Matcher<t.VariableDeclaration> {
       | Matcher<Array<t.VariableDeclarator>>
       | Array<Matcher<t.VariableDeclarator>>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -11489,17 +11483,17 @@ export class VariableDeclarationMatcher extends Matcher<t.VariableDeclaration> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.VariableDeclaration {
     if (!isNode(node) || !t.isVariableDeclaration(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.kind === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.kind === 'string') {
       if (this.kind !== node.kind) {
-        return false;
+        return false
       }
     } else if (!this.kind.matchValue(node.kind, [...keys, 'kind'])) {
-      return false;
+      return false
     }
 
     if (typeof this.declarations === 'undefined') {
@@ -11508,21 +11502,21 @@ export class VariableDeclarationMatcher extends Matcher<t.VariableDeclaration> {
       if (
         !tupleOf<unknown>(...this.declarations).matchValue(node.declarations, [
           ...keys,
-          'declarations'
+          'declarations',
         ])
       ) {
-        return false;
+        return false
       }
     } else if (
       !this.declarations.matchValue(node.declarations, [
         ...keys,
-        'declarations'
+        'declarations',
       ])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -11532,7 +11526,7 @@ export function variableDeclaration(
     | Matcher<Array<t.VariableDeclarator>>
     | Array<Matcher<t.VariableDeclarator>>
 ): Matcher<t.VariableDeclaration> {
-  return new VariableDeclarationMatcher(kind, declarations);
+  return new VariableDeclarationMatcher(kind, declarations)
 }
 
 export class VariableDeclaratorMatcher extends Matcher<t.VariableDeclarator> {
@@ -11540,7 +11534,7 @@ export class VariableDeclaratorMatcher extends Matcher<t.VariableDeclarator> {
     private readonly id?: Matcher<t.LVal>,
     private readonly init?: Matcher<t.Expression> | null
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -11548,13 +11542,13 @@ export class VariableDeclaratorMatcher extends Matcher<t.VariableDeclarator> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.VariableDeclarator {
     if (!isNode(node) || !t.isVariableDeclarator(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.id === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
-      return false;
+      return false
     }
 
     if (typeof this.init === 'undefined') {
@@ -11562,15 +11556,15 @@ export class VariableDeclaratorMatcher extends Matcher<t.VariableDeclarator> {
     } else if (this.init === null) {
       // null matcher means we expect null value
       if (node.init !== null) {
-        return false;
+        return false
       }
     } else if (node.init === null) {
-      return false;
+      return false
     } else if (!this.init.matchValue(node.init, [...keys, 'init'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -11578,12 +11572,12 @@ export function variableDeclarator(
   id?: Matcher<t.LVal>,
   init?: Matcher<t.Expression> | null
 ): Matcher<t.VariableDeclarator> {
-  return new VariableDeclaratorMatcher(id, init);
+  return new VariableDeclaratorMatcher(id, init)
 }
 
 export class VarianceMatcher extends Matcher<t.Variance> {
   constructor(private readonly kind?: Matcher<'minus' | 'plus'> | string) {
-    super();
+    super()
   }
 
   matchValue(
@@ -11591,32 +11585,32 @@ export class VarianceMatcher extends Matcher<t.Variance> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.Variance {
     if (!isNode(node) || !t.isVariance(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.kind === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.kind === 'string') {
       if (this.kind !== node.kind) {
-        return false;
+        return false
       }
     } else if (!this.kind.matchValue(node.kind, [...keys, 'kind'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function variance(
   kind?: Matcher<'minus' | 'plus'> | string
 ): Matcher<t.Variance> {
-  return new VarianceMatcher(kind);
+  return new VarianceMatcher(kind)
 }
 
 export class VoidTypeAnnotationMatcher extends Matcher<t.VoidTypeAnnotation> {
   constructor() {
-    super();
+    super()
   }
 
   matchValue(
@@ -11624,15 +11618,15 @@ export class VoidTypeAnnotationMatcher extends Matcher<t.VoidTypeAnnotation> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.VoidTypeAnnotation {
     if (!isNode(node) || !t.isVoidTypeAnnotation(node)) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
 export function voidTypeAnnotation(): Matcher<t.VoidTypeAnnotation> {
-  return new VoidTypeAnnotationMatcher();
+  return new VoidTypeAnnotationMatcher()
 }
 
 export class WhileStatementMatcher extends Matcher<t.WhileStatement> {
@@ -11640,7 +11634,7 @@ export class WhileStatementMatcher extends Matcher<t.WhileStatement> {
     private readonly test?: Matcher<t.Expression>,
     private readonly body?: Matcher<t.Statement>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -11648,22 +11642,22 @@ export class WhileStatementMatcher extends Matcher<t.WhileStatement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.WhileStatement {
     if (!isNode(node) || !t.isWhileStatement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.test === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.test.matchValue(node.test, [...keys, 'test'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -11671,7 +11665,7 @@ export function whileStatement(
   test?: Matcher<t.Expression>,
   body?: Matcher<t.Statement>
 ): Matcher<t.WhileStatement> {
-  return new WhileStatementMatcher(test, body);
+  return new WhileStatementMatcher(test, body)
 }
 
 export class WithStatementMatcher extends Matcher<t.WithStatement> {
@@ -11679,7 +11673,7 @@ export class WithStatementMatcher extends Matcher<t.WithStatement> {
     private readonly object?: Matcher<t.Expression>,
     private readonly body?: Matcher<t.Statement>
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -11687,22 +11681,22 @@ export class WithStatementMatcher extends Matcher<t.WithStatement> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.WithStatement {
     if (!isNode(node) || !t.isWithStatement(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.object === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.object.matchValue(node.object, [...keys, 'object'])) {
-      return false;
+      return false
     }
 
     if (typeof this.body === 'undefined') {
       // undefined matcher means anything matches
     } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -11710,7 +11704,7 @@ export function withStatement(
   object?: Matcher<t.Expression>,
   body?: Matcher<t.Statement>
 ): Matcher<t.WithStatement> {
-  return new WithStatementMatcher(object, body);
+  return new WithStatementMatcher(object, body)
 }
 
 export class YieldExpressionMatcher extends Matcher<t.YieldExpression> {
@@ -11718,7 +11712,7 @@ export class YieldExpressionMatcher extends Matcher<t.YieldExpression> {
     private readonly argument?: Matcher<t.Expression> | null,
     private readonly delegate?: Matcher<any> | boolean
   ) {
-    super();
+    super()
   }
 
   matchValue(
@@ -11726,7 +11720,7 @@ export class YieldExpressionMatcher extends Matcher<t.YieldExpression> {
     keys: ReadonlyArray<PropertyKey>
   ): node is t.YieldExpression {
     if (!isNode(node) || !t.isYieldExpression(node)) {
-      return false;
+      return false
     }
 
     if (typeof this.argument === 'undefined') {
@@ -11734,29 +11728,29 @@ export class YieldExpressionMatcher extends Matcher<t.YieldExpression> {
     } else if (this.argument === null) {
       // null matcher means we expect null value
       if (node.argument !== null) {
-        return false;
+        return false
       }
     } else if (node.argument === null) {
-      return false;
+      return false
     } else if (
       !this.argument.matchValue(node.argument, [...keys, 'argument'])
     ) {
-      return false;
+      return false
     }
 
     if (typeof this.delegate === 'undefined') {
       // undefined matcher means anything matches
     } else if (typeof this.delegate === 'boolean') {
       if (this.delegate !== node.delegate) {
-        return false;
+        return false
       }
     } else if (
       !this.delegate.matchValue(node.delegate, [...keys, 'delegate'])
     ) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
 
@@ -11764,5 +11758,5 @@ export function yieldExpression(
   argument?: Matcher<t.Expression> | null,
   delegate?: Matcher<any> | boolean
 ): Matcher<t.YieldExpression> {
-  return new YieldExpressionMatcher(argument, delegate);
+  return new YieldExpressionMatcher(argument, delegate)
 }

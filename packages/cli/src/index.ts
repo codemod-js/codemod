@@ -1,36 +1,36 @@
-import { basename } from 'path';
-import CLIEngine from './CLIEngine';
-import Config from './Config';
-import Options, { Command } from './Options';
-import { RealSystem, System } from './System';
+import { basename } from 'path'
+import CLIEngine from './CLIEngine'
+import Config from './Config'
+import Options, { Command } from './Options'
+import { RealSystem, System } from './System'
 import {
   SourceTransformResult,
-  SourceTransformResultKind
-} from './TransformRunner';
+  SourceTransformResultKind,
+} from './TransformRunner'
 
 // Polyfill `Symbol.asyncIterator` so `for await` will work.
 if (!Symbol.asyncIterator) {
   Symbol['asyncIterator' as string] =
-    Symbol.asyncIterator || Symbol.for('Symbol.asyncIterator');
+    Symbol.asyncIterator || Symbol.for('Symbol.asyncIterator')
 }
 
 function optionAnnotation(
   value: boolean | Array<string> | Map<string, object> | string
 ): string {
   if (Array.isArray(value) || value instanceof Map) {
-    return ' (allows multiple)';
+    return ' (allows multiple)'
   } else if (typeof value === 'boolean') {
-    return ` (default: ${value ? 'on' : 'off'})`;
+    return ` (default: ${value ? 'on' : 'off'})`
   } else if (typeof value === 'string') {
-    return ` (default: ${value})`;
+    return ` (default: ${value})`
   } else {
-    return '';
+    return ''
   }
 }
 
 function printHelp(argv: Array<string>, out: NodeJS.WritableStream): void {
-  const $0 = basename(argv[1]);
-  const defaults = new Config();
+  const $0 = basename(argv[1])
+  const defaults = new Config()
 
   out.write(
     `
@@ -111,75 +111,75 @@ EXAMPLES
   # Run with a plugin written in TypeScript.
   $ ${$0} -p ./some-plugin.ts src/
   `.trim()
-  );
-  out.write('\n');
+  )
+  out.write('\n')
 }
 
 function printVersion(argv: Array<string>, out: NodeJS.WritableStream): void {
-  out.write(require('../package.json').version);
-  out.write('\n');
+  out.write(require('../package.json').version)
+  out.write('\n')
 }
 
 export default async function run(
   argv: Array<string>,
   sys: System = RealSystem
 ): Promise<number> {
-  let command: Command;
+  let command: Command
 
   try {
-    command = new Options(argv.slice(2)).parse();
+    command = new Options(argv.slice(2)).parse()
   } catch (error) {
-    sys.stderr.write(`ERROR: ${error.message}\n`);
-    printHelp(argv, sys.stderr);
-    return 1;
+    sys.stderr.write(`ERROR: ${error.message}\n`)
+    printHelp(argv, sys.stderr)
+    return 1
   }
 
   if (command.kind === 'help') {
-    printHelp(argv, sys.stdout);
-    return 0;
+    printHelp(argv, sys.stdout)
+    return 0
   }
 
   if (command.kind === 'version') {
-    printVersion(argv, sys.stdout);
-    return 0;
+    printVersion(argv, sys.stdout)
+    return 0
   }
 
-  const config = command.config;
-  const dim = sys.stdout.isTTY ? '\x1b[2m' : '';
-  const reset = sys.stdout.isTTY ? '\x1b[0m' : '';
+  const config = command.config
+  const dim = sys.stdout.isTTY ? '\x1b[2m' : ''
+  const reset = sys.stdout.isTTY ? '\x1b[0m' : ''
 
   function onTransform(result: SourceTransformResult): void {
     if (result.kind === SourceTransformResultKind.Transformed) {
       if (!config.stdio) {
         if (result.output === result.source.content) {
-          sys.stdout.write(`${dim}${result.source.path}${reset}\n`);
+          sys.stdout.write(`${dim}${result.source.path}${reset}\n`)
         } else {
-          sys.stdout.write(`${result.source.path}\n`);
+          sys.stdout.write(`${result.source.path}\n`)
         }
       }
     } else if (result.error) {
       if (!config.stdio) {
         sys.stderr.write(
           `Encountered an error while processing ${result.source.path}:\n`
-        );
+        )
       }
 
-      sys.stderr.write(`${result.error.stack}\n`);
+      sys.stderr.write(`${result.error.stack}\n`)
     }
   }
 
-  const { stats } = await new CLIEngine(config, onTransform, sys).run();
+  const { stats } = await new CLIEngine(config, onTransform, sys).run()
 
   if (!config.stdio) {
     if (config.dry) {
-      sys.stdout.write('DRY RUN: no files affected\n');
+      sys.stdout.write('DRY RUN: no files affected\n')
     }
 
     sys.stdout.write(
       `${stats.total} file(s), ${stats.modified} modified, ${stats.errors} errors\n`
-    );
+    )
   }
 
   // exit status is number of errors up to byte max value
-  return Math.min(stats.errors, 255);
+  return Math.min(stats.errors, 255)
 }

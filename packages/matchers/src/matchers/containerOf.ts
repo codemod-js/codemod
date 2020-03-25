@@ -1,7 +1,7 @@
-import * as t from '@babel/types';
-import { Matcher } from '../matchers';
-import { CapturedMatcher } from './capture';
-import { isNode } from '../NodeTypes';
+import * as t from '@babel/types'
+import { Matcher } from '../matchers'
+import { CapturedMatcher } from './capture'
+import { isNode } from '../NodeTypes'
 
 /**
  * Matches and captures using another matcher by recursively checking all
@@ -13,38 +13,38 @@ export class ContainerOfMatcher<
   M extends t.Node = C
 > extends CapturedMatcher<C, M> {
   constructor(private readonly containedMatcher: Matcher<C>) {
-    super();
+    super()
   }
 
   matchValue(value: unknown, keys: ReadonlyArray<PropertyKey>): value is M {
     if (!isNode(value)) {
-      return false;
+      return false
     }
 
     if (this.containedMatcher.matchValue(value, keys)) {
-      this.capture(value, keys);
-      return true;
+      this.capture(value, keys)
+      return true
     }
 
     for (const key in value) {
-      const valueAtKey = value[key as keyof typeof value];
+      const valueAtKey = value[key as keyof typeof value]
       if (Array.isArray(valueAtKey)) {
         for (const [i, element] of valueAtKey.entries()) {
           if (this.matchValue(element, [...keys, key, i])) {
-            return true;
+            return true
           }
         }
       } else if (this.matchValue(valueAtKey, [...keys, key])) {
-        return true;
+        return true
       }
     }
 
-    return false;
+    return false
   }
 }
 
 export default function containerOf<C extends t.Node, M extends t.Node = C>(
   containedMatcher: Matcher<C>
 ): ContainerOfMatcher<C, M> {
-  return new ContainerOfMatcher(containedMatcher);
+  return new ContainerOfMatcher(containedMatcher)
 }

@@ -1,11 +1,11 @@
 import incrementValue from './increment-value'
 
-export default function() {
+export default function () {
   return {
     visitor: {
       NumericLiteral(path) {
-        path.node.value = incrementValue(path.node.value);
-      }
-    }
+        path.node.value = incrementValue(path.node.value)
+      },
+    },
   }
-};
+}

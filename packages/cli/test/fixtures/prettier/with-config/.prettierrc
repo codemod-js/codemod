@@ -1,1 +1,4 @@
-{ "singleQuote": true }
+{
+    "singleQuote": true,
+    "semi": true
+}

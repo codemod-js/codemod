@@ -1,4 +1,4 @@
-import { spawn } from 'child_process';
+import { spawn } from 'child_process'
 
 export default async function runInPackages(
   stdin: NodeJS.ReadStream,
@@ -12,20 +12,20 @@ export default async function runInPackages(
       'yarn',
       ['lerna', 'exec', '--stream', 'script/ci', ...args],
       {
-        stdio: [stdin, stdout, stderr]
+        stdio: [stdin, stdout, stderr],
       }
-    );
+    )
 
-    child.on('exit', code => {
+    child.on('exit', (code) => {
       if (code === 0) {
-        resolve();
+        resolve()
       } else {
         reject(
           new Error(
             `exit status was ${code} for command: ${command} ${args.join(' ')}`
           )
-        );
+        )
       }
-    });
-  });
+    })
+  })
 }

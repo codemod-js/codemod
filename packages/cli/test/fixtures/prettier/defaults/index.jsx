@@ -2,7 +2,7 @@ function HelloWorld({
   greeting = "hello",
   greeted = '"World"',
   silent = false,
-  onMouseOver
+  onMouseOver,
 }) {
   if (!greeting) {
     return null;

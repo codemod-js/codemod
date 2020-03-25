@@ -1,4 +1,4 @@
-import Transformer from './Transformer';
+import Transformer from './Transformer'
 
 export class Source {
   constructor(readonly path: string, readonly content: string) {}
@@ -6,16 +6,16 @@ export class Source {
 
 export enum SourceTransformResultKind {
   Transformed = 'Transformed',
-  Error = 'Error'
+  Error = 'Error',
 }
 
 export type SourceTransformResult =
   | {
-      kind: SourceTransformResultKind.Transformed;
-      source: Source;
-      output: string;
+      kind: SourceTransformResultKind.Transformed
+      source: Source
+      output: string
     }
-  | { kind: SourceTransformResultKind.Error; source: Source; error: Error };
+  | { kind: SourceTransformResultKind.Error; source: Source; error: Error }
 
 export default class TransformRunner {
   constructor(
@@ -25,23 +25,23 @@ export default class TransformRunner {
 
   async *run(): AsyncIterableIterator<SourceTransformResult> {
     for (const source of this.sources) {
-      let result: SourceTransformResult;
+      let result: SourceTransformResult
 
       try {
         const output = await this.transformer.transform(
           source.path,
           source.content
-        );
+        )
         result = {
           kind: SourceTransformResultKind.Transformed,
           source,
-          output
-        };
+          output,
+        }
       } catch (error) {
-        result = { kind: SourceTransformResultKind.Error, source, error };
+        result = { kind: SourceTransformResultKind.Error, source, error }
       }
 
-      yield result;
+      yield result
     }
   }
 }
