@@ -55,7 +55,7 @@
     "@types/make-dir": "^2.1.0",
     "@types/mocha": "^7.0.1",
     "@types/prettier": "^1.19.1",
-    "@types/rimraf": "2.0.3",
+    "@types/rimraf": "3.0.0",
     "@types/semver": "^7.1.0",
     "@types/source-map-support": "^0.5.0",
     "@types/tmp": "^0.1.0",
