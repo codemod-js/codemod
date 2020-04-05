@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.16](https://github.com/codemod-js/codemod/compare/@codemod/cli@2.1.13...@codemod/cli@2.1.16) (2020-04-05)
+
+### Bug Fixes
+
+- **deps:** upgrade recast ([b6220f3](https://github.com/codemod-js/codemod/commit/b6220f3f26a41f4e58bdca7815bc8f6e9a820866))
+- update babel dependencies ([0d9d569](https://github.com/codemod-js/codemod/commit/0d9d56985dbc5d47621073561cd1617116685e5d))
+- upgrade babel to 7.9.0 ([bfdc402](https://github.com/codemod-js/codemod/commit/bfdc402a6ec0d5a1068c02c07107e8f7148e8a1a))
+- upgrade prettier ([4a22030](https://github.com/codemod-js/codemod/commit/4a22030af417911cad1efe44111f9da38c1cc102))
+
 ## [2.1.15](https://github.com/codemod-js/codemod/compare/@codemod/cli@2.1.13...@codemod/cli@2.1.15) (2020-03-25)
 
 ### Bug Fixes

@@ -1,6 +1,6 @@
 {
   "name": "@codemod/cli",
-  "version": "2.1.15",
+  "version": "2.1.16",
   "description": "codemod rewrites JavaScript and TypeScript",
   "repository": {
     "type": "git",
@@ -31,7 +31,7 @@
     "@babel/preset-typescript": "^7.9.0",
     "@babel/traverse": "^7.9.0",
     "@babel/types": "^7.9.0",
-    "@codemod/core": "^1.0.6",
+    "@codemod/core": "^1.0.7",
     "@codemod/parser": "^1.0.7",
     "core-js": "^3.1.4",
     "get-stream": "^5.1.0",
@@ -39,7 +39,7 @@
     "got": "^10.2.0",
     "pirates": "^4.0.0",
     "prettier": "^2.0.2",
-    "recast": "^0.18.5",
+    "recast": "^0.19.0",
     "regenerator-runtime": "^0.13.3",
     "resolve": "^1.7.1",
     "source-map-support": "^0.5.6",
