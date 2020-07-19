@@ -43,7 +43,7 @@ For more detailed options, run `codemod --help`.
 
 There are [many, many existing plugins](https://www.npmjs.com/search?q=babel-plugin) that you can use. However, if you need to write your own you should consult the [babel handbook](https://github.com/thejameskyle/babel-handbook). If you publish a plugin intended specifically as a codemod, consider using both the [`babel-plugin`](https://www.npmjs.com/search?q=babel-plugin) and [`babel-codemod`](https://www.npmjs.com/search?q=babel-codemod) keywords.
 
-### Transpiling using babel plugins
+### Transpiling using Babel Plugins
 
 `codemod` also supports non-standard/future language features that are not currently supported by the latest version of node. It does this by leveraging `@babel/preset-env` which loads the [latest babel plugins](https://github.com/babel/babel/tree/master/packages/babel-preset-env#support-all-plugins-in-babel-that-are-considered-latest). This feature is on by default.
 
@@ -63,8 +63,19 @@ There is experimental support for running plugins written in TypeScript. This is
 For example:
 
 ```sh
-# Run a local plugin written with TypeScript.
+# Run a local plugin written with TypeScript
 $ codemod --plugin ./my-plugin.ts src/
+```
+
+### Passing Options to Plugins
+
+You can pass a JSON object as options to a plugin:
+
+```sh
+# Pass a JSON object literal
+$ codemod --plugin ./my-plugin.ts --plugin-options '{"opt": true}'
+# Pass a JSON object from a file
+$ codemod --plugin ./my-plugin.ts --plugin-options @opts.json
 ```
 
 ## Contributing

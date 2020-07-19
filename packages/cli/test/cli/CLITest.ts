@@ -657,4 +657,26 @@ describe('CLI', function () {
       }
     )
   })
+
+  it('can pass options to a plugin without naming it', async function () {
+    const { status, stdout, stderr } = await runCodemodCLI(
+      [
+        '--plugin',
+        plugin('append-options-string', '.ts'),
+        '--plugin-options',
+        `${JSON.stringify({ a: 4 })}`,
+        '--stdio',
+      ],
+      ''
+    )
+
+    deepEqual(
+      { status, stdout, stderr },
+      {
+        status: 0,
+        stdout: `${JSON.stringify(JSON.stringify({ a: 4 }))};`,
+        stderr: '',
+      }
+    )
+  })
 })

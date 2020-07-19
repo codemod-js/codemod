@@ -43,7 +43,7 @@ OPTIONS
       --remote-plugin URL           Fetch a plugin from URL${optionAnnotation(
         defaults.remotePlugins
       )}.
-  -o, --plugin-options PLUGIN=OPTS  JSON-encoded OPTS for PLUGIN${optionAnnotation(
+  -o, --plugin-options OPTS         JSON-encoded OPTS for the last plugin provided${optionAnnotation(
     defaults.pluginOptions
   )}.
   -r, --require PATH                Require PATH before transform${optionAnnotation(

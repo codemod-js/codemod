@@ -88,6 +88,21 @@ describe('Options', function () {
     deepEqual(config.pluginOptions.get('basic-plugin'), { a: true })
   })
 
+  it('assigns anonymous options to the most recent plugin', async function () {
+    const config = getRunConfig(
+      new Options([
+        '--plugin',
+        './test/fixtures/plugin/index.js',
+        '--plugin-options',
+        '{"a": true}',
+      ]).parse()
+    )
+
+    deepEqual(config.pluginOptions.get('./test/fixtures/plugin/index.js'), {
+      a: true,
+    })
+  })
+
   it('interprets `--require` as expected', function () {
     const config = getRunConfig(new Options(['--require', 'tmp']).parse())
     deepEqual(
