@@ -20,10 +20,14 @@ export class Plugin {
     readonly source?: string,
     readonly resolvedPath?: string
   ) {
-    const instance = rawPlugin(Babel)
+    try {
+      const instance = rawPlugin(Babel)
 
-    if (instance.name) {
-      this.declaredName = instance.name
+      if (instance.name) {
+        this.declaredName = instance.name
+      }
+    } catch {
+      // We won't be able to determine what the plugin names itself ¯\_(ツ)_/¯
     }
   }
 }
@@ -81,7 +85,8 @@ export default class Config {
 
           return new Plugin(
             defaultExport,
-            basename(localPlugin, extname(localPlugin))
+            basename(localPlugin, extname(localPlugin)),
+            localPlugin
           )
         })
       )
@@ -93,7 +98,8 @@ export default class Config {
 
           return new Plugin(
             defaultExport,
-            basename(remotePlugin, extname(remotePlugin))
+            basename(remotePlugin, extname(remotePlugin)),
+            remotePlugin
           )
         })
       )
@@ -125,7 +131,11 @@ export default class Config {
 
   async getPlugin(name: string): Promise<Plugin | null> {
     for (const plugin of await this.getPlugins()) {
-      if (plugin.declaredName === name || plugin.inferredName === name) {
+      if (
+        plugin.declaredName === name ||
+        plugin.inferredName === name ||
+        plugin.source === name
+      ) {
         return plugin
       }
     }
@@ -139,7 +149,8 @@ export default class Config {
     for (const plugin of await this.getPlugins()) {
       const options =
         (plugin.declaredName && this.pluginOptions.get(plugin.declaredName)) ||
-        this.pluginOptions.get(plugin.inferredName)
+        this.pluginOptions.get(plugin.inferredName) ||
+        (plugin.source && this.pluginOptions.get(plugin.source))
 
       if (options) {
         result.push([plugin.rawPlugin, options])

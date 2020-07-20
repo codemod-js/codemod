@@ -25,6 +25,7 @@ export default class Options {
 
   parse(): RunCommand | HelpCommand | VersionCommand {
     const config = new ConfigBuilder()
+    let lastPlugin: string | undefined
 
     for (let i = 0; i < this.args.length; i++) {
       const arg = this.args[i]
@@ -33,26 +34,50 @@ export default class Options {
         case '-p':
         case '--plugin':
           i++
-          config.addLocalPlugin(this.args[i])
+          lastPlugin = this.args[i]
+          config.addLocalPlugin(lastPlugin)
           break
 
         case '--remote-plugin':
           i++
-          config.addRemotePlugin(this.args[i])
+          lastPlugin = this.args[i]
+          config.addRemotePlugin(lastPlugin)
           break
 
         case '-o':
         case '--plugin-options': {
           i++
-          const nameAndOptions = this.args[i].split('=')
-          const name = nameAndOptions[0]
-          let optionsRaw = nameAndOptions[1]
 
-          if (optionsRaw && optionsRaw[0] === '@') {
-            optionsRaw = readFileSync(optionsRaw.slice(1), {
-              encoding: 'utf8',
-            })
-            config.setOptionsForPlugin(JSON.parse(optionsRaw), name)
+          const value = this.args[i]
+          let name: string
+          let optionsRaw: string
+
+          if (value.startsWith('@')) {
+            if (!lastPlugin) {
+              throw new Error(
+                `${arg} must follow --plugin or --remote-plugin if no name is given`
+              )
+            }
+
+            optionsRaw = readFileSync(value.slice(1), 'utf8')
+            name = lastPlugin
+          } else if (/^\s*{/.test(value)) {
+            if (!lastPlugin) {
+              throw new Error(
+                `${arg} must follow --plugin or --remote-plugin if no name is given`
+              )
+            }
+
+            optionsRaw = value
+            name = lastPlugin
+          } else {
+            const nameAndOptions = value.split('=')
+            name = nameAndOptions[0]
+            optionsRaw = nameAndOptions[1]
+
+            if (optionsRaw.startsWith('@')) {
+              optionsRaw = readFileSync(optionsRaw.slice(1), 'utf8')
+            }
           }
 
           try {
