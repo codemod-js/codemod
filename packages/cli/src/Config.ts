@@ -10,6 +10,7 @@ import FileSystemResolver from './resolvers/FileSystemResolver'
 import NetworkResolver from './resolvers/NetworkResolver'
 import PackageResolver from './resolvers/PackageResolver'
 import { disable, enable } from './transpile-requires'
+import { EntryType } from './System'
 
 export class Plugin {
   readonly declaredName?: string
@@ -32,12 +33,19 @@ export class Plugin {
   }
 }
 
-function defaultIgnorePredicate(path: string, basename: string): boolean {
+function defaultIgnorePredicate(
+  path: string,
+  basename: string,
+  root: string,
+  type: EntryType
+): boolean {
   return (
     // ignore paths starting with a dot
     basename.startsWith('.') ||
     // ignore TypeScript declaration files
-    basename.endsWith('.d.ts')
+    (basename.endsWith('.d.ts') && type === EntryType.File) ||
+    // ignore node_modules directories
+    (basename === 'node_modules' && type === EntryType.Directory)
   )
 }
 
