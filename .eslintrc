@@ -30,6 +30,12 @@
       "rules": {
         "no-console": "off"
       }
+    },
+    {
+      "files": ["**/bin/*"],
+      "env": {
+        "node": true
+      }
     }
   ]
 }
