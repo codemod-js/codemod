@@ -1,6 +1,6 @@
 {
   "name": "@codemod/cli",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "codemod rewrites JavaScript and TypeScript",
   "repository": {
     "type": "git",
@@ -24,15 +24,15 @@
     "test": "script/ci"
   },
   "dependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/generator": "^7.9.3",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/preset-env": "^7.9.0",
-    "@babel/preset-typescript": "^7.9.0",
-    "@babel/traverse": "^7.9.0",
-    "@babel/types": "^7.9.0",
-    "@codemod/core": "^1.0.7",
-    "@codemod/parser": "^1.0.7",
+    "@babel/core": "^7.12.3",
+    "@babel/generator": "^7.12.5",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-typescript": "^7.12.1",
+    "@babel/traverse": "^7.12.5",
+    "@babel/types": "^7.12.6",
+    "@codemod/core": "^1.1.0",
+    "@codemod/parser": "^1.1.0",
     "core-js": "^3.1.4",
     "get-stream": "^5.1.0",
     "globby": "^11.0.0",

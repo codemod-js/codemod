@@ -1,6 +1,6 @@
 {
   "name": "@codemod/parser",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "Wrapper around @babel/parser that allows parsing everything.",
   "repository": "https://github.com/codemod-js/codemod",
   "license": "Apache-2.0",
@@ -17,10 +17,10 @@
     "test": "jest"
   },
   "dependencies": {
-    "@babel/parser": "^7.9.0"
+    "@babel/parser": "^7.12.5"
   },
   "devDependencies": {
-    "@babel/types": "^7.9.0",
+    "@babel/types": "^7.12.6",
     "@types/jest": "^25.1.0",
     "jest": "^25.1.0",
     "ts-jest": "^25.2.1",
