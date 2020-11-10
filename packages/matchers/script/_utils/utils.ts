@@ -64,6 +64,8 @@ export function typeFromName(name: string): t.TSType {
       return t.tsNullKeyword()
     case 'undefined':
       return t.tsUndefinedKeyword()
+    case 'any':
+      return t.tsAnyKeyword()
     default:
       return t.tsTypeReference(t.identifier(name))
   }

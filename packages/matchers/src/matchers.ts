@@ -477,7 +477,7 @@ export class BinaryExpressionMatcher extends Matcher<t.BinaryExpression> {
           | '<='
         >
       | string,
-    private readonly left?: Matcher<t.Expression>,
+    private readonly left?: Matcher<t.Expression | t.PrivateName>,
     private readonly right?: Matcher<t.Expression>
   ) {
     super()
@@ -546,7 +546,7 @@ export function binaryExpression(
         | '<='
       >
     | string,
-  left?: Matcher<t.Expression>,
+  left?: Matcher<t.Expression | t.PrivateName>,
   right?: Matcher<t.Expression>
 ): Matcher<t.BinaryExpression> {
   return new BinaryExpressionMatcher(operator, left, right)
@@ -554,8 +554,8 @@ export function binaryExpression(
 
 export class BindExpressionMatcher extends Matcher<t.BindExpression> {
   constructor(
-    private readonly object?: Matcher<any>,
-    private readonly callee?: Matcher<any>
+    private readonly object?: Matcher<t.Expression>,
+    private readonly callee?: Matcher<t.Expression>
   ) {
     super()
   }
@@ -585,8 +585,8 @@ export class BindExpressionMatcher extends Matcher<t.BindExpression> {
 }
 
 export function bindExpression(
-  object?: Matcher<any>,
-  callee?: Matcher<any>
+  object?: Matcher<t.Expression>,
+  callee?: Matcher<t.Expression>
 ): Matcher<t.BindExpression> {
   return new BindExpressionMatcher(object, callee)
 }
@@ -979,10 +979,13 @@ export function classBody(
 
 export class ClassDeclarationMatcher extends Matcher<t.ClassDeclaration> {
   constructor(
-    private readonly id?: Matcher<any>,
-    private readonly superClass?: Matcher<any>,
-    private readonly body?: Matcher<any>,
-    private readonly decorators?: Matcher<any>
+    private readonly id?: Matcher<t.Identifier>,
+    private readonly superClass?: Matcher<t.Expression> | null,
+    private readonly body?: Matcher<t.ClassBody>,
+    private readonly decorators?:
+      | Matcher<Array<t.Decorator>>
+      | Array<Matcher<t.Decorator>>
+      | null
   ) {
     super()
   }
@@ -1003,6 +1006,13 @@ export class ClassDeclarationMatcher extends Matcher<t.ClassDeclaration> {
 
     if (typeof this.superClass === 'undefined') {
       // undefined matcher means anything matches
+    } else if (this.superClass === null) {
+      // null matcher means we expect null value
+      if (node.superClass !== null) {
+        return false
+      }
+    } else if (node.superClass === null) {
+      return false
     } else if (
       !this.superClass.matchValue(node.superClass, [...keys, 'superClass'])
     ) {
@@ -1017,6 +1027,22 @@ export class ClassDeclarationMatcher extends Matcher<t.ClassDeclaration> {
 
     if (typeof this.decorators === 'undefined') {
       // undefined matcher means anything matches
+    } else if (this.decorators === null) {
+      // null matcher means we expect null value
+      if (node.decorators !== null) {
+        return false
+      }
+    } else if (node.decorators === null) {
+      return false
+    } else if (Array.isArray(this.decorators)) {
+      if (
+        !tupleOf<unknown>(...this.decorators).matchValue(node.decorators, [
+          ...keys,
+          'decorators',
+        ])
+      ) {
+        return false
+      }
     } else if (
       !this.decorators.matchValue(node.decorators, [...keys, 'decorators'])
     ) {
@@ -1028,10 +1054,10 @@ export class ClassDeclarationMatcher extends Matcher<t.ClassDeclaration> {
 }
 
 export function classDeclaration(
-  id?: Matcher<any>,
-  superClass?: Matcher<any>,
-  body?: Matcher<any>,
-  decorators?: Matcher<any>
+  id?: Matcher<t.Identifier>,
+  superClass?: Matcher<t.Expression> | null,
+  body?: Matcher<t.ClassBody>,
+  decorators?: Matcher<Array<t.Decorator>> | Array<Matcher<t.Decorator>> | null
 ): Matcher<t.ClassDeclaration> {
   return new ClassDeclarationMatcher(id, superClass, body, decorators)
 }
@@ -1498,7 +1524,8 @@ export class ClassPrivatePropertyMatcher extends Matcher<
     private readonly decorators?:
       | Matcher<Array<t.Decorator>>
       | Array<Matcher<t.Decorator>>
-      | null
+      | null,
+    private readonly _static?: Matcher<any>
   ) {
     super()
   }
@@ -1554,6 +1581,12 @@ export class ClassPrivatePropertyMatcher extends Matcher<
       return false
     }
 
+    if (typeof this._static === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (!this._static.matchValue(node.static, [...keys, 'static'])) {
+      return false
+    }
+
     return true
   }
 }
@@ -1561,9 +1594,10 @@ export class ClassPrivatePropertyMatcher extends Matcher<
 export function classPrivateProperty(
   key?: Matcher<t.PrivateName>,
   value?: Matcher<t.Expression> | null,
-  decorators?: Matcher<Array<t.Decorator>> | Array<Matcher<t.Decorator>> | null
+  decorators?: Matcher<Array<t.Decorator>> | Array<Matcher<t.Decorator>> | null,
+  _static?: Matcher<any>
 ): Matcher<t.ClassPrivateProperty> {
-  return new ClassPrivatePropertyMatcher(key, value, decorators)
+  return new ClassPrivatePropertyMatcher(key, value, decorators, _static)
 }
 
 export class ClassPropertyMatcher extends Matcher<t.ClassProperty> {
@@ -1824,6 +1858,39 @@ export class DebuggerStatementMatcher extends Matcher<t.DebuggerStatement> {
 
 export function debuggerStatement(): Matcher<t.DebuggerStatement> {
   return new DebuggerStatementMatcher()
+}
+
+export class DecimalLiteralMatcher extends Matcher<t.DecimalLiteral> {
+  constructor(private readonly value?: Matcher<string> | string) {
+    super()
+  }
+
+  matchValue(
+    node: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): node is t.DecimalLiteral {
+    if (!isNode(node) || !t.isDecimalLiteral(node)) {
+      return false
+    }
+
+    if (typeof this.value === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (typeof this.value === 'string') {
+      if (this.value !== node.value) {
+        return false
+      }
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
+      return false
+    }
+
+    return true
+  }
+}
+
+export function decimalLiteral(
+  value?: Matcher<string> | string
+): Matcher<t.DecimalLiteral> {
+  return new DecimalLiteralMatcher(value)
 }
 
 export class DeclareClassMatcher extends Matcher<t.DeclareClass> {
@@ -3134,7 +3201,7 @@ export class ExportNamedDeclarationMatcher extends Matcher<
   t.ExportNamedDeclaration
 > {
   constructor(
-    private readonly declaration?: Matcher<any> | null,
+    private readonly declaration?: Matcher<t.Declaration> | null,
     private readonly specifiers?:
       | Matcher<
           Array<
@@ -3211,7 +3278,7 @@ export class ExportNamedDeclarationMatcher extends Matcher<
 }
 
 export function exportNamedDeclaration(
-  declaration?: Matcher<any> | null,
+  declaration?: Matcher<t.Declaration> | null,
   specifiers?:
     | Matcher<
         Array<
@@ -3266,7 +3333,7 @@ export function exportNamespaceSpecifier(
 export class ExportSpecifierMatcher extends Matcher<t.ExportSpecifier> {
   constructor(
     private readonly local?: Matcher<t.Identifier>,
-    private readonly exported?: Matcher<t.Identifier>
+    private readonly exported?: Matcher<t.Identifier | t.StringLiteral>
   ) {
     super()
   }
@@ -3299,7 +3366,7 @@ export class ExportSpecifierMatcher extends Matcher<t.ExportSpecifier> {
 
 export function exportSpecifier(
   local?: Matcher<t.Identifier>,
-  exported?: Matcher<t.Identifier>
+  exported?: Matcher<t.Identifier | t.StringLiteral>
 ): Matcher<t.ExportSpecifier> {
   return new ExportSpecifierMatcher(local, exported)
 }
@@ -3338,8 +3405,10 @@ export function expressionStatement(
 export class FileMatcher extends Matcher<t.File> {
   constructor(
     private readonly program?: Matcher<t.Program>,
-    private readonly comments?: Matcher<any>,
-    private readonly tokens?: Matcher<any>
+    private readonly comments?: Matcher<
+      Array<t.CommentBlock | t.CommentLine>
+    > | null,
+    private readonly tokens?: Matcher<Array<any>> | null
   ) {
     super()
   }
@@ -3357,6 +3426,13 @@ export class FileMatcher extends Matcher<t.File> {
 
     if (typeof this.comments === 'undefined') {
       // undefined matcher means anything matches
+    } else if (this.comments === null) {
+      // null matcher means we expect null value
+      if (node.comments !== null) {
+        return false
+      }
+    } else if (node.comments === null) {
+      return false
     } else if (
       !this.comments.matchValue(node.comments, [...keys, 'comments'])
     ) {
@@ -3365,6 +3441,13 @@ export class FileMatcher extends Matcher<t.File> {
 
     if (typeof this.tokens === 'undefined') {
       // undefined matcher means anything matches
+    } else if (this.tokens === null) {
+      // null matcher means we expect null value
+      if (node.tokens !== null) {
+        return false
+      }
+    } else if (node.tokens === null) {
+      return false
     } else if (!this.tokens.matchValue(node.tokens, [...keys, 'tokens'])) {
       return false
     }
@@ -3375,8 +3458,8 @@ export class FileMatcher extends Matcher<t.File> {
 
 export function file(
   program?: Matcher<t.Program>,
-  comments?: Matcher<any>,
-  tokens?: Matcher<any>
+  comments?: Matcher<Array<t.CommentBlock | t.CommentLine>> | null,
+  tokens?: Matcher<Array<any>> | null
 ): Matcher<t.File> {
   return new FileMatcher(program, comments, tokens)
 }
@@ -4016,7 +4099,7 @@ export function genericTypeAnnotation(
 }
 
 export class IdentifierMatcher extends Matcher<t.Identifier> {
-  constructor(private readonly name?: Matcher<any> | string) {
+  constructor(private readonly name?: Matcher<string> | string) {
     super()
   }
 
@@ -4043,7 +4126,7 @@ export class IdentifierMatcher extends Matcher<t.Identifier> {
 }
 
 export function identifier(
-  name?: Matcher<any> | string
+  name?: Matcher<string> | string
 ): Matcher<t.Identifier> {
   return new IdentifierMatcher(name)
 }
@@ -4125,6 +4208,45 @@ export class ImportMatcher extends Matcher<t.Import> {
 
 export function Import(): Matcher<t.Import> {
   return new ImportMatcher()
+}
+
+export class ImportAttributeMatcher extends Matcher<t.ImportAttribute> {
+  constructor(
+    private readonly key?: Matcher<t.Identifier | t.StringLiteral>,
+    private readonly value?: Matcher<t.StringLiteral>
+  ) {
+    super()
+  }
+
+  matchValue(
+    node: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): node is t.ImportAttribute {
+    if (!isNode(node) || !t.isImportAttribute(node)) {
+      return false
+    }
+
+    if (typeof this.key === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (!this.key.matchValue(node.key, [...keys, 'key'])) {
+      return false
+    }
+
+    if (typeof this.value === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
+      return false
+    }
+
+    return true
+  }
+}
+
+export function importAttribute(
+  key?: Matcher<t.Identifier | t.StringLiteral>,
+  value?: Matcher<t.StringLiteral>
+): Matcher<t.ImportAttribute> {
+  return new ImportAttributeMatcher(key, value)
 }
 
 export class ImportDeclarationMatcher extends Matcher<t.ImportDeclaration> {
@@ -4266,7 +4388,7 @@ export function importNamespaceSpecifier(
 export class ImportSpecifierMatcher extends Matcher<t.ImportSpecifier> {
   constructor(
     private readonly local?: Matcher<t.Identifier>,
-    private readonly imported?: Matcher<t.Identifier>
+    private readonly imported?: Matcher<t.Identifier | t.StringLiteral>
   ) {
     super()
   }
@@ -4299,7 +4421,7 @@ export class ImportSpecifierMatcher extends Matcher<t.ImportSpecifier> {
 
 export function importSpecifier(
   local?: Matcher<t.Identifier>,
-  imported?: Matcher<t.Identifier>
+  imported?: Matcher<t.Identifier | t.StringLiteral>
 ): Matcher<t.ImportSpecifier> {
   return new ImportSpecifierMatcher(local, imported)
 }
@@ -4738,7 +4860,7 @@ export class JSXElementMatcher extends Matcher<t.JSXElement> {
           | Matcher<t.JSXElement>
           | Matcher<t.JSXFragment>
         >,
-    private readonly selfClosing?: Matcher<any>
+    private readonly selfClosing?: Matcher<boolean> | boolean | null
   ) {
     super()
   }
@@ -4799,6 +4921,17 @@ export class JSXElementMatcher extends Matcher<t.JSXElement> {
 
     if (typeof this.selfClosing === 'undefined') {
       // undefined matcher means anything matches
+    } else if (typeof this.selfClosing === 'boolean') {
+      if (this.selfClosing !== node.selfClosing) {
+        return false
+      }
+    } else if (this.selfClosing === null) {
+      // null matcher means we expect null value
+      if (node.selfClosing !== null) {
+        return false
+      }
+    } else if (node.selfClosing === null) {
+      return false
     } else if (
       !this.selfClosing.matchValue(node.selfClosing, [...keys, 'selfClosing'])
     ) {
@@ -4829,7 +4962,7 @@ export function jsxElement(
         | Matcher<t.JSXElement>
         | Matcher<t.JSXFragment>
       >,
-  selfClosing?: Matcher<any>
+  selfClosing?: Matcher<boolean> | boolean | null
 ): Matcher<t.JSXElement> {
   return new JSXElementMatcher(
     openingElement,
@@ -5389,7 +5522,9 @@ export function logicalExpression(
 export class MemberExpressionMatcher extends Matcher<t.MemberExpression> {
   constructor(
     private readonly object?: Matcher<t.Expression>,
-    private readonly property?: Matcher<any>,
+    private readonly property?: Matcher<
+      t.Expression | t.Identifier | t.PrivateName
+    >,
     private readonly computed?: Matcher<boolean> | boolean,
     private readonly optional?: Matcher<true | false> | boolean | null
   ) {
@@ -5455,7 +5590,7 @@ export class MemberExpressionMatcher extends Matcher<t.MemberExpression> {
 
 export function memberExpression(
   object?: Matcher<t.Expression>,
-  property?: Matcher<any>,
+  property?: Matcher<t.Expression | t.Identifier | t.PrivateName>,
   computed?: Matcher<boolean> | boolean,
   optional?: Matcher<true | false> | boolean | null
 ): Matcher<t.MemberExpression> {
@@ -5464,7 +5599,7 @@ export function memberExpression(
 
 export class MetaPropertyMatcher extends Matcher<t.MetaProperty> {
   constructor(
-    private readonly meta?: Matcher<any>,
+    private readonly meta?: Matcher<t.Identifier>,
     private readonly property?: Matcher<t.Identifier>
   ) {
     super()
@@ -5497,7 +5632,7 @@ export class MetaPropertyMatcher extends Matcher<t.MetaProperty> {
 }
 
 export function metaProperty(
-  meta?: Matcher<any>,
+  meta?: Matcher<t.Identifier>,
   property?: Matcher<t.Identifier>
 ): Matcher<t.MetaProperty> {
   return new MetaPropertyMatcher(meta, property)
@@ -5850,7 +5985,9 @@ export function objectExpression(
 export class ObjectMethodMatcher extends Matcher<t.ObjectMethod> {
   constructor(
     private readonly kind?: Matcher<'method' | 'get' | 'set'> | string,
-    private readonly key?: Matcher<any>,
+    private readonly key?: Matcher<
+      t.Expression | t.Identifier | t.StringLiteral | t.NumericLiteral
+    >,
     private readonly params?:
       | Matcher<
           Array<
@@ -5970,7 +6107,9 @@ export class ObjectMethodMatcher extends Matcher<t.ObjectMethod> {
 
 export function objectMethod(
   kind?: Matcher<'method' | 'get' | 'set'> | string,
-  key?: Matcher<any>,
+  key?: Matcher<
+    t.Expression | t.Identifier | t.StringLiteral | t.NumericLiteral
+  >,
   params?:
     | Matcher<
         Array<t.Identifier | t.Pattern | t.RestElement | t.TSParameterProperty>
@@ -6045,10 +6184,12 @@ export function objectPattern(
 
 export class ObjectPropertyMatcher extends Matcher<t.ObjectProperty> {
   constructor(
-    private readonly key?: Matcher<any>,
+    private readonly key?: Matcher<
+      t.Expression | t.Identifier | t.StringLiteral | t.NumericLiteral
+    >,
     private readonly value?: Matcher<t.Expression | t.PatternLike>,
     private readonly computed?: Matcher<boolean> | boolean,
-    private readonly shorthand?: Matcher<any> | boolean,
+    private readonly shorthand?: Matcher<boolean> | boolean,
     private readonly decorators?:
       | Matcher<Array<t.Decorator>>
       | Array<Matcher<t.Decorator>>
@@ -6130,10 +6271,12 @@ export class ObjectPropertyMatcher extends Matcher<t.ObjectProperty> {
 }
 
 export function objectProperty(
-  key?: Matcher<any>,
+  key?: Matcher<
+    t.Expression | t.Identifier | t.StringLiteral | t.NumericLiteral
+  >,
   value?: Matcher<t.Expression | t.PatternLike>,
   computed?: Matcher<boolean> | boolean,
-  shorthand?: Matcher<any> | boolean,
+  shorthand?: Matcher<boolean> | boolean,
   decorators?: Matcher<Array<t.Decorator>> | Array<Matcher<t.Decorator>> | null
 ): Matcher<t.ObjectProperty> {
   return new ObjectPropertyMatcher(key, value, computed, shorthand, decorators)
@@ -6743,7 +6886,7 @@ export class OptionalMemberExpressionMatcher extends Matcher<
 > {
   constructor(
     private readonly object?: Matcher<t.Expression>,
-    private readonly property?: Matcher<any>,
+    private readonly property?: Matcher<t.Expression | t.Identifier>,
     private readonly computed?: Matcher<boolean> | boolean,
     private readonly optional?: Matcher<boolean> | boolean
   ) {
@@ -6802,7 +6945,7 @@ export class OptionalMemberExpressionMatcher extends Matcher<
 
 export function optionalMemberExpression(
   object?: Matcher<t.Expression>,
-  property?: Matcher<any>,
+  property?: Matcher<t.Expression | t.Identifier>,
   computed?: Matcher<boolean> | boolean,
   optional?: Matcher<boolean> | boolean
 ): Matcher<t.OptionalMemberExpression> {
@@ -7177,12 +7320,8 @@ export function qualifiedTypeIdentifier(
 export class RecordExpressionMatcher extends Matcher<t.RecordExpression> {
   constructor(
     private readonly properties?:
-      | Matcher<Array<t.ObjectProperty | t.ObjectMethod | t.SpreadElement>>
-      | Array<
-          | Matcher<t.ObjectProperty>
-          | Matcher<t.ObjectMethod>
-          | Matcher<t.SpreadElement>
-        >
+      | Matcher<Array<t.ObjectProperty | t.SpreadElement>>
+      | Array<Matcher<t.ObjectProperty> | Matcher<t.SpreadElement>>
   ) {
     super()
   }
@@ -7218,12 +7357,8 @@ export class RecordExpressionMatcher extends Matcher<t.RecordExpression> {
 
 export function recordExpression(
   properties?:
-    | Matcher<Array<t.ObjectProperty | t.ObjectMethod | t.SpreadElement>>
-    | Array<
-        | Matcher<t.ObjectProperty>
-        | Matcher<t.ObjectMethod>
-        | Matcher<t.SpreadElement>
-      >
+    | Matcher<Array<t.ObjectProperty | t.SpreadElement>>
+    | Array<Matcher<t.ObjectProperty> | Matcher<t.SpreadElement>>
 ): Matcher<t.RecordExpression> {
   return new RecordExpressionMatcher(properties)
 }
@@ -7231,7 +7366,7 @@ export function recordExpression(
 export class RegExpLiteralMatcher extends Matcher<t.RegExpLiteral> {
   constructor(
     private readonly pattern?: Matcher<string> | string,
-    private readonly flags?: Matcher<any> | string
+    private readonly flags?: Matcher<string> | string
   ) {
     super()
   }
@@ -7270,7 +7405,7 @@ export class RegExpLiteralMatcher extends Matcher<t.RegExpLiteral> {
 
 export function regExpLiteral(
   pattern?: Matcher<string> | string,
-  flags?: Matcher<any> | string
+  flags?: Matcher<string> | string
 ): Matcher<t.RegExpLiteral> {
   return new RegExpLiteralMatcher(pattern, flags)
 }
@@ -7417,6 +7552,45 @@ export function spreadElement(
   argument?: Matcher<t.Expression>
 ): Matcher<t.SpreadElement> {
   return new SpreadElementMatcher(argument)
+}
+
+export class StaticBlockMatcher extends Matcher<t.StaticBlock> {
+  constructor(
+    private readonly body?:
+      | Matcher<Array<t.Statement>>
+      | Array<Matcher<t.Statement>>
+  ) {
+    super()
+  }
+
+  matchValue(
+    node: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): node is t.StaticBlock {
+    if (!isNode(node) || !t.isStaticBlock(node)) {
+      return false
+    }
+
+    if (typeof this.body === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (Array.isArray(this.body)) {
+      if (
+        !tupleOf<unknown>(...this.body).matchValue(node.body, [...keys, 'body'])
+      ) {
+        return false
+      }
+    } else if (!this.body.matchValue(node.body, [...keys, 'body'])) {
+      return false
+    }
+
+    return true
+  }
+}
+
+export function staticBlock(
+  body?: Matcher<Array<t.Statement>> | Array<Matcher<t.Statement>>
+): Matcher<t.StaticBlock> {
+  return new StaticBlockMatcher(body)
 }
 
 export class StringLiteralMatcher extends Matcher<t.StringLiteral> {
@@ -9153,10 +9327,31 @@ export function tsIntersectionType(
   return new TSIntersectionTypeMatcher(types)
 }
 
+export class TSIntrinsicKeywordMatcher extends Matcher<t.TSIntrinsicKeyword> {
+  constructor() {
+    super()
+  }
+
+  matchValue(
+    node: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): node is t.TSIntrinsicKeyword {
+    if (!isNode(node) || !t.isTSIntrinsicKeyword(node)) {
+      return false
+    }
+
+    return true
+  }
+}
+
+export function tsIntrinsicKeyword(): Matcher<t.TSIntrinsicKeyword> {
+  return new TSIntrinsicKeywordMatcher()
+}
+
 export class TSLiteralTypeMatcher extends Matcher<t.TSLiteralType> {
   constructor(
     private readonly literal?: Matcher<
-      t.NumericLiteral | t.StringLiteral | t.BooleanLiteral
+      t.NumericLiteral | t.StringLiteral | t.BooleanLiteral | t.BigIntLiteral
     >
   ) {
     super()
@@ -9181,7 +9376,9 @@ export class TSLiteralTypeMatcher extends Matcher<t.TSLiteralType> {
 }
 
 export function tsLiteralType(
-  literal?: Matcher<t.NumericLiteral | t.StringLiteral | t.BooleanLiteral>
+  literal?: Matcher<
+    t.NumericLiteral | t.StringLiteral | t.BooleanLiteral | t.BigIntLiteral
+  >
 ): Matcher<t.TSLiteralType> {
   return new TSLiteralTypeMatcher(literal)
 }
@@ -9189,7 +9386,8 @@ export function tsLiteralType(
 export class TSMappedTypeMatcher extends Matcher<t.TSMappedType> {
   constructor(
     private readonly typeParameter?: Matcher<t.TSTypeParameter>,
-    private readonly typeAnnotation?: Matcher<t.TSType> | null
+    private readonly typeAnnotation?: Matcher<t.TSType> | null,
+    private readonly nameType?: Matcher<t.TSType> | null
   ) {
     super()
   }
@@ -9231,15 +9429,31 @@ export class TSMappedTypeMatcher extends Matcher<t.TSMappedType> {
       return false
     }
 
+    if (typeof this.nameType === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (this.nameType === null) {
+      // null matcher means we expect null value
+      if (node.nameType !== null) {
+        return false
+      }
+    } else if (node.nameType === null) {
+      return false
+    } else if (
+      !this.nameType.matchValue(node.nameType, [...keys, 'nameType'])
+    ) {
+      return false
+    }
+
     return true
   }
 }
 
 export function tsMappedType(
   typeParameter?: Matcher<t.TSTypeParameter>,
-  typeAnnotation?: Matcher<t.TSType> | null
+  typeAnnotation?: Matcher<t.TSType> | null,
+  nameType?: Matcher<t.TSType> | null
 ): Matcher<t.TSMappedType> {
-  return new TSMappedTypeMatcher(typeParameter, typeAnnotation)
+  return new TSMappedTypeMatcher(typeParameter, typeAnnotation, nameType)
 }
 
 export class TSMethodSignatureMatcher extends Matcher<t.TSMethodSignature> {
@@ -9419,6 +9633,61 @@ export function tsModuleDeclaration(
   body?: Matcher<t.TSModuleBlock | t.TSModuleDeclaration>
 ): Matcher<t.TSModuleDeclaration> {
   return new TSModuleDeclarationMatcher(id, body)
+}
+
+export class TSNamedTupleMemberMatcher extends Matcher<t.TSNamedTupleMember> {
+  constructor(
+    private readonly label?: Matcher<t.Identifier>,
+    private readonly elementType?: Matcher<t.TSType>,
+    private readonly optional?: Matcher<boolean> | boolean
+  ) {
+    super()
+  }
+
+  matchValue(
+    node: unknown,
+    keys: ReadonlyArray<PropertyKey>
+  ): node is t.TSNamedTupleMember {
+    if (!isNode(node) || !t.isTSNamedTupleMember(node)) {
+      return false
+    }
+
+    if (typeof this.label === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (!this.label.matchValue(node.label, [...keys, 'label'])) {
+      return false
+    }
+
+    if (typeof this.elementType === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (
+      !this.elementType.matchValue(node.elementType, [...keys, 'elementType'])
+    ) {
+      return false
+    }
+
+    if (typeof this.optional === 'undefined') {
+      // undefined matcher means anything matches
+    } else if (typeof this.optional === 'boolean') {
+      if (this.optional !== node.optional) {
+        return false
+      }
+    } else if (
+      !this.optional.matchValue(node.optional, [...keys, 'optional'])
+    ) {
+      return false
+    }
+
+    return true
+  }
+}
+
+export function tsNamedTupleMember(
+  label?: Matcher<t.Identifier>,
+  elementType?: Matcher<t.TSType>,
+  optional?: Matcher<boolean> | boolean
+): Matcher<t.TSNamedTupleMember> {
+  return new TSNamedTupleMemberMatcher(label, elementType, optional)
 }
 
 export class TSNamespaceExportDeclarationMatcher extends Matcher<
@@ -9875,8 +10144,8 @@ export function tsThisType(): Matcher<t.TSThisType> {
 export class TSTupleTypeMatcher extends Matcher<t.TSTupleType> {
   constructor(
     private readonly elementTypes?:
-      | Matcher<Array<t.TSType>>
-      | Array<Matcher<t.TSType>>
+      | Matcher<Array<t.TSType | t.TSNamedTupleMember>>
+      | Array<Matcher<t.TSType> | Matcher<t.TSNamedTupleMember>>
   ) {
     super()
   }
@@ -9914,7 +10183,9 @@ export class TSTupleTypeMatcher extends Matcher<t.TSTupleType> {
 }
 
 export function tsTupleType(
-  elementTypes?: Matcher<Array<t.TSType>> | Array<Matcher<t.TSType>>
+  elementTypes?:
+    | Matcher<Array<t.TSType | t.TSNamedTupleMember>>
+    | Array<Matcher<t.TSType> | Matcher<t.TSNamedTupleMember>>
 ): Matcher<t.TSTupleType> {
   return new TSTupleTypeMatcher(elementTypes)
 }
@@ -10654,8 +10925,8 @@ export class TemplateLiteralMatcher extends Matcher<t.TemplateLiteral> {
       | Matcher<Array<t.TemplateElement>>
       | Array<Matcher<t.TemplateElement>>,
     private readonly expressions?:
-      | Matcher<Array<t.Expression>>
-      | Array<Matcher<t.Expression>>
+      | Matcher<Array<t.Expression | t.TSType>>
+      | Array<Matcher<t.Expression> | Matcher<t.TSType>>
   ) {
     super()
   }
@@ -10708,7 +10979,9 @@ export function templateLiteral(
   quasis?:
     | Matcher<Array<t.TemplateElement>>
     | Array<Matcher<t.TemplateElement>>,
-  expressions?: Matcher<Array<t.Expression>> | Array<Matcher<t.Expression>>
+  expressions?:
+    | Matcher<Array<t.Expression | t.TSType>>
+    | Array<Matcher<t.Expression> | Matcher<t.TSType>>
 ): Matcher<t.TemplateLiteral> {
   return new TemplateLiteralMatcher(quasis, expressions)
 }
@@ -10788,7 +11061,7 @@ export function throwStatement(
 
 export class TryStatementMatcher extends Matcher<t.TryStatement> {
   constructor(
-    private readonly block?: Matcher<any>,
+    private readonly block?: Matcher<t.BlockStatement>,
     private readonly handler?: Matcher<t.CatchClause> | null,
     private readonly finalizer?: Matcher<t.BlockStatement> | null
   ) {
@@ -10842,7 +11115,7 @@ export class TryStatementMatcher extends Matcher<t.TryStatement> {
 }
 
 export function tryStatement(
-  block?: Matcher<any>,
+  block?: Matcher<t.BlockStatement>,
   handler?: Matcher<t.CatchClause> | null,
   finalizer?: Matcher<t.BlockStatement> | null
 ): Matcher<t.TryStatement> {
@@ -10852,8 +11125,8 @@ export function tryStatement(
 export class TupleExpressionMatcher extends Matcher<t.TupleExpression> {
   constructor(
     private readonly elements?:
-      | Matcher<Array<null | t.Expression | t.SpreadElement>>
-      | Array<Matcher<null> | Matcher<t.Expression> | Matcher<t.SpreadElement>>
+      | Matcher<Array<t.Expression | t.SpreadElement>>
+      | Array<Matcher<t.Expression> | Matcher<t.SpreadElement>>
   ) {
     super()
   }
@@ -10889,8 +11162,8 @@ export class TupleExpressionMatcher extends Matcher<t.TupleExpression> {
 
 export function tupleExpression(
   elements?:
-    | Matcher<Array<null | t.Expression | t.SpreadElement>>
-    | Array<Matcher<null> | Matcher<t.Expression> | Matcher<t.SpreadElement>>
+    | Matcher<Array<t.Expression | t.SpreadElement>>
+    | Array<Matcher<t.Expression> | Matcher<t.SpreadElement>>
 ): Matcher<t.TupleExpression> {
   return new TupleExpressionMatcher(elements)
 }
@@ -11710,7 +11983,7 @@ export function withStatement(
 export class YieldExpressionMatcher extends Matcher<t.YieldExpression> {
   constructor(
     private readonly argument?: Matcher<t.Expression> | null,
-    private readonly delegate?: Matcher<any> | boolean
+    private readonly delegate?: Matcher<boolean> | boolean
   ) {
     super()
   }
@@ -11756,7 +12029,7 @@ export class YieldExpressionMatcher extends Matcher<t.YieldExpression> {
 
 export function yieldExpression(
   argument?: Matcher<t.Expression> | null,
-  delegate?: Matcher<any> | boolean
+  delegate?: Matcher<boolean> | boolean
 ): Matcher<t.YieldExpression> {
   return new YieldExpressionMatcher(argument, delegate)
 }

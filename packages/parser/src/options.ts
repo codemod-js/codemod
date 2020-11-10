@@ -8,6 +8,7 @@ import {
  */
 export type ParserPlugin =
   | BabelParserPlugin
+  | 'importAssertions'
   | ['recordAndTuple', { syntaxType: 'hash' | 'bar' }]
 
 type ParserPluginName =
@@ -26,6 +27,7 @@ const DefaultParserPlugins = new Set<ParserPlugin>([
   'exportNamespaceFrom',
   'functionBind',
   'functionSent',
+  'importAssertions',
   'importMeta',
   'jsx',
   'logicalAssignment',
