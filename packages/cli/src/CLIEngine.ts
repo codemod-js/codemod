@@ -54,25 +54,19 @@ export default class CLIEngine {
     let errors = 0
     let total = 0
     const dryRun = this.config.dry
-    let sourcesIterator: IterableIterator<Source>
+    let sources: Array<Source>
 
     if (this.config.stdio) {
-      sourcesIterator = [
-        new Source('<stdin>', await getStream(this.sys.stdin)),
-      ][Symbol.iterator]()
+      sources = [new Source('<stdin>', await getStream(this.sys.stdin))]
     } else {
-      sourcesIterator = iterateSources(
+      sources = iterateSources(
         this.config.sourcePaths,
         this.config.extensions,
-        this.config.ignore,
         this.sys
       )
     }
 
-    const runner = new TransformRunner(
-      sourcesIterator,
-      new InlineTransformer(plugins)
-    )
+    const runner = new TransformRunner(sources, new InlineTransformer(plugins))
 
     for await (const result of runner.run()) {
       this.onTransform(result)

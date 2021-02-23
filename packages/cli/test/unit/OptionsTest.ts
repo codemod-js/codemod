@@ -53,16 +53,6 @@ describe('Options', function () {
     deepEqual(config.sourcePaths, ['src/', 'a.js'])
   })
 
-  it('treats sources as globs', function () {
-    const config = getRunConfig(
-      new Options(['test/fixtures/glob-test/**/*.js']).parse()
-    )
-    deepEqual(config.sourcePaths, [
-      'test/fixtures/glob-test/abc.js',
-      'test/fixtures/glob-test/subdir/def.js',
-    ])
-  })
-
   it('interprets `--stdio` as reading/writing stdin/stdout', function () {
     const config = getRunConfig(new Options(['--stdio']).parse())
     strictEqual(config.stdio, true)

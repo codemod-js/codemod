@@ -19,7 +19,7 @@ export type SourceTransformResult =
 
 export default class TransformRunner {
   constructor(
-    readonly sources: IterableIterator<Source> | Array<Source>,
+    readonly sources: Array<Source>,
     readonly transformer: Transformer
   ) {}
 
