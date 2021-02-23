@@ -1,46 +1,20 @@
-import { extname, join } from 'path'
-import { EntryType, RealSystem, System } from './System'
+import { sync } from 'globby'
+import { extname } from 'path'
+import { RealSystem, System } from './System'
 import { Source } from './TransformRunner'
-
-export type PathPredicate = (
-  path: string,
-  basename: string,
-  root: string,
-  type: EntryType
-) => boolean
 
 /**
  * Builds an iterator that loops through all the files in the given paths,
  * matching a whitelist of extensions and not matched by the ignore predicate.
  */
-export default function* iterateSources(
+export default function iterateSources(
   paths: Array<string>,
-  extensions: Set<string> | null,
-  ignore: PathPredicate,
+  extensions: Set<string> | null = null,
   sys: System = RealSystem
-): IterableIterator<Source> {
-  for (const path of paths) {
-    const type = sys.getEntryType(path)
-
-    if (type === EntryType.Directory) {
-      for (const child of sys.readdir(path)) {
-        const childPath = join(path, child)
-        const childType = sys.getEntryType(childPath)
-
-        if (ignore(childPath, child, path, childType)) {
-          continue
-        }
-
-        if (childType === EntryType.File) {
-          if (!extensions || extensions.has(extname(child))) {
-            yield* iterateSources([childPath], extensions, ignore, sys)
-          }
-        } else if (childType === EntryType.Directory) {
-          yield* iterateSources([childPath], extensions, ignore, sys)
-        }
-      }
-    } else if (type === EntryType.File) {
-      yield new Source(path, sys.readFile(path, 'utf8'))
-    }
-  }
+): Array<Source> {
+  return sync(paths, {
+    gitignore: true,
+  })
+    .filter((file) => !extensions || extensions.has(extname(file)))
+    .map((file) => new Source(file, sys.readFile(file, 'utf8')))
 }

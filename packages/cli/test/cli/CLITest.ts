@@ -1,6 +1,6 @@
 import { strict as assert } from 'assert'
 import * as fs from 'fs'
-import { dirname, join } from 'path'
+import { dirname, join, resolve as pathResolve } from 'path'
 import { sync as rimraf } from 'rimraf'
 import { valid } from 'semver'
 import { inspect, promisify } from 'util'
@@ -64,6 +64,22 @@ describe('CLI', function () {
       stderr.includes('I am a bad plugin'),
       `stderr should include "I am a bad plugin", got: ${stderr}`
     )
+  })
+
+  it('respects globs', async function () {
+    const pathInFixtures = (dirPath: string): string =>
+      pathResolve(__dirname, '..', 'fixtures', 'glob-test', dirPath)
+    const { status, stdout, stderr } = await runCodemodCLI([
+      '--dry',
+      pathInFixtures('**/*.js'),
+      `!${pathInFixtures('omit.js')}`,
+    ])
+
+    assert.equal(status, 0)
+    assert.equal(stdout.includes('abc.js'), true)
+    assert.equal(stdout.includes('subdir/def.js'), true)
+    assert.equal(stdout.includes('omit.js'), false)
+    assert.equal(stderr, '')
   })
 
   it('can read from stdin and write to stdout given the --stdio flag', async function () {
@@ -151,24 +167,6 @@ describe('CLI', function () {
     )
     assert.equal(await readFile(ignored, 'utf8'), '3 + 4;')
     assert.equal(await readFile(processed, 'utf8'), '1;')
-  })
-
-  it('ignores .d.ts files', async function () {
-    const ignored = await createTemporaryFile(
-      'a-dir/ignored.d.ts',
-      'export = 42;'
-    )
-    const { status, stdout, stderr } = await runCodemodCLI([dirname(ignored)])
-
-    assert.deepEqual(
-      { status, stdout, stderr },
-      {
-        status: 0,
-        stdout: `0 file(s), 0 modified, 0 errors\n`,
-        stderr: '',
-      }
-    )
-    assert.equal(await readFile(ignored, 'utf8'), 'export = 42;')
   })
 
   it('processes files but does not replace their contents when using --dry', async function () {

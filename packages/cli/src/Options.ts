@@ -1,5 +1,4 @@
 import { existsSync, readFileSync } from 'fs'
-import { hasMagic as hasGlob, sync as globSync } from 'globby'
 import { resolve } from 'path'
 import { sync as resolveSync } from 'resolve'
 import Config, { ConfigBuilder } from './Config'
@@ -156,11 +155,7 @@ export default class Options {
           if (arg[0] === '-') {
             throw new Error(`unexpected option: ${arg}`)
           } else {
-            if (hasGlob(arg)) {
-              config.addSourcePaths(...globSync(arg))
-            } else {
-              config.addSourcePath(arg)
-            }
+            config.addSourcePath(arg)
           }
           break
       }
