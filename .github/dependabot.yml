@@ -1,0 +1,57 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: core-js
+    versions:
+    - 3.10.0
+    - 3.10.1
+    - 3.10.2
+    - 3.11.0
+    - 3.8.3
+    - 3.9.0
+    - 3.9.1
+  - dependency-name: "@types/node"
+    versions:
+    - 14.14.22
+    - 14.14.24
+    - 14.14.25
+    - 14.14.26
+    - 14.14.28
+    - 14.14.31
+    - 14.14.33
+    - 14.14.35
+    - 14.14.36
+    - 14.14.37
+    - 14.14.39
+    - 14.14.41
+  - dependency-name: y18n
+    versions:
+    - 4.0.1
+    - 4.0.2
+  - dependency-name: "@types/babel__core"
+    versions:
+    - 7.1.12
+    - 7.1.13
+  - dependency-name: "@commitlint/cli"
+    versions:
+    - 11.0.0
+    - 12.0.0
+    - 12.0.1
+  - dependency-name: "@types/mocha"
+    versions:
+    - 8.2.0
+    - 8.2.1
+  - dependency-name: lerna
+    versions:
+    - 3.22.1
+  - dependency-name: "@types/babel__traverse"
+    versions:
+    - 7.11.0
+  - dependency-name: resolve
+    versions:
+    - 1.19.0
