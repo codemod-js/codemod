@@ -12,7 +12,10 @@
   ],
   "scripts": {
     "build": "tsc --build",
-    "test": "jest"
+    "lint": "tsc --build && eslint src",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@babel/types": "^7.12.6"

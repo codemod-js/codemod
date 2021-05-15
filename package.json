@@ -1,10 +1,6 @@
 {
   "name": "codemod",
   "private": true,
-  "scripts": {
-    "lint": "script/ci lint",
-    "test": "script/ci"
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",

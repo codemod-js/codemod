@@ -19,7 +19,9 @@
   ],
   "scripts": {
     "build": "tsc --build",
-    "test": "mocha -r ts-node/register test/**/*.ts"
+    "lint": "tsc --build && eslint src",
+    "test": "mocha -r ts-node/register test/**/*.ts",
+    "test:coverage": "echo TODO && pnpm test"
   },
   "dependencies": {
     "@babel/core": "^7.12.3",
