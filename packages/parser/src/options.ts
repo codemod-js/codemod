@@ -6,14 +6,11 @@ import {
 /**
  * Add some type plugins that are in master but not yet published.
  */
-export type ParserPlugin =
-  | BabelParserPlugin
-  | 'importAssertions'
-  | ['recordAndTuple', { syntaxType: 'hash' | 'bar' }]
+export type ParserPlugin = BabelParserPlugin
 
 type ParserPluginName =
   | Extract<ParserPlugin, string>
-  | Extract<ParserPlugin, [string, object]>[0]
+  | Extract<ParserPlugin, [string, unknown]>[0]
 
 const DefaultParserPlugins = new Set<ParserPlugin>([
   'asyncGenerators',
@@ -151,10 +148,9 @@ function shouldAddPlugin(
     return false
   }
 
-  return !getMutuallyExclusivePluginsForPlugin(
-    name
-  ).some((mutuallyExclusivePlugin) =>
-    pluginListIncludesPlugin(plugins, mutuallyExclusivePlugin)
+  return !getMutuallyExclusivePluginsForPlugin(name).some(
+    (mutuallyExclusivePlugin) =>
+      pluginListIncludesPlugin(plugins, mutuallyExclusivePlugin)
   )
 }
 

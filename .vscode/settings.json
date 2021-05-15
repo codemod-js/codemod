@@ -6,5 +6,8 @@
   },
   "cSpell.words": [
     "codemod"
-  ]
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }
