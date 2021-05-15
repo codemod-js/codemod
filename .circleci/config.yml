@@ -1,0 +1,92 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine. 
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+
+executors:
+  nodejs:
+    docker:
+      - image: cimg/node:12.22
+
+jobs:
+  test-cli:
+    executor: nodejs
+    steps:
+      - checkout-and-install
+      - run:
+          name: Run Linters
+          command: |
+            pnpm --dir packages/cli lint
+      - run:
+          name: Run Front-End Test and Coverage
+          command: |
+            pnpm --dir packages/cli test:coverage
+  test-core:
+    executor: nodejs
+    steps:
+      - checkout-and-install
+      - run:
+          name: Run Linters
+          command: |
+            pnpm --dir packages/core lint
+      - run:
+          name: Run Front-End Test and Coverage
+          command: |
+            pnpm --dir packages/core test:coverage
+  test-matchers:
+    executor: nodejs
+    steps:
+      - checkout-and-install
+      - run:
+          name: Run Linters
+          command: |
+            pnpm --dir packages/matchers lint
+      - run:
+          name: Run Front-End Test and Coverage
+          command: |
+            pnpm --dir packages/matchers test:coverage
+  test-parser:
+    executor: nodejs
+    steps:
+      - checkout-and-install
+      - run:
+          name: Run Linters
+          command: |
+            pnpm --dir packages/parser lint
+      - run:
+          name: Run Front-End Test and Coverage
+          command: |
+            pnpm --dir packages/parser test:coverage
+
+workflows:
+  test:
+    jobs:
+      - test-cli
+      - test-core
+      - test-matchers
+      - test-parser
+
+commands:
+  checkout-and-install:
+    description: Get the code and install dependencies.
+    steps:
+      - run:
+          name: Install pnpm
+          command: |
+            curl -f https://get.pnpm.io/v6.js | sudo node - add --global pnpm@6
+      - checkout
+      # Edit this comment somehow in order to invalidate the CircleCI cache.
+      # Since the contents of this file affect the cache key, editing only a
+      # comment will invalidate the cache without changing the behavior.
+      - restore_cache:
+          key:
+            dotcache-cache-{{checksum ".circleci/config.yml" }}-{{ checksum
+            "pnpm-lock.yaml" }}
+      - run:
+          name: Setup Dependencies
+          command: pnpm install --frozen-lockfile
+      - save_cache:
+          key:
+            dotcache-cache-{{checksum ".circleci/config.yml" }}-{{ checksum
+            "pnpm-lock.yaml" }}
+          paths:
+            - ~/.pnpm-store
