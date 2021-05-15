@@ -17,7 +17,7 @@ test('anyString matches strings', () => {
   // verify `match` acts as a type assertion
   const value: unknown = undefined
   if (m.anyString().match(value)) {
-    ;() => value.toLowerCase()
+    value.toLowerCase()
   }
 })
 
@@ -35,9 +35,9 @@ test('anyNumber matches numbers', () => {
   expect(m.anyNumber().match({})).toBeFalsy()
 
   // verify `match` acts as a type assertion
-  const value: unknown = undefined
+  const value: unknown = 0
   if (m.anyNumber().match(value)) {
-    ;() => value.toFixed()
+    value.toFixed()
   }
 })
 
@@ -51,9 +51,9 @@ test('anything matches everything', () => {
   expect(m.anything().match(undefined)).toBeTruthy()
 
   // verify `match` acts as a type assertion
-  const value: unknown = undefined
+  const value: unknown = 1
   if (m.anything<number>().match(value)) {
-    ;() => value.toFixed()
+    value.toFixed()
   }
 })
 
@@ -71,9 +71,9 @@ test('arrayOf matches a variable-length homogenous array', () => {
   expect(m.arrayOf(m.anything()).match(Number)).toBeFalsy()
 
   // verify `match` acts as a type assertion
-  const value: unknown = undefined
+  const value: unknown = []
   if (m.arrayOf(m.anyString()).match(value)) {
-    ;() => value.push('element')
+    value.push('element')
   }
 })
 
@@ -97,9 +97,9 @@ test('tupleOf matches a fixed-length array', () => {
   expect(stringNumberAnything.match(['a', 1, {}, []])).toBeFalsy()
 
   // verify `match` acts as a type assertion
-  const value: unknown = undefined
+  const value: unknown = '9'
   if (stringNumberAnything.match(value)) {
-    ;() => value.length
+    value.length
   }
 })
 

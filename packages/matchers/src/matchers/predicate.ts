@@ -13,5 +13,5 @@ export class PredicateMatcher<T> extends Matcher<T> {
 }
 
 export default function predicate<T>(predicate: Predicate<T>): Matcher<T> {
-  return new PredicateMatcher(predicate)
+  return new PredicateMatcher<T>(predicate)
 }

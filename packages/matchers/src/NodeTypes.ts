@@ -1,5 +1,5 @@
 import * as t from '@babel/types'
-import { Validator } from '../script/_utils/utils'
+import { Validator } from './utils/validators'
 
 export interface BuilderKeysByType {
   [key: string]: Array<string>
@@ -19,7 +19,7 @@ export interface NodeField<T = unknown> {
   validate: Validator
 }
 
-export const { BUILDER_KEYS, NODE_FIELDS } = (t as unknown) as {
+export const { BUILDER_KEYS, NODE_FIELDS } = t as unknown as {
   BUILDER_KEYS: BuilderKeysByType
   NODE_FIELDS: NodeFieldsByType
 }
