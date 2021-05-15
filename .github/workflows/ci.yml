@@ -33,11 +33,9 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run Linter
-        run:
-          shell: pnpm lint
-          working-directory: packages/${{ matrix.package }}
+        run: pnpm lint
+        working-directory: packages/${{ matrix.package }}
 
       - name: Run Tests
-        run:
-          shell: yarn test
-          working-directory: packages/${{ matrix.package }}
+        run: yarn test
+        working-directory: packages/${{ matrix.package }}
