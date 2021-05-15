@@ -17,7 +17,7 @@ jobs:
           command: |
             pnpm --dir packages/cli lint
       - run:
-          name: Run Front-End Test and Coverage
+          name: Run Tests
           command: |
             pnpm --dir packages/cli test:coverage
   test-core:
@@ -29,7 +29,7 @@ jobs:
           command: |
             pnpm --dir packages/core lint
       - run:
-          name: Run Front-End Test and Coverage
+          name: Run Tests
           command: |
             pnpm --dir packages/core test:coverage
   test-matchers:
@@ -41,7 +41,7 @@ jobs:
           command: |
             pnpm --dir packages/matchers lint
       - run:
-          name: Run Front-End Test and Coverage
+          name: Run Tests
           command: |
             pnpm --dir packages/matchers test:coverage
   test-parser:
@@ -53,7 +53,7 @@ jobs:
           command: |
             pnpm --dir packages/parser lint
       - run:
-          name: Run Front-End Test and Coverage
+          name: Run Tests
           command: |
             pnpm --dir packages/parser test:coverage
 
