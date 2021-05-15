@@ -2,7 +2,7 @@ import * as t from '@babel/types'
 import * as m from '../../src'
 import js from './utils/parse/js'
 import generate from '@babel/generator'
-import traverse, { NodePath } from '@babel/traverse'
+import traverse, { NodePath, VisitNodeFunction } from '@babel/traverse'
 import dedent = require('dedent')
 import { expression } from './utils/builders'
 import match from '../utils/match'
@@ -120,7 +120,7 @@ test('codemod: remove return labels', () => {
     )
   )
 
-  function processFunction(path: NodePath<t.Function>): void {
+  const processFunction: VisitNodeFunction<t.Node, t.Function> = (path) => {
     match(
       returnLabelFunctionMatcher,
       { returnStatement, value, labelDeclaration },

@@ -13,9 +13,7 @@ node_modules
 .idea/
 
 # TypeScript build files
-*.js
-*.d.ts
-*.map
+build
 
 # allow fixtures
 !test/fixtures/**/*.js

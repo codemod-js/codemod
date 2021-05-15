@@ -3,11 +3,16 @@
     "module": "commonjs",
     "target": "es2015",
     "lib": ["es2015", "es2016"],
+    "outDir": "build",
     "noImplicitAny": false,
     "sourceMap": true,
     "strict": true,
-    "declaration": true
+    "declaration": true,
+    "composite": true,
+    "skipLibCheck": true
   },
   "exclude": ["tmp"],
-  "compileOnSave": true
+  "references": [
+    { "path": "../parser" }
+  ]
 }

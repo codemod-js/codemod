@@ -1,4 +1,4 @@
-import { get, Response } from 'got'
+import got, { Response } from 'got'
 import * as fs from 'fs'
 import { tmpNameSync as tmp } from 'tmp'
 import { URL } from 'whatwg-url'
@@ -29,7 +29,7 @@ export default class NetworkResolver implements Resolver {
   }
 
   async resolve(source: string): Promise<string> {
-    const response = await get(source, { followRedirect: true })
+    const response = await got.get(source, { followRedirect: true })
 
     if (response.statusCode !== 200) {
       throw new NetworkLoadError(response)

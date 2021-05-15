@@ -3,11 +3,15 @@
     "module": "commonjs",
     "target": "es2015",
     "lib": ["es2015", "es2016"],
+    "outDir": "build",
     "noImplicitAny": false,
     "sourceMap": true,
     "strictNullChecks": true,
-    "declaration": true
+    "declaration": true,
+    "skipLibCheck": true
   },
   "exclude": ["test/fixtures/**/*.ts", "tmp"],
-  "compileOnSave": true
+  "references": [
+    { "path": "../core" }
+  ]
 }

@@ -6,6 +6,7 @@
     "noImplicitAny": false,
     "sourceMap": true,
     "strict": true,
-    "declaration": true
+    "declaration": true,
+    "skipLibCheck": true
   }
 }

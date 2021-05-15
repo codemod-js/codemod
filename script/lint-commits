@@ -1,5 +1,0 @@
-#!/bin/bash
-
-set -euo pipefail
-
-exec yarn commitlint --from="$(git merge-base HEAD origin/master)"

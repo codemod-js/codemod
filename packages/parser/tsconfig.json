@@ -3,11 +3,14 @@
     "module": "commonjs",
     "target": "es2015",
     "lib": ["es2015", "es2016"],
+    "outDir": "build",
     "noImplicitAny": false,
     "sourceMap": true,
     "strict": true,
-    "declaration": true
+    "declaration": true,
+    "composite": true
   },
+  "include": ["src"],
   "exclude": ["tmp"],
   "compileOnSave": true
 }
