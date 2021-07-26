@@ -60,7 +60,7 @@
     "@types/semver": "^7.1.0",
     "@types/source-map-support": "^0.5.0",
     "@types/tmp": "^0.2.0",
-    "commitlint": "^8.2.0",
+    "commitlint": "^13.1.0",
     "get-port": "^5.0.0",
     "jest": "^25.1.0",
     "make-dir": "^3.0.0",
