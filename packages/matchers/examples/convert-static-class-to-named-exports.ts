@@ -72,7 +72,15 @@ const classDeclaration = m.capture(
         m.classMethod(
           'method',
           m.identifier(),
-          m.anything(),
+          m.arrayOf(
+            m.or(
+              m.identifier(),
+              m.assignmentPattern(),
+              m.objectPattern(),
+              m.arrayPattern(),
+              m.restElement()
+            )
+          ),
           m.anything(),
           false,
           true
@@ -134,11 +142,19 @@ export default function (): PluginObj {
                 )
               }
 
+              if (
+                property.node.params.some((p) => t.isTSParameterProperty(p))
+              ) {
+                continue
+              }
+
               replacements.push(
                 t.exportNamedDeclaration(
                   t.functionDeclaration(
                     property.node.key,
-                    property.node.params,
+                    property.node.params as Array<
+                      t.Identifier | t.Pattern | t.RestElement
+                    >,
                     property.node.body,
                     property.node.generator,
                     property.node.async

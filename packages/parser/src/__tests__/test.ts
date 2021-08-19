@@ -55,6 +55,30 @@ test('does not include "typescript" plugin when "flow" is already enabled', () =
   ).not.toContain('typescript')
 })
 
+test('does not mix conflicting "recordAndTuple" and "pipelineOperator" plugins', () => {
+  // adding recordAndTuple to existing plugins
+  expect(
+    buildOptions({ plugins: [['pipelineOperator', { proposal: 'smart' }]] })
+      .plugins
+  ).not.toContainEqual(['recordAndTuple', expect.anything()])
+  expect(
+    buildOptions({
+      plugins: [['pipelineOperator', { proposal: 'hack', topicToken: '#' }]],
+    }).plugins
+  ).not.toContainEqual(['recordAndTuple', expect.anything()])
+  expect(
+    buildOptions({
+      plugins: [['pipelineOperator', { proposal: 'hack', topicToken: '%' }]],
+    }).plugins
+  ).toContainEqual(['recordAndTuple', { syntaxType: 'hash' }])
+
+  // adding pipelineOperator to existing plugins
+  expect(
+    buildOptions({ plugins: [['recordAndTuple', { syntaxType: 'hash' }]] })
+      .plugins
+  ).toContainEqual(['pipelineOperator', { proposal: 'minimal' }])
+})
+
 test('does not mutate `plugins` array', () => {
   const plugins = []
   buildOptions({ plugins })
@@ -106,6 +130,8 @@ test('parses with a very broad set of options', () => {
       a(?, b)
       // demonstrate 'recordAndTuple' plugin
       #[1, 2, #{a: 3}]
+      // demonstrate 'pipelineOperator' plugin with proposal=minimal
+      x |> y
   `).program.body.map((node) =>
       t.isExpressionStatement(node) ? node.expression.type : node.type
     )
@@ -117,6 +143,7 @@ test('parses with a very broad set of options', () => {
     'AssignmentExpression',
     'CallExpression',
     'TupleExpression',
+    'BinaryExpression',
   ])
 })
 
