@@ -24,11 +24,12 @@ export default class AstExplorerResolver extends NetworkResolver {
   async canResolve(source: string): Promise<boolean> {
     if (await super.canResolve(source)) {
       const url = new URL(await this.normalize(source))
-
-      return (
+      const canResolve =
         this.matchesHost(url) &&
-        /^\/api\/v1\/gist\/[a-f0-9]+(\/[a-f0-9]+)?$/.test(url.pathname)
-      )
+        /^\/api\/v1\/gist\/[a-f0-9]+(\/(?:[a-f0-9]+|latest))?$/.test(
+          url.pathname
+        )
+      return canResolve
     }
 
     return false
