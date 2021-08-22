@@ -35,6 +35,15 @@ describe('AstExplorerResolver', function () {
     strictEqual(normalized, 'https://astexplorer.net/api/v1/gist/688274')
   })
 
+  it('normalizes a gist+latest editor URL into an API URL', async function () {
+    const resolver = new AstExplorerResolver()
+    const normalized = await resolver.normalize(
+      'https://astexplorer.net/#/gist/688274/latest'
+    )
+
+    strictEqual(normalized, 'https://astexplorer.net/api/v1/gist/688274/latest')
+  })
+
   it('extracts the transform from the editor view', async function () {
     const result = await readFile(
       join(__dirname, '../../fixtures/astexplorer/default.json'),
