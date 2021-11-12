@@ -1,5 +1,5 @@
 import * as fs from 'fs'
-import { URL } from 'whatwg-url'
+import { URL } from 'url'
 import NetworkResolver from './NetworkResolver'
 import { promisify } from 'util'
 

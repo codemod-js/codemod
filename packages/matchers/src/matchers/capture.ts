@@ -24,7 +24,7 @@ export class CapturedMatcher<C, M = C> extends Matcher<M> {
 
   matchValue(value: unknown, keys: ReadonlyArray<PropertyKey>): value is M {
     if (this.matcher.matchValue(value, keys)) {
-      this.capture((value as unknown) as C, keys)
+      this.capture(value as unknown as C, keys)
       return true
     } else {
       return false

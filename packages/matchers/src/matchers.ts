@@ -198,9 +198,7 @@ export function arrayTypeAnnotation(
   return new ArrayTypeAnnotationMatcher(elementType)
 }
 
-export class ArrowFunctionExpressionMatcher extends Matcher<
-  t.ArrowFunctionExpression
-> {
+export class ArrowFunctionExpressionMatcher extends Matcher<t.ArrowFunctionExpression> {
   constructor(
     private readonly params?:
       | Matcher<Array<t.Identifier | t.Pattern | t.RestElement>>
@@ -275,9 +273,7 @@ export function arrowFunctionExpression(
   return new ArrowFunctionExpressionMatcher(params, body, async)
 }
 
-export class AssignmentExpressionMatcher extends Matcher<
-  t.AssignmentExpression
-> {
+export class AssignmentExpressionMatcher extends Matcher<t.AssignmentExpression> {
   constructor(
     private readonly operator?: Matcher<string> | string,
     private readonly left?: Matcher<t.LVal>,
@@ -672,9 +668,7 @@ export function booleanLiteral(
   return new BooleanLiteralMatcher(value)
 }
 
-export class BooleanLiteralTypeAnnotationMatcher extends Matcher<
-  t.BooleanLiteralTypeAnnotation
-> {
+export class BooleanLiteralTypeAnnotationMatcher extends Matcher<t.BooleanLiteralTypeAnnotation> {
   constructor(private readonly value?: Matcher<boolean> | boolean) {
     super()
   }
@@ -707,9 +701,7 @@ export function booleanLiteralTypeAnnotation(
   return new BooleanLiteralTypeAnnotationMatcher(value)
 }
 
-export class BooleanTypeAnnotationMatcher extends Matcher<
-  t.BooleanTypeAnnotation
-> {
+export class BooleanTypeAnnotationMatcher extends Matcher<t.BooleanTypeAnnotation> {
   constructor() {
     super()
   }
@@ -1145,9 +1137,7 @@ export function classExpression(
 export class ClassImplementsMatcher extends Matcher<t.ClassImplements> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
-    private readonly typeParameters?: Matcher<
-      t.TypeParameterInstantiation
-    > | null
+    private readonly typeParameters?: Matcher<t.TypeParameterInstantiation> | null
   ) {
     super()
   }
@@ -1503,9 +1493,7 @@ export function classPrivateMethod(
   return new ClassPrivateMethodMatcher(kind, key, params, body, _static)
 }
 
-export class ClassPrivatePropertyMatcher extends Matcher<
-  t.ClassPrivateProperty
-> {
+export class ClassPrivatePropertyMatcher extends Matcher<t.ClassPrivateProperty> {
   constructor(
     private readonly key?: Matcher<t.PrivateName>,
     private readonly value?: Matcher<t.Expression> | null,
@@ -1738,9 +1726,7 @@ export function classProperty(
   )
 }
 
-export class ConditionalExpressionMatcher extends Matcher<
-  t.ConditionalExpression
-> {
+export class ConditionalExpressionMatcher extends Matcher<t.ConditionalExpression> {
   constructor(
     private readonly test?: Matcher<t.Expression>,
     private readonly consequent?: Matcher<t.Expression>,
@@ -1884,9 +1870,7 @@ export function decimalLiteral(
 export class DeclareClassMatcher extends Matcher<t.DeclareClass> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
-    private readonly typeParameters?: Matcher<
-      t.TypeParameterDeclaration
-    > | null,
+    private readonly typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
     private readonly _extends?:
       | Matcher<Array<t.InterfaceExtends>>
       | Array<Matcher<t.InterfaceExtends>>
@@ -1972,9 +1956,7 @@ export function declareClass(
   return new DeclareClassMatcher(id, typeParameters, _extends, body)
 }
 
-export class DeclareExportAllDeclarationMatcher extends Matcher<
-  t.DeclareExportAllDeclaration
-> {
+export class DeclareExportAllDeclarationMatcher extends Matcher<t.DeclareExportAllDeclaration> {
   constructor(private readonly source?: Matcher<t.StringLiteral>) {
     super()
   }
@@ -2003,9 +1985,7 @@ export function declareExportAllDeclaration(
   return new DeclareExportAllDeclarationMatcher(source)
 }
 
-export class DeclareExportDeclarationMatcher extends Matcher<
-  t.DeclareExportDeclaration
-> {
+export class DeclareExportDeclarationMatcher extends Matcher<t.DeclareExportDeclaration> {
   constructor(
     private readonly declaration?: Matcher<t.Flow> | null,
     private readonly specifiers?:
@@ -2124,9 +2104,7 @@ export function declareFunction(
 export class DeclareInterfaceMatcher extends Matcher<t.DeclareInterface> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
-    private readonly typeParameters?: Matcher<
-      t.TypeParameterDeclaration
-    > | null,
+    private readonly typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
     private readonly _extends?:
       | Matcher<Array<t.InterfaceExtends>>
       | Array<Matcher<t.InterfaceExtends>>
@@ -2270,9 +2248,7 @@ export function declareModule(
   return new DeclareModuleMatcher(id, body, kind)
 }
 
-export class DeclareModuleExportsMatcher extends Matcher<
-  t.DeclareModuleExports
-> {
+export class DeclareModuleExportsMatcher extends Matcher<t.DeclareModuleExports> {
   constructor(private readonly typeAnnotation?: Matcher<t.TypeAnnotation>) {
     super()
   }
@@ -2309,9 +2285,7 @@ export function declareModuleExports(
 export class DeclareOpaqueTypeMatcher extends Matcher<t.DeclareOpaqueType> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
-    private readonly typeParameters?: Matcher<
-      t.TypeParameterDeclaration
-    > | null,
+    private readonly typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
     private readonly supertype?: Matcher<t.FlowType> | null
   ) {
     super()
@@ -2379,9 +2353,7 @@ export function declareOpaqueType(
 export class DeclareTypeAliasMatcher extends Matcher<t.DeclareTypeAlias> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
-    private readonly typeParameters?: Matcher<
-      t.TypeParameterDeclaration
-    > | null,
+    private readonly typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
     private readonly right?: Matcher<t.FlowType>
   ) {
     super()
@@ -3067,9 +3039,7 @@ export function enumSymbolBody(
   return new EnumSymbolBodyMatcher(members)
 }
 
-export class ExistsTypeAnnotationMatcher extends Matcher<
-  t.ExistsTypeAnnotation
-> {
+export class ExistsTypeAnnotationMatcher extends Matcher<t.ExistsTypeAnnotation> {
   constructor() {
     super()
   }
@@ -3090,9 +3060,7 @@ export function existsTypeAnnotation(): Matcher<t.ExistsTypeAnnotation> {
   return new ExistsTypeAnnotationMatcher()
 }
 
-export class ExportAllDeclarationMatcher extends Matcher<
-  t.ExportAllDeclaration
-> {
+export class ExportAllDeclarationMatcher extends Matcher<t.ExportAllDeclaration> {
   constructor(private readonly source?: Matcher<t.StringLiteral>) {
     super()
   }
@@ -3121,9 +3089,7 @@ export function exportAllDeclaration(
   return new ExportAllDeclarationMatcher(source)
 }
 
-export class ExportDefaultDeclarationMatcher extends Matcher<
-  t.ExportDefaultDeclaration
-> {
+export class ExportDefaultDeclarationMatcher extends Matcher<t.ExportDefaultDeclaration> {
   constructor(
     private readonly declaration?: Matcher<
       | t.FunctionDeclaration
@@ -3166,9 +3132,7 @@ export function exportDefaultDeclaration(
   return new ExportDefaultDeclarationMatcher(declaration)
 }
 
-export class ExportDefaultSpecifierMatcher extends Matcher<
-  t.ExportDefaultSpecifier
-> {
+export class ExportDefaultSpecifierMatcher extends Matcher<t.ExportDefaultSpecifier> {
   constructor(private readonly exported?: Matcher<t.Identifier>) {
     super()
   }
@@ -3199,9 +3163,7 @@ export function exportDefaultSpecifier(
   return new ExportDefaultSpecifierMatcher(exported)
 }
 
-export class ExportNamedDeclarationMatcher extends Matcher<
-  t.ExportNamedDeclaration
-> {
+export class ExportNamedDeclarationMatcher extends Matcher<t.ExportNamedDeclaration> {
   constructor(
     private readonly declaration?: Matcher<t.Declaration> | null,
     private readonly specifiers?:
@@ -3299,9 +3261,7 @@ export function exportNamedDeclaration(
   return new ExportNamedDeclarationMatcher(declaration, specifiers, source)
 }
 
-export class ExportNamespaceSpecifierMatcher extends Matcher<
-  t.ExportNamespaceSpecifier
-> {
+export class ExportNamespaceSpecifierMatcher extends Matcher<t.ExportNamespaceSpecifier> {
   constructor(private readonly exported?: Matcher<t.Identifier>) {
     super()
   }
@@ -3872,13 +3832,9 @@ export function functionExpression(
   return new FunctionExpressionMatcher(id, params, body, generator, async)
 }
 
-export class FunctionTypeAnnotationMatcher extends Matcher<
-  t.FunctionTypeAnnotation
-> {
+export class FunctionTypeAnnotationMatcher extends Matcher<t.FunctionTypeAnnotation> {
   constructor(
-    private readonly typeParameters?: Matcher<
-      t.TypeParameterDeclaration
-    > | null,
+    private readonly typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
     private readonly params?:
       | Matcher<Array<t.FunctionTypeParam>>
       | Array<Matcher<t.FunctionTypeParam>>,
@@ -4021,14 +3977,10 @@ export function functionTypeParam(
   return new FunctionTypeParamMatcher(name, typeAnnotation)
 }
 
-export class GenericTypeAnnotationMatcher extends Matcher<
-  t.GenericTypeAnnotation
-> {
+export class GenericTypeAnnotationMatcher extends Matcher<t.GenericTypeAnnotation> {
   constructor(
     private readonly id?: Matcher<t.Identifier | t.QualifiedTypeIdentifier>,
-    private readonly typeParameters?: Matcher<
-      t.TypeParameterInstantiation
-    > | null
+    private readonly typeParameters?: Matcher<t.TypeParameterInstantiation> | null
   ) {
     super()
   }
@@ -4301,9 +4253,7 @@ export function importDeclaration(
   return new ImportDeclarationMatcher(specifiers, source)
 }
 
-export class ImportDefaultSpecifierMatcher extends Matcher<
-  t.ImportDefaultSpecifier
-> {
+export class ImportDefaultSpecifierMatcher extends Matcher<t.ImportDefaultSpecifier> {
   constructor(private readonly local?: Matcher<t.Identifier>) {
     super()
   }
@@ -4332,9 +4282,7 @@ export function importDefaultSpecifier(
   return new ImportDefaultSpecifierMatcher(local)
 }
 
-export class ImportNamespaceSpecifierMatcher extends Matcher<
-  t.ImportNamespaceSpecifier
-> {
+export class ImportNamespaceSpecifierMatcher extends Matcher<t.ImportNamespaceSpecifier> {
   constructor(private readonly local?: Matcher<t.Identifier>) {
     super()
   }
@@ -4468,14 +4416,10 @@ export function inferredPredicate(): Matcher<t.InferredPredicate> {
   return new InferredPredicateMatcher()
 }
 
-export class InterfaceDeclarationMatcher extends Matcher<
-  t.InterfaceDeclaration
-> {
+export class InterfaceDeclarationMatcher extends Matcher<t.InterfaceDeclaration> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
-    private readonly typeParameters?: Matcher<
-      t.TypeParameterDeclaration
-    > | null,
+    private readonly typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
     private readonly _extends?:
       | Matcher<Array<t.InterfaceExtends>>
       | Array<Matcher<t.InterfaceExtends>>
@@ -4564,9 +4508,7 @@ export function interfaceDeclaration(
 export class InterfaceExtendsMatcher extends Matcher<t.InterfaceExtends> {
   constructor(
     private readonly id?: Matcher<t.Identifier | t.QualifiedTypeIdentifier>,
-    private readonly typeParameters?: Matcher<
-      t.TypeParameterInstantiation
-    > | null
+    private readonly typeParameters?: Matcher<t.TypeParameterInstantiation> | null
   ) {
     super()
   }
@@ -4614,9 +4556,7 @@ export function interfaceExtends(
   return new InterfaceExtendsMatcher(id, typeParameters)
 }
 
-export class InterfaceTypeAnnotationMatcher extends Matcher<
-  t.InterfaceTypeAnnotation
-> {
+export class InterfaceTypeAnnotationMatcher extends Matcher<t.InterfaceTypeAnnotation> {
   constructor(
     private readonly _extends?:
       | Matcher<Array<t.InterfaceExtends>>
@@ -4677,9 +4617,7 @@ export function interfaceTypeAnnotation(
   return new InterfaceTypeAnnotationMatcher(_extends, body)
 }
 
-export class InterpreterDirectiveMatcher extends Matcher<
-  t.InterpreterDirective
-> {
+export class InterpreterDirectiveMatcher extends Matcher<t.InterpreterDirective> {
   constructor(private readonly value?: Matcher<string> | string) {
     super()
   }
@@ -4712,9 +4650,7 @@ export function interpreterDirective(
   return new InterpreterDirectiveMatcher(value)
 }
 
-export class IntersectionTypeAnnotationMatcher extends Matcher<
-  t.IntersectionTypeAnnotation
-> {
+export class IntersectionTypeAnnotationMatcher extends Matcher<t.IntersectionTypeAnnotation> {
   constructor(
     private readonly types?:
       | Matcher<Array<t.FlowType>>
@@ -5014,9 +4950,7 @@ export function jsxEmptyExpression(): Matcher<t.JSXEmptyExpression> {
   return new JSXEmptyExpressionMatcher()
 }
 
-export class JSXExpressionContainerMatcher extends Matcher<
-  t.JSXExpressionContainer
-> {
+export class JSXExpressionContainerMatcher extends Matcher<t.JSXExpressionContainer> {
   constructor(
     private readonly expression?: Matcher<t.Expression | t.JSXEmptyExpression>
   ) {
@@ -5826,9 +5760,7 @@ export function nullLiteral(): Matcher<t.NullLiteral> {
   return new NullLiteralMatcher()
 }
 
-export class NullLiteralTypeAnnotationMatcher extends Matcher<
-  t.NullLiteralTypeAnnotation
-> {
+export class NullLiteralTypeAnnotationMatcher extends Matcher<t.NullLiteralTypeAnnotation> {
   constructor() {
     super()
   }
@@ -5845,15 +5777,11 @@ export class NullLiteralTypeAnnotationMatcher extends Matcher<
   }
 }
 
-export function nullLiteralTypeAnnotation(): Matcher<
-  t.NullLiteralTypeAnnotation
-> {
+export function nullLiteralTypeAnnotation(): Matcher<t.NullLiteralTypeAnnotation> {
   return new NullLiteralTypeAnnotationMatcher()
 }
 
-export class NullableTypeAnnotationMatcher extends Matcher<
-  t.NullableTypeAnnotation
-> {
+export class NullableTypeAnnotationMatcher extends Matcher<t.NullableTypeAnnotation> {
   constructor(private readonly typeAnnotation?: Matcher<t.FlowType>) {
     super()
   }
@@ -5887,9 +5815,7 @@ export function nullableTypeAnnotation(
   return new NullableTypeAnnotationMatcher(typeAnnotation)
 }
 
-export class NumberLiteralTypeAnnotationMatcher extends Matcher<
-  t.NumberLiteralTypeAnnotation
-> {
+export class NumberLiteralTypeAnnotationMatcher extends Matcher<t.NumberLiteralTypeAnnotation> {
   constructor(private readonly value?: Matcher<number> | number) {
     super()
   }
@@ -5922,9 +5848,7 @@ export function numberLiteralTypeAnnotation(
   return new NumberLiteralTypeAnnotationMatcher(value)
 }
 
-export class NumberTypeAnnotationMatcher extends Matcher<
-  t.NumberTypeAnnotation
-> {
+export class NumberTypeAnnotationMatcher extends Matcher<t.NumberTypeAnnotation> {
   constructor() {
     super()
   }
@@ -6320,9 +6244,7 @@ export function objectProperty(
   return new ObjectPropertyMatcher(key, value, computed, shorthand, decorators)
 }
 
-export class ObjectTypeAnnotationMatcher extends Matcher<
-  t.ObjectTypeAnnotation
-> {
+export class ObjectTypeAnnotationMatcher extends Matcher<t.ObjectTypeAnnotation> {
   constructor(
     private readonly properties?:
       | Matcher<Array<t.ObjectTypeProperty | t.ObjectTypeSpreadProperty>>
@@ -6406,9 +6328,10 @@ export class ObjectTypeAnnotationMatcher extends Matcher<
       return false
     } else if (Array.isArray(this.callProperties)) {
       if (
-        !tupleOf<unknown>(
-          ...this.callProperties
-        ).matchValue(node.callProperties, [...keys, 'callProperties'])
+        !tupleOf<unknown>(...this.callProperties).matchValue(
+          node.callProperties,
+          [...keys, 'callProperties']
+        )
       ) {
         return false
       }
@@ -6491,9 +6414,7 @@ export function objectTypeAnnotation(
   )
 }
 
-export class ObjectTypeCallPropertyMatcher extends Matcher<
-  t.ObjectTypeCallProperty
-> {
+export class ObjectTypeCallPropertyMatcher extends Matcher<t.ObjectTypeCallProperty> {
   constructor(private readonly value?: Matcher<t.FlowType>) {
     super()
   }
@@ -6593,9 +6514,7 @@ export function objectTypeIndexer(
   return new ObjectTypeIndexerMatcher(id, key, value, variance)
 }
 
-export class ObjectTypeInternalSlotMatcher extends Matcher<
-  t.ObjectTypeInternalSlot
-> {
+export class ObjectTypeInternalSlotMatcher extends Matcher<t.ObjectTypeInternalSlot> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
     private readonly value?: Matcher<t.FlowType>,
@@ -6728,9 +6647,7 @@ export function objectTypeProperty(
   return new ObjectTypePropertyMatcher(key, value, variance)
 }
 
-export class ObjectTypeSpreadPropertyMatcher extends Matcher<
-  t.ObjectTypeSpreadProperty
-> {
+export class ObjectTypeSpreadPropertyMatcher extends Matcher<t.ObjectTypeSpreadProperty> {
   constructor(private readonly argument?: Matcher<t.FlowType>) {
     super()
   }
@@ -6764,9 +6681,7 @@ export function objectTypeSpreadProperty(
 export class OpaqueTypeMatcher extends Matcher<t.OpaqueType> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
-    private readonly typeParameters?: Matcher<
-      t.TypeParameterDeclaration
-    > | null,
+    private readonly typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
     private readonly supertype?: Matcher<t.FlowType> | null,
     private readonly impltype?: Matcher<t.FlowType>
   ) {
@@ -6841,9 +6756,7 @@ export function opaqueType(
   return new OpaqueTypeMatcher(id, typeParameters, supertype, impltype)
 }
 
-export class OptionalCallExpressionMatcher extends Matcher<
-  t.OptionalCallExpression
-> {
+export class OptionalCallExpressionMatcher extends Matcher<t.OptionalCallExpression> {
   constructor(
     private readonly callee?: Matcher<t.Expression>,
     private readonly _arguments?:
@@ -6935,9 +6848,7 @@ export function optionalCallExpression(
   return new OptionalCallExpressionMatcher(callee, _arguments, optional)
 }
 
-export class OptionalIndexedAccessTypeMatcher extends Matcher<
-  t.OptionalIndexedAccessType
-> {
+export class OptionalIndexedAccessTypeMatcher extends Matcher<t.OptionalIndexedAccessType> {
   constructor(
     private readonly objectType?: Matcher<t.FlowType>,
     private readonly indexType?: Matcher<t.FlowType>
@@ -6980,9 +6891,7 @@ export function optionalIndexedAccessType(
   return new OptionalIndexedAccessTypeMatcher(objectType, indexType)
 }
 
-export class OptionalMemberExpressionMatcher extends Matcher<
-  t.OptionalMemberExpression
-> {
+export class OptionalMemberExpressionMatcher extends Matcher<t.OptionalMemberExpression> {
   constructor(
     private readonly object?: Matcher<t.Expression>,
     private readonly property?: Matcher<t.Expression | t.Identifier>,
@@ -7056,9 +6965,7 @@ export function optionalMemberExpression(
   )
 }
 
-export class ParenthesizedExpressionMatcher extends Matcher<
-  t.ParenthesizedExpression
-> {
+export class ParenthesizedExpressionMatcher extends Matcher<t.ParenthesizedExpression> {
   constructor(private readonly expression?: Matcher<t.Expression>) {
     super()
   }
@@ -7089,9 +6996,7 @@ export function parenthesizedExpression(
   return new ParenthesizedExpressionMatcher(expression)
 }
 
-export class PipelineBareFunctionMatcher extends Matcher<
-  t.PipelineBareFunction
-> {
+export class PipelineBareFunctionMatcher extends Matcher<t.PipelineBareFunction> {
   constructor(private readonly callee?: Matcher<t.Expression>) {
     super()
   }
@@ -7120,9 +7025,7 @@ export function pipelineBareFunction(
   return new PipelineBareFunctionMatcher(callee)
 }
 
-export class PipelinePrimaryTopicReferenceMatcher extends Matcher<
-  t.PipelinePrimaryTopicReference
-> {
+export class PipelinePrimaryTopicReferenceMatcher extends Matcher<t.PipelinePrimaryTopicReference> {
   constructor() {
     super()
   }
@@ -7139,15 +7042,11 @@ export class PipelinePrimaryTopicReferenceMatcher extends Matcher<
   }
 }
 
-export function pipelinePrimaryTopicReference(): Matcher<
-  t.PipelinePrimaryTopicReference
-> {
+export function pipelinePrimaryTopicReference(): Matcher<t.PipelinePrimaryTopicReference> {
   return new PipelinePrimaryTopicReferenceMatcher()
 }
 
-export class PipelineTopicExpressionMatcher extends Matcher<
-  t.PipelineTopicExpression
-> {
+export class PipelineTopicExpressionMatcher extends Matcher<t.PipelineTopicExpression> {
   constructor(private readonly expression?: Matcher<t.Expression>) {
     super()
   }
@@ -7368,9 +7267,7 @@ export function program(
   return new ProgramMatcher(body, directives, sourceType, interpreter)
 }
 
-export class QualifiedTypeIdentifierMatcher extends Matcher<
-  t.QualifiedTypeIdentifier
-> {
+export class QualifiedTypeIdentifierMatcher extends Matcher<t.QualifiedTypeIdentifier> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
     private readonly qualification?: Matcher<
@@ -7725,9 +7622,7 @@ export function stringLiteral(
   return new StringLiteralMatcher(value)
 }
 
-export class StringLiteralTypeAnnotationMatcher extends Matcher<
-  t.StringLiteralTypeAnnotation
-> {
+export class StringLiteralTypeAnnotationMatcher extends Matcher<t.StringLiteralTypeAnnotation> {
   constructor(private readonly value?: Matcher<string> | string) {
     super()
   }
@@ -7760,9 +7655,7 @@ export function stringLiteralTypeAnnotation(
   return new StringLiteralTypeAnnotationMatcher(value)
 }
 
-export class StringTypeAnnotationMatcher extends Matcher<
-  t.StringTypeAnnotation
-> {
+export class StringTypeAnnotationMatcher extends Matcher<t.StringTypeAnnotation> {
   constructor() {
     super()
   }
@@ -7915,9 +7808,7 @@ export function switchStatement(
   return new SwitchStatementMatcher(discriminant, cases)
 }
 
-export class SymbolTypeAnnotationMatcher extends Matcher<
-  t.SymbolTypeAnnotation
-> {
+export class SymbolTypeAnnotationMatcher extends Matcher<t.SymbolTypeAnnotation> {
   constructor() {
     super()
   }
@@ -8078,13 +7969,9 @@ export function tsBooleanKeyword(): Matcher<t.TSBooleanKeyword> {
   return new TSBooleanKeywordMatcher()
 }
 
-export class TSCallSignatureDeclarationMatcher extends Matcher<
-  t.TSCallSignatureDeclaration
-> {
+export class TSCallSignatureDeclarationMatcher extends Matcher<t.TSCallSignatureDeclaration> {
   constructor(
-    private readonly typeParameters?: Matcher<
-      t.TSTypeParameterDeclaration
-    > | null,
+    private readonly typeParameters?: Matcher<t.TSTypeParameterDeclaration> | null,
     private readonly parameters?:
       | Matcher<Array<t.Identifier | t.RestElement>>
       | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
@@ -8240,13 +8127,9 @@ export function tsConditionalType(
   )
 }
 
-export class TSConstructSignatureDeclarationMatcher extends Matcher<
-  t.TSConstructSignatureDeclaration
-> {
+export class TSConstructSignatureDeclarationMatcher extends Matcher<t.TSConstructSignatureDeclaration> {
   constructor(
-    private readonly typeParameters?: Matcher<
-      t.TSTypeParameterDeclaration
-    > | null,
+    private readonly typeParameters?: Matcher<t.TSTypeParameterDeclaration> | null,
     private readonly parameters?:
       | Matcher<Array<t.Identifier | t.RestElement>>
       | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
@@ -8336,9 +8219,7 @@ export function tsConstructSignatureDeclaration(
 
 export class TSConstructorTypeMatcher extends Matcher<t.TSConstructorType> {
   constructor(
-    private readonly typeParameters?: Matcher<
-      t.TSTypeParameterDeclaration
-    > | null,
+    private readonly typeParameters?: Matcher<t.TSTypeParameterDeclaration> | null,
     private readonly parameters?:
       | Matcher<Array<t.Identifier | t.RestElement>>
       | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
@@ -8803,14 +8684,10 @@ export function tsExportAssignment(
   return new TSExportAssignmentMatcher(expression)
 }
 
-export class TSExpressionWithTypeArgumentsMatcher extends Matcher<
-  t.TSExpressionWithTypeArguments
-> {
+export class TSExpressionWithTypeArgumentsMatcher extends Matcher<t.TSExpressionWithTypeArguments> {
   constructor(
     private readonly expression?: Matcher<t.TSEntityName>,
-    private readonly typeParameters?: Matcher<
-      t.TSTypeParameterInstantiation
-    > | null
+    private readonly typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null
   ) {
     super()
   }
@@ -8860,9 +8737,7 @@ export function tsExpressionWithTypeArguments(
   return new TSExpressionWithTypeArgumentsMatcher(expression, typeParameters)
 }
 
-export class TSExternalModuleReferenceMatcher extends Matcher<
-  t.TSExternalModuleReference
-> {
+export class TSExternalModuleReferenceMatcher extends Matcher<t.TSExternalModuleReference> {
   constructor(private readonly expression?: Matcher<t.StringLiteral>) {
     super()
   }
@@ -8895,9 +8770,7 @@ export function tsExternalModuleReference(
 
 export class TSFunctionTypeMatcher extends Matcher<t.TSFunctionType> {
   constructor(
-    private readonly typeParameters?: Matcher<
-      t.TSTypeParameterDeclaration
-    > | null,
+    private readonly typeParameters?: Matcher<t.TSTypeParameterDeclaration> | null,
     private readonly parameters?:
       | Matcher<Array<t.Identifier | t.RestElement>>
       | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
@@ -8981,9 +8854,7 @@ export function tsFunctionType(
   return new TSFunctionTypeMatcher(typeParameters, parameters, typeAnnotation)
 }
 
-export class TSImportEqualsDeclarationMatcher extends Matcher<
-  t.TSImportEqualsDeclaration
-> {
+export class TSImportEqualsDeclarationMatcher extends Matcher<t.TSImportEqualsDeclaration> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
     private readonly moduleReference?: Matcher<
@@ -9033,9 +8904,7 @@ export class TSImportTypeMatcher extends Matcher<t.TSImportType> {
   constructor(
     private readonly argument?: Matcher<t.StringLiteral>,
     private readonly qualifier?: Matcher<t.TSEntityName> | null,
-    private readonly typeParameters?: Matcher<
-      t.TSTypeParameterInstantiation
-    > | null
+    private readonly typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null
   ) {
     super()
   }
@@ -9281,14 +9150,10 @@ export function tsInterfaceBody(
   return new TSInterfaceBodyMatcher(body)
 }
 
-export class TSInterfaceDeclarationMatcher extends Matcher<
-  t.TSInterfaceDeclaration
-> {
+export class TSInterfaceDeclarationMatcher extends Matcher<t.TSInterfaceDeclaration> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
-    private readonly typeParameters?: Matcher<
-      t.TSTypeParameterDeclaration
-    > | null,
+    private readonly typeParameters?: Matcher<t.TSTypeParameterDeclaration> | null,
     private readonly _extends?:
       | Matcher<Array<t.TSExpressionWithTypeArguments>>
       | Array<Matcher<t.TSExpressionWithTypeArguments>>
@@ -9554,9 +9419,7 @@ export function tsMappedType(
 export class TSMethodSignatureMatcher extends Matcher<t.TSMethodSignature> {
   constructor(
     private readonly key?: Matcher<t.Expression>,
-    private readonly typeParameters?: Matcher<
-      t.TSTypeParameterDeclaration
-    > | null,
+    private readonly typeParameters?: Matcher<t.TSTypeParameterDeclaration> | null,
     private readonly parameters?:
       | Matcher<Array<t.Identifier | t.RestElement>>
       | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
@@ -9785,9 +9648,7 @@ export function tsNamedTupleMember(
   return new TSNamedTupleMemberMatcher(label, elementType, optional)
 }
 
-export class TSNamespaceExportDeclarationMatcher extends Matcher<
-  t.TSNamespaceExportDeclaration
-> {
+export class TSNamespaceExportDeclarationMatcher extends Matcher<t.TSNamespaceExportDeclaration> {
   constructor(private readonly id?: Matcher<t.Identifier>) {
     super()
   }
@@ -10285,14 +10146,10 @@ export function tsTupleType(
   return new TSTupleTypeMatcher(elementTypes)
 }
 
-export class TSTypeAliasDeclarationMatcher extends Matcher<
-  t.TSTypeAliasDeclaration
-> {
+export class TSTypeAliasDeclarationMatcher extends Matcher<t.TSTypeAliasDeclaration> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
-    private readonly typeParameters?: Matcher<
-      t.TSTypeParameterDeclaration
-    > | null,
+    private readonly typeParameters?: Matcher<t.TSTypeParameterDeclaration> | null,
     private readonly typeAnnotation?: Matcher<t.TSType>
   ) {
     super()
@@ -10576,9 +10433,7 @@ export function tsTypeParameter(
   return new TSTypeParameterMatcher(constraint, _default, name)
 }
 
-export class TSTypeParameterDeclarationMatcher extends Matcher<
-  t.TSTypeParameterDeclaration
-> {
+export class TSTypeParameterDeclarationMatcher extends Matcher<t.TSTypeParameterDeclaration> {
   constructor(
     private readonly params?:
       | Matcher<Array<t.TSTypeParameter>>
@@ -10620,9 +10475,7 @@ export function tsTypeParameterDeclaration(
   return new TSTypeParameterDeclarationMatcher(params)
 }
 
-export class TSTypeParameterInstantiationMatcher extends Matcher<
-  t.TSTypeParameterInstantiation
-> {
+export class TSTypeParameterInstantiationMatcher extends Matcher<t.TSTypeParameterInstantiation> {
   constructor(
     private readonly params?:
       | Matcher<Array<t.TSType>>
@@ -10775,9 +10628,7 @@ export function tsTypeQuery(
 export class TSTypeReferenceMatcher extends Matcher<t.TSTypeReference> {
   constructor(
     private readonly typeName?: Matcher<t.TSEntityName>,
-    private readonly typeParameters?: Matcher<
-      t.TSTypeParameterInstantiation
-    > | null
+    private readonly typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null
   ) {
     super()
   }
@@ -10930,9 +10781,7 @@ export function tsVoidKeyword(): Matcher<t.TSVoidKeyword> {
   return new TSVoidKeywordMatcher()
 }
 
-export class TaggedTemplateExpressionMatcher extends Matcher<
-  t.TaggedTemplateExpression
-> {
+export class TaggedTemplateExpressionMatcher extends Matcher<t.TaggedTemplateExpression> {
   constructor(
     private readonly tag?: Matcher<t.Expression>,
     private readonly quasi?: Matcher<t.TemplateLiteral>
@@ -11329,9 +11178,7 @@ export function tupleTypeAnnotation(
 export class TypeAliasMatcher extends Matcher<t.TypeAlias> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
-    private readonly typeParameters?: Matcher<
-      t.TypeParameterDeclaration
-    > | null,
+    private readonly typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
     private readonly right?: Matcher<t.FlowType>
   ) {
     super()
@@ -11537,9 +11384,7 @@ export function typeParameter(
   return new TypeParameterMatcher(bound, _default, variance)
 }
 
-export class TypeParameterDeclarationMatcher extends Matcher<
-  t.TypeParameterDeclaration
-> {
+export class TypeParameterDeclarationMatcher extends Matcher<t.TypeParameterDeclaration> {
   constructor(
     private readonly params?:
       | Matcher<Array<t.TypeParameter>>
@@ -11581,9 +11426,7 @@ export function typeParameterDeclaration(
   return new TypeParameterDeclarationMatcher(params)
 }
 
-export class TypeParameterInstantiationMatcher extends Matcher<
-  t.TypeParameterInstantiation
-> {
+export class TypeParameterInstantiationMatcher extends Matcher<t.TypeParameterInstantiation> {
   constructor(
     private readonly params?:
       | Matcher<Array<t.FlowType>>
@@ -11625,9 +11468,7 @@ export function typeParameterInstantiation(
   return new TypeParameterInstantiationMatcher(params)
 }
 
-export class TypeofTypeAnnotationMatcher extends Matcher<
-  t.TypeofTypeAnnotation
-> {
+export class TypeofTypeAnnotationMatcher extends Matcher<t.TypeofTypeAnnotation> {
   constructor(private readonly argument?: Matcher<t.FlowType>) {
     super()
   }
@@ -11822,9 +11663,7 @@ export function updateExpression(
   return new UpdateExpressionMatcher(operator, argument, prefix)
 }
 
-export class V8IntrinsicIdentifierMatcher extends Matcher<
-  t.V8IntrinsicIdentifier
-> {
+export class V8IntrinsicIdentifierMatcher extends Matcher<t.V8IntrinsicIdentifier> {
   constructor(private readonly name?: Matcher<string> | string) {
     super()
   }

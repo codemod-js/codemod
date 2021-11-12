@@ -1,7 +1,7 @@
 import { get, Response } from 'got'
 import * as fs from 'fs'
 import { tmpNameSync as tmp } from 'tmp'
-import { URL } from 'whatwg-url'
+import { URL } from 'url'
 import Resolver from './Resolver'
 import { promisify } from 'util'
 
