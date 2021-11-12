@@ -33,11 +33,6 @@
       "git add"
     ]
   },
-  "resolutions": {
-    "**/@babel/parser": "7.16.3",
-    "**/@babel/types": "7.16.0",
-    "**/@types/node": "16.11.7"
-  },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^8.2.0",
