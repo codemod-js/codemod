@@ -148,9 +148,11 @@ test('parses with a very broad set of options', () => {
 })
 
 test('allows parsing records and tuples with "bar" syntax', () => {
-  const tuple = (parse(`[|1, 2, {|a: 1|}|]`, {
-    plugins: [['recordAndTuple', { syntaxType: 'bar' }]],
-  }).program.body[0] as t.ExpressionStatement).expression
+  const tuple = (
+    parse(`[|1, 2, {|a: 1|}|]`, {
+      plugins: [['recordAndTuple', { syntaxType: 'bar' }]],
+    }).program.body[0] as t.ExpressionStatement
+  ).expression
   expect(t.isTupleExpression(tuple)).toBe(true)
   expect(t.isRecordExpression((tuple as t.TupleExpression).elements[2])).toBe(
     true

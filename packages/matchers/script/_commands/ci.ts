@@ -118,22 +118,10 @@ async function lint(
 ): Promise<number> {
   return await runNodePackageBinary(
     'eslint',
-    [
-      'packages/matchers',
-      '--ext',
-      '.ts',
-      ...(isCI()
-        ? ['--format', 'junit', '-o', 'reports/junit/eslint-results.xml']
-        : []),
-      ...args,
-    ],
+    ['packages/matchers', '--ext', '.ts', ...args],
     join(__dirname, '../../../..'),
     stdin,
     stdout,
     stderr
   )
-}
-
-function isCI(): boolean {
-  return process.env.CI === 'true'
 }

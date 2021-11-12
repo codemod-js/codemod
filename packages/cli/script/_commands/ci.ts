@@ -58,19 +58,7 @@ async function test(
 ): Promise<number> {
   return await runNodePackageBinary(
     'mocha',
-    [
-      'test/**/*Test.js',
-      ...(isCI()
-        ? [
-            '--reporter',
-            'mocha-junit-reporter',
-            '--reporter-options',
-            'mochaFile=reports/junit/js-test-results.xml',
-            '--color',
-            ...args,
-          ]
-        : ['--color', ...args]),
-    ],
+    ['test/**/*Test.js', '--color', ...args],
     join(__dirname, '../..'),
     stdin,
     stdout,
@@ -86,22 +74,10 @@ async function lint(
 ): Promise<number> {
   return await runNodePackageBinary(
     'eslint',
-    [
-      'packages/cli',
-      '--ext',
-      '.ts',
-      ...(isCI()
-        ? ['--format', 'junit', '-o', 'reports/junit/eslint-results.xml']
-        : []),
-      ...args,
-    ],
+    ['packages/cli', '--ext', '.ts', ...args],
     join(__dirname, '../../../..'),
     stdin,
     stdout,
     stderr
   )
-}
-
-function isCI(): boolean {
-  return process.env.CI === 'true'
 }

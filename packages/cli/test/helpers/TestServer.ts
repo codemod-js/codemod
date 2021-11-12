@@ -1,6 +1,6 @@
 import getPort = require('get-port')
 import { createServer, IncomingMessage, Server, ServerResponse } from 'http'
-import { URL } from 'whatwg-url'
+import { URL } from 'url'
 
 export type RequestHandler = (req: IncomingMessage, res: ServerResponse) => void
 

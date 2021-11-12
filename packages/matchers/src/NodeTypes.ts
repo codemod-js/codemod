@@ -19,7 +19,7 @@ export interface NodeField<T = unknown> {
   validate: Validator
 }
 
-export const { BUILDER_KEYS, NODE_FIELDS } = (t as unknown) as {
+export const { BUILDER_KEYS, NODE_FIELDS } = t as unknown as {
   BUILDER_KEYS: BuilderKeysByType
   NODE_FIELDS: NodeFieldsByType
 }
