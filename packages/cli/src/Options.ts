@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'fs'
 import { hasMagic as hasGlob, sync as globSync } from 'globby'
 import { resolve } from 'path'
 import { sync as resolveSync } from 'resolve'
-import Config, { ConfigBuilder, Printer } from './Config'
+import Config, { ConfigBuilder } from './Config'
 import { RequireableExtensions } from './extensions'
 
 export interface RunCommand {
@@ -90,22 +90,6 @@ export default class Options {
           break
         }
 
-        case '--printer': {
-          i++
-          const rawPrinter = this.args[i]
-
-          if (rawPrinter === Printer.Babel) {
-            config.printer(Printer.Babel)
-          } else if (rawPrinter === Printer.Prettier) {
-            config.printer(Printer.Prettier)
-          } else if (rawPrinter === Printer.Recast) {
-            config.printer(Printer.Recast)
-          } else {
-            throw new Error(`unexpected printer value: ${rawPrinter}`)
-          }
-          break
-        }
-
         case '-r':
         case '--require':
           i++
@@ -115,11 +99,6 @@ export default class Options {
         case '--transpile-plugins':
         case '--no-transpile-plugins':
           config.transpilePlugins(arg === '--transpile-plugins')
-          break
-
-        case '--find-babel-config':
-        case '--no-find-babel-config':
-          config.findBabelConfig(arg === '--find-babel-config')
           break
 
         case '--extensions':

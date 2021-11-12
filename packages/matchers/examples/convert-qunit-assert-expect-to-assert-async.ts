@@ -29,8 +29,7 @@
 
 import * as t from '@babel/types'
 import * as m from '../src'
-import { PluginObj } from '@babel/core'
-import { NodePath } from '@babel/traverse'
+import { NodePath, PluginObj } from '@babel/core'
 import { statement } from '../src/__tests__/utils/builders'
 
 // capture name of `assert` parameter

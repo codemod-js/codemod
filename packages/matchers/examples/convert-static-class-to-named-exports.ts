@@ -54,8 +54,7 @@
  * }
  */
 
-import { PluginObj } from '@babel/core'
-import { NodePath } from '@babel/traverse'
+import { NodePath, PluginObj } from '@babel/core'
 import * as t from '@babel/types'
 import * as m from '../src'
 
@@ -123,9 +122,7 @@ export default function (): PluginObj {
           path,
           ({ exportDeclaration, classDeclaration }) => {
             const replacements: Array<t.Statement> = []
-            const classBody = classDeclaration.get('body') as NodePath<
-              t.ClassBody
-            >
+            const classBody = classDeclaration.get('body')
 
             for (const property of classBody.get('body')) {
               if (!property.isClassMethod()) {

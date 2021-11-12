@@ -49,24 +49,16 @@ function defaultIgnorePredicate(
   )
 }
 
-export enum Printer {
-  Recast = 'recast',
-  Prettier = 'prettier',
-  Babel = 'babel',
-}
-
 export default class Config {
   constructor(
     readonly sourcePaths: Array<string> = [],
     readonly localPlugins: Array<string> = [],
     readonly remotePlugins: Array<string> = [],
     readonly pluginOptions: Map<string, object> = new Map<string, object>(),
-    readonly printer: Printer = Printer.Recast,
     readonly extensions: Set<string> = TransformableExtensions,
     readonly sourceType: ParserOptions['sourceType'] = 'unambiguous',
     readonly requires: Array<string> = [],
     readonly transpilePlugins: boolean = true,
-    readonly findBabelConfig: boolean = false,
     readonly ignore: PathPredicate = defaultIgnorePredicate,
     readonly stdio: boolean = false,
     readonly dry: boolean = false
@@ -126,7 +118,7 @@ export default class Config {
 
   loadBabelTranspile(): void {
     if (this.transpilePlugins) {
-      enable(this.findBabelConfig)
+      enable()
       install()
     }
   }
@@ -192,12 +184,10 @@ export class ConfigBuilder {
   private _localPlugins?: Array<string>
   private _remotePlugins?: Array<string>
   private _pluginOptions?: Map<string, object>
-  private _printer?: Printer
   private _extensions: Set<string> = new Set(TransformableExtensions)
   private _sourceType: ParserOptions['sourceType'] = 'module'
   private _requires?: Array<string>
   private _transpilePlugins?: boolean
-  private _findBabelConfig?: boolean
   private _ignore?: PathPredicate
   private _stdio?: boolean
   private _dry?: boolean
@@ -261,11 +251,6 @@ export class ConfigBuilder {
     return this
   }
 
-  printer(value: Printer): this {
-    this._printer = value
-    return this
-  }
-
   extensions(value: Set<string>): this {
     this._extensions = value
     return this
@@ -302,11 +287,6 @@ export class ConfigBuilder {
     return this
   }
 
-  findBabelConfig(value: boolean): this {
-    this._findBabelConfig = value
-    return this
-  }
-
   ignore(value: PathPredicate): this {
     this._ignore = value
     return this
@@ -328,12 +308,10 @@ export class ConfigBuilder {
       this._localPlugins,
       this._remotePlugins,
       this._pluginOptions,
-      this._printer,
       this._extensions,
       this._sourceType,
       this._requires,
       this._transpilePlugins,
-      this._findBabelConfig,
       this._ignore,
       this._stdio,
       this._dry

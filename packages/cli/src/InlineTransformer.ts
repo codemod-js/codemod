@@ -1,24 +1,16 @@
 import Transformer from './Transformer'
-import { transform, TransformOptions, Printer } from '@codemod/core'
+import { transform, TransformOptions } from '@codemod/core'
 import { PluginItem } from '@babel/core'
 
 export default class InlineTransformer implements Transformer {
-  constructor(
-    private readonly plugins: Array<PluginItem>,
-    private readonly findBabelConfig: boolean = false,
-    private readonly printer?: Printer
-  ) {}
+  constructor(private readonly plugins: Array<PluginItem>) {}
 
   async transform(filepath: string, content: string): Promise<string> {
     const options: TransformOptions = {
       filename: filepath,
-      babelrc: this.findBabelConfig,
+      babelrc: false,
+      configFile: false,
       plugins: this.plugins,
-      printer: this.printer,
-    }
-
-    if (!this.findBabelConfig) {
-      options.configFile = this.findBabelConfig
     }
 
     const result = transform(content, options)

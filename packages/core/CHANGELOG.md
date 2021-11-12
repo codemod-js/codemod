@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.0](https://github.com/codemod-js/codemod/compare/@codemod/core@1.1.1...@codemod/core@2.0.0) (2021-11-12)
+
+- remove underused options: `--printer`, `--babelrc`, `--find-babel-config` ([50a864d](https://github.com/codemod-js/codemod/commit/50a864df7344767a5c0e9e3ab990a0f4d05d634d))
+- update babel to v7.16.x ([1218bf9](https://github.com/codemod-js/codemod/commit/1218bf98145feaa8a692611152559aa6b46b9ba0))
+
 ## [1.0.7](https://github.com/codemod-js/codemod/compare/@codemod/core@1.0.4...@codemod/core@1.0.7) (2020-04-05)
 
 ### Bug Fixes

@@ -8,12 +8,6 @@ import {
   SourceTransformResultKind,
 } from './TransformRunner'
 
-// Polyfill `Symbol.asyncIterator` so `for await` will work.
-if (!Symbol.asyncIterator) {
-  Symbol['asyncIterator' as string] =
-    Symbol.asyncIterator || Symbol.for('Symbol.asyncIterator')
-}
-
 function optionAnnotation(
   value: boolean | Array<string> | Map<string, object> | string
 ): string {
@@ -60,13 +54,6 @@ OPTIONS
       --[no-]transpile-plugins      Transpile plugins to enable future syntax${optionAnnotation(
         defaults.transpilePlugins
       )}.
-      --[no-]find-babel-config      Run plugins through babel plugins/presets specified in local
-                                    .babelrc file instead of babel-preset-env${optionAnnotation(
-                                      defaults.findBabelConfig
-                                    )}.
-      --printer PRINTER             Specify which printer to use${optionAnnotation(
-        defaults.printer
-      )}.
   -s, --stdio                       Read source from stdin and print to stdout${optionAnnotation(
     defaults.stdio
   )}.
@@ -98,9 +85,6 @@ EXAMPLES
     return a + b;
   }
   EOS
-
-  # Reprint modified files with prettier.
-  $ ${$0} --printer prettier -p some-plugin src/
 
   # Pass options to a plugin.
   $ ${$0} -p ./a.js -o a='{"foo":true}' src/

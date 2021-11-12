@@ -1,4 +1,4 @@
-import { deepEqual, ok, strictEqual } from 'assert'
+import { strict as assert } from 'assert'
 import * as fs from 'fs'
 import { dirname, join } from 'path'
 import { sync as rimraf } from 'rimraf'
@@ -22,18 +22,21 @@ describe('CLI', function () {
   it('prints help', async function () {
     const { status, stdout, stderr } = await runCodemodCLI(['--help'])
 
-    strictEqual(status, 0)
-    ok(stdout.startsWith('codemod [OPTIONS]'))
-    strictEqual(stderr, '')
+    assert.equal(status, 0)
+    assert(stdout.startsWith('codemod [OPTIONS]'))
+    assert.equal(stderr, '')
   })
 
   it('prints the version', async function () {
     const { status, stdout, stderr } = await runCodemodCLI(['--version'])
     const trimmedStdout = stdout.trim()
 
-    strictEqual(status, 0)
-    ok(valid(trimmedStdout), `${inspect(trimmedStdout)} should be valid semver`)
-    strictEqual(stderr, '')
+    assert.equal(status, 0)
+    assert(
+      valid(trimmedStdout),
+      `${inspect(trimmedStdout)} should be valid semver`
+    )
+    assert.equal(stderr, '')
   })
 
   it('fails with an error when passing an invalid option', async function () {
@@ -41,9 +44,9 @@ describe('CLI', function () {
       '--not-a-real-option',
     ])
 
-    strictEqual(status, 1)
-    strictEqual(stdout, '')
-    ok(
+    assert.equal(status, 1)
+    assert.equal(stdout, '')
+    assert(
       stderr.startsWith('ERROR: unexpected option: --not-a-real-option'),
       `stderr should start with "ERROR: unexpected option: --not-a-real-option", got: ${stderr}`
     )
@@ -55,9 +58,9 @@ describe('CLI', function () {
       '3+4'
     )
 
-    strictEqual(status, 1)
-    strictEqual(stdout, '')
-    ok(
+    assert.equal(status, 1)
+    assert.equal(stdout, '')
+    assert(
       stderr.includes('I am a bad plugin'),
       `stderr should include "I am a bad plugin", got: ${stderr}`
     )
@@ -66,9 +69,9 @@ describe('CLI', function () {
   it('can read from stdin and write to stdout given the --stdio flag', async function () {
     const { status, stdout, stderr } = await runCodemodCLI(['--stdio'], '3+4')
 
-    strictEqual(status, 0)
-    strictEqual(stdout, '3+4')
-    strictEqual(stderr, '')
+    assert.equal(status, 0)
+    assert.equal(stdout, '3+4')
+    assert.equal(stderr, '')
   })
 
   it('reads from a file, processes with plugins, then writes to that file', async function () {
@@ -79,7 +82,7 @@ describe('CLI', function () {
       plugin('increment'),
     ])
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,
@@ -87,7 +90,7 @@ describe('CLI', function () {
         stderr: '',
       }
     )
-    strictEqual(await readFile(afile, 'utf8'), '4 + 5;')
+    assert.equal(await readFile(afile, 'utf8'), '4 + 5;')
   })
 
   it('processes all matching files in a directory', async function () {
@@ -101,7 +104,7 @@ describe('CLI', function () {
       plugin('increment'),
     ])
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,
@@ -109,18 +112,18 @@ describe('CLI', function () {
         stderr: '',
       }
     )
-    strictEqual(
+    assert.equal(
       await readFile(file1, 'utf8'),
       '4 + 5;',
       'file1.js is processed'
     )
-    strictEqual(await readFile(file2, 'utf8'), '1;', 'file2.ts is processed')
-    strictEqual(
+    assert.equal(await readFile(file2, 'utf8'), '1;', 'file2.ts is processed')
+    assert.equal(
       await readFile(file3, 'utf8'),
       '100;',
       'file3.jsx in a sub-directory is processed'
     )
-    strictEqual(
+    assert.equal(
       await readFile(ignored, 'utf8'),
       '* {}',
       'ignored.css is ignored'
@@ -138,7 +141,7 @@ describe('CLI', function () {
       '.myjs',
     ])
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,
@@ -146,8 +149,8 @@ describe('CLI', function () {
         stderr: '',
       }
     )
-    strictEqual(await readFile(ignored, 'utf8'), '3 + 4;')
-    strictEqual(await readFile(processed, 'utf8'), '1;')
+    assert.equal(await readFile(ignored, 'utf8'), '3 + 4;')
+    assert.equal(await readFile(processed, 'utf8'), '1;')
   })
 
   it('ignores .d.ts files', async function () {
@@ -157,7 +160,7 @@ describe('CLI', function () {
     )
     const { status, stdout, stderr } = await runCodemodCLI([dirname(ignored)])
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,
@@ -165,7 +168,7 @@ describe('CLI', function () {
         stderr: '',
       }
     )
-    strictEqual(await readFile(ignored, 'utf8'), 'export = 42;')
+    assert.equal(await readFile(ignored, 'utf8'), 'export = 42;')
   })
 
   it('processes files but does not replace their contents when using --dry', async function () {
@@ -177,7 +180,7 @@ describe('CLI', function () {
       '--dry',
     ])
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,
@@ -185,14 +188,14 @@ describe('CLI', function () {
         stderr: '',
       }
     )
-    strictEqual(await readFile(afile, 'utf8'), '3 + 4;')
+    assert.equal(await readFile(afile, 'utf8'), '3 + 4;')
   })
 
   it('prints files not processed in dim colors', async function () {
     const afile = await createTemporaryFile('a-file.js', '3 + 4;')
     const { status, stdout, stderr } = await runCodemodCLI([afile])
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,
@@ -200,7 +203,7 @@ describe('CLI', function () {
         stderr: '',
       }
     )
-    strictEqual(await readFile(afile, 'utf8'), '3 + 4;')
+    assert.equal(await readFile(afile, 'utf8'), '3 + 4;')
   })
 
   it('can load plugins written with ES modules by default', async function () {
@@ -211,7 +214,7 @@ describe('CLI', function () {
       plugin('increment-export-default'),
     ])
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,
@@ -219,7 +222,7 @@ describe('CLI', function () {
         stderr: '',
       }
     )
-    strictEqual(await readFile(afile, 'utf8'), '4 + 5;')
+    assert.equal(await readFile(afile, 'utf8'), '4 + 5;')
   })
 
   it('can load plugins written in TypeScript by default', async function () {
@@ -230,7 +233,7 @@ describe('CLI', function () {
       plugin('increment-typescript', '.ts'),
     ])
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,
@@ -238,7 +241,7 @@ describe('CLI', function () {
         stderr: '',
       }
     )
-    strictEqual(await readFile(afile, 'utf8'), '4 + 5;')
+    assert.equal(await readFile(afile, 'utf8'), '4 + 5;')
   })
 
   it('can implicitly find plugins with .ts extensions', async function () {
@@ -249,7 +252,7 @@ describe('CLI', function () {
       plugin('increment-typescript', ''),
     ])
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,
@@ -257,7 +260,7 @@ describe('CLI', function () {
         stderr: '',
       }
     )
-    strictEqual(await readFile(afile, 'utf8'), '4 + 5;')
+    assert.equal(await readFile(afile, 'utf8'), '4 + 5;')
   })
 
   it('does not try to load TypeScript files when --no-transpile-plugins is set', async function () {
@@ -269,9 +272,9 @@ describe('CLI', function () {
         '-p',
         plugin('increment-typescript', ''),
       ])
-      ok(false, 'this command should have failed')
+      assert(false, 'this command should have failed')
     } catch (err) {
-      ok(
+      assert(
         /unable to resolve a plugin from source: .*increment-typescript/,
         `error should complain about loading plugin: ${err.stack}`
       )
@@ -286,7 +289,7 @@ describe('CLI', function () {
       plugin('increment-export-default-multiple/increment-export-default'),
     ])
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,
@@ -294,31 +297,13 @@ describe('CLI', function () {
         stderr: '',
       }
     )
-    strictEqual(await readFile(afile, 'utf8'), '4 + 5;')
-  })
-
-  it('fails when specifying --find-babel-config as there are no plugins loaded', async function () {
-    const afile = await createTemporaryFile('a-file.js', '3 + 4;')
-    try {
-      await runCodemodCLI([
-        afile,
-        '-p',
-        plugin('increment-export-default'),
-        '--find-babel-config',
-      ])
-      ok(false, 'this command should have failed')
-    } catch (err) {
-      ok(
-        /SyntaxError: Unexpected token '?export'?/.test(err.stack),
-        `error should reference invalid syntax: ${err.stack}`
-      )
-    }
+    assert.equal(await readFile(afile, 'utf8'), '4 + 5;')
   })
 
   it('can load and run with a remote plugin', async function () {
     const afile = await createTemporaryFile('a-file.js', '3 + 4;')
     const server = await startServer((req, res) => {
-      strictEqual(req.url, '/plugin.js')
+      assert.equal(req.url, '/plugin.js')
 
       readFile(plugin('increment-export-default'), { encoding: 'utf8' }).then(
         (content) => {
@@ -334,7 +319,7 @@ describe('CLI', function () {
         server.requestURL('/plugin.js').toString(),
       ])
 
-      deepEqual(
+      assert.deepEqual(
         { status, stdout, stderr },
         {
           status: 0,
@@ -343,79 +328,10 @@ describe('CLI', function () {
         }
       )
 
-      strictEqual(await readFile(afile, 'utf8'), '4 + 5;')
+      assert.equal(await readFile(afile, 'utf8'), '4 + 5;')
     } finally {
       await server.stop()
     }
-  })
-
-  it('can print using babel', async function () {
-    const afile = await createTemporaryFile('a-file.js', 'var a=1;')
-    const { status, stdout, stderr } = await runCodemodCLI([
-      afile,
-      '--printer',
-      'babel',
-    ])
-
-    deepEqual(
-      { status, stdout, stderr },
-      {
-        status: 0,
-        stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
-        stderr: '',
-      }
-    )
-
-    strictEqual(await readFile(afile, 'utf8'), 'var a = 1;')
-  })
-
-  it('can print using prettier using its default settings', async function () {
-    const workspace = await copyFixturesInto(
-      'prettier/defaults',
-      await createTemporaryDirectory('prettier/defaults')
-    )
-    const file = join(workspace, 'index.jsx')
-    const original = await readFile(file, 'utf8')
-    const { status, stdout, stderr } = await runCodemodCLI([
-      workspace,
-      '--printer',
-      'prettier',
-    ])
-
-    deepEqual(
-      { status, stdout, stderr },
-      {
-        status: 0,
-        stdout: `${file}\n1 file(s), 0 modified, 0 errors\n`,
-        stderr: '',
-      }
-    )
-
-    strictEqual(await readFile(file, 'utf8'), original)
-  })
-
-  it('can print using prettier using custom config', async function () {
-    const workspace = await copyFixturesInto(
-      'prettier/with-config',
-      await createTemporaryDirectory('prettier/with-config')
-    )
-    const file = join(workspace, 'index.js')
-    const { status, stdout, stderr } = await runCodemodCLI([
-      workspace,
-      '--printer',
-      'prettier',
-    ])
-
-    deepEqual(
-      { status, stdout, stderr },
-      {
-        status: 0,
-        stdout: `${file}\n1 file(s), 1 modified, 0 errors\n`,
-        stderr: '',
-      }
-    )
-
-    strictEqual(await readFile(file, 'utf8'), `var a = '';\n`)
   })
 
   it('can rewrite TypeScript files ending in `.ts`', async function () {
@@ -429,7 +345,7 @@ describe('CLI', function () {
       plugin('replace-any-with-object', '.ts'),
     ])
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,
@@ -438,7 +354,7 @@ describe('CLI', function () {
       }
     )
 
-    strictEqual(
+    assert.equal(
       await readFile(afile, 'utf8'),
       'type A = object;\nlet a = {} as object;'
     )
@@ -451,7 +367,7 @@ describe('CLI', function () {
     )
     const { status, stdout, stderr } = await runCodemodCLI([afile])
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,
@@ -460,32 +376,9 @@ describe('CLI', function () {
       }
     )
 
-    strictEqual(await readFile(afile, 'utf8'), 'export default () => (<div/>);')
-  })
-
-  it('can rewrite TypeScript files with prettier', async function () {
-    const afile = await createTemporaryFile(
-      'a-file.ts',
-      'type A=any;\nlet a={} as any;'
-    )
-    const { status, stdout, stderr } = await runCodemodCLI([
-      afile,
-      '--printer',
-      'prettier',
-    ])
-
-    deepEqual(
-      { status, stdout, stderr },
-      {
-        status: 0,
-        stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
-        stderr: '',
-      }
-    )
-
-    strictEqual(
+    assert.equal(
       await readFile(afile, 'utf8'),
-      'type A = any\nlet a = {} as any\n'
+      'export default () => (<div/>);'
     )
   })
 
@@ -500,7 +393,7 @@ describe('CLI', function () {
       'script',
     ])
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,
@@ -521,7 +414,7 @@ describe('CLI', function () {
       'module',
     ])
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,
@@ -547,7 +440,7 @@ describe('CLI', function () {
       'unambiguous',
     ])
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,
@@ -564,12 +457,12 @@ describe('CLI', function () {
     ])
     const expectedPrefix = `ERROR: expected '--source-type' to be one of "module", "script", or "unambiguous" but got: "hypercard"`
 
-    ok(
+    assert(
       stderr.startsWith(expectedPrefix),
       `expected stderr to start with error but got:\n${stderr}`
     )
 
-    deepEqual({ status, stdout }, { status: 1, stdout: '' })
+    assert.deepEqual({ status, stdout }, { status: 1, stdout: '' })
   })
 
   it('ignores babel.config.js files by default', async function () {
@@ -583,44 +476,17 @@ describe('CLI', function () {
       workspace
     )
 
-    strictEqual(
+    assert.equal(
       await readFile(join(workspace, 'index.js'), 'utf8'),
       'const a = 1\n',
       'file contents should not change'
     )
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,
         stdout: 'index.js\n1 file(s), 0 modified, 0 errors\n',
-        stderr: '',
-      }
-    )
-  })
-
-  it('reads babel.config.js files if requested', async function () {
-    const workspace = await copyFixturesInto(
-      'babel-config',
-      await createTemporaryDirectory('babel-config')
-    )
-    const { status, stdout, stderr } = await runCodemodCLI(
-      ['index.js', '--find-babel-config'],
-      undefined,
-      workspace
-    )
-
-    strictEqual(
-      await readFile(join(workspace, 'index.js'), 'utf8'),
-      'const a = 42\n',
-      'file should have been transpiled'
-    )
-
-    deepEqual(
-      { status, stdout, stderr },
-      {
-        status: 0,
-        stdout: 'index.js\n1 file(s), 1 modified, 0 errors\n',
         stderr: '',
       }
     )
@@ -632,7 +498,7 @@ describe('CLI', function () {
       ''
     )
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,
@@ -648,7 +514,7 @@ describe('CLI', function () {
       ''
     )
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,
@@ -670,7 +536,7 @@ describe('CLI', function () {
       ''
     )
 
-    deepEqual(
+    assert.deepEqual(
       { status, stdout, stderr },
       {
         status: 0,

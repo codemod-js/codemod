@@ -9,9 +9,9 @@ export enum EntryType {
 export interface System {
   // fs
   readFile(path: string): Buffer
-  readFile(path: string, encoding: string): string
+  readFile(path: string, encoding: BufferEncoding): string
   writeFile(path: string, contents: Buffer): void
-  writeFile(path: string, contents: string, encoding: string): void
+  writeFile(path: string, contents: string, encoding: BufferEncoding): void
   readdir(path: string): Array<string>
   isFile(path: string): boolean
   isDirectory(path: string): boolean
