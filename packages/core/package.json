@@ -19,7 +19,7 @@
   "dependencies": {
     "@babel/core": "^7.16.0",
     "@babel/generator": "^7.16.0",
-    "@codemod/parser": "^1.1.1",
+    "@codemod/parser": "^1.2.0",
     "recast": "^0.19.0",
     "resolve": "^1.12.0"
   },
