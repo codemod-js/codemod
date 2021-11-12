@@ -34,8 +34,8 @@
     ]
   },
   "resolutions": {
-    "**/@babel/parser": "7.15.3",
-    "**/@babel/types": "7.15.0",
+    "**/@babel/parser": "7.16.3",
+    "**/@babel/types": "7.16.0",
     "**/@types/node": "16.11.7"
   },
   "devDependencies": {

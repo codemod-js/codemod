@@ -17,10 +17,10 @@
     "test": "jest"
   },
   "dependencies": {
-    "@babel/parser": "^7.15.3"
+    "@babel/parser": "^7.16.3"
   },
   "devDependencies": {
-    "@babel/types": "^7.15.0",
+    "@babel/types": "^7.16.0",
     "@types/jest": "^25.1.0",
     "jest": "^27.3.1",
     "ts-jest": "^27.0.7",
