@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.0](https://github.com/codemod-js/codemod/compare/@codemod/parser@1.1.1...@codemod/parser@1.2.0) (2021-11-12)
+
+- update babel to v7.16.x ([1218bf9](https://github.com/codemod-js/codemod/commit/1218bf98145feaa8a692611152559aa6b46b9ba0))
+
 ## [1.0.7](https://github.com/codemod-js/codemod/compare/@codemod/parser@1.0.5...@codemod/parser@1.0.7) (2020-03-25)
 
 ### Bug Fixes
