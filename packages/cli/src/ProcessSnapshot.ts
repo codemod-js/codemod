@@ -1,3 +1,4 @@
+import { strict as assert } from 'assert'
 import Module = NodeJS.Module
 
 interface MapDiff<K, V> {
@@ -193,7 +194,9 @@ export default class ProcessSnapshot {
 
     for (const path in cache) {
       if (Object.prototype.hasOwnProperty.call(cache, path)) {
-        result.set(path, cache[path])
+        const value = cache[path]
+        assert(typeof value !== 'undefined')
+        result.set(path, value)
       }
     }
 
@@ -209,7 +212,9 @@ export default class ProcessSnapshot {
 
     for (const key in extensions) {
       if (Object.prototype.hasOwnProperty.call(extensions, key)) {
-        result.set(key, extensions[key])
+        const value = extensions[key]
+        assert(typeof value !== 'undefined')
+        result.set(key, value)
       }
     }
 

@@ -35,7 +35,7 @@ Plugins may also be loaded from remote URLs, including saved [AST Explorer](http
 $ codemod --remote-plugin URL …
 ```
 
-By default, `codemod` makes minimal changes to your source files by using [recast](https://github.com/benjamn/recast) to parse and print your code, retaining the original comments and formatting. If desired, you can reformat files using [Prettier](https://prettier.io/) by using `--printer prettier`. Note that this is typically only desired in projects that use Prettier, or if you plan on adopting Prettier.
+By default, `codemod` makes minimal changes to your source files by using [recast](https://github.com/benjamn/recast) to parse and print your code, retaining the original comments and formatting. If desired, you can reformat files using [Prettier](https://prettier.io/) or ESLint or whatever other tools you prefer after the fact.
 
 For more detailed options, run `codemod --help`.
 
@@ -45,27 +45,7 @@ There are [many, many existing plugins](https://www.npmjs.com/search?q=babel-plu
 
 ### Transpiling using Babel Plugins
 
-`codemod` also supports non-standard/future language features that are not currently supported by the latest version of node. It does this by leveraging `@babel/preset-env` which loads the [latest babel plugins](https://github.com/babel/babel/tree/master/packages/babel-preset-env#support-all-plugins-in-babel-that-are-considered-latest). This feature is on by default.
-
-This feature should support most use cases when writing plugins in advanced JavaScript syntax. However, if you are writing plugins with syntax that is beyond "latest", or you would like to use your own set of plugins and presets, you can pass in the `--find-babel-config` switch in combination with a local `.babelrc` file that lists the presets/plugins you want applied to your plugin code.
-
-```sh
-# Run a local plugin that is passed through locally installed babel plugins
-$ codemod --find-babel-config --plugin ./my-plugin.js src/
-```
-
-This requires that all babel plugins and presets be installed locally and are listed in your `.babelrc` file. `codemod` uses `@babel/core` under the hood to accomplish this and all `.babelrc` [lookup rules apply](https://babeljs.io/docs/usage/babelrc/#lookup-behavior).
-
-### Transpiling using TypeScript
-
-There is experimental support for running plugins written in TypeScript. This is on by default and works by using `@babel/preset-typescript` rather than the official TypeScript compiler. This feature may be removed in the future.
-
-For example:
-
-```sh
-# Run a local plugin written with TypeScript
-$ codemod --plugin ./my-plugin.ts src/
-```
+`codemod` supports parsing language features supported by a standard Babel or TypeScript build toolchain, similar to what a Create React App build pipeline can handle. Feel free to write your plugins using these language features–they'll be transpiled on the fly.
 
 ### Passing Options to Plugins
 
@@ -84,7 +64,7 @@ See [CONTRIBUTING.md](../../CONTRIBUTING.md) for information on setting up the p
 
 ## License
 
-Copyright 2017-2019 Brian Donovan
+Copyright 2017 Brian Donovan
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 

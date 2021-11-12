@@ -71,11 +71,7 @@ export default class CLIEngine {
 
     const runner = new TransformRunner(
       sourcesIterator,
-      new InlineTransformer(
-        plugins,
-        this.config.findBabelConfig,
-        this.config.printer
-      )
+      new InlineTransformer(plugins)
     )
 
     for await (const result of runner.run()) {

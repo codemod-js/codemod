@@ -4,7 +4,6 @@ import { extname } from 'path'
 import { addHook } from 'pirates'
 import { PluginExtensions, TypeScriptExtensions } from './extensions'
 
-let useBabelConfig = false
 let revert: (() => void) | null = null
 
 export function hook(code: string, filename: string): string {
@@ -18,7 +17,8 @@ export function hook(code: string, filename: string): string {
   const presets: Array<PluginItem> = []
   const options: TransformOptions = {
     filename,
-    babelrc: useBabelConfig,
+    babelrc: false,
+    configFile: false,
     presets,
     plugins,
     sourceMaps: 'inline',
@@ -26,20 +26,14 @@ export function hook(code: string, filename: string): string {
 
   plugins.push(require.resolve('@babel/plugin-proposal-class-properties'))
 
-  if (!useBabelConfig) {
-    options.configFile = useBabelConfig
+  if (TypeScriptExtensions.has(ext)) {
+    presets.push(require.resolve('@babel/preset-typescript'))
   }
 
-  if (!useBabelConfig) {
-    if (TypeScriptExtensions.has(ext)) {
-      presets.push(require.resolve('@babel/preset-typescript'))
-    }
-
-    presets.push([
-      require.resolve('@babel/preset-env'),
-      { useBuiltIns: 'entry', corejs: { version: 3, proposals: true } },
-    ])
-  }
+  presets.push([
+    require.resolve('@babel/preset-env'),
+    { useBuiltIns: 'entry', corejs: { version: 3, proposals: true } },
+  ])
 
   const result = transform(code, options)
 
@@ -50,9 +44,8 @@ export function hook(code: string, filename: string): string {
   return result.code as string
 }
 
-export function enable(shouldUseBabelConfig = false): void {
+export function enable(): void {
   disable()
-  useBabelConfig = shouldUseBabelConfig
   require('core-js')
   require('regenerator-runtime')
   revert = addHook(hook, {
