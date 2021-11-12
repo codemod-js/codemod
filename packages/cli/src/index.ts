@@ -116,6 +116,7 @@ EXAMPLES
 }
 
 function printVersion(argv: Array<string>, out: NodeJS.WritableStream): void {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   out.write(require('../package.json').version)
   out.write('\n')
 }
