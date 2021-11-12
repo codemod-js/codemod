@@ -54,7 +54,7 @@
     semver "^5.4.1"
     source-map "^0.5.0"
 
-"@babel/core@^7.16.0", "@babel/core@^7.7.2":
+"@babel/core@^7.15.0", "@babel/core@^7.16.0", "@babel/core@^7.7.2":
   version "7.16.0"
   resolved "https://registry.npmjs.org/@babel/core/-/core-7.16.0.tgz#c4ff44046f5fe310525cc9eb4ef5147f0c5374d4"
   integrity sha512-mYZEvshBRHGsIAiyH5PzCFTCfbWfoYbO/jcSdXQSUQu1/pW0xDZAUP7KEc32heqWTAfAHhV9j1vH8Sav7l+JNQ==
@@ -1235,6 +1235,17 @@
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
+
+"@codemod/core@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@codemod/core/-/core-1.1.1.tgz#963a69557668f3ac2247ca81138c20cea9aa7b02"
+  integrity sha512-NxoDLIBbNDP4PcnHfkLkjWind6Ma7GEGoaTsxUwDOPbau2m+7i0Zjg7aPcIps8JTc/Q7/fagGee7JqjYrmdv5w==
+  dependencies:
+    "@babel/core" "^7.15.0"
+    "@babel/generator" "^7.15.0"
+    "@codemod/parser" "^1.1.1"
+    recast "^0.19.0"
+    resolve "^1.12.0"
 
 "@commitlint/cli@^12.1.4":
   version "12.1.4"
@@ -7761,9 +7772,9 @@ path-key@^3.1.0:
   integrity sha512-ojmeN0qd+y0jszEtoY48r0Peq5dwMEkIlCOu6Q5f41lfkswXuKtYrhgoTpLnyIcHm24Uhqx+5Tqm2InSwLhE6Q==
 
 path-parse@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.npmjs.org/path-parse/-/path-parse-1.0.6.tgz#d62dbb5679405d72c4737ec58600e9ddcf06d24c"
-  integrity sha512-GSmOT2EbHrINBf9SR7CDELwlJ8AENk3Qn7OikK4nFYAu3Ote2+JYNVvkpAEQm3/TLNEJFD/xZJjzyxg3KBWOzw==
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.7.tgz#fbc114b60ca42b30d9daf5858e4bd68bbedb6735"
+  integrity sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==
 
 path-type@^1.0.0:
   version "1.1.0"
