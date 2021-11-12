@@ -31,11 +31,11 @@ async function findNodeBinary(
     const path = join(directory, 'node_modules/.bin', name)
     const stats = await stat(path)
 
-    if (stats.isFile && stats.mode & 0x700) {
+    if (stats.isFile() && stats.mode & 0x700) {
       return path
     }
   } catch (error) {
-    if (error.code !== 'ENOENT') {
+    if ((error as { code?: string }).code !== 'ENOENT') {
       throw error
     }
   }

@@ -12,7 +12,7 @@ export interface ReplacementsBase {
   [key: string]: Replacement
 }
 
-export function program<R extends ReplacementsBase = {}>(
+export function program<R extends ReplacementsBase>(
   template: string
 ): (replacements?: R) => t.File {
   const ast = parse(template)
@@ -51,7 +51,7 @@ export function program<R extends ReplacementsBase = {}>(
   }
 }
 
-export function statement<R extends ReplacementsBase = {}>(
+export function statement<R extends ReplacementsBase>(
   template: string
 ): (replacements?: R) => t.Statement {
   const builder = program(template)
@@ -59,7 +59,7 @@ export function statement<R extends ReplacementsBase = {}>(
     getSingleStatement(builder(replacements).program.body)
 }
 
-export function expression<R extends ReplacementsBase = {}>(
+export function expression<R extends ReplacementsBase>(
   template: string
 ): (replacements?: R) => t.Expression {
   const builder = program(template)

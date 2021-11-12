@@ -8,7 +8,7 @@ describe('ProcessSnapshot', function () {
   let fakeGlobal: typeof global
   let messages: Array<string>
 
-  function log(...args: Array<{}>): void {
+  function log(...args: Array<unknown>): void {
     messages.push(args.join(' '))
   }
 

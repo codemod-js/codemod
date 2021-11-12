@@ -1,9 +1,9 @@
 import { Matcher } from '../matchers'
 
-export type Predicate<T> = (value: unknown) => boolean
+export type Predicate = (value: unknown) => boolean
 
 export class PredicateMatcher<T> extends Matcher<T> {
-  constructor(private readonly predicate: Predicate<T>) {
+  constructor(private readonly predicate: Predicate) {
     super()
   }
 
@@ -12,6 +12,6 @@ export class PredicateMatcher<T> extends Matcher<T> {
   }
 }
 
-export default function predicate<T>(predicate: Predicate<T>): Matcher<T> {
+export default function predicate<T>(predicate: Predicate): Matcher<T> {
   return new PredicateMatcher(predicate)
 }
