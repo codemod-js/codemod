@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/codemod-js/codemod/compare/@codemod/cli@3.0.0...@codemod/cli@3.0.1) (2021-11-12)
+
+- **refactor:** use globby instead of a custom directory traversal (author: [NickHeiner](https://github.com/NickHeiner)) ([468092a](https://github.com/codemod-js/codemod/commit/468092afa532112ba2b126d949dcf0e38f0c2acd))
+
 ## [3.0.0](https://github.com/codemod-js/codemod/compare/@codemod/cli@2.3.2...@codemod/cli@3.0.0) (2021-11-12)
 
 - remove underused options: `--printer`, `--babelrc`, `--find-babel-config` ([50a864d](https://github.com/codemod-js/codemod/commit/50a864df7344767a5c0e9e3ab990a0f4d05d634d))
