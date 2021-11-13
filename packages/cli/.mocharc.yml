@@ -1,0 +1,6 @@
+extension: ['ts']
+require:
+  - 'source-map-support/register'
+  - 'esbuild-runner/register'
+spec:
+  - 'test/**/*Test.ts'

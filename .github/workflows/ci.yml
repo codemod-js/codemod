@@ -9,6 +9,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
+        package: [parser, core, cli, matchers]
 
     env:
       CI: true
@@ -34,8 +35,14 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Build
+        working-directory: packages/${{ matrix.package }}
+        run: yarn build
+
       - name: Run Linter
+        working-directory: packages/${{ matrix.package }}
         run: yarn lint
 
       - name: Run Tests
+        working-directory: packages/${{ matrix.package }}
         run: yarn test

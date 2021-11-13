@@ -2,20 +2,21 @@
   "name": "@codemod/matchers",
   "version": "1.2.0",
   "description": "Matchers for JavaScript & TypeScript codemods.",
-  "keywords": [],
+  "repository": "https://github.com/codemod-js/codemod",
   "license": "Apache-2.0",
   "author": "Brian Donovan",
-  "main": "src/index.js",
-  "types": "src/index.d.ts",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "files": [
-    "src/**/*.js",
-    "src/**/*.d.ts",
-    "src/**/*.js.map",
-    "!src/__tests__/**/*"
+    "build"
   ],
   "scripts": {
-    "prepare": "tsc",
-    "test": "script/ci"
+    "build": "tsc --build tsconfig.build.json",
+    "clean": "rm -rf build",
+    "lint": "eslint .",
+    "test": "is-ci test:coverage test:watch",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@babel/types": "^7.16.0"
@@ -34,6 +35,7 @@
     "@types/jest": "^25.1.0",
     "@types/prettier": "^2.0.0",
     "dedent": "^0.7.0",
+    "is-ci-cli": "^2.2.0",
     "jest": "^27.3.1",
     "ts-jest": "^27.0.7",
     "typescript": "^4.4.4"

@@ -2,26 +2,23 @@
   "name": "@codemod/cli",
   "version": "3.0.1",
   "description": "codemod rewrites JavaScript and TypeScript",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/codemod-js/codemod.git"
-  },
+  "repository": "https://github.com/codemod-js/codemod.git",
   "license": "Apache-2.0",
   "author": "Brian Donovan",
-  "main": "src/index.js",
-  "types": "src/index.d.ts",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "bin": {
     "codemod": "./bin/codemod"
   },
   "files": [
     "bin",
-    "src/**/*.js",
-    "src/**/*.d.ts",
-    "src/**/*.js.map"
+    "build"
   ],
   "scripts": {
-    "prepare": "tsc",
-    "test": "script/ci"
+    "build": "tsc --build tsconfig.build.json",
+    "clean": "rm -rf build",
+    "lint": "eslint .",
+    "test": "mocha"
   },
   "dependencies": {
     "@babel/core": "^7.16.0",
@@ -37,6 +34,7 @@
     "get-stream": "^5.1.0",
     "globby": "^11.0.0",
     "got": "^10.2.0",
+    "is-ci-cli": "^2.2.0",
     "pirates": "^4.0.0",
     "recast": "^0.19.0",
     "regenerator-runtime": "^0.13.3",

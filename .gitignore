@@ -13,9 +13,8 @@ node_modules
 .idea/
 
 # TypeScript build files
-*.js
-*.d.ts
-*.map
+build
+*.tsbuildinfo
 
 # allow fixtures
 !test/fixtures/**/*.js
@@ -32,3 +31,6 @@ tmp
 
 # ignore custom build files
 packages/matchers/src/matchers.ts.expected
+
+# test coverage
+coverage
