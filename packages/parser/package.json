@@ -5,16 +5,18 @@
   "repository": "https://github.com/codemod-js/codemod",
   "license": "Apache-2.0",
   "author": "Brian Donovan",
-  "main": "src/index.js",
-  "types": "src/index.d.ts",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "files": [
-    "src/**/*.js",
-    "src/**/*.d.ts",
-    "src/**/*.js.map"
+    "build"
   ],
   "scripts": {
-    "prepare": "tsc",
-    "test": "jest"
+    "build": "tsc --build tsconfig.build.json",
+    "clean": "rm -rf build",
+    "lint": "eslint .",
+    "test": "is-ci test:coverage test:watch",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@babel/parser": "^7.16.3"

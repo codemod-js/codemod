@@ -1,5 +1,36 @@
 import * as t from '@babel/types'
-import { Validator } from '../script/_utils/utils'
+
+export interface ArrayValidator {
+  each: Validator
+}
+
+export interface ChainOfValidator {
+  chainOf: Array<Validator>
+}
+
+export interface OneOfValidator {
+  oneOf: Array<string | boolean | number>
+}
+
+export interface OneOfNodeTypesValidator {
+  oneOfNodeTypes: Array<string>
+}
+
+export interface OneOfNodeOrValueTypesValidator {
+  oneOfNodeOrValueTypes: Array<string>
+}
+
+export interface Type {
+  type: string
+}
+
+export type Validator =
+  | ArrayValidator
+  | ChainOfValidator
+  | OneOfValidator
+  | OneOfNodeTypesValidator
+  | OneOfNodeOrValueTypesValidator
+  | Type
 
 export interface BuilderKeysByType {
   [key: string]: Array<string>

@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
     "target": "es2015",
+    "module": "commonjs",
     "lib": ["es2015", "es2016"],
+    "composite": true,
+    "noEmit": true,
     "noImplicitAny": false,
-    "sourceMap": true,
-    "strict": true,
-    "declaration": true
+    "strict": true
   },
   "exclude": ["tmp"],
-  "compileOnSave": true
+  "references": [
+    { "path": "../parser/tsconfig.build.json" }
+  ]
 }
