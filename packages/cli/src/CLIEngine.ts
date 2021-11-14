@@ -1,9 +1,9 @@
+import { promises as fs } from 'fs'
 import getStream = require('get-stream')
 import { PluginItem } from '@babel/core'
 import Config from './Config'
 import InlineTransformer from './InlineTransformer'
 import iterateSources from './iterateSources'
-import { RealSystem, System } from './System'
 import TransformRunner, {
   Source,
   SourceTransformResult,
@@ -27,8 +27,7 @@ export default class CLIEngine {
     readonly config: Config,
     readonly onTransform: (result: SourceTransformResult) => void = () => {
       // do nothing by default
-    },
-    readonly sys: System = RealSystem
+    }
   ) {}
 
   private async loadPlugins(): Promise<Array<PluginItem>> {
@@ -43,16 +42,16 @@ export default class CLIEngine {
     let errors = 0
     let total = 0
     const dryRun = this.config.dry
-    let sources: Array<Source>
+    let sources: AsyncGenerator<Source>
 
     if (this.config.stdio) {
-      sources = [new Source('<stdin>', await getStream(this.sys.stdin))]
+      sources = (async function* getStdinSources(): AsyncGenerator<Source> {
+        yield new Source('<stdin>', await getStream(process.stdin))
+      })()
     } else {
-      sources = iterateSources(
-        this.config.sourcePaths,
-        this.config.extensions,
-        this.sys
-      )
+      sources = iterateSources(this.config.sourcePaths, {
+        extensions: this.config.extensions,
+      })
     }
 
     const runner = new TransformRunner(sources, new InlineTransformer(plugins))
@@ -62,12 +61,12 @@ export default class CLIEngine {
 
       if (result.kind === SourceTransformResultKind.Transformed) {
         if (this.config.stdio) {
-          this.sys.stdout.write(result.output)
+          process.stdout.write(result.output)
         } else {
           if (result.output !== result.source.content) {
             modified++
             if (!dryRun) {
-              this.sys.writeFile(result.source.path, result.output, 'utf8')
+              await fs.writeFile(result.source.path, result.output, 'utf8')
             }
           }
         }

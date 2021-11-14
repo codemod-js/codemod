@@ -1,13 +1,6 @@
-#!/usr/bin/env node
+#!/usr/bin/env bash
 
-require('esbuild-runner/register')
-const run = require('../').default
+SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-run(process.argv)
-  .then((status) => {
-    process.exit(status)
-  })
-  .catch((err) => {
-    console.error(err.stack)
-    process.exit(-1)
-  })
+export CODEMOD_RUN_WITH_ESBUILD=1
+exec "${SCRIPT_DIR}/codemod" $@

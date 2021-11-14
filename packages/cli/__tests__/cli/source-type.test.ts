@@ -15,7 +15,7 @@ it('can specify the source type as "script"', async function () {
     })
   ).toEqual({
     status: 0,
-    stdout: `${afile}\n1 file(s), 0 modified, 0 errors\n`,
+    stdout: `a-file.js\n1 file(s), 0 modified, 0 errors\n`,
     stderr: '',
   })
 })
@@ -31,7 +31,7 @@ it('can specify the source type as "module"', async function () {
     })
   ).toEqual({
     status: 0,
-    stdout: `${afile}\n1 file(s), 0 modified, 0 errors\n`,
+    stdout: `a-file.js\n1 file(s), 0 modified, 0 errors\n`,
     stderr: '',
   })
 })
@@ -53,7 +53,7 @@ it('can specify the source type as "unambiguous"', async function () {
     })
   ).toEqual({
     status: 0,
-    stdout: `${afile}\n${bfile}\n2 file(s), 0 modified, 0 errors\n`,
+    stdout: `a-file.js\nb-file.js\n2 file(s), 0 modified, 0 errors\n`,
     stderr: '',
   })
 })
