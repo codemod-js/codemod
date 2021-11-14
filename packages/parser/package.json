@@ -1,6 +1,6 @@
 {
   "name": "@codemod/parser",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Wrapper around @babel/parser that allows parsing everything.",
   "repository": "https://github.com/codemod-js/codemod",
   "license": "Apache-2.0",
@@ -11,9 +11,9 @@
     "build"
   ],
   "scripts": {
-    "prepublishOnly": "yarn build",
+    "prepublishOnly": "yarn clean && yarn build",
     "build": "tsc --build tsconfig.build.json",
-    "clean": "rm -rf build",
+    "clean": "rm -rf build tsconfig.build.tsbuildinfo",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "is-ci test:coverage test:watch",

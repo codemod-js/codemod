@@ -1,6 +1,6 @@
 {
   "name": "@codemod/matchers",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Matchers for JavaScript & TypeScript codemods.",
   "repository": "https://github.com/codemod-js/codemod",
   "license": "Apache-2.0",
@@ -11,9 +11,9 @@
     "build"
   ],
   "scripts": {
-    "prepublishOnly": "yarn build",
+    "prepublishOnly": "yarn clean && yarn build",
     "build": "tsc --build tsconfig.build.json",
-    "clean": "rm -rf build",
+    "clean": "rm -rf build tsconfig.build.tsbuildinfo",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "is-ci test:coverage test:watch",
@@ -27,8 +27,8 @@
     "@babel/core": "^7.16.0",
     "@babel/generator": "^7.16.0",
     "@babel/traverse": "^7.16.0",
-    "@codemod/core": "^2.0.0",
-    "@codemod/parser": "^1.2.0",
+    "@codemod/core": "^2.0.1",
+    "@codemod/parser": "^1.2.1",
     "@types/babel__core": "^7.1.16",
     "@types/babel__generator": "^7.6.3",
     "@types/babel__template": "^7.4.1",
