@@ -3,7 +3,6 @@ import { PluginItem } from '@babel/core'
 import Config from './Config'
 import InlineTransformer from './InlineTransformer'
 import iterateSources from './iterateSources'
-import ProcessSnapshot from './ProcessSnapshot'
 import { RealSystem, System } from './System'
 import TransformRunner, {
   Source,
@@ -33,19 +32,9 @@ export default class CLIEngine {
   ) {}
 
   private async loadPlugins(): Promise<Array<PluginItem>> {
-    const snapshot = new ProcessSnapshot()
-    let plugins: Array<PluginItem>
-
-    try {
-      this.config.loadBabelTranspile()
-      this.config.loadRequires()
-      plugins = await this.config.getBabelPlugins()
-    } finally {
-      this.config.unloadBabelTranspile()
-      snapshot.restore()
-    }
-
-    return plugins
+    await this.config.loadBabelTranspile()
+    this.config.loadRequires()
+    return await this.config.getBabelPlugins()
   }
 
   async run(): Promise<RunResult> {

@@ -1,10 +1,6 @@
-import * as fs from 'fs'
+import { promises as fs } from 'fs'
 import { URL } from 'url'
 import NetworkResolver from './NetworkResolver'
-import { promisify } from 'util'
-
-const readFile = promisify(fs.readFile)
-const writeFile = promisify(fs.writeFile)
 
 const EDITOR_HASH_PATTERN = /^#\/gist\/(\w+)(?:\/(\w+))?$/
 
@@ -37,7 +33,7 @@ export default class AstExplorerResolver extends NetworkResolver {
 
   async resolve(source: string): Promise<string> {
     const filename = await super.resolve(await this.normalize(source))
-    const text = await readFile(filename, { encoding: 'utf8' })
+    const text = await fs.readFile(filename, { encoding: 'utf8' })
     let data
 
     try {
@@ -59,7 +55,7 @@ export default class AstExplorerResolver extends NetworkResolver {
       )
     }
 
-    await writeFile(filename, data.files['transform.js'].content, {
+    await fs.writeFile(filename, data.files['transform.js'].content, {
       encoding: 'utf8',
     })
 

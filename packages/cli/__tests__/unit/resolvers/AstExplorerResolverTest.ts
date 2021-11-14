@@ -1,11 +1,8 @@
 import { ok, strictEqual } from 'assert'
-import * as fs from 'fs'
+import { promises as fs } from 'fs'
 import { join } from 'path'
 import AstExplorerResolver from '../../../src/resolvers/AstExplorerResolver'
 import { startServer } from '../../helpers/TestServer'
-import { promisify } from 'util'
-
-const readFile = promisify(fs.readFile)
 
 describe('AstExplorerResolver', function () {
   it('normalizes a gist+commit editor URL into an API URL', async function () {
@@ -45,7 +42,7 @@ describe('AstExplorerResolver', function () {
   })
 
   it('extracts the transform from the editor view', async function () {
-    const result = await readFile(
+    const result = await fs.readFile(
       join(__dirname, '../../fixtures/astexplorer/default.json'),
       { encoding: 'utf8' }
     )
@@ -56,7 +53,7 @@ describe('AstExplorerResolver', function () {
     try {
       const resolver = new AstExplorerResolver(server.requestURL('/'))
       strictEqual(
-        await readFile(
+        await fs.readFile(
           await resolver.resolve(
             server.requestURL('/#/gist/abc/def').toString()
           ),

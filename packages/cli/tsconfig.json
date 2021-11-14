@@ -8,7 +8,7 @@
     "noImplicitAny": false,
     "strictNullChecks": true
   },
-  "exclude": ["test/fixtures/**/*.ts", "tmp"],
+  "exclude": ["__tests__/fixtures/**/*.ts", "tmp", "build"],
   "references": [
     { "path": "../core/tsconfig.build.json" },
     { "path": "../parser/tsconfig.build.json" }

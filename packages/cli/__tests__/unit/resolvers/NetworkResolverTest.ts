@@ -1,10 +1,7 @@
 import { ok, strictEqual } from 'assert'
-import * as fs from 'fs'
+import { promises as fs } from 'fs'
 import NetworkResolver from '../../../src/resolvers/NetworkResolver'
 import { startServer } from '../../helpers/TestServer'
-import { promisify } from 'util'
-
-const readFile = promisify(fs.readFile)
 
 describe('NetworkResolver', function () {
   it('can load data from a URL', async function () {
@@ -21,7 +18,7 @@ describe('NetworkResolver', function () {
       const filename = await resolver.resolve(url.toString())
 
       strictEqual(
-        await readFile(filename, { encoding: 'utf8' }),
+        await fs.readFile(filename, { encoding: 'utf8' }),
         'here you go!'
       )
     } finally {
@@ -57,7 +54,7 @@ describe('NetworkResolver', function () {
       const filename = await resolver.resolve(server.requestURL('/').toString())
 
       strictEqual(
-        await readFile(filename, { encoding: 'utf8' }),
+        await fs.readFile(filename, { encoding: 'utf8' }),
         'redirected successfully!'
       )
     } finally {

@@ -1,11 +1,8 @@
+import { promises as fs } from 'fs'
 import { get, Response } from 'got'
-import * as fs from 'fs'
 import { tmpNameSync as tmp } from 'tmp'
 import { URL } from 'url'
 import Resolver from './Resolver'
-import { promisify } from 'util'
-
-const writeFile = promisify(fs.writeFile)
 
 export class NetworkLoadError extends Error {
   constructor(readonly response: Response<string>) {
@@ -36,7 +33,7 @@ export default class NetworkResolver implements Resolver {
     }
 
     const filename = tmp({ postfix: '.js' })
-    await writeFile(filename, response.body)
+    await fs.writeFile(filename, response.body)
     return filename
   }
 }

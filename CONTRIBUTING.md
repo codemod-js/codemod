@@ -30,25 +30,19 @@ $ yarn test
 We use [ESLint](https://eslint.org/). To run ESLint on the project, run:
 
 ```sh
-$ script/ci lint
+$ yarn lint
 ```
 
 To automatically fix some of the issues ESLint finds:
 
 ```sh
-$ script/ci lint --fix
+$ yarn lint:fix
 ```
 
-The tests in this project are written using [Mocha](https://mochajs.org/) and [Jest](https://jestjs.io/) and, like the non-test code, are also written in TypeScript. To run the tests:
+The tests in this project are written using [Jest](https://jestjs.io/) and, like the non-test code, are also written in TypeScript. To run the tests:
 
 ```sh
-$ script/ci test
-```
-
-In the packages with Jest tests you can automatically run tests as you change files:
-
-```sh
-$ yarn jest --watch
+$ yarn test
 ```
 
 ## Submitting Changes

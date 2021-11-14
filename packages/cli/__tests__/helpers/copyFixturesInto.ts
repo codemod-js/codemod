@@ -1,10 +1,7 @@
+import { promises as fs } from 'fs'
 import mkdirp = require('make-dir')
-import * as fs from 'fs'
 import { dirname, join, relative } from 'path'
 import iterateSources from '../../src/iterateSources'
-import { promisify } from 'util'
-
-const writeFile = promisify(fs.writeFile)
 
 export default async function copyFixturesInto(
   fixture: string,
@@ -16,7 +13,7 @@ export default async function copyFixturesInto(
     const relativePath = relative(fixturePath, file.path)
     const destinationPath = join(destination, relativePath)
     await mkdirp(dirname(destinationPath))
-    await writeFile(destinationPath, file.content)
+    await fs.writeFile(destinationPath, file.content)
   }
 
   return destination
