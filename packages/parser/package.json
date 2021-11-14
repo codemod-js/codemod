@@ -11,9 +11,9 @@
     "build"
   ],
   "scripts": {
-    "prepublishOnly": "yarn build",
+    "prepublishOnly": "yarn clean && yarn build",
     "build": "tsc --build tsconfig.build.json",
-    "clean": "rm -rf build",
+    "clean": "rm -rf build tsconfig.build.tsbuildinfo",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "is-ci test:coverage test:watch",
