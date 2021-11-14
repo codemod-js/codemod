@@ -1,6 +1,6 @@
 {
   "name": "@codemod/cli",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "description": "codemod rewrites JavaScript and TypeScript",
   "repository": "https://github.com/codemod-js/codemod.git",
   "license": "Apache-2.0",

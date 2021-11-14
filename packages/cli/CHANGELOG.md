@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.0](https://github.com/codemod-js/codemod/compare/@codemod/cli@3.0.1...@codemod/cli@3.1.0) (2021-11-14)
+
+- **feat:** improve gitignore handling ([e04c0c4](https://github.com/codemod-js/codemod/commit/e04c0c41d5cb3d86c6cdbbac932efcad968c73c9))
+
 ## [3.0.1](https://github.com/codemod-js/codemod/compare/@codemod/cli@3.0.0...@codemod/cli@3.0.1) (2021-11-12)
 
 - **refactor:** use globby instead of a custom directory traversal (author: [NickHeiner](https://github.com/NickHeiner)) ([468092a](https://github.com/codemod-js/codemod/commit/468092afa532112ba2b126d949dcf0e38f0c2acd))
