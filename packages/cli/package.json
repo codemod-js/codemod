@@ -1,6 +1,6 @@
 {
   "name": "@codemod/cli",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "codemod rewrites JavaScript and TypeScript",
   "repository": "https://github.com/codemod-js/codemod.git",
   "license": "Apache-2.0",
@@ -32,8 +32,8 @@
     "@babel/preset-typescript": "^7.16.0",
     "@babel/traverse": "^7.16.0",
     "@babel/types": "^7.16.0",
-    "@codemod/core": "^2.0.0",
-    "@codemod/parser": "^1.2.0",
+    "@codemod/core": "^2.0.1",
+    "@codemod/parser": "^1.2.1",
     "core-js": "^3.1.4",
     "esbuild": "^0.13.13",
     "esbuild-runner": "^2.2.1",
