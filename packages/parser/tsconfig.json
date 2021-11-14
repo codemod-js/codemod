@@ -8,5 +8,5 @@
     "noImplicitAny": false,
     "strict": true
   },
-  "exclude": ["tmp"]
+  "exclude": ["tmp", "build"]
 }

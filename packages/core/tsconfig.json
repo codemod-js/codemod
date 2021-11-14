@@ -8,7 +8,7 @@
     "noImplicitAny": false,
     "strict": true
   },
-  "exclude": ["tmp"],
+  "exclude": ["tmp", "build"],
   "references": [
     { "path": "../parser/tsconfig.build.json" }
   ]

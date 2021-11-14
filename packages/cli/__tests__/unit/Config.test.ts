@@ -1,4 +1,5 @@
 import { deepEqual, ok, strictEqual } from 'assert'
+import { join } from 'path'
 import { inspect } from 'util'
 import Config, { ConfigBuilder } from '../../src/Config'
 
@@ -20,7 +21,7 @@ describe('Config', function () {
 
   it('associates plugin options based on declared name', async function () {
     const config = new ConfigBuilder()
-      .addLocalPlugin('./test/fixtures/plugin/index.js')
+      .addLocalPlugin(join(__dirname, '../fixtures/plugin/index.js'))
       .setOptionsForPlugin({ a: true }, 'basic-plugin')
       .build()
 

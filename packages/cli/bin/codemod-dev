@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+
+require('esbuild-runner/register')
+const run = require('../').default
+
+run(process.argv)
+  .then((status) => {
+    process.exit(status)
+  })
+  .catch((err) => {
+    console.error(err.stack)
+    process.exit(-1)
+  })

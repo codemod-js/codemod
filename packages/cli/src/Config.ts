@@ -1,14 +1,12 @@
 import * as Babel from '@babel/core'
 import { ParserOptions } from '@codemod/parser'
 import { basename, extname } from 'path'
-import { install } from 'source-map-support'
 import { TransformableExtensions } from './extensions'
 import PluginLoader from './PluginLoader'
 import AstExplorerResolver from './resolvers/AstExplorerResolver'
 import FileSystemResolver from './resolvers/FileSystemResolver'
 import NetworkResolver from './resolvers/NetworkResolver'
 import PackageResolver from './resolvers/PackageResolver'
-import { disable, enable } from './transpile-requires'
 
 export class Plugin {
   readonly declaredName?: string
@@ -97,16 +95,9 @@ export default class Config {
     }
   }
 
-  loadBabelTranspile(): void {
+  async loadBabelTranspile(): Promise<void> {
     if (this.transpilePlugins) {
-      enable()
-      install()
-    }
-  }
-
-  unloadBabelTranspile(): void {
-    if (this.transpilePlugins) {
-      disable()
+      await import('esbuild-runner/register')
     }
   }
 
