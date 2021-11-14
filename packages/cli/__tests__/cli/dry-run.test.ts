@@ -12,7 +12,7 @@ it('processes files but does not replace their contents when using --dry', async
     })
   ).toEqual({
     status: 0,
-    stdout: `${afile}\nDRY RUN: no files affected\n1 file(s), 1 modified, 0 errors\n`,
+    stdout: `a-file.js\nDRY RUN: no files affected\n1 file(s), 1 modified, 0 errors\n`,
     stderr: '',
   })
   expect(await fs.readFile(afile, 'utf8')).toEqual('3 + 4;')

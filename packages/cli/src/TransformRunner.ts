@@ -19,12 +19,12 @@ export type SourceTransformResult =
 
 export default class TransformRunner {
   constructor(
-    readonly sources: Array<Source>,
+    readonly sources: AsyncGenerator<Source>,
     readonly transformer: Transformer
   ) {}
 
   async *run(): AsyncIterableIterator<SourceTransformResult> {
-    for (const source of this.sources) {
+    for await (const source of this.sources) {
       let result: SourceTransformResult
 
       try {

@@ -1,8 +1,7 @@
-import { basename } from 'path'
+import { basename, relative } from 'path'
 import CLIEngine from './CLIEngine'
 import Config from './Config'
 import Options, { Command } from './Options'
-import { RealSystem, System } from './System'
 import {
   SourceTransformResult,
   SourceTransformResultKind,
@@ -105,62 +104,60 @@ function printVersion(argv: Array<string>, out: NodeJS.WritableStream): void {
   out.write('\n')
 }
 
-export default async function run(
-  argv: Array<string>,
-  sys: System = RealSystem
-): Promise<number> {
+export default async function run(argv: Array<string>): Promise<number> {
   let command: Command
 
   try {
     command = new Options(argv.slice(2)).parse()
   } catch (error) {
-    sys.stderr.write(`ERROR: ${error.message}\n`)
-    printHelp(argv, sys.stderr)
+    process.stderr.write(`ERROR: ${error.message}\n`)
+    printHelp(argv, process.stderr)
     return 1
   }
 
   if (command.kind === 'help') {
-    printHelp(argv, sys.stdout)
+    printHelp(argv, process.stdout)
     return 0
   }
 
   if (command.kind === 'version') {
-    printVersion(argv, sys.stdout)
+    printVersion(argv, process.stdout)
     return 0
   }
 
   const config = command.config
-  const dim = sys.stdout.isTTY ? '\x1b[2m' : ''
-  const reset = sys.stdout.isTTY ? '\x1b[0m' : ''
+  const dim = process.stdout.isTTY ? '\x1b[2m' : ''
+  const reset = process.stdout.isTTY ? '\x1b[0m' : ''
 
   function onTransform(result: SourceTransformResult): void {
+    const relativePath = relative(process.cwd(), result.source.path)
     if (result.kind === SourceTransformResultKind.Transformed) {
       if (!config.stdio) {
         if (result.output === result.source.content) {
-          sys.stdout.write(`${dim}${result.source.path}${reset}\n`)
+          process.stdout.write(`${dim}${relativePath}${reset}\n`)
         } else {
-          sys.stdout.write(`${result.source.path}\n`)
+          process.stdout.write(`${relativePath}\n`)
         }
       }
     } else if (result.error) {
       if (!config.stdio) {
-        sys.stderr.write(
-          `Encountered an error while processing ${result.source.path}:\n`
+        process.stderr.write(
+          `Encountered an error while processing ${relativePath}:\n`
         )
       }
 
-      sys.stderr.write(`${result.error.stack}\n`)
+      process.stderr.write(`${result.error.stack}\n`)
     }
   }
 
-  const { stats } = await new CLIEngine(config, onTransform, sys).run()
+  const { stats } = await new CLIEngine(config, onTransform).run()
 
   if (!config.stdio) {
     if (config.dry) {
-      sys.stdout.write('DRY RUN: no files affected\n')
+      process.stdout.write('DRY RUN: no files affected\n')
     }
 
-    sys.stdout.write(
+    process.stdout.write(
       `${stats.total} file(s), ${stats.modified} modified, ${stats.errors} errors\n`
     )
   }

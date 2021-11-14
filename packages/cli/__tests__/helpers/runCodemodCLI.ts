@@ -12,16 +12,12 @@ export async function runCodemodCLI(
   { stdin = '', cwd }: { stdin?: string; cwd?: string } = {}
 ): Promise<CLIResult> {
   const child = spawn(
-    'node',
-    [
-      '-r',
-      require.resolve('esbuild-runner'),
-      join(__dirname, '../../bin/codemod'),
-      ...args,
-    ],
+    process.argv0,
+    [join(__dirname, '../../bin/codemod'), ...args],
     {
       stdio: 'pipe',
       cwd,
+      env: { CODEMOD_RUN_WITH_ESBUILD: '1' },
     }
   )
 

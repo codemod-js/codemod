@@ -14,7 +14,7 @@ test('can load plugins written with ES modules by default', async function () {
     })
   ).toEqual({
     status: 0,
-    stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+    stdout: `a-file.js\n1 file(s), 1 modified, 0 errors\n`,
     stderr: '',
   })
   expect(await fs.readFile(afile, 'utf8')).toEqual('4 + 5;')
@@ -28,7 +28,7 @@ test('can load plugins written in TypeScript by default', async function () {
     })
   ).toEqual({
     status: 0,
-    stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+    stdout: `a-file.js\n1 file(s), 1 modified, 0 errors\n`,
     stderr: '',
   })
   expect(await fs.readFile(afile, 'utf8')).toEqual('4 + 5;')
@@ -42,7 +42,7 @@ test('can implicitly find plugins with .ts extensions', async function () {
     })
   ).toEqual({
     status: 0,
-    stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+    stdout: `a-file.js\n1 file(s), 1 modified, 0 errors\n`,
     stderr: '',
   })
   expect(await fs.readFile(afile, 'utf8')).toEqual('4 + 5;')
@@ -61,7 +61,7 @@ test('can load plugins with multiple files with ES modules by default`', async f
     )
   ).toEqual({
     status: 0,
-    stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+    stdout: `a-file.js\n1 file(s), 1 modified, 0 errors\n`,
     stderr: '',
   })
   expect(await fs.readFile(afile, 'utf8')).toEqual('4 + 5;')
@@ -79,7 +79,7 @@ test('processes all matching files in a directory with custom extensions', async
     )
   ).toEqual({
     status: 0,
-    stdout: `${processed}\n1 file(s), 1 modified, 0 errors\n`,
+    stdout: `processed.myjs\n1 file(s), 1 modified, 0 errors\n`,
     stderr: '',
   })
   expect(await fs.readFile(ignored, 'utf8')).toEqual('3 + 4;')

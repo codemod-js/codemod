@@ -96,8 +96,8 @@ export default class Config {
   }
 
   async loadBabelTranspile(): Promise<void> {
-    if (this.transpilePlugins) {
-      await import('esbuild-runner/register')
+    if (this.transpilePlugins && !require.extensions['.ts']) {
+      await import('esbuild-runner/register.js')
     }
   }
 

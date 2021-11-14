@@ -25,7 +25,7 @@ test('can load and run with a remote plugin', async () => {
 
     expect({ status, stdout, stderr }).toEqual({
       status: 0,
-      stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+      stdout: `a-file.js\n1 file(s), 1 modified, 0 errors\n`,
       stderr: '',
     })
 

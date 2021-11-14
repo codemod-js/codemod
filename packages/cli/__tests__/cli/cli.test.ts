@@ -15,11 +15,11 @@ it('respects globs', async function () {
     `!${pathInFixtures('omit.js')}`,
   ])
 
-  expect(status).toEqual(0)
+  expect(stderr).toEqual('')
   expect(stdout).toEqual(expect.stringContaining('abc.js'))
   expect(stdout).toEqual(expect.stringContaining('subdir/def.js'))
   expect(stdout).not.toEqual(expect.stringContaining('omit.js'))
-  expect(stderr).toEqual('')
+  expect(status).toEqual(0)
 })
 
 it('can read from stdin and write to stdout given the --stdio flag', async function () {
@@ -38,7 +38,7 @@ it('reads from a file, processes with plugins, then writes to that file', async 
     })
   ).toEqual({
     status: 0,
-    stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+    stdout: `a-file.js\n1 file(s), 1 modified, 0 errors\n`,
     stderr: '',
   })
   expect(await fs.readFile(afile, 'utf8')).toEqual('4 + 5;')
@@ -57,7 +57,7 @@ it('processes all matching files in a directory', async function () {
     })
   ).toEqual({
     status: 0,
-    stdout: `${file1}\n${file2}\n${file3}\n3 file(s), 3 modified, 0 errors\n`,
+    stdout: `file1.js\nfile2.ts\nsub-dir/file3.jsx\n3 file(s), 3 modified, 0 errors\n`,
     stderr: '',
   })
   expect(await fs.readFile(file1, 'utf8')).toEqual('4 + 5;')
@@ -70,7 +70,7 @@ it('prints files not processed in dim colors', async function () {
   const afile = await createTemporaryFile('a-file.js', '3 + 4;')
   expect(await runCodemodCLI([afile], { cwd: dirname(afile) })).toEqual({
     status: 0,
-    stdout: `${afile}\n1 file(s), 0 modified, 0 errors\n`,
+    stdout: `a-file.js\n1 file(s), 0 modified, 0 errors\n`,
     stderr: '',
   })
   expect(await fs.readFile(afile, 'utf8')).toEqual('3 + 4;')
@@ -88,7 +88,7 @@ it('can rewrite TypeScript files ending in `.ts`', async function () {
     )
   ).toEqual({
     status: 0,
-    stdout: `${afile}\n1 file(s), 1 modified, 0 errors\n`,
+    stdout: `a-file.ts\n1 file(s), 1 modified, 0 errors\n`,
     stderr: '',
   })
 
@@ -104,7 +104,7 @@ it('can rewrite TypeScript files ending in `.tsx`', async function () {
   )
   expect(await runCodemodCLI([afile], { cwd: dirname(afile) })).toEqual({
     status: 0,
-    stdout: `${afile}\n1 file(s), 0 modified, 0 errors\n`,
+    stdout: `a-file.tsx\n1 file(s), 0 modified, 0 errors\n`,
     stderr: '',
   })
 
