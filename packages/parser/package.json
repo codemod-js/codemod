@@ -11,6 +11,7 @@
     "build"
   ],
   "scripts": {
+    "prepublishOnly": "yarn build",
     "build": "tsc --build tsconfig.build.json",
     "clean": "rm -rf build",
     "lint": "eslint .",

@@ -1,6 +1,6 @@
 {
   "name": "@codemod/cli",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "codemod rewrites JavaScript and TypeScript",
   "repository": "https://github.com/codemod-js/codemod.git",
   "license": "Apache-2.0",
@@ -15,6 +15,7 @@
     "build"
   ],
   "scripts": {
+    "prepublishOnly": "yarn build",
     "build": "tsc --build tsconfig.build.json",
     "clean": "rm -rf build",
     "lint": "eslint .",
