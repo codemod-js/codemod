@@ -1,6 +1,6 @@
 /* eslint-env node */
 
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
+/** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
   testEnvironment: 'node',
   testRegex: '/__tests__/(test|.*\\.test)\\.ts$',

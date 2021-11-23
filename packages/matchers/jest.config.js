@@ -1,6 +1,6 @@
 /* eslint-env node */
 
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
+/** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
   clearMocks: true,
   moduleFileExtensions: ['ts', 'tsx', 'js'],
