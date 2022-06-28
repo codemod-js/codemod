@@ -254,7 +254,7 @@ const doneParamName = m.capture(m.anyString())
 const matcher = m.callExpression(m.identifier('test'), [
   m.anyString(),
   m.function(
-    [m.identifier(doneParam)],
+    [m.identifier(doneParamName)],
     m.containerOf(m.callExpression(m.identifier(m.fromCapture(doneParamName))))
   ),
 ])
