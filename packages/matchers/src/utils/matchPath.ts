@@ -1,6 +1,6 @@
-import * as m from '../../src/matchers'
-import * as t from '@babel/types'
 import { NodePath } from '@babel/core'
+import * as t from '@babel/types'
+import * as m from '../matchers'
 
 export type CapturedNodePaths<C> = {
   [K in keyof C]: C[K] extends t.Node ? NodePath<C[K]> : C[K]
