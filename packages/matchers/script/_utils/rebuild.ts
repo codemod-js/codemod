@@ -192,6 +192,6 @@ function rebuildTo(out: SimpleWriter): string | void {
   }
 }
 
-export default async function rebuild(): Promise<string> {
+export async function rebuild(): Promise<string> {
   return await format(writeToString(rebuildTo), MATCHERS_FILE_PATH)
 }
