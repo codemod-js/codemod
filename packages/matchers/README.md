@@ -121,12 +121,12 @@ Sometimes you'll want to refer to an earlier captured value in a later part of t
 ```ts
 import * as m from '@codemod/matchers'
 
-const argumentNameMatcher = m.capture(m.anyString())
+const argumentMatcher = m.capture(m.identifier())
 const matcher = m.functionExpression(
   m.anything(),
-  [m.identifier(argumentNameMatcher)],
+  [argumentMatcher],
   m.blockStatement([
-    m.returnStatement(m.fromCapture(m.identifier(argumentNameMatcher))),
+    m.returnStatement(m.fromCapture(argumentMatcher)),
   ])
 )
 
@@ -159,12 +159,12 @@ export default function () {
   return {
     visitor: {
       FunctionExpression(path: NodePath<t.FunctionExpression>): void {
-        const argumentNameMatcher = m.capture(m.anyString())
+        const argumentMatcher = m.capture(m.identifier())
         const matcher = m.functionExpression(
           m.anything(),
-          [m.identifier(argumentNameMatcher)],
+          [argumentMatcher],
           m.blockStatement([
-            m.returnStatement(m.fromCapture(m.identifier(argumentNameMatcher))),
+            m.returnStatement(m.fromCapture(argumentMatcher)),
           ])
         )
 
@@ -250,12 +250,12 @@ Sometimes you know you want to match a node but don't know its depth in the tree
 ```ts
 import * as m from '@codemod/matchers'
 
-const doneParamName = m.capture(m.anyString())
+const doneParam = m.capture(m.identifier())
 const matcher = m.callExpression(m.identifier('test'), [
   m.anyString(),
   m.function(
-    [m.identifier(doneParamName)],
-    m.containerOf(m.callExpression(m.identifier(m.fromCapture(doneParamName))))
+    [doneParam],
+    m.containerOf(m.callExpression(m.fromCapture(doneParam)))
   ),
 ])
 

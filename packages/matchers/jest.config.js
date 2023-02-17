@@ -9,5 +9,9 @@ module.exports = {
   transform: {
     '\\.ts$': 'esbuild-runner/jest',
   },
-  collectCoverageFrom: ['!src/matchers.ts'],
+  collectCoverageFrom: [
+    'src/**/*.ts',
+    '!**/__tests__/**/*.ts',
+    '!src/matchers.ts',
+  ],
 }
