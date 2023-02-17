@@ -6,7 +6,7 @@ function fieldsForNodeType(nodeType: string): Set<string> {
   return new Set(['type', ...Object.keys(NODE_FIELDS[nodeType])])
 }
 
-export default function js(code: string): t.File {
+export function js(code: string): t.File {
   return stripExtras(parse(code))
 }
 

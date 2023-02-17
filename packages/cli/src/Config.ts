@@ -2,11 +2,11 @@ import * as Babel from '@babel/core'
 import { ParserOptions, ParserPluginName } from '@codemod/parser'
 import { basename, extname } from 'path'
 import { TransformableExtensions } from './extensions'
-import PluginLoader from './PluginLoader'
-import AstExplorerResolver from './resolvers/AstExplorerResolver'
-import FileSystemResolver from './resolvers/FileSystemResolver'
-import NetworkResolver from './resolvers/NetworkResolver'
-import PackageResolver from './resolvers/PackageResolver'
+import { PluginLoader } from './PluginLoader'
+import { AstExplorerResolver } from './resolvers/AstExplorerResolver'
+import { FileSystemResolver } from './resolvers/FileSystemResolver'
+import { NetworkResolver } from './resolvers/NetworkResolver'
+import { PackageResolver } from './resolvers/PackageResolver'
 
 export class Plugin {
   readonly declaredName?: string
@@ -29,7 +29,7 @@ export class Plugin {
   }
 }
 
-export default class Config {
+export class Config {
   constructor(
     readonly sourcePaths: Array<string> = [],
     readonly localPlugins: Array<string> = [],

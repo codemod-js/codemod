@@ -7,7 +7,7 @@ import Resolver from './Resolver'
  * For example, if used in a project that includes `myplugin` in its
  * `node_modules`, this class will resolve to the main file of `myplugin`.
  */
-export default class PackageResolver implements Resolver {
+export class PackageResolver implements Resolver {
   async canResolve(source: string): Promise<boolean> {
     try {
       await this.resolve(source)

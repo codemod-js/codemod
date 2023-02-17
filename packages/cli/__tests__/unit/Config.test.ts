@@ -1,6 +1,6 @@
 import { join } from 'path'
 import { inspect } from 'util'
-import Config, { ConfigBuilder } from '../../src/Config'
+import { Config, ConfigBuilder } from '../../src/Config'
 
 // TODO: move some of the babel plugin loading tests in here
 

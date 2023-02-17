@@ -1,14 +1,14 @@
-import * as t from '@babel/types'
-import * as m from '../../src'
-import js from './utils/parse/js'
 import generate from '@babel/generator'
 import traverse, { NodePath } from '@babel/traverse'
-import dedent = require('dedent')
-import { expression } from './utils/builders'
-import match from '../utils/match'
-import convertStaticClassToNamedExports from '../../examples/convert-static-class-to-named-exports'
-import convertQUnitAssertExpectToAssertAsync from '../../examples/convert-qunit-assert-expect-to-assert-async'
+import * as t from '@babel/types'
 import { transform } from '@codemod/core'
+import convertQUnitAssertExpectToAssertAsync from '../../examples/convert-qunit-assert-expect-to-assert-async'
+import convertStaticClassToNamedExports from '../../examples/convert-static-class-to-named-exports'
+import * as m from '../../src'
+import { match } from '../utils/match'
+import { expression } from './utils/builders'
+import { js } from './utils/parse/js'
+import dedent = require('dedent')
 
 /**
  * This test demonstrates using captures to extract parts of an AST for use in

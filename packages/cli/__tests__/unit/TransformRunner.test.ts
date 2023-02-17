@@ -1,5 +1,6 @@
 import { deepEqual } from 'assert'
-import TransformRunner, {
+import {
+  TransformRunner,
   Source,
   SourceTransformResult,
   SourceTransformResultKind,

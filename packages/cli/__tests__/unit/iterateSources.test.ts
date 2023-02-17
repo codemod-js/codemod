@@ -1,5 +1,5 @@
 import { dirname, join } from 'path'
-import iterateSources from '../../src/iterateSources'
+import { iterateSources } from '../../src/iterateSources'
 import createTemporaryDirectory from '../helpers/createTemporaryDirectory'
 import createTemporaryFile, {
   createTemporaryFiles,

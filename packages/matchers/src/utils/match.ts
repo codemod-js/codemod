@@ -32,7 +32,7 @@ import * as m from '../matchers'
  *   };
  * }
  */
-export default function match<T, C extends m.CaptureBase>(
+export function match<T, C extends m.CaptureBase>(
   matcher: m.Matcher<T>,
   captures: { [K in keyof C]: m.CapturedMatcher<C[K]> },
   value: T,

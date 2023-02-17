@@ -1,4 +1,4 @@
-import distributeAcrossSpacers from '../utils/distributeAcrossSpacers'
+import { distributeAcrossSpacers } from '../utils/distributeAcrossSpacers'
 import { spacer, oneOrMore, zeroOrMore } from '../matchers/spacers'
 
 test('allocates nothing given an empty list of spacers', () => {

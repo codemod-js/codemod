@@ -1,6 +1,6 @@
 import * as t from '@babel/types'
 import * as m from '../matchers'
-import js from './utils/parse/js'
+import { js } from './utils/parse/js'
 
 test('anyString matches strings', () => {
   expect(m.anyString().match('')).toBeTruthy()

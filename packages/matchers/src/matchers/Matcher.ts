@@ -1,4 +1,4 @@
-export default class Matcher<T> {
+export class Matcher<T> {
   match(value: unknown, keys: ReadonlyArray<PropertyKey> = []): value is T {
     return this.matchValue(value, keys)
   }

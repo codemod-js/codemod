@@ -1,7 +1,7 @@
 import * as t from '@babel/types'
-import tupleOf from './tupleOf'
 import { isNode } from '../NodeTypes'
-import Matcher from './Matcher'
+import { Matcher } from './Matcher'
+import { tupleOf } from './tupleOf'
 
 export class FunctionMatcher extends Matcher<t.Function> {
   constructor(
@@ -39,9 +39,11 @@ export class FunctionMatcher extends Matcher<t.Function> {
   }
 }
 
-export default function Function(
+export function Function(
   params?: Matcher<Array<t.LVal>> | Array<Matcher<t.LVal>>,
   body?: Matcher<t.Expression | t.BlockStatement>
 ): Matcher<t.Function> {
   return new FunctionMatcher(params, body)
 }
+
+export { Function as function }

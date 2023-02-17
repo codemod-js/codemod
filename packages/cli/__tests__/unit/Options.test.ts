@@ -1,7 +1,7 @@
 import { join } from 'path'
 import { inspect } from 'util'
-import Config from '../../src/Config'
-import Options, { Command } from '../../src/Options'
+import { Config } from '../../src/Config'
+import { Options, Command } from '../../src/Options'
 
 test('has sensible defaults', function () {
   const config = getRunConfig(new Options([]).parse())

@@ -37,19 +37,19 @@ export type CapturedMatchers<C> = { [K in keyof C]: m.CapturedMatcher<C[K]> }
  *   };
  * }
  */
-export default function matchPath<Node extends t.Node, C extends m.CaptureBase>(
+export function matchPath<Node extends t.Node, C extends m.CaptureBase>(
   matcher: m.Matcher<Node>,
   captures: CapturedMatchers<C>,
   value: NodePath<Node>,
   callback: (paths: CapturedNodePaths<C>) => void
 ): void
-export default function matchPath<Node extends t.Node, C extends m.CaptureBase>(
+export function matchPath<Node extends t.Node, C extends m.CaptureBase>(
   matcher: m.Matcher<Array<Node>>,
   captures: CapturedMatchers<C>,
   value: Array<NodePath<Node>>,
   callback: (paths: CapturedNodePaths<C>) => void
 ): void
-export default function matchPath<Node extends t.Node, C extends m.CaptureBase>(
+export function matchPath<Node extends t.Node, C extends m.CaptureBase>(
   matcher: m.Matcher<Node | Array<Node>>,
   captures: CapturedMatchers<C>,
   value: NodePath<Node> | Array<NodePath<Node>>,

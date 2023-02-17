@@ -1,4 +1,4 @@
-import Matcher from './Matcher'
+import { Matcher } from './Matcher'
 
 export class StringMatcher extends Matcher<string> {
   matchValue(value: unknown): value is string {
@@ -6,6 +6,6 @@ export class StringMatcher extends Matcher<string> {
   }
 }
 
-export default function anyString(): Matcher<string> {
+export function anyString(): Matcher<string> {
   return new StringMatcher()
 }

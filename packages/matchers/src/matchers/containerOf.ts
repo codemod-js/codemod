@@ -1,7 +1,7 @@
 import * as t from '@babel/types'
-import { Matcher } from '../matchers'
-import { CapturedMatcher } from './capture'
+import { Matcher } from './Matcher'
 import { isNode } from '../NodeTypes'
+import { CapturedMatcher } from './capture'
 
 /**
  * Matches and captures using another matcher by recursively checking all
@@ -43,7 +43,7 @@ export class ContainerOfMatcher<
   }
 }
 
-export default function containerOf<C extends t.Node, M extends t.Node = C>(
+export function containerOf<C extends t.Node, M extends t.Node = C>(
   containedMatcher: Matcher<C>
 ): ContainerOfMatcher<C, M> {
   return new ContainerOfMatcher(containedMatcher)

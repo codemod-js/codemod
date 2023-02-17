@@ -15,7 +15,7 @@ export class NetworkLoadError extends Error {
  *
  * This plugin accepts only absolute HTTP URLs.
  */
-export default class NetworkResolver implements Resolver {
+export class NetworkResolver implements Resolver {
   async canResolve(source: string): Promise<boolean> {
     try {
       const url = new URL(source)

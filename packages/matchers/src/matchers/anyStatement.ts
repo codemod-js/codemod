@@ -1,6 +1,6 @@
 import * as t from '@babel/types'
 import { isNode } from '../NodeTypes'
-import Matcher from './Matcher'
+import { Matcher } from './Matcher'
 
 export class AnyStatementMatcher extends Matcher<t.Statement> {
   matchValue(value: unknown): value is t.Statement {
@@ -8,6 +8,6 @@ export class AnyStatementMatcher extends Matcher<t.Statement> {
   }
 }
 
-export default function anyStatement(): Matcher<t.Statement> {
+export function anyStatement(): Matcher<t.Statement> {
   return new AnyStatementMatcher()
 }

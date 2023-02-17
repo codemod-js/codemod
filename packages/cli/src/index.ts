@@ -1,7 +1,7 @@
 import { basename, relative } from 'path'
-import CLIEngine from './CLIEngine'
-import Config from './Config'
-import Options, { Command } from './Options'
+import { CLIEngine } from './CLIEngine'
+import { Config } from './Config'
+import { Options, Command } from './Options'
 import {
   SourceTransformResult,
   SourceTransformResultKind,
@@ -105,7 +105,7 @@ function printVersion(argv: Array<string>, out: NodeJS.WritableStream): void {
   out.write('\n')
 }
 
-export default async function run(argv: Array<string>): Promise<number> {
+export async function run(argv: Array<string>): Promise<number> {
   let command: Command
 
   try {
@@ -166,3 +166,5 @@ export default async function run(argv: Array<string>): Promise<number> {
   // exit status is number of errors up to byte max value
   return Math.min(stats.errors, 255)
 }
+
+export default run

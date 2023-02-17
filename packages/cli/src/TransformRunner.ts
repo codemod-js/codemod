@@ -17,7 +17,7 @@ export type SourceTransformResult =
     }
   | { kind: SourceTransformResultKind.Error; source: Source; error: Error }
 
-export default class TransformRunner {
+export class TransformRunner {
   constructor(
     readonly sources: AsyncGenerator<Source>,
     readonly transformer: Transformer

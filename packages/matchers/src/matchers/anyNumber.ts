@@ -1,4 +1,4 @@
-import Matcher from './Matcher'
+import { Matcher } from './Matcher'
 
 export class NumberMatcher extends Matcher<number> {
   matchValue(value: unknown): value is number {
@@ -6,6 +6,6 @@ export class NumberMatcher extends Matcher<number> {
   }
 }
 
-export default function anyNumber(): Matcher<number> {
+export function anyNumber(): Matcher<number> {
   return new NumberMatcher()
 }

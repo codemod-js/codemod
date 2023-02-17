@@ -2,7 +2,7 @@ import { buildOptions, ParserOptions } from '@codemod/parser'
 import { TransformOptions } from '.'
 import { BabelPlugin, PluginObj } from './BabelPluginTypes'
 
-export default function buildPlugin(
+export function buildPlugin(
   sourceType: ParserOptions['sourceType']
 ): BabelPlugin {
   return function (): PluginObj {

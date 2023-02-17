@@ -1,4 +1,4 @@
-import Matcher from './Matcher'
+import { Matcher } from './Matcher'
 
 export class ArrayOfMatcher<T> extends Matcher<Array<T>> {
   constructor(private readonly elementMatcher: Matcher<T>) {
@@ -23,8 +23,6 @@ export class ArrayOfMatcher<T> extends Matcher<Array<T>> {
   }
 }
 
-export default function arrayOf<T>(
-  elementMatcher: Matcher<T>
-): Matcher<Array<T>> {
+export function arrayOf<T>(elementMatcher: Matcher<T>): Matcher<Array<T>> {
   return new ArrayOfMatcher(elementMatcher)
 }
