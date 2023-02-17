@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/codemod-js/codemod/compare/@codemod/core@2.0.0...@codemod/core@2.1.0) (2023-02-17)
+
+### Bug Fixes
+
+- update intra-monorepo dependencies ([3c95444](https://github.com/codemod-js/codemod/commit/3c95444e1f57b982634e635931ca08ecf5805e21))
+
+### Features
+
+- **cli,core:** use `esbuild-runner` ([ab527b2](https://github.com/codemod-js/codemod/commit/ab527b2cea23211732ab1a45512dc1f968c707c6))
+- **cli:** add `--parser-plugins` option ([3593893](https://github.com/codemod-js/codemod/commit/3593893791c7e4e0e0c8cea31ea642b229c0bb8a))
+
 ## [2.0.0](https://github.com/codemod-js/codemod/compare/@codemod/core@1.1.1...@codemod/core@2.0.0) (2021-11-12)
 
 - remove underused options: `--printer`, `--babelrc`, `--find-babel-config` ([50a864d](https://github.com/codemod-js/codemod/commit/50a864df7344767a5c0e9e3ab990a0f4d05d634d))

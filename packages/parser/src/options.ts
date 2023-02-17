@@ -8,7 +8,7 @@ import {
   TypeScriptPluginOptions,
 } from '@babel/parser'
 
-type ParserPluginName =
+export type ParserPluginName =
   | Extract<ParserPlugin, string>
   | Extract<ParserPlugin, [string, object]>[0]
 
@@ -40,9 +40,19 @@ const DefaultParserPlugins = new Set<ParserPlugin>([
   'throwExpressions',
   'topLevelAwait',
   ['decorators', { decoratorsBeforeExport: true }],
+  'decorators-legacy',
   ['pipelineOperator', { proposal: 'minimal' }],
   ['recordAndTuple', { syntaxType: 'hash' }],
 ])
+
+export function isParserPluginName(name: string): name is ParserPluginName {
+  for (const plugin of DefaultParserPlugins) {
+    if (name === getPluginName(plugin)) {
+      return true
+    }
+  }
+  return false
+}
 
 export interface ParserOptions extends Omit<BabelParserOptions, 'plugins'> {
   plugins?: Array<ParserPlugin>

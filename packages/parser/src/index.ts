@@ -3,9 +3,13 @@ import {
   ParserOptions as BabelParserOptions,
 } from '@babel/parser'
 import { File } from '@babel/types'
-import buildOptions, { ParserOptions } from './options'
+import buildOptions, {
+  isParserPluginName,
+  ParserOptions,
+  ParserPluginName,
+} from './options'
 
-export { buildOptions, ParserOptions }
+export { buildOptions, isParserPluginName, ParserOptions, ParserPluginName }
 
 /**
  * Wraps `parse` from `@babel/parser`, but sets default options such that as few

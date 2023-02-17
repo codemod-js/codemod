@@ -1,6 +1,6 @@
 import { buildOptions, ParserOptions } from '@codemod/parser'
-import { BabelPlugin, PluginObj } from './BabelPluginTypes'
 import { TransformOptions } from '.'
+import { BabelPlugin, PluginObj } from './BabelPluginTypes'
 
 export default function buildPlugin(
   sourceType: ParserOptions['sourceType']
@@ -14,6 +14,7 @@ export default function buildPlugin(
         const options = buildOptions({
           ...parserOpts,
           sourceType,
+          plugins: parserOpts.plugins,
         })
 
         for (const key of Object.keys(options)) {

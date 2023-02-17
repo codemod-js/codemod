@@ -1,3 +1,4 @@
+import { isParserPluginName } from '@codemod/parser'
 import { existsSync, readFileSync } from 'fs'
 import { resolve } from 'path'
 import { sync as resolveSync } from 'resolve'
@@ -85,6 +86,22 @@ export default class Options {
             throw new Error(
               `unable to parse JSON config for ${name}: ${optionsRaw}`
             )
+          }
+          break
+        }
+
+        case '--parser-plugins': {
+          i++
+          const value = this.args[i]
+          if (!value) {
+            throw new Error(`${arg} must be followed by a comma-separated list`)
+          }
+          for (const plugin of value.split(',')) {
+            if (isParserPluginName(plugin)) {
+              config.addParserPlugin(plugin)
+            } else {
+              throw new Error(`unknown parser plugin: ${plugin}`)
+            }
           }
           break
         }

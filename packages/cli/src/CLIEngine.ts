@@ -1,6 +1,5 @@
-import { promises as fs } from 'fs'
-import getStream = require('get-stream')
 import { PluginItem } from '@babel/core'
+import { promises as fs } from 'fs'
 import Config from './Config'
 import InlineTransformer from './InlineTransformer'
 import iterateSources from './iterateSources'
@@ -9,6 +8,7 @@ import TransformRunner, {
   SourceTransformResult,
   SourceTransformResultKind,
 } from './TransformRunner'
+import getStream = require('get-stream')
 
 export class RunResult {
   constructor(readonly stats: RunStats) {}
@@ -54,7 +54,10 @@ export default class CLIEngine {
       })
     }
 
-    const runner = new TransformRunner(sources, new InlineTransformer(plugins))
+    const runner = new TransformRunner(
+      sources,
+      new InlineTransformer(plugins, this.config.parserPlugins)
+    )
 
     for await (const result of runner.run()) {
       this.onTransform(result)
