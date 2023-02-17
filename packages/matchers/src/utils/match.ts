@@ -1,4 +1,4 @@
-import * as m from '../../src/matchers'
+import * as m from '../matchers'
 
 /**
  * This helper makes it easier to use a matcher together with captured values,
