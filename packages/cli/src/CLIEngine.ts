@@ -1,9 +1,10 @@
 import { PluginItem } from '@babel/core'
 import { promises as fs } from 'fs'
-import Config from './Config'
-import InlineTransformer from './InlineTransformer'
-import iterateSources from './iterateSources'
-import TransformRunner, {
+import { Config } from './Config'
+import { InlineTransformer } from './InlineTransformer'
+import { iterateSources } from './iterateSources'
+import {
+  TransformRunner,
   Source,
   SourceTransformResult,
   SourceTransformResultKind,
@@ -22,7 +23,7 @@ export class RunStats {
   ) {}
 }
 
-export default class CLIEngine {
+export class CLIEngine {
   constructor(
     readonly config: Config,
     readonly onTransform: (result: SourceTransformResult) => void = () => {

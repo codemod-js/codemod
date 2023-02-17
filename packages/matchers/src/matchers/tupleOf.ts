@@ -1,4 +1,4 @@
-import Matcher from './Matcher'
+import { Matcher } from './Matcher'
 
 export class TupleOfMatcher<
   T,
@@ -33,7 +33,7 @@ export class TupleOfMatcher<
   }
 }
 
-export default function tupleOf<T, A extends Array<T> = Array<T>>(
+export function tupleOf<T, A extends Array<T> = Array<T>>(
   ...matchers: Array<Matcher<T>>
 ): Matcher<A> {
   return new TupleOfMatcher(...matchers)

@@ -1,4 +1,4 @@
-import Matcher from './Matcher'
+import { Matcher } from './Matcher'
 
 export class OneOfMatcher<T> extends Matcher<[T]> {
   constructor(private readonly matcher: Matcher<T>) {
@@ -18,6 +18,6 @@ export class OneOfMatcher<T> extends Matcher<[T]> {
   }
 }
 
-export default function oneOf<T>(matcher: Matcher<T>): Matcher<[T]> {
+export function oneOf<T>(matcher: Matcher<T>): Matcher<[T]> {
   return new OneOfMatcher(matcher)
 }

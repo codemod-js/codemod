@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs'
 import { join } from 'path'
-import AstExplorerResolver from '../../../src/resolvers/AstExplorerResolver'
+import { AstExplorerResolver } from '../../../src/resolvers/AstExplorerResolver'
 import { startServer } from '../../helpers/TestServer'
 
 test('normalizes a gist+commit editor URL into an API URL', async function () {

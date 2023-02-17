@@ -1,5 +1,5 @@
 import { join } from 'path'
-import FileSystemResolver from '../../../src/resolvers/FileSystemResolver'
+import { FileSystemResolver } from '../../../src/resolvers/FileSystemResolver'
 
 test('can resolve any files that exist as-is', async function () {
   const resolver = new FileSystemResolver()

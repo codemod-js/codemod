@@ -2,7 +2,7 @@ import { isParserPluginName } from '@codemod/parser'
 import { existsSync, readFileSync } from 'fs'
 import { resolve } from 'path'
 import { sync as resolveSync } from 'resolve'
-import Config, { ConfigBuilder } from './Config'
+import { Config, ConfigBuilder } from './Config'
 import { RequireableExtensions } from './extensions'
 
 export interface RunCommand {
@@ -20,7 +20,7 @@ export interface VersionCommand {
 
 export type Command = RunCommand | HelpCommand | VersionCommand
 
-export default class Options {
+export class Options {
   constructor(readonly args: Array<string>) {}
 
   parse(): RunCommand | HelpCommand | VersionCommand {

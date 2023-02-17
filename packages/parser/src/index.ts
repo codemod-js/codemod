@@ -3,7 +3,8 @@ import {
   ParserOptions as BabelParserOptions,
 } from '@babel/parser'
 import { File } from '@babel/types'
-import buildOptions, {
+import {
+  buildOptions,
   isParserPluginName,
   ParserOptions,
   ParserPluginName,

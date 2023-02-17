@@ -174,7 +174,7 @@ async function* iterateFiles(
  * Builds an iterator that loops through all the files in the given paths,
  * matching an allowlist of extensions. Ignores files excluded by git.
  */
-export default async function* iterateSources(
+export async function* iterateSources(
   roots: Array<string>,
   {
     extensions,

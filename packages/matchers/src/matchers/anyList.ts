@@ -1,6 +1,6 @@
-import { Spacer } from '../matchers'
-import distributeAcrossSpacers from '../utils/distributeAcrossSpacers'
-import Matcher from './Matcher'
+import { distributeAcrossSpacers } from '../utils/distributeAcrossSpacers'
+import { Matcher } from './Matcher'
+import { Spacer } from './spacers'
 
 export class AnyListMatcher<T> extends Matcher<Array<T>> {
   private readonly spacers: Array<Spacer> = []
@@ -69,7 +69,7 @@ export class AnyListMatcher<T> extends Matcher<Array<T>> {
   }
 }
 
-export default function anyList<T>(
+export function anyList<T>(
   ...elements: Array<Matcher<T> | Spacer>
 ): Matcher<Array<T>> {
   return new AnyListMatcher(elements)

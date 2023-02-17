@@ -1,6 +1,6 @@
 import Resolver from './resolvers/Resolver'
 
-export default class PluginLoader {
+export class PluginLoader {
   constructor(private readonly resolvers: Array<Resolver>) {}
 
   async load(source: string): Promise<object> {

@@ -1,7 +1,7 @@
-import { CapturedMatcher } from '../matchers'
+import { CapturedMatcher } from './capture'
 import { isNode } from '../NodeTypes'
 import { nodesEquivalent } from '../utils/nodesEquivalent'
-import Matcher from './Matcher'
+import { Matcher } from './Matcher'
 
 export class FromCaptureMatcher<T> extends Matcher<T> {
   constructor(private readonly capturedMatcher: CapturedMatcher<T>) {
@@ -16,14 +16,7 @@ export class FromCaptureMatcher<T> extends Matcher<T> {
   }
 }
 
-/**
- * Matches the value captured by `capturedMatcher`, which must match its value
- * before this matcher. That is, `capturedMatcher` must match a value that is
- * visited before this matcher. If `capturedMatcher` matches a node, this
- * matcher will match a node that is equivalent–but not necessarily identical–to
- * the captured node.
- */
-export default function fromCapture<T>(
+export function fromCapture<T>(
   capturedMatcher: CapturedMatcher<T>
 ): Matcher<T> {
   return new FromCaptureMatcher(capturedMatcher)

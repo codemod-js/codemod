@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs'
 import { URL } from 'url'
-import NetworkResolver from './NetworkResolver'
+import { NetworkResolver } from './NetworkResolver'
 
 const EDITOR_HASH_PATTERN = /^#\/gist\/(\w+)(?:\/(\w+))?$/
 
@@ -10,7 +10,7 @@ const EDITOR_HASH_PATTERN = /^#\/gist\/(\w+)(?:\/(\w+))?$/
  * astexplorer.net uses GitHub gists to save and facilitate sharing. This
  * resolver accepts either the editor URL or the gist API URL.
  */
-export default class AstExplorerResolver extends NetworkResolver {
+export class AstExplorerResolver extends NetworkResolver {
   constructor(
     private readonly baseURL: URL = new URL('https://astexplorer.net/')
   ) {

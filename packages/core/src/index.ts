@@ -4,7 +4,7 @@ import {
   transformSync,
 } from '@babel/core'
 import { strict as assert } from 'assert'
-import buildAllSyntaxPlugin from './AllSyntaxPlugin'
+import { buildPlugin } from './AllSyntaxPlugin'
 import RecastPlugin from './RecastPlugin'
 
 export type TransformOptions = BabelTransformOptions
@@ -21,7 +21,7 @@ export function transform(
     ...options,
     plugins: [
       ...(options.plugins || []),
-      buildAllSyntaxPlugin(options.sourceType || 'unambiguous'),
+      buildPlugin(options.sourceType || 'unambiguous'),
       RecastPlugin,
     ],
   })

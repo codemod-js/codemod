@@ -1,5 +1,5 @@
-import { anything } from '../matchers'
-import Matcher from './Matcher'
+import { anything } from './anything'
+import { Matcher } from './Matcher'
 
 export interface CaptureBase {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,8 +37,6 @@ export class CapturedMatcher<C, M = C> extends Matcher<M> {
   }
 }
 
-export default function capture<C, M = C>(
-  matcher?: Matcher<C>
-): CapturedMatcher<C, M> {
+export function capture<C, M = C>(matcher?: Matcher<C>): CapturedMatcher<C, M> {
   return new CapturedMatcher(matcher)
 }

@@ -1,4 +1,4 @@
-import { Matcher } from '../matchers'
+import { Matcher } from './Matcher'
 
 export type Predicate = (value: unknown) => boolean
 
@@ -12,6 +12,6 @@ export class PredicateMatcher<T> extends Matcher<T> {
   }
 }
 
-export default function predicate<T>(predicate: Predicate): Matcher<T> {
+export function predicate<T>(predicate: Predicate): Matcher<T> {
   return new PredicateMatcher(predicate)
 }

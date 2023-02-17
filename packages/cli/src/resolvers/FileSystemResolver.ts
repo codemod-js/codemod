@@ -14,7 +14,7 @@ async function isFile(path: string): Promise<boolean> {
 /**
  * Resolves file system paths to plugins.
  */
-export default class FileSystemResolver implements Resolver {
+export class FileSystemResolver implements Resolver {
   constructor(
     private readonly optionalExtensions: Set<string> = PluginExtensions
   ) {}

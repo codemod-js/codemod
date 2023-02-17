@@ -1,4 +1,4 @@
-import Matcher from './Matcher'
+import { Matcher } from './Matcher'
 
 export class AnythingMatcher<T> extends Matcher<T> {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -7,6 +7,6 @@ export class AnythingMatcher<T> extends Matcher<T> {
   }
 }
 
-export default function anything<T>(): Matcher<T> {
+export function anything<T>(): Matcher<T> {
   return new AnythingMatcher()
 }

@@ -1,6 +1,6 @@
 import { Spacer } from '../matchers/spacers'
 
-export default function* distributeAcrossSpacers(
+export function* distributeAcrossSpacers(
   spacers: Array<Spacer>,
   available: number
 ): IterableIterator<Array<number>> {

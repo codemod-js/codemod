@@ -3,7 +3,7 @@ import { ParserPlugin } from '@babel/parser'
 import { transform, TransformOptions } from '@codemod/core'
 import Transformer from './Transformer'
 
-export default class InlineTransformer implements Transformer {
+export class InlineTransformer implements Transformer {
   constructor(
     private readonly plugins: Iterable<PluginItem>,
     private readonly parserPlugins: Iterable<ParserPlugin> = []

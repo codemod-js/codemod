@@ -1,5 +1,5 @@
 import { promises as fs } from 'fs'
-import NetworkResolver from '../../../src/resolvers/NetworkResolver'
+import { NetworkResolver } from '../../../src/resolvers/NetworkResolver'
 import { startServer } from '../../helpers/TestServer'
 
 test('can load data from a URL', async function () {

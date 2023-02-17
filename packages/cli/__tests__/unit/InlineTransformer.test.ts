@@ -2,7 +2,7 @@ import { PluginItem } from '@babel/core'
 import { NodePath } from '@babel/traverse'
 import { NumericLiteral, Program } from '@babel/types'
 import { join } from 'path'
-import InlineTransformer from '../../src/InlineTransformer'
+import { InlineTransformer } from '../../src/InlineTransformer'
 
 test('passes source through as-is when there are no plugins', async function () {
   const filepath = 'a.js'

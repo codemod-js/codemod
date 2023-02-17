@@ -1,4 +1,4 @@
-import Matcher from './Matcher'
+import { Matcher } from './Matcher'
 
 export class OrMatcher<T, A extends Array<Matcher<T> | T>> extends Matcher<T> {
   private readonly matchersOrValues: A
@@ -46,7 +46,7 @@ export default function or<T, U, V, W, X>(
   fourth: Matcher<W> | W,
   fifth: Matcher<X> | X
 ): Matcher<T | U | V | W | X>
-export default function or<T, A extends Array<Matcher<T> | T>>(
+export function or<T, A extends Array<Matcher<T> | T>>(
   ...matchersOrValues: A
 ): Matcher<T> {
   return new OrMatcher(...matchersOrValues)

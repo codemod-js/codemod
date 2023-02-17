@@ -62,7 +62,7 @@ export interface ParserOptions extends Omit<BabelParserOptions, 'plugins'> {
  * Builds options for `@babel/parser` by enabling as many features as possible,
  * while also preserving the options given as an argument.
  */
-export default function buildOptions({
+export function buildOptions({
   sourceType = 'unambiguous',
   allowAwaitOutsideFunction = true,
   allowImportExportEverywhere = true,

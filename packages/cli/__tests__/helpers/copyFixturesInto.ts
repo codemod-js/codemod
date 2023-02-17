@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs'
-import mkdirp = require('make-dir')
 import { dirname, join, relative } from 'path'
-import iterateSources from '../../src/iterateSources'
+import { iterateSources } from '../../src/iterateSources'
+import mkdirp = require('make-dir')
 
 export default async function copyFixturesInto(
   fixture: string,
