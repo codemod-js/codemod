@@ -29,6 +29,9 @@
       "git add"
     ]
   },
+  "resolutions": {
+    "@babel/parser": "7.20.15"
+  },
   "devDependencies": {
     "@commitlint/cli": "^14.1.0",
     "@commitlint/config-conventional": "^14.1.0",
