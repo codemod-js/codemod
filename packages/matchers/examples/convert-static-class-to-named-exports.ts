@@ -59,12 +59,12 @@ import * as t from '@babel/types'
 import * as m from '../src'
 
 // capture the name of the exported class
-const className = m.capture(m.anyString())
+const classId = m.capture(m.identifier())
 
 // capture the class declaration
 const classDeclaration = m.capture(
   m.classDeclaration(
-    m.identifier(className),
+    classId,
     undefined,
     m.classBody(
       m.arrayOf(
@@ -91,7 +91,7 @@ const classDeclaration = m.capture(
 
 // capture the export, making sure to match the class name
 const exportDeclaration = m.capture(
-  m.exportDefaultDeclaration(m.identifier(m.fromCapture(className)))
+  m.exportDefaultDeclaration(m.fromCapture(classId))
 )
 
 // match a program that contains a matching class and export declaration

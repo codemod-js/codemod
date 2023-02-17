@@ -125,9 +125,7 @@ const argumentMatcher = m.capture(m.identifier())
 const matcher = m.functionExpression(
   m.anything(),
   [argumentMatcher],
-  m.blockStatement([
-    m.returnStatement(m.fromCapture(argumentMatcher)),
-  ])
+  m.blockStatement([m.returnStatement(m.fromCapture(argumentMatcher))])
 )
 
 matcher.match(expr('function(a) { return a; })')) // true
@@ -163,9 +161,7 @@ export default function () {
         const matcher = m.functionExpression(
           m.anything(),
           [argumentMatcher],
-          m.blockStatement([
-            m.returnStatement(m.fromCapture(argumentMatcher)),
-          ])
+          m.blockStatement([m.returnStatement(m.fromCapture(argumentMatcher))])
         )
 
         if (matcher.match(path.node)) {
@@ -383,16 +379,12 @@ export default function () {
   return {
     visitor: {
       FunctionExpression(path: NodePath<t.FunctionExpression>): void {
-        const argumentNameMatcher = m.capture(m.anyString())
+        const paramId = m.capture(m.identifier())
         const matcher = m.function(
-          [m.identifier(argumentNameMatcher)],
+          [paramId],
           m.or(
-            m.blockStatement([
-              m.returnStatement(
-                m.identifier(m.fromCapture(argumentNameMatcher))
-              ),
-            ]),
-            m.identifier(m.fromCapture(argumentNameMatcher))
+            m.blockStatement([m.returnStatement(m.fromCapture(paramId))]),
+            m.fromCapture(paramId)
           )
         )
 
