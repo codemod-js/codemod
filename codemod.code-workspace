@@ -13,5 +13,10 @@
 			"path": "packages/parser"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"search.exclude": {
+			"**/build": true,
+			"**/coverage": true
+		}
+	}
 }
