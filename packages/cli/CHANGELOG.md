@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/codemod-js/codemod/compare/@codemod/cli@3.1.1...@codemod/cli@3.2.0) (2023-02-17)
+
+### Features
+
+- **cli:** add `--parser-plugins` option ([3593893](https://github.com/codemod-js/codemod/commit/3593893791c7e4e0e0c8cea31ea642b229c0bb8a))
+
 ## [3.1.0](https://github.com/codemod-js/codemod/compare/@codemod/cli@3.0.1...@codemod/cli@3.1.0) (2021-11-14)
 
 - **feat:** improve gitignore handling ([e04c0c4](https://github.com/codemod-js/codemod/commit/e04c0c41d5cb3d86c6cdbbac932efcad968c73c9))

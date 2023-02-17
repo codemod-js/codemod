@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/codemod-js/codemod/compare/@codemod/matchers@1.2.0...@codemod/matchers@1.3.0) (2023-02-17)
+
+### Bug Fixes
+
+- update intra-monorepo dependencies ([3c95444](https://github.com/codemod-js/codemod/commit/3c95444e1f57b982634e635931ca08ecf5805e21))
+
+### Features
+
+- **cli,core:** use `esbuild-runner` ([ab527b2](https://github.com/codemod-js/codemod/commit/ab527b2cea23211732ab1a45512dc1f968c707c6))
+
 ## [1.2.0](https://github.com/codemod-js/codemod/compare/@codemod/matchers@1.1.1...@codemod/matchers@1.2.0) (2021-11-12)
 
 - update babel to v7.16.x ([1218bf9](https://github.com/codemod-js/codemod/commit/1218bf98145feaa8a692611152559aa6b46b9ba0))
