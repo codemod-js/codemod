@@ -39,6 +39,7 @@ OPTIONS
   -o, --plugin-options OPTS         JSON-encoded OPTS for the last plugin provided${optionAnnotation(
     defaults.pluginOptions
   )}.
+      --parser-plugins PLUGINS      Comma-separated PLUGINS to use with @babel/parser.
   -r, --require PATH                Require PATH before transform${optionAnnotation(
     defaults.requires
   )}.

@@ -1,11 +1,11 @@
 import {
-  TransformOptions as BabelTransformOptions,
   BabelFileResult,
+  TransformOptions as BabelTransformOptions,
   transformSync,
 } from '@babel/core'
-import RecastPlugin from './RecastPlugin'
-import buildAllSyntaxPlugin from './AllSyntaxPlugin'
 import { strict as assert } from 'assert'
+import buildAllSyntaxPlugin from './AllSyntaxPlugin'
+import RecastPlugin from './RecastPlugin'
 
 export type TransformOptions = BabelTransformOptions
 

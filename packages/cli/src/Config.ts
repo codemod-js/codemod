@@ -1,5 +1,5 @@
 import * as Babel from '@babel/core'
-import { ParserOptions } from '@codemod/parser'
+import { ParserOptions, ParserPluginName } from '@codemod/parser'
 import { basename, extname } from 'path'
 import { TransformableExtensions } from './extensions'
 import PluginLoader from './PluginLoader'
@@ -35,6 +35,7 @@ export default class Config {
     readonly localPlugins: Array<string> = [],
     readonly remotePlugins: Array<string> = [],
     readonly pluginOptions: Map<string, object> = new Map<string, object>(),
+    readonly parserPlugins = new Set<ParserPluginName>(),
     readonly extensions: Set<string> = TransformableExtensions,
     readonly sourceType: ParserOptions['sourceType'] = 'unambiguous',
     readonly requires: Array<string> = [],
@@ -156,6 +157,7 @@ export class ConfigBuilder {
   private _localPlugins?: Array<string>
   private _remotePlugins?: Array<string>
   private _pluginOptions?: Map<string, object>
+  private _parserPluginNames = new Set<ParserPluginName>()
   private _extensions: Set<string> = new Set(TransformableExtensions)
   private _sourceType: ParserOptions['sourceType'] = 'module'
   private _requires?: Array<string>
@@ -222,6 +224,11 @@ export class ConfigBuilder {
     return this
   }
 
+  addParserPlugin(name: ParserPluginName): this {
+    this._parserPluginNames.add(name)
+    return this
+  }
+
   extensions(value: Set<string>): this {
     this._extensions = value
     return this
@@ -274,6 +281,7 @@ export class ConfigBuilder {
       this._localPlugins,
       this._remotePlugins,
       this._pluginOptions,
+      this._parserPluginNames,
       this._extensions,
       this._sourceType,
       this._requires,
