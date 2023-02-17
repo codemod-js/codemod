@@ -1,5 +1,5 @@
-import * as m from '../matchers'
 import * as t from '@babel/types'
+import * as m from '../matchers'
 import js from './utils/parse/js'
 
 test('anyString matches strings', () => {
@@ -305,4 +305,23 @@ test('matcher builds a matcher based on a predicate', () => {
   expect(matcher.match('another')).toBeFalsy()
   expect(matcher.match({})).toBeFalsy()
   expect(matcher.match(42)).toBeFalsy()
+})
+
+test('fromCapture builds a matcher based on a capturing matcher', () => {
+  const capture = m.capture(m.identifier())
+  const matcher = m.fromCapture(capture)
+  const id = t.identifier('a')
+  const idEquivalent = t.identifier('a')
+  const idUnequivalent = t.identifier('b')
+
+  // matching the capture matcher should capture the value
+  expect(capture.current).toBeUndefined()
+  expect(capture.match(id)).toBeTruthy()
+  expect(capture.current).toBe(id)
+
+  // `fromCapture` uses the captured value to build a matcher
+  expect(matcher.match(id)).toBeTruthy()
+  expect(matcher.match(idEquivalent)).toBeTruthy()
+  expect(matcher.match(idUnequivalent)).toBeFalsy()
+  expect(matcher.match(9)).toBeFalsy()
 })
