@@ -27,22 +27,19 @@
  * });
  */
 
+import { NodePath, PluginObj } from '@babel/core'
 import * as t from '@babel/types'
 import * as m from '../src'
-import { NodePath, PluginObj } from '@babel/core'
 import { statement } from '../src/__tests__/utils/builders'
 
-// capture name of `assert` parameter
-const assertBinding = m.capture(m.anyString())
+// capture `assert` parameter
+const assertBinding = m.capture(m.identifier())
 
 // capture `assert.expect(<number>);` inside the async test
 const assertExpect = m.capture(
   m.expressionStatement(
     m.callExpression(
-      m.memberExpression(
-        m.identifier(m.fromCapture(assertBinding)),
-        m.identifier('expect')
-      ),
+      m.memberExpression(m.fromCapture(assertBinding), m.identifier('expect')),
       [m.numericLiteral()]
     )
   )
@@ -52,10 +49,7 @@ const assertExpect = m.capture(
 const callbackAssertion = m.capture(
   m.expressionStatement(
     m.callExpression(
-      m.memberExpression(
-        m.identifier(m.fromCapture(assertBinding)),
-        m.identifier()
-      )
+      m.memberExpression(m.fromCapture(assertBinding), m.identifier())
     )
   )
 )
@@ -90,11 +84,7 @@ const asyncTestFunctionBody = m.blockStatement(
 // match the whole `test('description', function(assert) { … })`
 const asyncTestMatcher = m.callExpression(m.identifier('test'), [
   m.stringLiteral(),
-  m.functionExpression(
-    undefined,
-    [m.identifier(assertBinding)],
-    asyncTestFunctionBody
-  ),
+  m.functionExpression(undefined, [assertBinding], asyncTestFunctionBody),
 ])
 
 export default function (): PluginObj {
@@ -115,9 +105,7 @@ export default function (): PluginObj {
           },
           path,
           ({ assertExpect, callbackAssertion, assertBinding }) => {
-            assertExpect.replaceWith(
-              makeDone({ assert: t.identifier(assertBinding) })
-            )
+            assertExpect.replaceWith(makeDone({ assert: assertBinding.node }))
             callbackAssertion.insertAfter(callDone())
           }
         )
