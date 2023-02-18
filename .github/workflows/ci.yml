@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x, 18.x]
-        package: [parser, core, cli, matchers]
+        package: [parser, core, cli, matchers, utils]
 
     env:
       CI: true
