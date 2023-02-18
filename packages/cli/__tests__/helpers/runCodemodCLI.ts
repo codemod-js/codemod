@@ -12,7 +12,7 @@ export async function runCodemodCLI(
   { stdin = '', cwd }: { stdin?: string; cwd?: string } = {}
 ): Promise<CLIResult> {
   const child = spawn(
-    process.argv0,
+    process.env.NODE ?? process.argv0,
     [join(__dirname, '../../bin/codemod'), ...args],
     {
       stdio: 'pipe',

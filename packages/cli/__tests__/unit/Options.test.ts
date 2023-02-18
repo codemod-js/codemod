@@ -1,3 +1,5 @@
+import { createHash } from 'crypto'
+import { readFile } from 'fs/promises'
 import { join } from 'path'
 import { inspect } from 'util'
 import { Config } from '../../src/Config'
@@ -88,9 +90,22 @@ test('assigns anonymous options to the most recent plugin', async function () {
   })
 })
 
-test('interprets `--require` as expected', function () {
+test('interprets `--require` as expected', async function () {
   const config = getRunConfig(new Options(['--require', 'tmp']).parse())
-  expect(config.requires).toEqual(['tmp'].map((name) => require.resolve(name)))
+  const expectedTmpRequirePath = require.resolve('tmp')
+
+  expect(config.requires).toHaveLength(1)
+  const [actualTmpRequirePath] = config.requires
+
+  // `require.resolve` and the `resolve` package are not guaranteed to return
+  // the same path, so we compare the hashes of the files instead.
+  const expectedTmpHash = createHash('md5')
+    .update(await readFile(expectedTmpRequirePath))
+    .digest('hex')
+  const actualTmpHash = createHash('md5')
+    .update(await readFile(actualTmpRequirePath))
+    .digest('hex')
+  expect(actualTmpHash).toEqual(expectedTmpHash)
 })
 
 test('associates plugin options based on inferred name', async function () {

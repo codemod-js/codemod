@@ -16,12 +16,13 @@
     "clean": "rm -rf build tsconfig.build.tsbuildinfo",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "prepublishOnly": "yarn clean && yarn build",
+    "prepublishOnly": "pnpm clean && pnpm build",
     "test": "is-ci test:coverage test:watch",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@babel/types": "^7.20.7",
     "@codemod/utils": "^1.1.0"
   },
   "devDependencies": {
