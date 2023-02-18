@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/codemod-js/codemod/compare/@codemod/matchers@1.4.0...@codemod/matchers@1.6.0) (2023-02-18)
+
+
+### Bug Fixes
+
+* **rebuild-matchers:** update path to generated matchers ([e2173a4](https://github.com/codemod-js/codemod/commit/e2173a4e69f19cbf644ec22d36c748d81bdcd631))
+
+
+### Features
+
+* **cli:** add `defineCodemod` to ease creation ([86a62a1](https://github.com/codemod-js/codemod/commit/86a62a11d9f25f2e2e581ff6287ce885ce18f93a))
+* **matchers:** rebuild `matchers.ts` ([30e4978](https://github.com/codemod-js/codemod/commit/30e4978ad1b0253f6ff6f5bf04e926b87b16fc00))
+
+
+
+
+
 # [1.3.0](https://github.com/codemod-js/codemod/compare/@codemod/matchers@1.2.0...@codemod/matchers@1.3.0) (2023-02-17)
 
 ### Bug Fixes

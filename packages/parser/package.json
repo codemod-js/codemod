@@ -1,6 +1,6 @@
 {
   "name": "@codemod/parser",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Wrapper around @babel/parser that allows parsing everything.",
   "repository": "https://github.com/codemod-js/codemod",
   "license": "Apache-2.0",
