@@ -1,14 +1,9 @@
 {
   "name": "codemod",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ],
-    "nohoist": [
-      "**/@types/**"
-    ]
-  },
+  "workspaces": [
+    "./packages/*"
+  ],
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
@@ -28,9 +23,6 @@
       "sort-package-json",
       "git add"
     ]
-  },
-  "resolutions": {
-    "@babel/parser": "7.20.15"
   },
   "devDependencies": {
     "@commitlint/cli": "^14.1.0",
