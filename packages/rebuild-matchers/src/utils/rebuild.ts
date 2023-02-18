@@ -12,7 +12,7 @@ import dedent = require('dedent')
 
 export const MATCHERS_FILE_PATH = join(
   __dirname,
-  '../../matchers/src/matchers/generated.ts'
+  '../../../matchers/src/matchers/generated.ts'
 )
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
