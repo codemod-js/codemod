@@ -1,7 +1,8 @@
 import generate from '@babel/generator'
 import traverse, { NodePath } from '@babel/traverse'
 import { transform } from '@codemod/core'
-import { expression, js, m, t } from '@codemod/utils'
+import * as m from '@codemod/matchers'
+import { expression, js, t } from '@codemod/utils'
 import convertQUnitAssertExpectToAssertAsync from '../examples/convert-qunit-assert-expect-to-assert-async'
 import convertStaticClassToNamedExports from '../examples/convert-static-class-to-named-exports'
 import dedent = require('dedent')

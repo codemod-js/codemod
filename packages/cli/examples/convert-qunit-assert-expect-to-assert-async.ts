@@ -29,7 +29,7 @@
 
 import { defineCodemod, t } from '../src'
 
-export default defineCodemod(({ m, statement }) => {
+export default defineCodemod(({ m, utils }) => {
   // capture `assert` parameter
   const assertBinding = m.capture(m.identifier())
 
@@ -90,10 +90,10 @@ export default defineCodemod(({ m, statement }) => {
     m.functionExpression(undefined, [assertBinding], asyncTestFunctionBody),
   ])
 
-  const makeDone = statement<{ assert: t.Identifier }>(
+  const makeDone = utils.statement<{ assert: t.Identifier }>(
     'const done = %%assert%%.async();'
   )
-  const callDone = statement('done();')
+  const callDone = utils.statement('done();')
 
   return {
     visitor: {

@@ -56,7 +56,7 @@
 
 import { defineCodemod, t } from '../src'
 
-export default defineCodemod(({ m, t }) => {
+export default defineCodemod(({ t, m }) => {
   // capture the name of the exported class
   const classId = m.capture(m.identifier())
 
