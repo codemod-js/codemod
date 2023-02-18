@@ -1,9 +1,9 @@
-import { isNode, t } from '@codemod/utils'
+import * as t from '@babel/types'
 import { Matcher } from './Matcher'
 
 export class AnyNodeMatcher extends Matcher<t.Node> {
   matchValue(value: unknown): value is t.Node {
-    return isNode(value)
+    return t.isNode(value)
   }
 }
 

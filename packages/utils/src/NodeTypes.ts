@@ -54,12 +54,3 @@ export const { BUILDER_KEYS, NODE_FIELDS } = t as unknown as {
   BUILDER_KEYS: BuilderKeysByType
   NODE_FIELDS: NodeFieldsByType
 }
-
-export function isNode(value: unknown): value is t.Node {
-  return (
-    typeof value === 'object' &&
-    !!value &&
-    'type' in value &&
-    (value as { type: string }).type in NODE_FIELDS
-  )
-}

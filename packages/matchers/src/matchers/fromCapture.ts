@@ -1,4 +1,4 @@
-import { isNode, nodesEquivalent } from '@codemod/utils'
+import { nodesEquivalent, t } from '@codemod/utils'
 import { CapturedMatcher } from './capture'
 import { Matcher } from './Matcher'
 
@@ -8,7 +8,7 @@ export class FromCaptureMatcher<T> extends Matcher<T> {
   }
 
   matchValue(value: unknown): value is T {
-    if (isNode(this.capturedMatcher.current) && isNode(value)) {
+    if (t.isNode(this.capturedMatcher.current) && t.isNode(value)) {
       return nodesEquivalent(this.capturedMatcher.current, value)
     }
     return this.capturedMatcher.current === value

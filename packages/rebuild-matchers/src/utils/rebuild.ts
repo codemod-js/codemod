@@ -7,12 +7,12 @@ import {
   stringifyValidator,
   toFunctionName,
   typeForValidator,
-} from './utils'
+} from './ast'
 import dedent = require('dedent')
 
 export const MATCHERS_FILE_PATH = join(
   __dirname,
-  '../../src/matchers/generated.ts'
+  '../../matchers/src/matchers/generated.ts'
 )
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -86,7 +86,6 @@ function rebuildTo(out: SimpleWriter): string | void {
   out.write(dedent`
     import { tupleOf } from './tupleOf';
     import { Matcher } from './Matcher';
-    import { isNode } from '@codemod/utils';
   `)
 
   out.write('\n\n')
@@ -128,7 +127,7 @@ function rebuildTo(out: SimpleWriter): string | void {
       `  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.${type} {\n`
     )
     out.write(`    if (\n`)
-    out.write(`      !isNode(node) ||\n`)
+    out.write(`      !t.isNode(node) ||\n`)
     out.write(`      !t.is${type}(node)\n`)
     out.write(`    ) {\n`)
     out.write(`      return false;\n`)

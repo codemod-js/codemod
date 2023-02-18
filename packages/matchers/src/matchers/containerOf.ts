@@ -1,4 +1,4 @@
-import { isNode, t } from '@codemod/utils'
+import * as t from '@babel/types'
 import { Matcher } from './Matcher'
 import { CapturedMatcher } from './capture'
 
@@ -16,7 +16,7 @@ export class ContainerOfMatcher<
   }
 
   matchValue(value: unknown, keys: ReadonlyArray<PropertyKey>): value is M {
-    if (!isNode(value)) {
+    if (!t.isNode(value)) {
       return false
     }
 

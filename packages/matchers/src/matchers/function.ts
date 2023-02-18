@@ -1,4 +1,4 @@
-import { isNode, t } from '@codemod/utils'
+import * as t from '@babel/types'
 import { Matcher } from './Matcher'
 import { tupleOf } from './tupleOf'
 
@@ -14,7 +14,7 @@ export class FunctionMatcher extends Matcher<t.Function> {
     value: unknown,
     keys: ReadonlyArray<PropertyKey>
   ): value is t.Function {
-    if (!isNode(value) || !t.isFunction(value)) {
+    if (!t.isNode(value) || !t.isFunction(value)) {
       return false
     }
 

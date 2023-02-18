@@ -59,7 +59,7 @@
     "@types/got": "^9.6.7",
     "@types/jest": "^27.0.2",
     "@types/make-dir": "^2.1.0",
-    "@types/node": "^16.11.7",
+    "@types/node": "^18.14.0",
     "@types/resolve": "^1.17.1",
     "@types/rimraf": "3.0.0",
     "@types/semver": "^7.1.0",
