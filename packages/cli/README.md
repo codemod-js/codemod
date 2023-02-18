@@ -11,7 +11,7 @@ $ npm install @codemod/cli
 ```
 
 This will install the runner locally as `codemod`. This package requires node
-v12 or higher. This README assumes you've installed locally, but you can also
+v16 or higher. This README assumes you've installed locally, but you can also
 install globally with `npm install -g @codemod/cli`.
 
 ## Usage
