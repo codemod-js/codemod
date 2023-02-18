@@ -71,7 +71,7 @@ test('throws if it gets a non-200 response', async function () {
     const url = server.requestURL('/')
 
     await expect(resolver.resolve(url.toString())).rejects.toThrowError(
-      'Response code 400 (Bad Request)'
+      'failed to load plugin'
     )
   } finally {
     await server.stop()

@@ -1,11 +1,11 @@
 import { promises as fs } from 'fs'
-import { get, Response } from 'got'
+import { fetch } from 'cross-fetch'
 import { tmpNameSync as tmp } from 'tmp'
 import { URL } from 'url'
 import Resolver from './Resolver'
 
 export class NetworkLoadError extends Error {
-  constructor(readonly response: Response<string>) {
+  constructor(readonly response: Response) {
     super(`failed to load plugin from '${response.url}'`)
   }
 }
@@ -26,14 +26,14 @@ export class NetworkResolver implements Resolver {
   }
 
   async resolve(source: string): Promise<string> {
-    const response = await get(source, { followRedirect: true })
+    const response = await fetch(source, { redirect: 'follow' })
 
-    if (response.statusCode !== 200) {
+    if (response.status !== 200) {
       throw new NetworkLoadError(response)
     }
 
     const filename = tmp({ postfix: '.js' })
-    await fs.writeFile(filename, response.body)
+    await fs.writeFile(filename, await response.text())
     return filename
   }
 }

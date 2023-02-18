@@ -9,30 +9,39 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x, 18.x]
-        package: [parser, core, cli, matchers, utils]
+        package:
+          - cli
+          - core
+          - matchers
+          - parser
+          - rebuild-matchers
+          - utils
 
     env:
       CI: true
 
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
 
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
+          cache: 'pnpm'
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Build
         working-directory: packages/${{ matrix.package }}
-        run: yarn build
+        run: pnpm build
 
       - name: Run Linter
         working-directory: packages/${{ matrix.package }}
-        run: yarn lint
+        run: pnpm lint
 
       - name: Run Tests
         working-directory: packages/${{ matrix.package }}
-        run: yarn test
+        run: pnpm test
