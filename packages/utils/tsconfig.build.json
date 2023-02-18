@@ -9,5 +9,7 @@
     "declaration": true,
     "sourceMap": true
   },
-  "references": []
+  "references": [
+    { "path": "../parser/tsconfig.build.json" }
+  ]
 }

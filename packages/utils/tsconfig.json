@@ -8,5 +8,7 @@
     "esModuleInterop": true
   },
   "exclude": ["build"],
-  "references": []
+  "references": [
+    { "path": "../parser/tsconfig.build.json" }
+  ]
 }

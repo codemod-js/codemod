@@ -22,7 +22,8 @@
   },
   "dependencies": {
     "@babel/core": "^7.20.12",
-    "@babel/types": "^7.20.7"
+    "@babel/types": "^7.20.7",
+    "@codemod/parser": "^1.0.0"
   },
   "devDependencies": {
     "@types/babel__core": "^7.20.0",
