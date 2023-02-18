@@ -20,19 +20,19 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
+          cache: 'npm'
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Build
         working-directory: packages/${{ matrix.package }}
-        run: yarn build
+        run: npm run build
 
       - name: Run Linter
         working-directory: packages/${{ matrix.package }}
-        run: yarn lint
+        run: npm run lint
 
       - name: Run Tests
         working-directory: packages/${{ matrix.package }}
-        run: yarn test
+        run: npm test

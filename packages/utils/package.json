@@ -15,7 +15,7 @@
     "clean": "rm -rf build tsconfig.build.tsbuildinfo",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "prepublishOnly": "yarn clean && yarn build",
+    "prepublishOnly": "npm run clean && npm run build",
     "test": "is-ci test:coverage test:watch",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch"

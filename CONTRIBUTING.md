@@ -9,20 +9,20 @@ This project is written with [TypeScript](https://www.typescriptlang.org/), a su
 
 ## Developing
 
-codemod expects at least node 6 and yarn. You can check each of these with `node -v` and `yarn --version`. Look for instructions on installing node [here](https://nodejs.org) and yarn [here](https://yarnpkg.com/).
+codemod expects at least node 16 and npm. You can check each of these with `node -v` and `npm -v`. Look for instructions on installing node and npm [here](https://nodejs.org).
 
 ### Setup
 
 ```sh
 $ git clone https://github.com/codemod-js/codemod
 $ cd codemod
-$ yarn
+$ npm install
 ```
 
 Then make sure the tests pass:
 
 ```sh
-$ yarn test
+$ npm test
 ```
 
 ### Running linting/testing
@@ -30,19 +30,19 @@ $ yarn test
 We use [ESLint](https://eslint.org/). To run ESLint on the project, run:
 
 ```sh
-$ yarn lint
+$ npm run lint
 ```
 
 To automatically fix some of the issues ESLint finds:
 
 ```sh
-$ yarn lint:fix
+$ npm run lint:fix
 ```
 
 The tests in this project are written using [Jest](https://jestjs.io/) and, like the non-test code, are also written in TypeScript. To run the tests:
 
 ```sh
-$ yarn test
+$ npm test
 ```
 
 ## Submitting Changes
