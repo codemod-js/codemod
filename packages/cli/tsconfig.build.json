@@ -11,6 +11,7 @@
   },
   "references": [
     { "path": "../core/tsconfig.build.json" },
+    { "path": "../matchers/tsconfig.build.json" },
     { "path": "../parser/tsconfig.build.json" },
     { "path": "../utils/tsconfig.build.json" }
   ]
