@@ -11,6 +11,12 @@
 		},
 		{
 			"path": "packages/parser"
+		},
+		{
+			"path": "packages/utils"
+		},
+		{
+			"path": "packages/rebuild-matchers"
 		}
 	],
 	"settings": {

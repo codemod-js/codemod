@@ -9,8 +9,6 @@
   },
   "exclude": ["build"],
   "references": [
-    { "path": "../core/tsconfig.build.json" },
-    { "path": "../parser/tsconfig.build.json" },
-    { "path": "../utils/tsconfig.build.json" }
+    { "path": "../parser/tsconfig.build.json" }
   ]
 }

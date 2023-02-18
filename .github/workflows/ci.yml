@@ -8,8 +8,8 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
-        package: [parser, core, cli, matchers]
+        node-version: [16.x, 18.x]
+        package: [parser, core, cli, matchers, utils]
 
     env:
       CI: true

@@ -1,5 +1,5 @@
 import * as t from '@babel/types'
-import { nodesEquivalent } from '../utils/nodesEquivalent'
+import { nodesEquivalent } from '../nodesEquivalent'
 
 test('a node is equivalent to itself', () => {
   const node = t.identifier('a')

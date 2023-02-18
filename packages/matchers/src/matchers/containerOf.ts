@@ -1,6 +1,5 @@
 import * as t from '@babel/types'
 import { Matcher } from './Matcher'
-import { isNode } from '../NodeTypes'
 import { CapturedMatcher } from './capture'
 
 /**
@@ -17,7 +16,7 @@ export class ContainerOfMatcher<
   }
 
   matchValue(value: unknown, keys: ReadonlyArray<PropertyKey>): value is M {
-    if (!isNode(value)) {
+    if (!t.isNode(value)) {
       return false
     }
 

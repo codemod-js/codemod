@@ -1,6 +1,5 @@
-import * as t from '@babel/types'
+import { js, t } from '@codemod/utils'
 import * as m from '../matchers'
-import { js } from './utils/parse/js'
 
 test('anyString matches strings', () => {
   expect(m.anyString().match('')).toBeTruthy()

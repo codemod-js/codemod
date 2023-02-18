@@ -1,5 +1,5 @@
 import * as t from '@babel/types'
-import { NODE_FIELDS } from '../NodeTypes'
+import { NODE_FIELDS } from './NodeTypes'
 
 /**
  * Determines whether two `@babel/types` nodes are equivalent.

@@ -54,68 +54,66 @@
  * }
  */
 
-import { NodePath, PluginObj } from '@babel/core'
-import * as t from '@babel/types'
-import * as m from '../src'
+import { defineCodemod, t } from '../src'
 
-// capture the name of the exported class
-const classId = m.capture(m.identifier())
+export default defineCodemod(({ t, m }) => {
+  // capture the name of the exported class
+  const classId = m.capture(m.identifier())
 
-// capture the class declaration
-const classDeclaration = m.capture(
-  m.classDeclaration(
-    classId,
-    undefined,
-    m.classBody(
-      m.arrayOf(
-        m.classMethod(
-          'method',
-          m.identifier(),
-          m.arrayOf(
-            m.or(
-              m.identifier(),
-              m.assignmentPattern(),
-              m.objectPattern(),
-              m.arrayPattern(),
-              m.restElement()
-            )
-          ),
-          m.anything(),
-          false,
-          true
+  // capture the class declaration
+  const classDeclaration = m.capture(
+    m.classDeclaration(
+      classId,
+      undefined,
+      m.classBody(
+        m.arrayOf(
+          m.classMethod(
+            'method',
+            m.identifier(),
+            m.arrayOf(
+              m.or(
+                m.identifier(),
+                m.assignmentPattern(),
+                m.objectPattern(),
+                m.arrayPattern(),
+                m.restElement()
+              )
+            ),
+            m.anything(),
+            false,
+            true
+          )
         )
       )
     )
   )
-)
 
-// capture the export, making sure to match the class name
-const exportDeclaration = m.capture(
-  m.exportDefaultDeclaration(m.fromCapture(classId))
-)
-
-// match a program that contains a matching class and export declaration
-const matcher = m.program(
-  m.anyList<t.Statement>(
-    m.zeroOrMore(),
-    classDeclaration,
-    m.zeroOrMore(),
-    exportDeclaration,
-    m.zeroOrMore()
+  // capture the export, making sure to match the class name
+  const exportDeclaration = m.capture(
+    m.exportDefaultDeclaration(m.fromCapture(classId))
   )
-)
 
-// match `this.*`, used internally
-const thisPropertyAccessMatcher = m.memberExpression(
-  m.thisExpression(),
-  m.identifier(),
-  false
-)
+  // match a program that contains a matching class and export declaration
+  const matcher = m.program(
+    m.anyList<t.Statement>(
+      m.zeroOrMore(),
+      classDeclaration,
+      m.zeroOrMore(),
+      exportDeclaration,
+      m.zeroOrMore()
+    )
+  )
 
-export default function (): PluginObj {
+  // match `this.*`, used internally
+  const thisPropertyAccessMatcher = m.memberExpression(
+    m.thisExpression(),
+    m.identifier(),
+    false
+  )
+
   return {
     visitor: {
-      Program(path: NodePath<t.Program>): void {
+      Program(path) {
         m.matchPath(
           matcher,
           { exportDeclaration, classDeclaration },
@@ -161,7 +159,7 @@ export default function (): PluginObj {
               )
 
               property.get('body').traverse({
-                enter(path: NodePath<t.Node>): void {
+                enter(path) {
                   if (path.isFunction()) {
                     if (!path.isArrowFunctionExpression()) {
                       path.skip()
@@ -183,4 +181,4 @@ export default function (): PluginObj {
       },
     },
   }
-}
+})

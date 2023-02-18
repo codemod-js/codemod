@@ -5,7 +5,7 @@
 
 require('esbuild-runner/register')
 
-require('./_commands/rebuild')
+require('../src/rebuild')
   .main()
   .catch((error) => {
     console.error(error.stack)

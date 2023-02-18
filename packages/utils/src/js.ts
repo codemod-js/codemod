@@ -1,6 +1,6 @@
 import * as t from '@babel/types'
 import { parse } from '@codemod/parser'
-import { NODE_FIELDS } from '../../../NodeTypes'
+import { NODE_FIELDS } from './NodeTypes'
 
 function fieldsForNodeType(nodeType: string): Set<string> {
   return new Set(['type', ...Object.keys(NODE_FIELDS[nodeType])])

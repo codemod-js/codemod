@@ -7,19 +7,19 @@ codemod rewrites JavaScript and TypeScript using babel plugins.
 Install from [npm](https://npmjs.com/):
 
 ```sh
-$ npm install -g @codemod/cli
+$ npm install @codemod/cli
 ```
 
-> NOTE: You can also install using `yarn global add @codemod/cli`.
-
-This will install the runner as `codemod`. This package requires node v6 or higher.
+This will install the runner locally as `codemod`. This package requires node
+v16 or higher. This README assumes you've installed locally, but you can also
+install globally with `npm install -g @codemod/cli`.
 
 ## Usage
 
 The primary interface is as a command line tool, usually run like so:
 
 ```sh
-$ codemod --plugin transform-module-name \
+$ npx codemod --plugin transform-module-name \
   path/to/file.js \
   another/file.js \
   a/directory
@@ -32,16 +32,51 @@ Note that TypeScript support is provided by babel and therefore may not complete
 Plugins may also be loaded from remote URLs, including saved [AST Explorer](https://astexplorer.net/) URLs, using `--remote-plugin`. This feature should only be used as a convenience to load code that you or someone you trust wrote. It will run with your full user privileges, so please exercise caution!
 
 ```sh
-$ codemod --remote-plugin URL …
+$ npx codemod --remote-plugin URL …
 ```
 
 By default, `codemod` makes minimal changes to your source files by using [recast](https://github.com/benjamn/recast) to parse and print your code, retaining the original comments and formatting. If desired, you can reformat files using [Prettier](https://prettier.io/) or ESLint or whatever other tools you prefer after the fact.
 
-For more detailed options, run `codemod --help`.
+For more detailed options, run `npx codemod --help`.
 
 ## Writing a Plugin
 
 There are [many, many existing plugins](https://www.npmjs.com/search?q=babel-plugin) that you can use. However, if you need to write your own you should consult the [babel handbook](https://github.com/thejameskyle/babel-handbook). If you publish a plugin intended specifically as a codemod, consider using both the [`babel-plugin`](https://www.npmjs.com/search?q=babel-plugin) and [`babel-codemod`](https://www.npmjs.com/search?q=babel-codemod) keywords.
+
+`@codemod/cli` provides a few helpers to make writing codemod plugins easier. For example:
+
+```ts
+/**
+ * This codemod rewrites `A * A` to `A ** 2` for any expression `A`.
+ */
+import { defineCodemod } from '@codemod/cli'
+
+// `m` is `@codemod/matchers`, a library of useful matchers
+// `t` is `@babel/types`, babel AST type predicates and builders
+export default defineCodemod(({ t, m }) => {
+  // `operand` is a capture matcher that will be filled in by `multiplyBySelf`,
+  // which is a binary expression matcher that matches any expression multiplied
+  // by itself.
+  const operand = m.capture(m.anyExpression())
+  const multiplyBySelf = m.binaryExpression(
+    '*',
+    operand,
+    m.fromCapture(operand)
+  )
+
+  return {
+    visitor: {
+      BinaryExpression(path) {
+        m.match(multiplyBySelf, { operand }, path.node, ({ operand }) => {
+          path.replaceWith(
+            t.binaryExpression('**', operand, t.numericLiteral(2))
+          )
+        })
+      },
+    },
+  }
+})
+```
 
 ### Transpiling using Babel Plugins
 
@@ -53,9 +88,9 @@ You can pass a JSON object as options to a plugin:
 
 ```sh
 # Pass a JSON object literal
-$ codemod --plugin ./my-plugin.ts --plugin-options '{"opt": true}'
+$ npx codemod --plugin ./my-plugin.ts --plugin-options '{"opt": true}'
 # Pass a JSON object from a file
-$ codemod --plugin ./my-plugin.ts --plugin-options @opts.json
+$ npx codemod --plugin ./my-plugin.ts --plugin-options @opts.json
 ```
 
 ## Contributing

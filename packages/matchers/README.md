@@ -14,9 +14,27 @@ $ npm install @codemod/matchers
 
 > This package is primarily intended to be used by codemods with `@codemod/cli`, but can be used in any Babel plugin or JavaScript/TypeScript AST processor. Note that the examples below are all written in [TypeScript](https://typescriptlang.org/), but in most cases are identical to their JavaScript counterpart.
 
+The easiest way to use this package is to use `@codemod/cli` like so:
+
+```ts
+// `t` is `@babel/types`
+import { defineCodemod, t } from '@codemod/cli'
+
+// `m` is the `@codemod/matchers` module
+export default defineCodemod(({ m }) => ({
+  visitors: {
+    // …
+  },
+}))
+```
+
+The rest of the README shows how to use `@codemod/matchers` without
+`@codemod/cli`, but the same patterns apply.
+
 ### Simple Matching
 
-Just as you can build AST nodes with `@babel/types`, you can build AST node matchers to match an exact node with `@codemod/matchers`:
+Just as you can build AST nodes with `@babel/types`, you can build AST node
+matchers to match an exact node with `@codemod/matchers`:
 
 ```ts
 import * as m from '@codemod/matchers'

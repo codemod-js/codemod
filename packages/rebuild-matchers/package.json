@@ -1,7 +1,8 @@
 {
-  "name": "@codemod/matchers",
-  "version": "1.6.0",
-  "description": "Matchers for JavaScript & TypeScript codemods.",
+  "name": "@codemod/rebuild-matchers",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Rebuilds the bulk of `@codemod/matchers` based on the Babel AST.",
   "repository": "https://github.com/codemod-js/codemod",
   "license": "Apache-2.0",
   "author": "Brian Donovan",
