@@ -1,6 +1,5 @@
-import * as t from '@babel/types'
 import { join } from 'path'
-import { BUILDER_KEYS, NodeField, NODE_FIELDS } from '../../src/NodeTypes'
+import { BUILDER_KEYS, NodeField, NODE_FIELDS, t } from '@codemod/utils'
 import format from './format'
 import {
   isValidatorOfType,
@@ -87,7 +86,7 @@ function rebuildTo(out: SimpleWriter): string | void {
   out.write(dedent`
     import { tupleOf } from './tupleOf';
     import { Matcher } from './Matcher';
-    import { isNode } from '../NodeTypes';
+    import { isNode } from '@codemod/utils';
   `)
 
   out.write('\n\n')

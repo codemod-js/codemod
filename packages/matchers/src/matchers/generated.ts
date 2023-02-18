@@ -4,7 +4,7 @@ import * as t from '@babel/types'
 
 import { tupleOf } from './tupleOf'
 import { Matcher } from './Matcher'
-import { isNode } from '../NodeTypes'
+import { isNode } from '@codemod/utils'
 
 // aliases for keyword-named functions
 export { Import as import }

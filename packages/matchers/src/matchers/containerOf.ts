@@ -1,6 +1,5 @@
-import * as t from '@babel/types'
+import { isNode, t } from '@codemod/utils'
 import { Matcher } from './Matcher'
-import { isNode } from '../NodeTypes'
 import { CapturedMatcher } from './capture'
 
 /**

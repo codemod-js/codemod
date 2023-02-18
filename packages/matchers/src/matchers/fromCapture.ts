@@ -1,6 +1,5 @@
+import { isNode, nodesEquivalent } from '@codemod/utils'
 import { CapturedMatcher } from './capture'
-import { isNode } from '../NodeTypes'
-import { nodesEquivalent } from '../utils/nodesEquivalent'
 import { Matcher } from './Matcher'
 
 export class FromCaptureMatcher<T> extends Matcher<T> {

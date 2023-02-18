@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "packages/parser"
+		},
+		{
+			"path": "packages/utils"
 		}
 	],
 	"settings": {

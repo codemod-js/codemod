@@ -1,13 +1,9 @@
 import generate from '@babel/generator'
 import traverse, { NodePath } from '@babel/traverse'
-import * as t from '@babel/types'
 import { transform } from '@codemod/core'
-import convertQUnitAssertExpectToAssertAsync from '../../examples/convert-qunit-assert-expect-to-assert-async'
-import convertStaticClassToNamedExports from '../../examples/convert-static-class-to-named-exports'
-import * as m from '../../src'
-import { match } from '../utils/match'
-import { expression } from './utils/builders'
-import { js } from './utils/parse/js'
+import { expression, js, m, t } from '@codemod/utils'
+import convertQUnitAssertExpectToAssertAsync from '../examples/convert-qunit-assert-expect-to-assert-async'
+import convertStaticClassToNamedExports from '../examples/convert-static-class-to-named-exports'
 import dedent = require('dedent')
 
 /**
@@ -58,7 +54,7 @@ test('codemod: unwrap unneeded IIFE', () => {
 
   traverse(ast, {
     ReturnStatement(path: NodePath<t.ReturnStatement>): void {
-      match(returnedIIFEMatcher, { body }, path.node, ({ body }) => {
+      m.match(returnedIIFEMatcher, { body }, path.node, ({ body }) => {
         if (t.isExpression(body)) {
           path.replaceWith(t.returnStatement(body))
         } else {
@@ -121,7 +117,7 @@ test('codemod: remove return labels', () => {
   )
 
   function processFunction(path: NodePath<t.Function>): void {
-    match(
+    m.match(
       returnLabelFunctionMatcher,
       { returnStatement, value, labelDeclaration },
       path.node,
@@ -192,7 +188,7 @@ test('codemod: assert to jest expect', () => {
   traverse(ast, {
     CallExpression(path: NodePath<t.CallExpression>): void {
       // replace equality assertions
-      match(
+      m.match(
         assertEqualMatcher,
         { actual, expected },
         path.node,
@@ -210,20 +206,25 @@ test('codemod: assert to jest expect', () => {
       )
 
       // replace e.g. `assert.ok(!a)` with `expect(a).toBeFalsy()`
-      match(assertFalsyMatcher, { falsyValue }, path.node, ({ falsyValue }) => {
-        path.replaceWith(
-          t.callExpression(
-            t.memberExpression(
-              t.callExpression(t.identifier('expect'), [falsyValue]),
-              t.identifier('toBeFalsy')
-            ),
-            []
+      m.match(
+        assertFalsyMatcher,
+        { falsyValue },
+        path.node,
+        ({ falsyValue }) => {
+          path.replaceWith(
+            t.callExpression(
+              t.memberExpression(
+                t.callExpression(t.identifier('expect'), [falsyValue]),
+                t.identifier('toBeFalsy')
+              ),
+              []
+            )
           )
-        )
-      })
+        }
+      )
 
       // replace e.g. `assert.ok(a)` with `expect(a).toBeTruthy()`
-      match(
+      m.match(
         assertTruthyMatcher,
         { truthValue },
         path.node,
@@ -260,7 +261,7 @@ test('codemod: double-equal null to triple-equal', () => {
 
   traverse(ast, {
     BinaryExpression(path: NodePath<t.BinaryExpression>): void {
-      match(eqeqNullMatcher, { left }, path.node, ({ left }) => {
+      m.match(eqeqNullMatcher, { left }, path.node, ({ left }) => {
         path.replaceWith(eqNullOrUndefined({ left }))
       })
     },

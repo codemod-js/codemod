@@ -7,6 +7,9 @@ import {
   SourceTransformResultKind,
 } from './TransformRunner'
 
+export * from './defineCodemod'
+export { m, matchers, t, types } from '@codemod/utils'
+
 function optionAnnotation(
   value: boolean | Array<string> | Map<string, object> | string
 ): string {

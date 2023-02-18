@@ -1,10 +1,9 @@
-import { transform } from '..'
-import { NodePath, PluginItem } from '@babel/core'
-import * as t from '@babel/types'
+import { PluginItem } from '@babel/core'
+import { transform } from '../transform'
 
 const incrementNumbersPlugin: PluginItem = {
   visitor: {
-    NumericLiteral(path: NodePath<t.NumericLiteral>) {
+    NumericLiteral(path) {
       path.node.value += 1
     },
   },

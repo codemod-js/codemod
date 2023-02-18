@@ -1,5 +1,4 @@
-import * as t from '@babel/types'
-import { isNode } from '../NodeTypes'
+import { isNode, t } from '@codemod/utils'
 import { Matcher } from './Matcher'
 
 export class AnyNodeMatcher extends Matcher<t.Node> {

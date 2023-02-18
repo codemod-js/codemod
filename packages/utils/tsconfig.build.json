@@ -4,10 +4,10 @@
   "exclude": ["src/__tests__"],
   "compilerOptions": {
     "noEmit": false,
-    "sourceMap": true,
-    "declaration": true,
     "rootDir": "src",
-    "outDir": "build"
+    "outDir": "build",
+    "declaration": true,
+    "sourceMap": true
   },
   "references": [
     { "path": "../core/tsconfig.build.json" },
