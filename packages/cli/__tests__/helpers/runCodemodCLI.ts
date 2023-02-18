@@ -11,6 +11,14 @@ export async function runCodemodCLI(
   args: Array<string>,
   { stdin = '', cwd }: { stdin?: string; cwd?: string } = {}
 ): Promise<CLIResult> {
+  console.log('runCodemodCLI', {
+    args,
+    stdin,
+    cwd,
+    argv0: process.argv0,
+    __dirname,
+    codemodPath: join(__dirname, '../../bin/codemod'),
+  })
   const child = spawn(
     process.argv0,
     [join(__dirname, '../../bin/codemod'), ...args],
