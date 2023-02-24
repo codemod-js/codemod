@@ -1,6 +1,11 @@
 import { js, t } from '@codemod/utils'
 import * as m from '../matchers'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function expectType<T>(value: T): void {
+  // nothing to do
+}
+
 test('anyString matches strings', () => {
   expect(m.anyString().match('')).toBeTruthy()
   expect(m.anyString().match('abc')).toBeTruthy()
@@ -223,20 +228,32 @@ test('anyList with multiple dynamic spacers', () => {
 })
 
 test('or matches one of the values', () => {
+  const mString = m.or(m.anyString())
+  const mStringOrNumber = m.or(m.anyString(), m.anyNumber())
+  const mStringOrNumberOrNull = m.or(m.anyString(), m.anyNumber(), null)
+  expectType<m.Matcher<string>>(mString)
+  expectType<m.Matcher<string | number>>(mStringOrNumber)
+  expectType<m.Matcher<string | number | null>>(mStringOrNumberOrNull)
+
   expect(m.or().match(undefined)).toBeFalsy()
-  expect(m.or(m.anyString()).match('')).toBeTruthy()
-  expect(m.or(m.anyString(), m.anyNumber()).match(1)).toBeTruthy()
-  expect(m.or(m.anyString(), m.anyNumber()).match('')).toBeTruthy()
-  expect(m.or(m.anyString(), m.anyNumber(), null).match(null)).toBeTruthy()
-  expect(m.or(m.anyString(), m.anyNumber()).match({})).toBeFalsy()
+  expect(mString.match('')).toBeTruthy()
+  expect(mStringOrNumber.match(1)).toBeTruthy()
+  expect(mStringOrNumber.match('')).toBeTruthy()
+  expect(mStringOrNumberOrNull.match(null)).toBeTruthy()
+  expect(mStringOrNumber.match({})).toBeFalsy()
 })
 
 test('or matches literal values', () => {
-  expect(m.or(1).match(1)).toBeTruthy()
-  expect(m.or(1, 2).match(1)).toBeTruthy()
-  expect(m.or(1, 2).match(2)).toBeTruthy()
-  expect(m.or(1, 2).match(3)).toBeFalsy()
-  expect(m.or(1, 2).match({})).toBeFalsy()
+  const m1 = m.or(1)
+  const m1or2 = m.or(1, 2)
+  expectType<m.Matcher<number>>(m1)
+  expectType<m.Matcher<number>>(m1or2)
+
+  expect(m1.match(1)).toBeTruthy()
+  expect(m1or2.match(1)).toBeTruthy()
+  expect(m1or2.match(2)).toBeTruthy()
+  expect(m1or2.match(3)).toBeFalsy()
+  expect(m1or2.match({})).toBeFalsy()
 })
 
 test('or matches mixed literal values and matchers', () => {
