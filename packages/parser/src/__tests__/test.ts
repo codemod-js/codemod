@@ -122,8 +122,6 @@ test('parses with a very broad set of options', () => {
       export { a };
       // demonstrate 'typescript' plugin
       type Foo = Extract<PropertyKey, string>;
-      // demonstrate 'placeholders' plugin
-      %%statement%%
       // demonstrate 'logicalAssignment' plugin
       a ||= b
       // demonstrate 'partialApplication' plugin
@@ -139,12 +137,23 @@ test('parses with a very broad set of options', () => {
     'ReturnStatement',
     'ExportNamedDeclaration',
     'TSTypeAliasDeclaration',
-    'Placeholder',
     'AssignmentExpression',
     'CallExpression',
     'TupleExpression',
     'BinaryExpression',
   ])
+})
+
+test('does not parse placeholders by default as they conflict with TypeScript', () => {
+  const placeholderCode = `
+    // demonstrate 'placeholders' plugin
+    %%statement%%
+  `
+
+  expect(() => parse(placeholderCode)).toThrowError()
+  const node = parse(placeholderCode, { plugins: ['placeholders'] }).program
+    .body[0]
+  expect(node.type).toBe('Placeholder')
 })
 
 test('allows parsing records and tuples with "bar" syntax', () => {
@@ -157,4 +166,14 @@ test('allows parsing records and tuples with "bar" syntax', () => {
   expect(t.isRecordExpression((tuple as t.TupleExpression).elements[2])).toBe(
     true
   )
+})
+
+test('allows parsing of abstract classes with abstract methods', () => {
+  expect(
+    parse(`
+      abstract class Foo {
+        abstract bar(): void;
+      }
+    `).program.body[0].type
+  ).toBe('ClassDeclaration')
 })

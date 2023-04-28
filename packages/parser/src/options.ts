@@ -36,7 +36,6 @@ const DefaultParserPlugins = new Set<ParserPlugin>([
   'optionalCatchBinding',
   'optionalChaining',
   'partialApplication',
-  'placeholders',
   'throwExpressions',
   'topLevelAwait',
   ['decorators', { decoratorsBeforeExport: true }],

@@ -15,7 +15,9 @@ export interface ReplacementsBase {
 export function program<R extends ReplacementsBase>(
   template: string
 ): (replacements?: R) => t.File {
-  const ast = parse(template)
+  const ast = parse(template, {
+    plugins: ['placeholders'],
+  })
 
   return (replacements = {} as R) => {
     const unusedReplacements = new Set(Object.keys(replacements))
