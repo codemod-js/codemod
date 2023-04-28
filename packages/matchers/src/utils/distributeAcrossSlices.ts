@@ -4,7 +4,7 @@ import { SliceMatcher } from '../matchers/slice'
  * Iterates through the possible allocations of `available` across `slices`.
  */
 export function* distributeAcrossSlices(
-  slices: Array<SliceMatcher>,
+  slices: Array<SliceMatcher<unknown>>,
   available: number
 ): IterableIterator<Array<number>> {
   if (slices.length === 0) {

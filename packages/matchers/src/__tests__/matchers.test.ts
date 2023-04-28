@@ -183,8 +183,27 @@ test('anyList with a fixed-width leading slice', () => {
   expect(list.match([{}, {}, ''])).toBeFalsy()
 })
 
+test('anyList with slices with specific matchers', () => {
+  const list = m.anyList<number | string>(
+    m.slice({ min: 1, max: 2, matcher: m.anyNumber() }),
+    m.anyString()
+  )
+  expect(list.match([''])).toBeFalsy()
+  expect(list.match([0, ''])).toBeTruthy()
+  expect(list.match([0, 0, ''])).toBeTruthy()
+  expect(list.match([0, '', ''])).toBeFalsy()
+
+  const matcher = m.anyList<string | number>(
+    m.anyString(),
+    m.oneOrMore(m.anyNumber()),
+    m.anyString()
+  )
+  expect(matcher.match(['', 1, 1, ''])).toBeTruthy()
+  expect(matcher.match(['', 1, null, ''])).toBeFalsy()
+})
+
 test('anyList with a variable-width leading slice', () => {
-  const list = m.anyList(m.slice(0, 1), m.anyString())
+  const list = m.anyList(m.slice({ min: 0, max: 1 }), m.anyString())
   expect(list.match([''])).toBeTruthy()
   expect(list.match([{}, ''])).toBeTruthy()
   expect(list.match([{}, {}, ''])).toBeFalsy()
