@@ -1,28 +1,31 @@
-import { Spacer } from '../matchers/spacers'
+import { SliceMatcher } from '../matchers/slice'
 
-export function* distributeAcrossSpacers(
-  spacers: Array<Spacer>,
+/**
+ * Iterates through the possible allocations of `available` across `slices`.
+ */
+export function* distributeAcrossSlices(
+  slices: Array<SliceMatcher>,
   available: number
 ): IterableIterator<Array<number>> {
-  if (spacers.length === 0) {
+  if (slices.length === 0) {
     yield []
-  } else if (spacers.length === 1) {
-    const spacer = spacers[0]
+  } else if (slices.length === 1) {
+    const spacer = slices[0]
 
     if (spacer.min <= available && available <= spacer.max) {
       yield [available]
     }
   } else {
-    const last = spacers[spacers.length - 1]
+    const last = slices[slices.length - 1]
 
     for (
       let allocateToLast = last.min;
       allocateToLast <= last.max && allocateToLast <= available;
       allocateToLast++
     ) {
-      const allButLast = spacers.slice(0, -1)
+      const allButLast = slices.slice(0, -1)
 
-      for (const allButLastAllocations of distributeAcrossSpacers(
+      for (const allButLastAllocations of distributeAcrossSlices(
         allButLast,
         available - allocateToLast
       )) {

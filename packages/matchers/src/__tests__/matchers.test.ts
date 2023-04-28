@@ -169,55 +169,55 @@ test('m.function( matches any known function node type', () => {
   expect(m.function().match(t.blockStatement([]))).toBeFalsy()
 })
 
-test('anyList reduces to tupleOf without any spacers', () => {
+test('anyList reduces to tupleOf without any slices', () => {
   expect(m.anyList().match([])).toBeTruthy()
   expect(
     m.anyList<number | string>(m.anyString(), m.anyNumber()).match(['', 0])
   ).toBeTruthy()
 })
 
-test('anyList with a fixed-width leading spacer', () => {
-  const list = m.anyList(m.spacer(), m.anyString())
+test('anyList with a fixed-width leading slice', () => {
+  const list = m.anyList(m.slice(1), m.anyString())
   expect(list.match([''])).toBeFalsy()
   expect(list.match([{}, ''])).toBeTruthy()
   expect(list.match([{}, {}, ''])).toBeFalsy()
 })
 
-test('anyList with a variable-width leading spacer', () => {
-  const list = m.anyList(m.spacer(0, 1), m.anyString())
+test('anyList with a variable-width leading slice', () => {
+  const list = m.anyList(m.slice(0, 1), m.anyString())
   expect(list.match([''])).toBeTruthy()
   expect(list.match([{}, ''])).toBeTruthy()
   expect(list.match([{}, {}, ''])).toBeFalsy()
 })
 
-test('anyList with a zero-width leading spacer', () => {
-  const list = m.anyList(m.spacer(0), m.anyString())
+test('anyList with a zero-width leading slice', () => {
+  const list = m.anyList(m.slice(0), m.anyString())
   expect(list.match([''])).toBeTruthy()
   expect(list.match([{}, ''])).toBeFalsy()
   expect(list.match([{}, {}, ''])).toBeFalsy()
 })
 
-test('anyList with a fixed-width trailing spacer', () => {
-  const list = m.anyList(m.anyString(), m.spacer())
+test('anyList with a fixed-width trailing slice', () => {
+  const list = m.anyList(m.anyString(), m.slice(1))
   expect(list.match([''])).toBeFalsy()
   expect(list.match(['', ''])).toBeTruthy()
   expect(list.match(['', '', ''])).toBeFalsy()
 })
 
-test('anyList with multiple fixed spacers', () => {
+test('anyList with multiple fixed slices', () => {
   const list = m.anyList<number | string>(
-    m.spacer(),
+    m.slice(1),
     m.anyString(),
-    m.spacer(),
+    m.slice(1),
     m.anyNumber(),
-    m.spacer()
+    m.slice(1)
   )
   expect(list.match([])).toBeFalsy()
   expect(list.match([1, '', 2, 3, ''])).toBeTruthy()
   expect(list.match([1, {}, 2, 3, ''])).toBeFalsy()
 })
 
-test('anyList with multiple dynamic spacers', () => {
+test('anyList with multiple dynamic slices', () => {
   const list = m.anyList<t.Statement>(
     m.zeroOrMore(),
     m.returnStatement(),
