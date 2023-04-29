@@ -1,16 +1,16 @@
-import { distributeAcrossSpacers } from '../utils/distributeAcrossSpacers'
+import { distributeAcrossSlices } from '../utils/distributeAcrossSlices'
 import { Matcher } from './Matcher'
-import { Spacer } from './spacers'
+import { SliceMatcher } from './slice'
 
 export class AnyListMatcher<T> extends Matcher<Array<T>> {
-  private readonly spacers: Array<Spacer> = []
+  private readonly sliceMatchers: Array<SliceMatcher<T>> = []
 
-  constructor(private readonly elements: Array<Matcher<T> | Spacer>) {
+  constructor(private readonly matchers: Array<Matcher<T>>) {
     super()
 
-    for (const element of elements) {
-      if (element instanceof Spacer) {
-        this.spacers.push(element)
+    for (const matcher of matchers) {
+      if (matcher instanceof SliceMatcher) {
+        this.sliceMatchers.push(matcher)
       }
     }
   }
@@ -23,30 +23,34 @@ export class AnyListMatcher<T> extends Matcher<Array<T>> {
       return false
     }
 
-    if (this.elements.length === 0 && array.length === 0) {
+    if (this.matchers.length === 0 && array.length === 0) {
       return true
     }
 
-    const spacerAllocations = distributeAcrossSpacers(
-      this.spacers,
-      array.length - this.elements.length + this.spacers.length
+    const spacerAllocations = distributeAcrossSlices(
+      this.sliceMatchers,
+      array.length - this.matchers.length + this.sliceMatchers.length
     )
 
     for (const allocations of spacerAllocations) {
-      const toMatch: Array<T> = array.slice()
+      const valuesToMatch: Array<T> = array.slice()
       let matchedAll = true
       let key = 0
 
-      for (const element of this.elements) {
-        if (element instanceof Spacer) {
-          let spacesForSpacer = allocations.shift() || 0
+      for (const matcher of this.matchers) {
+        if (matcher instanceof SliceMatcher) {
+          let sliceValueCount = allocations.shift() || 0
 
-          while (spacesForSpacer > 0) {
-            toMatch.shift()
-            spacesForSpacer--
+          while (sliceValueCount > 0) {
+            const valueToMatch = valuesToMatch.shift()
+            if (!matcher.matchValue(valueToMatch, [...keys, key])) {
+              matchedAll = false
+              break
+            }
+            sliceValueCount--
             key++
           }
-        } else if (!element.matchValue(toMatch.shift(), [...keys, key])) {
+        } else if (!matcher.matchValue(valuesToMatch.shift(), [...keys, key])) {
           matchedAll = false
           break
         } else {
@@ -55,9 +59,9 @@ export class AnyListMatcher<T> extends Matcher<Array<T>> {
       }
 
       if (matchedAll) {
-        if (toMatch.length > 0) {
+        if (valuesToMatch.length > 0) {
           throw new Error(
-            `expected to consume all elements to match but ${toMatch.length} remain!`
+            `expected to consume all elements to match but ${valuesToMatch.length} remain!`
           )
         }
 
@@ -69,8 +73,6 @@ export class AnyListMatcher<T> extends Matcher<Array<T>> {
   }
 }
 
-export function anyList<T>(
-  ...elements: Array<Matcher<T> | Spacer>
-): Matcher<Array<T>> {
+export function anyList<T>(...elements: Array<Matcher<T>>): Matcher<Array<T>> {
   return new AnyListMatcher(elements)
 }
