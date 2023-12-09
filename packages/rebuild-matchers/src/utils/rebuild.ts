@@ -152,8 +152,6 @@ function rebuildTo(out: SimpleWriter): string | void {
         out.write(`      if (node.${key} !== null) {\n`)
         out.write(`        return false;\n`)
         out.write(`      }\n`)
-        out.write(`    } else if (node.${key} === null) {\n`)
-        out.write(`      return false;\n`)
       }
       if (isValidatorOfType('array', field.validate)) {
         out.write(`    } else if (Array.isArray(${binding})) {\n`)
