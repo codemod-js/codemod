@@ -727,8 +727,6 @@ export class BreakStatementMatcher extends Matcher<t.BreakStatement> {
       if (node.label !== null) {
         return false
       }
-    } else if (node.label === null) {
-      return false
     } else if (!this.label.matchValue(node.label, [...keys, 'label'])) {
       return false
     }
@@ -848,8 +846,6 @@ export class CatchClauseMatcher extends Matcher<t.CatchClause> {
       if (node.param !== null) {
         return false
       }
-    } else if (node.param === null) {
-      return false
     } else if (!this.param.matchValue(node.param, [...keys, 'param'])) {
       return false
     }
@@ -916,8 +912,6 @@ export class ClassAccessorPropertyMatcher extends Matcher<t.ClassAccessorPropert
       if (node.value !== null) {
         return false
       }
-    } else if (node.value === null) {
-      return false
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false
     }
@@ -929,8 +923,6 @@ export class ClassAccessorPropertyMatcher extends Matcher<t.ClassAccessorPropert
       if (node.typeAnnotation !== null) {
         return false
       }
-    } else if (node.typeAnnotation === null) {
-      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
@@ -947,8 +939,6 @@ export class ClassAccessorPropertyMatcher extends Matcher<t.ClassAccessorPropert
       if (node.decorators !== null) {
         return false
       }
-    } else if (node.decorators === null) {
-      return false
     } else if (Array.isArray(this.decorators)) {
       if (
         !tupleOf<unknown>(...this.decorators).matchValue(node.decorators, [
@@ -1132,8 +1122,6 @@ export class ClassDeclarationMatcher extends Matcher<t.ClassDeclaration> {
       if (node.superClass !== null) {
         return false
       }
-    } else if (node.superClass === null) {
-      return false
     } else if (
       !this.superClass.matchValue(node.superClass, [...keys, 'superClass'])
     ) {
@@ -1153,8 +1141,6 @@ export class ClassDeclarationMatcher extends Matcher<t.ClassDeclaration> {
       if (node.decorators !== null) {
         return false
       }
-    } else if (node.decorators === null) {
-      return false
     } else if (Array.isArray(this.decorators)) {
       if (
         !tupleOf<unknown>(...this.decorators).matchValue(node.decorators, [
@@ -1211,8 +1197,6 @@ export class ClassExpressionMatcher extends Matcher<t.ClassExpression> {
       if (node.id !== null) {
         return false
       }
-    } else if (node.id === null) {
-      return false
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false
     }
@@ -1224,8 +1208,6 @@ export class ClassExpressionMatcher extends Matcher<t.ClassExpression> {
       if (node.superClass !== null) {
         return false
       }
-    } else if (node.superClass === null) {
-      return false
     } else if (
       !this.superClass.matchValue(node.superClass, [...keys, 'superClass'])
     ) {
@@ -1245,8 +1227,6 @@ export class ClassExpressionMatcher extends Matcher<t.ClassExpression> {
       if (node.decorators !== null) {
         return false
       }
-    } else if (node.decorators === null) {
-      return false
     } else if (Array.isArray(this.decorators)) {
       if (
         !tupleOf<unknown>(...this.decorators).matchValue(node.decorators, [
@@ -1304,8 +1284,6 @@ export class ClassImplementsMatcher extends Matcher<t.ClassImplements> {
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -1623,8 +1601,6 @@ export class ClassPrivatePropertyMatcher extends Matcher<t.ClassPrivateProperty>
       if (node.value !== null) {
         return false
       }
-    } else if (node.value === null) {
-      return false
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false
     }
@@ -1636,8 +1612,6 @@ export class ClassPrivatePropertyMatcher extends Matcher<t.ClassPrivateProperty>
       if (node.decorators !== null) {
         return false
       }
-    } else if (node.decorators === null) {
-      return false
     } else if (Array.isArray(this.decorators)) {
       if (
         !tupleOf<unknown>(...this.decorators).matchValue(node.decorators, [
@@ -1720,8 +1694,6 @@ export class ClassPropertyMatcher extends Matcher<t.ClassProperty> {
       if (node.value !== null) {
         return false
       }
-    } else if (node.value === null) {
-      return false
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false
     }
@@ -1733,8 +1705,6 @@ export class ClassPropertyMatcher extends Matcher<t.ClassProperty> {
       if (node.typeAnnotation !== null) {
         return false
       }
-    } else if (node.typeAnnotation === null) {
-      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
@@ -1751,8 +1721,6 @@ export class ClassPropertyMatcher extends Matcher<t.ClassProperty> {
       if (node.decorators !== null) {
         return false
       }
-    } else if (node.decorators === null) {
-      return false
     } else if (Array.isArray(this.decorators)) {
       if (
         !tupleOf<unknown>(...this.decorators).matchValue(node.decorators, [
@@ -1891,8 +1859,6 @@ export class ContinueStatementMatcher extends Matcher<t.ContinueStatement> {
       if (node.label !== null) {
         return false
       }
-    } else if (node.label === null) {
-      return false
     } else if (!this.label.matchValue(node.label, [...keys, 'label'])) {
       return false
     }
@@ -1995,8 +1961,6 @@ export class DeclareClassMatcher extends Matcher<t.DeclareClass> {
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -2013,8 +1977,6 @@ export class DeclareClassMatcher extends Matcher<t.DeclareClass> {
       if (node.extends !== null) {
         return false
       }
-    } else if (node.extends === null) {
-      return false
     } else if (Array.isArray(this._extends)) {
       if (
         !tupleOf<unknown>(...this._extends).matchValue(node.extends, [
@@ -2106,8 +2068,6 @@ export class DeclareExportDeclarationMatcher extends Matcher<t.DeclareExportDecl
       if (node.declaration !== null) {
         return false
       }
-    } else if (node.declaration === null) {
-      return false
     } else if (
       !this.declaration.matchValue(node.declaration, [...keys, 'declaration'])
     ) {
@@ -2121,8 +2081,6 @@ export class DeclareExportDeclarationMatcher extends Matcher<t.DeclareExportDecl
       if (node.specifiers !== null) {
         return false
       }
-    } else if (node.specifiers === null) {
-      return false
     } else if (Array.isArray(this.specifiers)) {
       if (
         !tupleOf<unknown>(...this.specifiers).matchValue(node.specifiers, [
@@ -2145,8 +2103,6 @@ export class DeclareExportDeclarationMatcher extends Matcher<t.DeclareExportDecl
       if (node.source !== null) {
         return false
       }
-    } else if (node.source === null) {
-      return false
     } else if (!this.source.matchValue(node.source, [...keys, 'source'])) {
       return false
     }
@@ -2229,8 +2185,6 @@ export class DeclareInterfaceMatcher extends Matcher<t.DeclareInterface> {
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -2247,8 +2201,6 @@ export class DeclareInterfaceMatcher extends Matcher<t.DeclareInterface> {
       if (node.extends !== null) {
         return false
       }
-    } else if (node.extends === null) {
-      return false
     } else if (Array.isArray(this._extends)) {
       if (
         !tupleOf<unknown>(...this._extends).matchValue(node.extends, [
@@ -2324,8 +2276,6 @@ export class DeclareModuleMatcher extends Matcher<t.DeclareModule> {
       if (node.kind !== null) {
         return false
       }
-    } else if (node.kind === null) {
-      return false
     } else if (!this.kind.matchValue(node.kind, [...keys, 'kind'])) {
       return false
     }
@@ -2406,8 +2356,6 @@ export class DeclareOpaqueTypeMatcher extends Matcher<t.DeclareOpaqueType> {
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -2424,8 +2372,6 @@ export class DeclareOpaqueTypeMatcher extends Matcher<t.DeclareOpaqueType> {
       if (node.supertype !== null) {
         return false
       }
-    } else if (node.supertype === null) {
-      return false
     } else if (
       !this.supertype.matchValue(node.supertype, [...keys, 'supertype'])
     ) {
@@ -2474,8 +2420,6 @@ export class DeclareTypeAliasMatcher extends Matcher<t.DeclareTypeAlias> {
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -3293,8 +3237,6 @@ export class ExportNamedDeclarationMatcher extends Matcher<t.ExportNamedDeclarat
       if (node.declaration !== null) {
         return false
       }
-    } else if (node.declaration === null) {
-      return false
     } else if (
       !this.declaration.matchValue(node.declaration, [...keys, 'declaration'])
     ) {
@@ -3325,8 +3267,6 @@ export class ExportNamedDeclarationMatcher extends Matcher<t.ExportNamedDeclarat
       if (node.source !== null) {
         return false
       }
-    } else if (node.source === null) {
-      return false
     } else if (!this.source.matchValue(node.source, [...keys, 'source'])) {
       return false
     }
@@ -3487,8 +3427,6 @@ export class FileMatcher extends Matcher<t.File> {
       if (node.comments !== null) {
         return false
       }
-    } else if (node.comments === null) {
-      return false
     } else if (
       !this.comments.matchValue(node.comments, [...keys, 'comments'])
     ) {
@@ -3502,8 +3440,6 @@ export class FileMatcher extends Matcher<t.File> {
       if (node.tokens !== null) {
         return false
       }
-    } else if (node.tokens === null) {
-      return false
     } else if (!this.tokens.matchValue(node.tokens, [...keys, 'tokens'])) {
       return false
     }
@@ -3653,8 +3589,6 @@ export class ForStatementMatcher extends Matcher<t.ForStatement> {
       if (node.init !== null) {
         return false
       }
-    } else if (node.init === null) {
-      return false
     } else if (!this.init.matchValue(node.init, [...keys, 'init'])) {
       return false
     }
@@ -3666,8 +3600,6 @@ export class ForStatementMatcher extends Matcher<t.ForStatement> {
       if (node.test !== null) {
         return false
       }
-    } else if (node.test === null) {
-      return false
     } else if (!this.test.matchValue(node.test, [...keys, 'test'])) {
       return false
     }
@@ -3679,8 +3611,6 @@ export class ForStatementMatcher extends Matcher<t.ForStatement> {
       if (node.update !== null) {
         return false
       }
-    } else if (node.update === null) {
-      return false
     } else if (!this.update.matchValue(node.update, [...keys, 'update'])) {
       return false
     }
@@ -3734,8 +3664,6 @@ export class FunctionDeclarationMatcher extends Matcher<t.FunctionDeclaration> {
       if (node.id !== null) {
         return false
       }
-    } else if (node.id === null) {
-      return false
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false
     }
@@ -3831,8 +3759,6 @@ export class FunctionExpressionMatcher extends Matcher<t.FunctionExpression> {
       if (node.id !== null) {
         return false
       }
-    } else if (node.id === null) {
-      return false
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false
     }
@@ -3925,8 +3851,6 @@ export class FunctionTypeAnnotationMatcher extends Matcher<t.FunctionTypeAnnotat
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -3958,8 +3882,6 @@ export class FunctionTypeAnnotationMatcher extends Matcher<t.FunctionTypeAnnotat
       if (node.rest !== null) {
         return false
       }
-    } else if (node.rest === null) {
-      return false
     } else if (!this.rest.matchValue(node.rest, [...keys, 'rest'])) {
       return false
     }
@@ -4015,8 +3937,6 @@ export class FunctionTypeParamMatcher extends Matcher<t.FunctionTypeParam> {
       if (node.name !== null) {
         return false
       }
-    } else if (node.name === null) {
-      return false
     } else if (!this.name.matchValue(node.name, [...keys, 'name'])) {
       return false
     }
@@ -4072,8 +3992,6 @@ export class GenericTypeAnnotationMatcher extends Matcher<t.GenericTypeAnnotatio
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -4165,8 +4083,6 @@ export class IfStatementMatcher extends Matcher<t.IfStatement> {
       if (node.alternate !== null) {
         return false
       }
-    } else if (node.alternate === null) {
-      return false
     } else if (
       !this.alternate.matchValue(node.alternate, [...keys, 'alternate'])
     ) {
@@ -4516,8 +4432,6 @@ export class InterfaceDeclarationMatcher extends Matcher<t.InterfaceDeclaration>
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -4534,8 +4448,6 @@ export class InterfaceDeclarationMatcher extends Matcher<t.InterfaceDeclaration>
       if (node.extends !== null) {
         return false
       }
-    } else if (node.extends === null) {
-      return false
     } else if (Array.isArray(this._extends)) {
       if (
         !tupleOf<unknown>(...this._extends).matchValue(node.extends, [
@@ -4600,8 +4512,6 @@ export class InterfaceExtendsMatcher extends Matcher<t.InterfaceExtends> {
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -4648,8 +4558,6 @@ export class InterfaceTypeAnnotationMatcher extends Matcher<t.InterfaceTypeAnnot
       if (node.extends !== null) {
         return false
       }
-    } else if (node.extends === null) {
-      return false
     } else if (Array.isArray(this._extends)) {
       if (
         !tupleOf<unknown>(...this._extends).matchValue(node.extends, [
@@ -4789,8 +4697,6 @@ export class JSXAttributeMatcher extends Matcher<t.JSXAttribute> {
       if (node.value !== null) {
         return false
       }
-    } else if (node.value === null) {
-      return false
     } else if (!this.value.matchValue(node.value, [...keys, 'value'])) {
       return false
     }
@@ -4914,8 +4820,6 @@ export class JSXElementMatcher extends Matcher<t.JSXElement> {
       if (node.closingElement !== null) {
         return false
       }
-    } else if (node.closingElement === null) {
-      return false
     } else if (
       !this.closingElement.matchValue(node.closingElement, [
         ...keys,
@@ -4953,8 +4857,6 @@ export class JSXElementMatcher extends Matcher<t.JSXElement> {
       if (node.selfClosing !== null) {
         return false
       }
-    } else if (node.selfClosing === null) {
-      return false
     } else if (
       !this.selfClosing.matchValue(node.selfClosing, [...keys, 'selfClosing'])
     ) {
@@ -5597,8 +5499,6 @@ export class MemberExpressionMatcher extends Matcher<t.MemberExpression> {
       if (node.optional !== null) {
         return false
       }
-    } else if (node.optional === null) {
-      return false
     } else if (
       !this.optional.matchValue(node.optional, [...keys, 'optional'])
     ) {
@@ -6279,8 +6179,6 @@ export class ObjectPropertyMatcher extends Matcher<t.ObjectProperty> {
       if (node.decorators !== null) {
         return false
       }
-    } else if (node.decorators === null) {
-      return false
     } else if (Array.isArray(this.decorators)) {
       if (
         !tupleOf<unknown>(...this.decorators).matchValue(node.decorators, [
@@ -6374,8 +6272,6 @@ export class ObjectTypeAnnotationMatcher extends Matcher<t.ObjectTypeAnnotation>
       if (node.indexers !== null) {
         return false
       }
-    } else if (node.indexers === null) {
-      return false
     } else if (Array.isArray(this.indexers)) {
       if (
         !tupleOf<unknown>(...this.indexers).matchValue(node.indexers, [
@@ -6398,8 +6294,6 @@ export class ObjectTypeAnnotationMatcher extends Matcher<t.ObjectTypeAnnotation>
       if (node.callProperties !== null) {
         return false
       }
-    } else if (node.callProperties === null) {
-      return false
     } else if (Array.isArray(this.callProperties)) {
       if (
         !tupleOf<unknown>(...this.callProperties).matchValue(
@@ -6425,8 +6319,6 @@ export class ObjectTypeAnnotationMatcher extends Matcher<t.ObjectTypeAnnotation>
       if (node.internalSlots !== null) {
         return false
       }
-    } else if (node.internalSlots === null) {
-      return false
     } else if (Array.isArray(this.internalSlots)) {
       if (
         !tupleOf<unknown>(...this.internalSlots).matchValue(
@@ -6542,8 +6434,6 @@ export class ObjectTypeIndexerMatcher extends Matcher<t.ObjectTypeIndexer> {
       if (node.id !== null) {
         return false
       }
-    } else if (node.id === null) {
-      return false
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false
     }
@@ -6567,8 +6457,6 @@ export class ObjectTypeIndexerMatcher extends Matcher<t.ObjectTypeIndexer> {
       if (node.variance !== null) {
         return false
       }
-    } else if (node.variance === null) {
-      return false
     } else if (
       !this.variance.matchValue(node.variance, [...keys, 'variance'])
     ) {
@@ -6701,8 +6589,6 @@ export class ObjectTypePropertyMatcher extends Matcher<t.ObjectTypeProperty> {
       if (node.variance !== null) {
         return false
       }
-    } else if (node.variance === null) {
-      return false
     } else if (
       !this.variance.matchValue(node.variance, [...keys, 'variance'])
     ) {
@@ -6783,8 +6669,6 @@ export class OpaqueTypeMatcher extends Matcher<t.OpaqueType> {
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -6801,8 +6685,6 @@ export class OpaqueTypeMatcher extends Matcher<t.OpaqueType> {
       if (node.supertype !== null) {
         return false
       }
-    } else if (node.supertype === null) {
-      return false
     } else if (
       !this.supertype.matchValue(node.supertype, [...keys, 'supertype'])
     ) {
@@ -7320,8 +7202,6 @@ export class ProgramMatcher extends Matcher<t.Program> {
       if (node.interpreter !== null) {
         return false
       }
-    } else if (node.interpreter === null) {
-      return false
     } else if (
       !this.interpreter.matchValue(node.interpreter, [...keys, 'interpreter'])
     ) {
@@ -7531,8 +7411,6 @@ export class ReturnStatementMatcher extends Matcher<t.ReturnStatement> {
       if (node.argument !== null) {
         return false
       }
-    } else if (node.argument === null) {
-      return false
     } else if (
       !this.argument.matchValue(node.argument, [...keys, 'argument'])
     ) {
@@ -7793,8 +7671,6 @@ export class SwitchCaseMatcher extends Matcher<t.SwitchCase> {
       if (node.test !== null) {
         return false
       }
-    } else if (node.test === null) {
-      return false
     } else if (!this.test.matchValue(node.test, [...keys, 'test'])) {
       return false
     }
@@ -8069,8 +7945,6 @@ export class TSCallSignatureDeclarationMatcher extends Matcher<t.TSCallSignature
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -8104,8 +7978,6 @@ export class TSCallSignatureDeclarationMatcher extends Matcher<t.TSCallSignature
       if (node.typeAnnotation !== null) {
         return false
       }
-    } else if (node.typeAnnotation === null) {
-      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
@@ -8227,8 +8099,6 @@ export class TSConstructSignatureDeclarationMatcher extends Matcher<t.TSConstruc
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -8262,8 +8132,6 @@ export class TSConstructSignatureDeclarationMatcher extends Matcher<t.TSConstruc
       if (node.typeAnnotation !== null) {
         return false
       }
-    } else if (node.typeAnnotation === null) {
-      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
@@ -8317,8 +8185,6 @@ export class TSConstructorTypeMatcher extends Matcher<t.TSConstructorType> {
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -8352,8 +8218,6 @@ export class TSConstructorTypeMatcher extends Matcher<t.TSConstructorType> {
       if (node.typeAnnotation !== null) {
         return false
       }
-    } else if (node.typeAnnotation === null) {
-      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
@@ -8412,8 +8276,6 @@ export class TSDeclareFunctionMatcher extends Matcher<t.TSDeclareFunction> {
       if (node.id !== null) {
         return false
       }
-    } else if (node.id === null) {
-      return false
     } else if (!this.id.matchValue(node.id, [...keys, 'id'])) {
       return false
     }
@@ -8425,8 +8287,6 @@ export class TSDeclareFunctionMatcher extends Matcher<t.TSDeclareFunction> {
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -8458,8 +8318,6 @@ export class TSDeclareFunctionMatcher extends Matcher<t.TSDeclareFunction> {
       if (node.returnType !== null) {
         return false
       }
-    } else if (node.returnType === null) {
-      return false
     } else if (
       !this.returnType.matchValue(node.returnType, [...keys, 'returnType'])
     ) {
@@ -8531,8 +8389,6 @@ export class TSDeclareMethodMatcher extends Matcher<t.TSDeclareMethod> {
       if (node.decorators !== null) {
         return false
       }
-    } else if (node.decorators === null) {
-      return false
     } else if (Array.isArray(this.decorators)) {
       if (
         !tupleOf<unknown>(...this.decorators).matchValue(node.decorators, [
@@ -8561,8 +8417,6 @@ export class TSDeclareMethodMatcher extends Matcher<t.TSDeclareMethod> {
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -8594,8 +8448,6 @@ export class TSDeclareMethodMatcher extends Matcher<t.TSDeclareMethod> {
       if (node.returnType !== null) {
         return false
       }
-    } else if (node.returnType === null) {
-      return false
     } else if (
       !this.returnType.matchValue(node.returnType, [...keys, 'returnType'])
     ) {
@@ -8716,8 +8568,6 @@ export class TSEnumMemberMatcher extends Matcher<t.TSEnumMember> {
       if (node.initializer !== null) {
         return false
       }
-    } else if (node.initializer === null) {
-      return false
     } else if (
       !this.initializer.matchValue(node.initializer, [...keys, 'initializer'])
     ) {
@@ -8797,8 +8647,6 @@ export class TSExpressionWithTypeArgumentsMatcher extends Matcher<t.TSExpression
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -8876,8 +8724,6 @@ export class TSFunctionTypeMatcher extends Matcher<t.TSFunctionType> {
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -8911,8 +8757,6 @@ export class TSFunctionTypeMatcher extends Matcher<t.TSFunctionType> {
       if (node.typeAnnotation !== null) {
         return false
       }
-    } else if (node.typeAnnotation === null) {
-      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
@@ -9014,8 +8858,6 @@ export class TSImportTypeMatcher extends Matcher<t.TSImportType> {
       if (node.qualifier !== null) {
         return false
       }
-    } else if (node.qualifier === null) {
-      return false
     } else if (
       !this.qualifier.matchValue(node.qualifier, [...keys, 'qualifier'])
     ) {
@@ -9029,8 +8871,6 @@ export class TSImportTypeMatcher extends Matcher<t.TSImportType> {
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -9094,8 +8934,6 @@ export class TSIndexSignatureMatcher extends Matcher<t.TSIndexSignature> {
       if (node.typeAnnotation !== null) {
         return false
       }
-    } else if (node.typeAnnotation === null) {
-      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
@@ -9224,8 +9062,6 @@ export class TSInstantiationExpressionMatcher extends Matcher<t.TSInstantiationE
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -9319,8 +9155,6 @@ export class TSInterfaceDeclarationMatcher extends Matcher<t.TSInterfaceDeclarat
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -9337,8 +9171,6 @@ export class TSInterfaceDeclarationMatcher extends Matcher<t.TSInterfaceDeclarat
       if (node.extends !== null) {
         return false
       }
-    } else if (node.extends === null) {
-      return false
     } else if (Array.isArray(this._extends)) {
       if (
         !tupleOf<unknown>(...this._extends).matchValue(node.extends, [
@@ -9517,8 +9349,6 @@ export class TSMappedTypeMatcher extends Matcher<t.TSMappedType> {
       if (node.typeAnnotation !== null) {
         return false
       }
-    } else if (node.typeAnnotation === null) {
-      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
@@ -9535,8 +9365,6 @@ export class TSMappedTypeMatcher extends Matcher<t.TSMappedType> {
       if (node.nameType !== null) {
         return false
       }
-    } else if (node.nameType === null) {
-      return false
     } else if (
       !this.nameType.matchValue(node.nameType, [...keys, 'nameType'])
     ) {
@@ -9588,8 +9416,6 @@ export class TSMethodSignatureMatcher extends Matcher<t.TSMethodSignature> {
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -9623,8 +9449,6 @@ export class TSMethodSignatureMatcher extends Matcher<t.TSMethodSignature> {
       if (node.typeAnnotation !== null) {
         return false
       }
-    } else if (node.typeAnnotation === null) {
-      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
@@ -10062,8 +9886,6 @@ export class TSPropertySignatureMatcher extends Matcher<t.TSPropertySignature> {
       if (node.typeAnnotation !== null) {
         return false
       }
-    } else if (node.typeAnnotation === null) {
-      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
@@ -10080,8 +9902,6 @@ export class TSPropertySignatureMatcher extends Matcher<t.TSPropertySignature> {
       if (node.initializer !== null) {
         return false
       }
-    } else if (node.initializer === null) {
-      return false
     } else if (
       !this.initializer.matchValue(node.initializer, [...keys, 'initializer'])
     ) {
@@ -10361,8 +10181,6 @@ export class TSTypeAliasDeclarationMatcher extends Matcher<t.TSTypeAliasDeclarat
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -10575,8 +10393,6 @@ export class TSTypeParameterMatcher extends Matcher<t.TSTypeParameter> {
       if (node.constraint !== null) {
         return false
       }
-    } else if (node.constraint === null) {
-      return false
     } else if (
       !this.constraint.matchValue(node.constraint, [...keys, 'constraint'])
     ) {
@@ -10590,8 +10406,6 @@ export class TSTypeParameterMatcher extends Matcher<t.TSTypeParameter> {
       if (node.default !== null) {
         return false
       }
-    } else if (node.default === null) {
-      return false
     } else if (!this._default.matchValue(node.default, [...keys, 'default'])) {
       return false
     }
@@ -10739,8 +10553,6 @@ export class TSTypePredicateMatcher extends Matcher<t.TSTypePredicate> {
       if (node.typeAnnotation !== null) {
         return false
       }
-    } else if (node.typeAnnotation === null) {
-      return false
     } else if (
       !this.typeAnnotation.matchValue(node.typeAnnotation, [
         ...keys,
@@ -10761,8 +10573,6 @@ export class TSTypePredicateMatcher extends Matcher<t.TSTypePredicate> {
       if (node.asserts !== null) {
         return false
       }
-    } else if (node.asserts === null) {
-      return false
     } else if (!this.asserts.matchValue(node.asserts, [...keys, 'asserts'])) {
       return false
     }
@@ -10810,8 +10620,6 @@ export class TSTypeQueryMatcher extends Matcher<t.TSTypeQuery> {
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -10863,8 +10671,6 @@ export class TSTypeReferenceMatcher extends Matcher<t.TSTypeReference> {
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -11263,8 +11069,6 @@ export class TryStatementMatcher extends Matcher<t.TryStatement> {
       if (node.handler !== null) {
         return false
       }
-    } else if (node.handler === null) {
-      return false
     } else if (!this.handler.matchValue(node.handler, [...keys, 'handler'])) {
       return false
     }
@@ -11276,8 +11080,6 @@ export class TryStatementMatcher extends Matcher<t.TryStatement> {
       if (node.finalizer !== null) {
         return false
       }
-    } else if (node.finalizer === null) {
-      return false
     } else if (
       !this.finalizer.matchValue(node.finalizer, [...keys, 'finalizer'])
     ) {
@@ -11414,8 +11216,6 @@ export class TypeAliasMatcher extends Matcher<t.TypeAlias> {
       if (node.typeParameters !== null) {
         return false
       }
-    } else if (node.typeParameters === null) {
-      return false
     } else if (
       !this.typeParameters.matchValue(node.typeParameters, [
         ...keys,
@@ -11547,8 +11347,6 @@ export class TypeParameterMatcher extends Matcher<t.TypeParameter> {
       if (node.bound !== null) {
         return false
       }
-    } else if (node.bound === null) {
-      return false
     } else if (!this.bound.matchValue(node.bound, [...keys, 'bound'])) {
       return false
     }
@@ -11560,8 +11358,6 @@ export class TypeParameterMatcher extends Matcher<t.TypeParameter> {
       if (node.default !== null) {
         return false
       }
-    } else if (node.default === null) {
-      return false
     } else if (!this._default.matchValue(node.default, [...keys, 'default'])) {
       return false
     }
@@ -11573,8 +11369,6 @@ export class TypeParameterMatcher extends Matcher<t.TypeParameter> {
       if (node.variance !== null) {
         return false
       }
-    } else if (node.variance === null) {
-      return false
     } else if (
       !this.variance.matchValue(node.variance, [...keys, 'variance'])
     ) {
@@ -11995,8 +11789,6 @@ export class VariableDeclaratorMatcher extends Matcher<t.VariableDeclarator> {
       if (node.init !== null) {
         return false
       }
-    } else if (node.init === null) {
-      return false
     } else if (!this.init.matchValue(node.init, [...keys, 'init'])) {
       return false
     }
@@ -12167,8 +11959,6 @@ export class YieldExpressionMatcher extends Matcher<t.YieldExpression> {
       if (node.argument !== null) {
         return false
       }
-    } else if (node.argument === null) {
-      return false
     } else if (
       !this.argument.matchValue(node.argument, [...keys, 'argument'])
     ) {

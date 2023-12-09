@@ -360,3 +360,11 @@ test('fromCapture builds a matcher based on a capturing matcher', () => {
   expect(matcher.match(idUnequivalent)).toBeFalsy()
   expect(matcher.match(9)).toBeFalsy()
 })
+
+test('regression: #921', () => {
+  expect(
+    m
+      .functionExpression(m.anything())
+      .match(t.functionExpression(null, [], t.blockStatement([])))
+  ).toBeTruthy()
+})
