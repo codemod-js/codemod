@@ -9,10 +9,11 @@ import {
   typeForValidator,
 } from './ast'
 import dedent = require('dedent')
+import { getRepoRoot } from './git'
 
 export const MATCHERS_FILE_PATH = join(
-  __dirname,
-  '../../../matchers/src/matchers/generated.ts'
+  getRepoRoot(),
+  'packages/matchers/src/matchers/generated.ts'
 )
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
