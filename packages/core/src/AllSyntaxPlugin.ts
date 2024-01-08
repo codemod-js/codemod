@@ -1,15 +1,15 @@
-import { buildOptions, ParserOptions } from '@codemod/parser'
-import { TransformOptions } from '.'
-import { BabelPlugin, PluginObj } from './BabelPluginTypes'
+import { buildOptions, type ParserOptions } from '@codemod/parser'
+import { type TransformOptions } from '.'
+import type { BabelPlugin, PluginObj } from './BabelPluginTypes'
 
 export function buildPlugin(
-  sourceType: ParserOptions['sourceType']
+  sourceType: ParserOptions['sourceType'],
 ): BabelPlugin {
   return function (): PluginObj {
     return {
       manipulateOptions(
         opts: TransformOptions,
-        parserOpts: ParserOptions
+        parserOpts: ParserOptions,
       ): void {
         const options = buildOptions({
           ...parserOpts,

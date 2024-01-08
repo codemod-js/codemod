@@ -7,7 +7,7 @@ test('fails with an error when passing an invalid option', async function () {
     status: 1,
     stdout: '',
     stderr: expect.stringContaining(
-      'ERROR: unexpected option: --not-a-real-option'
+      'ERROR: unexpected option: --not-a-real-option',
     ),
   })
 })
@@ -16,7 +16,7 @@ test('fails with an error when a plugin throws an exception', async function () 
   expect(
     await runCodemodCLI(['--plugin', plugin('bad-plugin'), '--stdio'], {
       stdin: '3+4',
-    })
+    }),
   ).toEqual({
     status: 1,
     stdout: '',
@@ -32,7 +32,7 @@ it.skip('does not try to load TypeScript files when --no-transpile-plugins is se
       '--no-transpile-plugins',
       '-p',
       plugin('increment-typescript', ''),
-    ])
+    ]),
   ).toEqual({
     status: 255,
     stdout: '',

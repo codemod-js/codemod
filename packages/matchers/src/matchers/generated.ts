@@ -16,7 +16,7 @@ export class AnyTypeAnnotationMatcher extends Matcher<t.AnyTypeAnnotation> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.AnyTypeAnnotation {
     if (!t.isNode(node) || !t.isAnyTypeAnnotation(node)) {
       return false
@@ -37,7 +37,7 @@ export class ArgumentPlaceholderMatcher extends Matcher<t.ArgumentPlaceholder> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ArgumentPlaceholder {
     if (!t.isNode(node) || !t.isArgumentPlaceholder(node)) {
       return false
@@ -55,14 +55,14 @@ export class ArrayExpressionMatcher extends Matcher<t.ArrayExpression> {
   constructor(
     private readonly elements?:
       | Matcher<Array<null | t.Expression | t.SpreadElement>>
-      | Array<Matcher<null> | Matcher<t.Expression> | Matcher<t.SpreadElement>>
+      | Array<Matcher<null> | Matcher<t.Expression> | Matcher<t.SpreadElement>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ArrayExpression {
     if (!t.isNode(node) || !t.isArrayExpression(node)) {
       return false
@@ -92,7 +92,7 @@ export class ArrayExpressionMatcher extends Matcher<t.ArrayExpression> {
 export function arrayExpression(
   elements?:
     | Matcher<Array<null | t.Expression | t.SpreadElement>>
-    | Array<Matcher<null> | Matcher<t.Expression> | Matcher<t.SpreadElement>>
+    | Array<Matcher<null> | Matcher<t.Expression> | Matcher<t.SpreadElement>>,
 ): Matcher<t.ArrayExpression> {
   return new ArrayExpressionMatcher(elements)
 }
@@ -101,14 +101,14 @@ export class ArrayPatternMatcher extends Matcher<t.ArrayPattern> {
   constructor(
     private readonly elements?:
       | Matcher<Array<null | t.PatternLike | t.LVal>>
-      | Array<Matcher<null> | Matcher<t.PatternLike> | Matcher<t.LVal>>
+      | Array<Matcher<null> | Matcher<t.PatternLike> | Matcher<t.LVal>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ArrayPattern {
     if (!t.isNode(node) || !t.isArrayPattern(node)) {
       return false
@@ -138,7 +138,7 @@ export class ArrayPatternMatcher extends Matcher<t.ArrayPattern> {
 export function arrayPattern(
   elements?:
     | Matcher<Array<null | t.PatternLike | t.LVal>>
-    | Array<Matcher<null> | Matcher<t.PatternLike> | Matcher<t.LVal>>
+    | Array<Matcher<null> | Matcher<t.PatternLike> | Matcher<t.LVal>>,
 ): Matcher<t.ArrayPattern> {
   return new ArrayPatternMatcher(elements)
 }
@@ -150,7 +150,7 @@ export class ArrayTypeAnnotationMatcher extends Matcher<t.ArrayTypeAnnotation> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ArrayTypeAnnotation {
     if (!t.isNode(node) || !t.isArrayTypeAnnotation(node)) {
       return false
@@ -169,7 +169,7 @@ export class ArrayTypeAnnotationMatcher extends Matcher<t.ArrayTypeAnnotation> {
 }
 
 export function arrayTypeAnnotation(
-  elementType?: Matcher<t.FlowType>
+  elementType?: Matcher<t.FlowType>,
 ): Matcher<t.ArrayTypeAnnotation> {
   return new ArrayTypeAnnotationMatcher(elementType)
 }
@@ -182,14 +182,14 @@ export class ArrowFunctionExpressionMatcher extends Matcher<t.ArrowFunctionExpre
           Matcher<t.Identifier> | Matcher<t.Pattern> | Matcher<t.RestElement>
         >,
     private readonly body?: Matcher<t.BlockStatement | t.Expression>,
-    private readonly async?: Matcher<boolean> | boolean
+    private readonly async?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ArrowFunctionExpression {
     if (!t.isNode(node) || !t.isArrowFunctionExpression(node)) {
       return false
@@ -237,7 +237,7 @@ export function arrowFunctionExpression(
         Matcher<t.Identifier> | Matcher<t.Pattern> | Matcher<t.RestElement>
       >,
   body?: Matcher<t.BlockStatement | t.Expression>,
-  async?: Matcher<boolean> | boolean
+  async?: Matcher<boolean> | boolean,
 ): Matcher<t.ArrowFunctionExpression> {
   return new ArrowFunctionExpressionMatcher(params, body, async)
 }
@@ -246,14 +246,14 @@ export class AssignmentExpressionMatcher extends Matcher<t.AssignmentExpression>
   constructor(
     private readonly operator?: Matcher<string> | string,
     private readonly left?: Matcher<t.LVal>,
-    private readonly right?: Matcher<t.Expression>
+    private readonly right?: Matcher<t.Expression>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.AssignmentExpression {
     if (!t.isNode(node) || !t.isAssignmentExpression(node)) {
       return false
@@ -290,7 +290,7 @@ export class AssignmentExpressionMatcher extends Matcher<t.AssignmentExpression>
 export function assignmentExpression(
   operator?: Matcher<string> | string,
   left?: Matcher<t.LVal>,
-  right?: Matcher<t.Expression>
+  right?: Matcher<t.Expression>,
 ): Matcher<t.AssignmentExpression> {
   return new AssignmentExpressionMatcher(operator, left, right)
 }
@@ -307,14 +307,14 @@ export class AssignmentPatternMatcher extends Matcher<t.AssignmentPattern> {
       | t.TSTypeAssertion
       | t.TSNonNullExpression
     >,
-    private readonly right?: Matcher<t.Expression>
+    private readonly right?: Matcher<t.Expression>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.AssignmentPattern {
     if (!t.isNode(node) || !t.isAssignmentPattern(node)) {
       return false
@@ -347,7 +347,7 @@ export function assignmentPattern(
     | t.TSTypeAssertion
     | t.TSNonNullExpression
   >,
-  right?: Matcher<t.Expression>
+  right?: Matcher<t.Expression>,
 ): Matcher<t.AssignmentPattern> {
   return new AssignmentPatternMatcher(left, right)
 }
@@ -359,7 +359,7 @@ export class AwaitExpressionMatcher extends Matcher<t.AwaitExpression> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.AwaitExpression {
     if (!t.isNode(node) || !t.isAwaitExpression(node)) {
       return false
@@ -378,7 +378,7 @@ export class AwaitExpressionMatcher extends Matcher<t.AwaitExpression> {
 }
 
 export function awaitExpression(
-  argument?: Matcher<t.Expression>
+  argument?: Matcher<t.Expression>,
 ): Matcher<t.AwaitExpression> {
   return new AwaitExpressionMatcher(argument)
 }
@@ -390,7 +390,7 @@ export class BigIntLiteralMatcher extends Matcher<t.BigIntLiteral> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.BigIntLiteral {
     if (!t.isNode(node) || !t.isBigIntLiteral(node)) {
       return false
@@ -411,7 +411,7 @@ export class BigIntLiteralMatcher extends Matcher<t.BigIntLiteral> {
 }
 
 export function bigIntLiteral(
-  value?: Matcher<string> | string
+  value?: Matcher<string> | string,
 ): Matcher<t.BigIntLiteral> {
   return new BigIntLiteralMatcher(value)
 }
@@ -446,14 +446,14 @@ export class BinaryExpressionMatcher extends Matcher<t.BinaryExpression> {
         >
       | string,
     private readonly left?: Matcher<t.Expression | t.PrivateName>,
-    private readonly right?: Matcher<t.Expression>
+    private readonly right?: Matcher<t.Expression>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.BinaryExpression {
     if (!t.isNode(node) || !t.isBinaryExpression(node)) {
       return false
@@ -516,7 +516,7 @@ export function binaryExpression(
       >
     | string,
   left?: Matcher<t.Expression | t.PrivateName>,
-  right?: Matcher<t.Expression>
+  right?: Matcher<t.Expression>,
 ): Matcher<t.BinaryExpression> {
   return new BinaryExpressionMatcher(operator, left, right)
 }
@@ -524,14 +524,14 @@ export function binaryExpression(
 export class BindExpressionMatcher extends Matcher<t.BindExpression> {
   constructor(
     private readonly object?: Matcher<t.Expression>,
-    private readonly callee?: Matcher<t.Expression>
+    private readonly callee?: Matcher<t.Expression>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.BindExpression {
     if (!t.isNode(node) || !t.isBindExpression(node)) {
       return false
@@ -555,7 +555,7 @@ export class BindExpressionMatcher extends Matcher<t.BindExpression> {
 
 export function bindExpression(
   object?: Matcher<t.Expression>,
-  callee?: Matcher<t.Expression>
+  callee?: Matcher<t.Expression>,
 ): Matcher<t.BindExpression> {
   return new BindExpressionMatcher(object, callee)
 }
@@ -567,14 +567,14 @@ export class BlockStatementMatcher extends Matcher<t.BlockStatement> {
       | Array<Matcher<t.Statement>>,
     private readonly directives?:
       | Matcher<Array<t.Directive>>
-      | Array<Matcher<t.Directive>>
+      | Array<Matcher<t.Directive>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.BlockStatement {
     if (!t.isNode(node) || !t.isBlockStatement(node)) {
       return false
@@ -615,7 +615,7 @@ export class BlockStatementMatcher extends Matcher<t.BlockStatement> {
 
 export function blockStatement(
   body?: Matcher<Array<t.Statement>> | Array<Matcher<t.Statement>>,
-  directives?: Matcher<Array<t.Directive>> | Array<Matcher<t.Directive>>
+  directives?: Matcher<Array<t.Directive>> | Array<Matcher<t.Directive>>,
 ): Matcher<t.BlockStatement> {
   return new BlockStatementMatcher(body, directives)
 }
@@ -627,7 +627,7 @@ export class BooleanLiteralMatcher extends Matcher<t.BooleanLiteral> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.BooleanLiteral {
     if (!t.isNode(node) || !t.isBooleanLiteral(node)) {
       return false
@@ -648,7 +648,7 @@ export class BooleanLiteralMatcher extends Matcher<t.BooleanLiteral> {
 }
 
 export function booleanLiteral(
-  value?: Matcher<boolean> | boolean
+  value?: Matcher<boolean> | boolean,
 ): Matcher<t.BooleanLiteral> {
   return new BooleanLiteralMatcher(value)
 }
@@ -660,7 +660,7 @@ export class BooleanLiteralTypeAnnotationMatcher extends Matcher<t.BooleanLitera
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.BooleanLiteralTypeAnnotation {
     if (!t.isNode(node) || !t.isBooleanLiteralTypeAnnotation(node)) {
       return false
@@ -681,7 +681,7 @@ export class BooleanLiteralTypeAnnotationMatcher extends Matcher<t.BooleanLitera
 }
 
 export function booleanLiteralTypeAnnotation(
-  value?: Matcher<boolean> | boolean
+  value?: Matcher<boolean> | boolean,
 ): Matcher<t.BooleanLiteralTypeAnnotation> {
   return new BooleanLiteralTypeAnnotationMatcher(value)
 }
@@ -693,7 +693,7 @@ export class BooleanTypeAnnotationMatcher extends Matcher<t.BooleanTypeAnnotatio
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.BooleanTypeAnnotation {
     if (!t.isNode(node) || !t.isBooleanTypeAnnotation(node)) {
       return false
@@ -714,7 +714,7 @@ export class BreakStatementMatcher extends Matcher<t.BreakStatement> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.BreakStatement {
     if (!t.isNode(node) || !t.isBreakStatement(node)) {
       return false
@@ -738,7 +738,7 @@ export class BreakStatementMatcher extends Matcher<t.BreakStatement> {
 }
 
 export function breakStatement(
-  label?: Matcher<t.Identifier> | null
+  label?: Matcher<t.Identifier> | null,
 ): Matcher<t.BreakStatement> {
   return new BreakStatementMatcher(label)
 }
@@ -762,14 +762,14 @@ export class CallExpressionMatcher extends Matcher<t.CallExpression> {
           | Matcher<t.SpreadElement>
           | Matcher<t.JSXNamespacedName>
           | Matcher<t.ArgumentPlaceholder>
-        >
+        >,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.CallExpression {
     if (!t.isNode(node) || !t.isCallExpression(node)) {
       return false
@@ -818,7 +818,7 @@ export function callExpression(
         | Matcher<t.SpreadElement>
         | Matcher<t.JSXNamespacedName>
         | Matcher<t.ArgumentPlaceholder>
-      >
+      >,
 ): Matcher<t.CallExpression> {
   return new CallExpressionMatcher(callee, _arguments)
 }
@@ -828,14 +828,14 @@ export class CatchClauseMatcher extends Matcher<t.CatchClause> {
     private readonly param?: Matcher<
       t.Identifier | t.ArrayPattern | t.ObjectPattern
     > | null,
-    private readonly body?: Matcher<t.BlockStatement>
+    private readonly body?: Matcher<t.BlockStatement>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.CatchClause {
     if (!t.isNode(node) || !t.isCatchClause(node)) {
       return false
@@ -866,7 +866,7 @@ export class CatchClauseMatcher extends Matcher<t.CatchClause> {
 
 export function catchClause(
   param?: Matcher<t.Identifier | t.ArrayPattern | t.ObjectPattern> | null,
-  body?: Matcher<t.BlockStatement>
+  body?: Matcher<t.BlockStatement>,
 ): Matcher<t.CatchClause> {
   return new CatchClauseMatcher(param, body)
 }
@@ -890,14 +890,14 @@ export class ClassAccessorPropertyMatcher extends Matcher<t.ClassAccessorPropert
       | Array<Matcher<t.Decorator>>
       | null,
     private readonly computed?: Matcher<boolean> | boolean,
-    private readonly _static?: Matcher<boolean> | boolean
+    private readonly _static?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ClassAccessorProperty {
     if (!t.isNode(node) || !t.isClassAccessorProperty(node)) {
       return false
@@ -1005,7 +1005,7 @@ export function classAccessorProperty(
   > | null,
   decorators?: Matcher<Array<t.Decorator>> | Array<Matcher<t.Decorator>> | null,
   computed?: Matcher<boolean> | boolean,
-  _static?: Matcher<boolean> | boolean
+  _static?: Matcher<boolean> | boolean,
 ): Matcher<t.ClassAccessorProperty> {
   return new ClassAccessorPropertyMatcher(
     key,
@@ -1013,7 +1013,7 @@ export function classAccessorProperty(
     typeAnnotation,
     decorators,
     computed,
-    _static
+    _static,
   )
 }
 
@@ -1041,14 +1041,14 @@ export class ClassBodyMatcher extends Matcher<t.ClassBody> {
           | Matcher<t.TSDeclareMethod>
           | Matcher<t.TSIndexSignature>
           | Matcher<t.StaticBlock>
-        >
+        >,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ClassBody {
     if (!t.isNode(node) || !t.isClassBody(node)) {
       return false
@@ -1093,7 +1093,7 @@ export function classBody(
         | Matcher<t.TSDeclareMethod>
         | Matcher<t.TSIndexSignature>
         | Matcher<t.StaticBlock>
-      >
+      >,
 ): Matcher<t.ClassBody> {
   return new ClassBodyMatcher(body)
 }
@@ -1106,14 +1106,14 @@ export class ClassDeclarationMatcher extends Matcher<t.ClassDeclaration> {
     private readonly decorators?:
       | Matcher<Array<t.Decorator>>
       | Array<Matcher<t.Decorator>>
-      | null
+      | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ClassDeclaration {
     if (!t.isNode(node) || !t.isClassDeclaration(node)) {
       return false
@@ -1178,7 +1178,7 @@ export function classDeclaration(
   id?: Matcher<t.Identifier>,
   superClass?: Matcher<t.Expression> | null,
   body?: Matcher<t.ClassBody>,
-  decorators?: Matcher<Array<t.Decorator>> | Array<Matcher<t.Decorator>> | null
+  decorators?: Matcher<Array<t.Decorator>> | Array<Matcher<t.Decorator>> | null,
 ): Matcher<t.ClassDeclaration> {
   return new ClassDeclarationMatcher(id, superClass, body, decorators)
 }
@@ -1191,14 +1191,14 @@ export class ClassExpressionMatcher extends Matcher<t.ClassExpression> {
     private readonly decorators?:
       | Matcher<Array<t.Decorator>>
       | Array<Matcher<t.Decorator>>
-      | null
+      | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ClassExpression {
     if (!t.isNode(node) || !t.isClassExpression(node)) {
       return false
@@ -1270,7 +1270,7 @@ export function classExpression(
   id?: Matcher<t.Identifier> | null,
   superClass?: Matcher<t.Expression> | null,
   body?: Matcher<t.ClassBody>,
-  decorators?: Matcher<Array<t.Decorator>> | Array<Matcher<t.Decorator>> | null
+  decorators?: Matcher<Array<t.Decorator>> | Array<Matcher<t.Decorator>> | null,
 ): Matcher<t.ClassExpression> {
   return new ClassExpressionMatcher(id, superClass, body, decorators)
 }
@@ -1278,14 +1278,14 @@ export function classExpression(
 export class ClassImplementsMatcher extends Matcher<t.ClassImplements> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
-    private readonly typeParameters?: Matcher<t.TypeParameterInstantiation> | null
+    private readonly typeParameters?: Matcher<t.TypeParameterInstantiation> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ClassImplements {
     if (!t.isNode(node) || !t.isClassImplements(node)) {
       return false
@@ -1321,7 +1321,7 @@ export class ClassImplementsMatcher extends Matcher<t.ClassImplements> {
 
 export function classImplements(
   id?: Matcher<t.Identifier>,
-  typeParameters?: Matcher<t.TypeParameterInstantiation> | null
+  typeParameters?: Matcher<t.TypeParameterInstantiation> | null,
 ): Matcher<t.ClassImplements> {
   return new ClassImplementsMatcher(id, typeParameters)
 }
@@ -1354,14 +1354,14 @@ export class ClassMethodMatcher extends Matcher<t.ClassMethod> {
     private readonly computed?: Matcher<boolean> | boolean,
     private readonly _static?: Matcher<boolean> | boolean,
     private readonly generator?: Matcher<boolean> | boolean,
-    private readonly async?: Matcher<boolean> | boolean
+    private readonly async?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ClassMethod {
     if (!t.isNode(node) || !t.isClassMethod(node)) {
       return false
@@ -1475,7 +1475,7 @@ export function classMethod(
   computed?: Matcher<boolean> | boolean,
   _static?: Matcher<boolean> | boolean,
   generator?: Matcher<boolean> | boolean,
-  async?: Matcher<boolean> | boolean
+  async?: Matcher<boolean> | boolean,
 ): Matcher<t.ClassMethod> {
   return new ClassMethodMatcher(
     kind,
@@ -1485,7 +1485,7 @@ export function classMethod(
     computed,
     _static,
     generator,
-    async
+    async,
   )
 }
 
@@ -1506,14 +1506,14 @@ export class ClassPrivateMethodMatcher extends Matcher<t.ClassPrivateMethod> {
           | Matcher<t.TSParameterProperty>
         >,
     private readonly body?: Matcher<t.BlockStatement>,
-    private readonly _static?: Matcher<boolean> | boolean
+    private readonly _static?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ClassPrivateMethod {
     if (!t.isNode(node) || !t.isClassPrivateMethod(node)) {
       return false
@@ -1584,7 +1584,7 @@ export function classPrivateMethod(
         | Matcher<t.TSParameterProperty>
       >,
   body?: Matcher<t.BlockStatement>,
-  _static?: Matcher<boolean> | boolean
+  _static?: Matcher<boolean> | boolean,
 ): Matcher<t.ClassPrivateMethod> {
   return new ClassPrivateMethodMatcher(kind, key, params, body, _static)
 }
@@ -1597,14 +1597,14 @@ export class ClassPrivatePropertyMatcher extends Matcher<t.ClassPrivateProperty>
       | Matcher<Array<t.Decorator>>
       | Array<Matcher<t.Decorator>>
       | null,
-    private readonly _static?: Matcher<boolean> | boolean
+    private readonly _static?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ClassPrivateProperty {
     if (!t.isNode(node) || !t.isClassPrivateProperty(node)) {
       return false
@@ -1671,7 +1671,7 @@ export function classPrivateProperty(
   key?: Matcher<t.PrivateName>,
   value?: Matcher<t.Expression> | null,
   decorators?: Matcher<Array<t.Decorator>> | Array<Matcher<t.Decorator>> | null,
-  _static?: Matcher<boolean> | boolean
+  _static?: Matcher<boolean> | boolean,
 ): Matcher<t.ClassPrivateProperty> {
   return new ClassPrivatePropertyMatcher(key, value, decorators, _static)
 }
@@ -1694,14 +1694,14 @@ export class ClassPropertyMatcher extends Matcher<t.ClassProperty> {
       | Array<Matcher<t.Decorator>>
       | null,
     private readonly computed?: Matcher<boolean> | boolean,
-    private readonly _static?: Matcher<boolean> | boolean
+    private readonly _static?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ClassProperty {
     if (!t.isNode(node) || !t.isClassProperty(node)) {
       return false
@@ -1808,7 +1808,7 @@ export function classProperty(
   > | null,
   decorators?: Matcher<Array<t.Decorator>> | Array<Matcher<t.Decorator>> | null,
   computed?: Matcher<boolean> | boolean,
-  _static?: Matcher<boolean> | boolean
+  _static?: Matcher<boolean> | boolean,
 ): Matcher<t.ClassProperty> {
   return new ClassPropertyMatcher(
     key,
@@ -1816,7 +1816,7 @@ export function classProperty(
     typeAnnotation,
     decorators,
     computed,
-    _static
+    _static,
   )
 }
 
@@ -1824,14 +1824,14 @@ export class ConditionalExpressionMatcher extends Matcher<t.ConditionalExpressio
   constructor(
     private readonly test?: Matcher<t.Expression>,
     private readonly consequent?: Matcher<t.Expression>,
-    private readonly alternate?: Matcher<t.Expression>
+    private readonly alternate?: Matcher<t.Expression>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ConditionalExpression {
     if (!t.isNode(node) || !t.isConditionalExpression(node)) {
       return false
@@ -1866,7 +1866,7 @@ export class ConditionalExpressionMatcher extends Matcher<t.ConditionalExpressio
 export function conditionalExpression(
   test?: Matcher<t.Expression>,
   consequent?: Matcher<t.Expression>,
-  alternate?: Matcher<t.Expression>
+  alternate?: Matcher<t.Expression>,
 ): Matcher<t.ConditionalExpression> {
   return new ConditionalExpressionMatcher(test, consequent, alternate)
 }
@@ -1878,7 +1878,7 @@ export class ContinueStatementMatcher extends Matcher<t.ContinueStatement> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ContinueStatement {
     if (!t.isNode(node) || !t.isContinueStatement(node)) {
       return false
@@ -1902,7 +1902,7 @@ export class ContinueStatementMatcher extends Matcher<t.ContinueStatement> {
 }
 
 export function continueStatement(
-  label?: Matcher<t.Identifier> | null
+  label?: Matcher<t.Identifier> | null,
 ): Matcher<t.ContinueStatement> {
   return new ContinueStatementMatcher(label)
 }
@@ -1914,7 +1914,7 @@ export class DebuggerStatementMatcher extends Matcher<t.DebuggerStatement> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.DebuggerStatement {
     if (!t.isNode(node) || !t.isDebuggerStatement(node)) {
       return false
@@ -1935,7 +1935,7 @@ export class DecimalLiteralMatcher extends Matcher<t.DecimalLiteral> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.DecimalLiteral {
     if (!t.isNode(node) || !t.isDecimalLiteral(node)) {
       return false
@@ -1956,7 +1956,7 @@ export class DecimalLiteralMatcher extends Matcher<t.DecimalLiteral> {
 }
 
 export function decimalLiteral(
-  value?: Matcher<string> | string
+  value?: Matcher<string> | string,
 ): Matcher<t.DecimalLiteral> {
   return new DecimalLiteralMatcher(value)
 }
@@ -1969,14 +1969,14 @@ export class DeclareClassMatcher extends Matcher<t.DeclareClass> {
       | Matcher<Array<t.InterfaceExtends>>
       | Array<Matcher<t.InterfaceExtends>>
       | null,
-    private readonly body?: Matcher<t.ObjectTypeAnnotation>
+    private readonly body?: Matcher<t.ObjectTypeAnnotation>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.DeclareClass {
     if (!t.isNode(node) || !t.isDeclareClass(node)) {
       return false
@@ -2045,7 +2045,7 @@ export function declareClass(
     | Matcher<Array<t.InterfaceExtends>>
     | Array<Matcher<t.InterfaceExtends>>
     | null,
-  body?: Matcher<t.ObjectTypeAnnotation>
+  body?: Matcher<t.ObjectTypeAnnotation>,
 ): Matcher<t.DeclareClass> {
   return new DeclareClassMatcher(id, typeParameters, _extends, body)
 }
@@ -2057,7 +2057,7 @@ export class DeclareExportAllDeclarationMatcher extends Matcher<t.DeclareExportA
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.DeclareExportAllDeclaration {
     if (!t.isNode(node) || !t.isDeclareExportAllDeclaration(node)) {
       return false
@@ -2074,7 +2074,7 @@ export class DeclareExportAllDeclarationMatcher extends Matcher<t.DeclareExportA
 }
 
 export function declareExportAllDeclaration(
-  source?: Matcher<t.StringLiteral>
+  source?: Matcher<t.StringLiteral>,
 ): Matcher<t.DeclareExportAllDeclaration> {
   return new DeclareExportAllDeclarationMatcher(source)
 }
@@ -2086,14 +2086,14 @@ export class DeclareExportDeclarationMatcher extends Matcher<t.DeclareExportDecl
       | Matcher<Array<t.ExportSpecifier | t.ExportNamespaceSpecifier>>
       | Array<Matcher<t.ExportSpecifier> | Matcher<t.ExportNamespaceSpecifier>>
       | null,
-    private readonly source?: Matcher<t.StringLiteral> | null
+    private readonly source?: Matcher<t.StringLiteral> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.DeclareExportDeclaration {
     if (!t.isNode(node) || !t.isDeclareExportDeclaration(node)) {
       return false
@@ -2161,7 +2161,7 @@ export function declareExportDeclaration(
     | Matcher<Array<t.ExportSpecifier | t.ExportNamespaceSpecifier>>
     | Array<Matcher<t.ExportSpecifier> | Matcher<t.ExportNamespaceSpecifier>>
     | null,
-  source?: Matcher<t.StringLiteral> | null
+  source?: Matcher<t.StringLiteral> | null,
 ): Matcher<t.DeclareExportDeclaration> {
   return new DeclareExportDeclarationMatcher(declaration, specifiers, source)
 }
@@ -2173,7 +2173,7 @@ export class DeclareFunctionMatcher extends Matcher<t.DeclareFunction> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.DeclareFunction {
     if (!t.isNode(node) || !t.isDeclareFunction(node)) {
       return false
@@ -2190,7 +2190,7 @@ export class DeclareFunctionMatcher extends Matcher<t.DeclareFunction> {
 }
 
 export function declareFunction(
-  id?: Matcher<t.Identifier>
+  id?: Matcher<t.Identifier>,
 ): Matcher<t.DeclareFunction> {
   return new DeclareFunctionMatcher(id)
 }
@@ -2203,14 +2203,14 @@ export class DeclareInterfaceMatcher extends Matcher<t.DeclareInterface> {
       | Matcher<Array<t.InterfaceExtends>>
       | Array<Matcher<t.InterfaceExtends>>
       | null,
-    private readonly body?: Matcher<t.ObjectTypeAnnotation>
+    private readonly body?: Matcher<t.ObjectTypeAnnotation>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.DeclareInterface {
     if (!t.isNode(node) || !t.isDeclareInterface(node)) {
       return false
@@ -2279,7 +2279,7 @@ export function declareInterface(
     | Matcher<Array<t.InterfaceExtends>>
     | Array<Matcher<t.InterfaceExtends>>
     | null,
-  body?: Matcher<t.ObjectTypeAnnotation>
+  body?: Matcher<t.ObjectTypeAnnotation>,
 ): Matcher<t.DeclareInterface> {
   return new DeclareInterfaceMatcher(id, typeParameters, _extends, body)
 }
@@ -2288,14 +2288,14 @@ export class DeclareModuleMatcher extends Matcher<t.DeclareModule> {
   constructor(
     private readonly id?: Matcher<t.Identifier | t.StringLiteral>,
     private readonly body?: Matcher<t.BlockStatement>,
-    private readonly kind?: Matcher<'CommonJS' | 'ES'> | string | null
+    private readonly kind?: Matcher<'CommonJS' | 'ES'> | string | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.DeclareModule {
     if (!t.isNode(node) || !t.isDeclareModule(node)) {
       return false
@@ -2337,7 +2337,7 @@ export class DeclareModuleMatcher extends Matcher<t.DeclareModule> {
 export function declareModule(
   id?: Matcher<t.Identifier | t.StringLiteral>,
   body?: Matcher<t.BlockStatement>,
-  kind?: Matcher<'CommonJS' | 'ES'> | string | null
+  kind?: Matcher<'CommonJS' | 'ES'> | string | null,
 ): Matcher<t.DeclareModule> {
   return new DeclareModuleMatcher(id, body, kind)
 }
@@ -2349,7 +2349,7 @@ export class DeclareModuleExportsMatcher extends Matcher<t.DeclareModuleExports>
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.DeclareModuleExports {
     if (!t.isNode(node) || !t.isDeclareModuleExports(node)) {
       return false
@@ -2371,7 +2371,7 @@ export class DeclareModuleExportsMatcher extends Matcher<t.DeclareModuleExports>
 }
 
 export function declareModuleExports(
-  typeAnnotation?: Matcher<t.TypeAnnotation>
+  typeAnnotation?: Matcher<t.TypeAnnotation>,
 ): Matcher<t.DeclareModuleExports> {
   return new DeclareModuleExportsMatcher(typeAnnotation)
 }
@@ -2380,14 +2380,14 @@ export class DeclareOpaqueTypeMatcher extends Matcher<t.DeclareOpaqueType> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
     private readonly typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
-    private readonly supertype?: Matcher<t.FlowType> | null
+    private readonly supertype?: Matcher<t.FlowType> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.DeclareOpaqueType {
     if (!t.isNode(node) || !t.isDeclareOpaqueType(node)) {
       return false
@@ -2439,7 +2439,7 @@ export class DeclareOpaqueTypeMatcher extends Matcher<t.DeclareOpaqueType> {
 export function declareOpaqueType(
   id?: Matcher<t.Identifier>,
   typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
-  supertype?: Matcher<t.FlowType> | null
+  supertype?: Matcher<t.FlowType> | null,
 ): Matcher<t.DeclareOpaqueType> {
   return new DeclareOpaqueTypeMatcher(id, typeParameters, supertype)
 }
@@ -2448,14 +2448,14 @@ export class DeclareTypeAliasMatcher extends Matcher<t.DeclareTypeAlias> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
     private readonly typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
-    private readonly right?: Matcher<t.FlowType>
+    private readonly right?: Matcher<t.FlowType>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.DeclareTypeAlias {
     if (!t.isNode(node) || !t.isDeclareTypeAlias(node)) {
       return false
@@ -2498,7 +2498,7 @@ export class DeclareTypeAliasMatcher extends Matcher<t.DeclareTypeAlias> {
 export function declareTypeAlias(
   id?: Matcher<t.Identifier>,
   typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
-  right?: Matcher<t.FlowType>
+  right?: Matcher<t.FlowType>,
 ): Matcher<t.DeclareTypeAlias> {
   return new DeclareTypeAliasMatcher(id, typeParameters, right)
 }
@@ -2510,7 +2510,7 @@ export class DeclareVariableMatcher extends Matcher<t.DeclareVariable> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.DeclareVariable {
     if (!t.isNode(node) || !t.isDeclareVariable(node)) {
       return false
@@ -2527,7 +2527,7 @@ export class DeclareVariableMatcher extends Matcher<t.DeclareVariable> {
 }
 
 export function declareVariable(
-  id?: Matcher<t.Identifier>
+  id?: Matcher<t.Identifier>,
 ): Matcher<t.DeclareVariable> {
   return new DeclareVariableMatcher(id)
 }
@@ -2539,7 +2539,7 @@ export class DeclaredPredicateMatcher extends Matcher<t.DeclaredPredicate> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.DeclaredPredicate {
     if (!t.isNode(node) || !t.isDeclaredPredicate(node)) {
       return false
@@ -2556,7 +2556,7 @@ export class DeclaredPredicateMatcher extends Matcher<t.DeclaredPredicate> {
 }
 
 export function declaredPredicate(
-  value?: Matcher<t.Flow>
+  value?: Matcher<t.Flow>,
 ): Matcher<t.DeclaredPredicate> {
   return new DeclaredPredicateMatcher(value)
 }
@@ -2568,7 +2568,7 @@ export class DecoratorMatcher extends Matcher<t.Decorator> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.Decorator {
     if (!t.isNode(node) || !t.isDecorator(node)) {
       return false
@@ -2587,7 +2587,7 @@ export class DecoratorMatcher extends Matcher<t.Decorator> {
 }
 
 export function decorator(
-  expression?: Matcher<t.Expression>
+  expression?: Matcher<t.Expression>,
 ): Matcher<t.Decorator> {
   return new DecoratorMatcher(expression)
 }
@@ -2599,7 +2599,7 @@ export class DirectiveMatcher extends Matcher<t.Directive> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.Directive {
     if (!t.isNode(node) || !t.isDirective(node)) {
       return false
@@ -2616,7 +2616,7 @@ export class DirectiveMatcher extends Matcher<t.Directive> {
 }
 
 export function directive(
-  value?: Matcher<t.DirectiveLiteral>
+  value?: Matcher<t.DirectiveLiteral>,
 ): Matcher<t.Directive> {
   return new DirectiveMatcher(value)
 }
@@ -2628,7 +2628,7 @@ export class DirectiveLiteralMatcher extends Matcher<t.DirectiveLiteral> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.DirectiveLiteral {
     if (!t.isNode(node) || !t.isDirectiveLiteral(node)) {
       return false
@@ -2649,7 +2649,7 @@ export class DirectiveLiteralMatcher extends Matcher<t.DirectiveLiteral> {
 }
 
 export function directiveLiteral(
-  value?: Matcher<string> | string
+  value?: Matcher<string> | string,
 ): Matcher<t.DirectiveLiteral> {
   return new DirectiveLiteralMatcher(value)
 }
@@ -2657,14 +2657,14 @@ export function directiveLiteral(
 export class DoExpressionMatcher extends Matcher<t.DoExpression> {
   constructor(
     private readonly body?: Matcher<t.BlockStatement>,
-    private readonly async?: Matcher<boolean> | boolean
+    private readonly async?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.DoExpression {
     if (!t.isNode(node) || !t.isDoExpression(node)) {
       return false
@@ -2692,7 +2692,7 @@ export class DoExpressionMatcher extends Matcher<t.DoExpression> {
 
 export function doExpression(
   body?: Matcher<t.BlockStatement>,
-  async?: Matcher<boolean> | boolean
+  async?: Matcher<boolean> | boolean,
 ): Matcher<t.DoExpression> {
   return new DoExpressionMatcher(body, async)
 }
@@ -2700,14 +2700,14 @@ export function doExpression(
 export class DoWhileStatementMatcher extends Matcher<t.DoWhileStatement> {
   constructor(
     private readonly test?: Matcher<t.Expression>,
-    private readonly body?: Matcher<t.Statement>
+    private readonly body?: Matcher<t.Statement>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.DoWhileStatement {
     if (!t.isNode(node) || !t.isDoWhileStatement(node)) {
       return false
@@ -2731,7 +2731,7 @@ export class DoWhileStatementMatcher extends Matcher<t.DoWhileStatement> {
 
 export function doWhileStatement(
   test?: Matcher<t.Expression>,
-  body?: Matcher<t.Statement>
+  body?: Matcher<t.Statement>,
 ): Matcher<t.DoWhileStatement> {
   return new DoWhileStatementMatcher(test, body)
 }
@@ -2743,7 +2743,7 @@ export class EmptyStatementMatcher extends Matcher<t.EmptyStatement> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.EmptyStatement {
     if (!t.isNode(node) || !t.isEmptyStatement(node)) {
       return false
@@ -2764,7 +2764,7 @@ export class EmptyTypeAnnotationMatcher extends Matcher<t.EmptyTypeAnnotation> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.EmptyTypeAnnotation {
     if (!t.isNode(node) || !t.isEmptyTypeAnnotation(node)) {
       return false
@@ -2782,14 +2782,14 @@ export class EnumBooleanBodyMatcher extends Matcher<t.EnumBooleanBody> {
   constructor(
     private readonly members?:
       | Matcher<Array<t.EnumBooleanMember>>
-      | Array<Matcher<t.EnumBooleanMember>>
+      | Array<Matcher<t.EnumBooleanMember>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.EnumBooleanBody {
     if (!t.isNode(node) || !t.isEnumBooleanBody(node)) {
       return false
@@ -2817,7 +2817,7 @@ export class EnumBooleanBodyMatcher extends Matcher<t.EnumBooleanBody> {
 export function enumBooleanBody(
   members?:
     | Matcher<Array<t.EnumBooleanMember>>
-    | Array<Matcher<t.EnumBooleanMember>>
+    | Array<Matcher<t.EnumBooleanMember>>,
 ): Matcher<t.EnumBooleanBody> {
   return new EnumBooleanBodyMatcher(members)
 }
@@ -2829,7 +2829,7 @@ export class EnumBooleanMemberMatcher extends Matcher<t.EnumBooleanMember> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.EnumBooleanMember {
     if (!t.isNode(node) || !t.isEnumBooleanMember(node)) {
       return false
@@ -2846,7 +2846,7 @@ export class EnumBooleanMemberMatcher extends Matcher<t.EnumBooleanMember> {
 }
 
 export function enumBooleanMember(
-  id?: Matcher<t.Identifier>
+  id?: Matcher<t.Identifier>,
 ): Matcher<t.EnumBooleanMember> {
   return new EnumBooleanMemberMatcher(id)
 }
@@ -2856,14 +2856,14 @@ export class EnumDeclarationMatcher extends Matcher<t.EnumDeclaration> {
     private readonly id?: Matcher<t.Identifier>,
     private readonly body?: Matcher<
       t.EnumBooleanBody | t.EnumNumberBody | t.EnumStringBody | t.EnumSymbolBody
-    >
+    >,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.EnumDeclaration {
     if (!t.isNode(node) || !t.isEnumDeclaration(node)) {
       return false
@@ -2889,7 +2889,7 @@ export function enumDeclaration(
   id?: Matcher<t.Identifier>,
   body?: Matcher<
     t.EnumBooleanBody | t.EnumNumberBody | t.EnumStringBody | t.EnumSymbolBody
-  >
+  >,
 ): Matcher<t.EnumDeclaration> {
   return new EnumDeclarationMatcher(id, body)
 }
@@ -2901,7 +2901,7 @@ export class EnumDefaultedMemberMatcher extends Matcher<t.EnumDefaultedMember> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.EnumDefaultedMember {
     if (!t.isNode(node) || !t.isEnumDefaultedMember(node)) {
       return false
@@ -2918,7 +2918,7 @@ export class EnumDefaultedMemberMatcher extends Matcher<t.EnumDefaultedMember> {
 }
 
 export function enumDefaultedMember(
-  id?: Matcher<t.Identifier>
+  id?: Matcher<t.Identifier>,
 ): Matcher<t.EnumDefaultedMember> {
   return new EnumDefaultedMemberMatcher(id)
 }
@@ -2927,14 +2927,14 @@ export class EnumNumberBodyMatcher extends Matcher<t.EnumNumberBody> {
   constructor(
     private readonly members?:
       | Matcher<Array<t.EnumNumberMember>>
-      | Array<Matcher<t.EnumNumberMember>>
+      | Array<Matcher<t.EnumNumberMember>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.EnumNumberBody {
     if (!t.isNode(node) || !t.isEnumNumberBody(node)) {
       return false
@@ -2962,7 +2962,7 @@ export class EnumNumberBodyMatcher extends Matcher<t.EnumNumberBody> {
 export function enumNumberBody(
   members?:
     | Matcher<Array<t.EnumNumberMember>>
-    | Array<Matcher<t.EnumNumberMember>>
+    | Array<Matcher<t.EnumNumberMember>>,
 ): Matcher<t.EnumNumberBody> {
   return new EnumNumberBodyMatcher(members)
 }
@@ -2970,14 +2970,14 @@ export function enumNumberBody(
 export class EnumNumberMemberMatcher extends Matcher<t.EnumNumberMember> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
-    private readonly init?: Matcher<t.NumericLiteral>
+    private readonly init?: Matcher<t.NumericLiteral>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.EnumNumberMember {
     if (!t.isNode(node) || !t.isEnumNumberMember(node)) {
       return false
@@ -3001,7 +3001,7 @@ export class EnumNumberMemberMatcher extends Matcher<t.EnumNumberMember> {
 
 export function enumNumberMember(
   id?: Matcher<t.Identifier>,
-  init?: Matcher<t.NumericLiteral>
+  init?: Matcher<t.NumericLiteral>,
 ): Matcher<t.EnumNumberMember> {
   return new EnumNumberMemberMatcher(id, init)
 }
@@ -3010,14 +3010,14 @@ export class EnumStringBodyMatcher extends Matcher<t.EnumStringBody> {
   constructor(
     private readonly members?:
       | Matcher<Array<t.EnumStringMember | t.EnumDefaultedMember>>
-      | Array<Matcher<t.EnumStringMember> | Matcher<t.EnumDefaultedMember>>
+      | Array<Matcher<t.EnumStringMember> | Matcher<t.EnumDefaultedMember>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.EnumStringBody {
     if (!t.isNode(node) || !t.isEnumStringBody(node)) {
       return false
@@ -3045,7 +3045,7 @@ export class EnumStringBodyMatcher extends Matcher<t.EnumStringBody> {
 export function enumStringBody(
   members?:
     | Matcher<Array<t.EnumStringMember | t.EnumDefaultedMember>>
-    | Array<Matcher<t.EnumStringMember> | Matcher<t.EnumDefaultedMember>>
+    | Array<Matcher<t.EnumStringMember> | Matcher<t.EnumDefaultedMember>>,
 ): Matcher<t.EnumStringBody> {
   return new EnumStringBodyMatcher(members)
 }
@@ -3053,14 +3053,14 @@ export function enumStringBody(
 export class EnumStringMemberMatcher extends Matcher<t.EnumStringMember> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
-    private readonly init?: Matcher<t.StringLiteral>
+    private readonly init?: Matcher<t.StringLiteral>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.EnumStringMember {
     if (!t.isNode(node) || !t.isEnumStringMember(node)) {
       return false
@@ -3084,7 +3084,7 @@ export class EnumStringMemberMatcher extends Matcher<t.EnumStringMember> {
 
 export function enumStringMember(
   id?: Matcher<t.Identifier>,
-  init?: Matcher<t.StringLiteral>
+  init?: Matcher<t.StringLiteral>,
 ): Matcher<t.EnumStringMember> {
   return new EnumStringMemberMatcher(id, init)
 }
@@ -3093,14 +3093,14 @@ export class EnumSymbolBodyMatcher extends Matcher<t.EnumSymbolBody> {
   constructor(
     private readonly members?:
       | Matcher<Array<t.EnumDefaultedMember>>
-      | Array<Matcher<t.EnumDefaultedMember>>
+      | Array<Matcher<t.EnumDefaultedMember>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.EnumSymbolBody {
     if (!t.isNode(node) || !t.isEnumSymbolBody(node)) {
       return false
@@ -3128,7 +3128,7 @@ export class EnumSymbolBodyMatcher extends Matcher<t.EnumSymbolBody> {
 export function enumSymbolBody(
   members?:
     | Matcher<Array<t.EnumDefaultedMember>>
-    | Array<Matcher<t.EnumDefaultedMember>>
+    | Array<Matcher<t.EnumDefaultedMember>>,
 ): Matcher<t.EnumSymbolBody> {
   return new EnumSymbolBodyMatcher(members)
 }
@@ -3140,7 +3140,7 @@ export class ExistsTypeAnnotationMatcher extends Matcher<t.ExistsTypeAnnotation>
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ExistsTypeAnnotation {
     if (!t.isNode(node) || !t.isExistsTypeAnnotation(node)) {
       return false
@@ -3161,7 +3161,7 @@ export class ExportAllDeclarationMatcher extends Matcher<t.ExportAllDeclaration>
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ExportAllDeclaration {
     if (!t.isNode(node) || !t.isExportAllDeclaration(node)) {
       return false
@@ -3178,7 +3178,7 @@ export class ExportAllDeclarationMatcher extends Matcher<t.ExportAllDeclaration>
 }
 
 export function exportAllDeclaration(
-  source?: Matcher<t.StringLiteral>
+  source?: Matcher<t.StringLiteral>,
 ): Matcher<t.ExportAllDeclaration> {
   return new ExportAllDeclarationMatcher(source)
 }
@@ -3190,14 +3190,14 @@ export class ExportDefaultDeclarationMatcher extends Matcher<t.ExportDefaultDecl
       | t.FunctionDeclaration
       | t.ClassDeclaration
       | t.Expression
-    >
+    >,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ExportDefaultDeclaration {
     if (!t.isNode(node) || !t.isExportDefaultDeclaration(node)) {
       return false
@@ -3221,7 +3221,7 @@ export function exportDefaultDeclaration(
     | t.FunctionDeclaration
     | t.ClassDeclaration
     | t.Expression
-  >
+  >,
 ): Matcher<t.ExportDefaultDeclaration> {
   return new ExportDefaultDeclarationMatcher(declaration)
 }
@@ -3233,7 +3233,7 @@ export class ExportDefaultSpecifierMatcher extends Matcher<t.ExportDefaultSpecif
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ExportDefaultSpecifier {
     if (!t.isNode(node) || !t.isExportDefaultSpecifier(node)) {
       return false
@@ -3252,7 +3252,7 @@ export class ExportDefaultSpecifierMatcher extends Matcher<t.ExportDefaultSpecif
 }
 
 export function exportDefaultSpecifier(
-  exported?: Matcher<t.Identifier>
+  exported?: Matcher<t.Identifier>,
 ): Matcher<t.ExportDefaultSpecifier> {
   return new ExportDefaultSpecifierMatcher(exported)
 }
@@ -3273,14 +3273,14 @@ export class ExportNamedDeclarationMatcher extends Matcher<t.ExportNamedDeclarat
           | Matcher<t.ExportDefaultSpecifier>
           | Matcher<t.ExportNamespaceSpecifier>
         >,
-    private readonly source?: Matcher<t.StringLiteral> | null
+    private readonly source?: Matcher<t.StringLiteral> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ExportNamedDeclaration {
     if (!t.isNode(node) || !t.isExportNamedDeclaration(node)) {
       return false
@@ -3350,7 +3350,7 @@ export function exportNamedDeclaration(
         | Matcher<t.ExportDefaultSpecifier>
         | Matcher<t.ExportNamespaceSpecifier>
       >,
-  source?: Matcher<t.StringLiteral> | null
+  source?: Matcher<t.StringLiteral> | null,
 ): Matcher<t.ExportNamedDeclaration> {
   return new ExportNamedDeclarationMatcher(declaration, specifiers, source)
 }
@@ -3362,7 +3362,7 @@ export class ExportNamespaceSpecifierMatcher extends Matcher<t.ExportNamespaceSp
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ExportNamespaceSpecifier {
     if (!t.isNode(node) || !t.isExportNamespaceSpecifier(node)) {
       return false
@@ -3381,7 +3381,7 @@ export class ExportNamespaceSpecifierMatcher extends Matcher<t.ExportNamespaceSp
 }
 
 export function exportNamespaceSpecifier(
-  exported?: Matcher<t.Identifier>
+  exported?: Matcher<t.Identifier>,
 ): Matcher<t.ExportNamespaceSpecifier> {
   return new ExportNamespaceSpecifierMatcher(exported)
 }
@@ -3389,14 +3389,14 @@ export function exportNamespaceSpecifier(
 export class ExportSpecifierMatcher extends Matcher<t.ExportSpecifier> {
   constructor(
     private readonly local?: Matcher<t.Identifier>,
-    private readonly exported?: Matcher<t.Identifier | t.StringLiteral>
+    private readonly exported?: Matcher<t.Identifier | t.StringLiteral>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ExportSpecifier {
     if (!t.isNode(node) || !t.isExportSpecifier(node)) {
       return false
@@ -3422,7 +3422,7 @@ export class ExportSpecifierMatcher extends Matcher<t.ExportSpecifier> {
 
 export function exportSpecifier(
   local?: Matcher<t.Identifier>,
-  exported?: Matcher<t.Identifier | t.StringLiteral>
+  exported?: Matcher<t.Identifier | t.StringLiteral>,
 ): Matcher<t.ExportSpecifier> {
   return new ExportSpecifierMatcher(local, exported)
 }
@@ -3434,7 +3434,7 @@ export class ExpressionStatementMatcher extends Matcher<t.ExpressionStatement> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ExpressionStatement {
     if (!t.isNode(node) || !t.isExpressionStatement(node)) {
       return false
@@ -3453,7 +3453,7 @@ export class ExpressionStatementMatcher extends Matcher<t.ExpressionStatement> {
 }
 
 export function expressionStatement(
-  expression?: Matcher<t.Expression>
+  expression?: Matcher<t.Expression>,
 ): Matcher<t.ExpressionStatement> {
   return new ExpressionStatementMatcher(expression)
 }
@@ -3464,7 +3464,7 @@ export class FileMatcher extends Matcher<t.File> {
     private readonly comments?: Matcher<
       Array<t.CommentBlock | t.CommentLine>
     > | null,
-    private readonly tokens?: Matcher<Array<any>> | null
+    private readonly tokens?: Matcher<Array<any>> | null,
   ) {
     super()
   }
@@ -3515,7 +3515,7 @@ export class FileMatcher extends Matcher<t.File> {
 export function file(
   program?: Matcher<t.Program>,
   comments?: Matcher<Array<t.CommentBlock | t.CommentLine>> | null,
-  tokens?: Matcher<Array<any>> | null
+  tokens?: Matcher<Array<any>> | null,
 ): Matcher<t.File> {
   return new FileMatcher(program, comments, tokens)
 }
@@ -3524,14 +3524,14 @@ export class ForInStatementMatcher extends Matcher<t.ForInStatement> {
   constructor(
     private readonly left?: Matcher<t.VariableDeclaration | t.LVal>,
     private readonly right?: Matcher<t.Expression>,
-    private readonly body?: Matcher<t.Statement>
+    private readonly body?: Matcher<t.Statement>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ForInStatement {
     if (!t.isNode(node) || !t.isForInStatement(node)) {
       return false
@@ -3562,7 +3562,7 @@ export class ForInStatementMatcher extends Matcher<t.ForInStatement> {
 export function forInStatement(
   left?: Matcher<t.VariableDeclaration | t.LVal>,
   right?: Matcher<t.Expression>,
-  body?: Matcher<t.Statement>
+  body?: Matcher<t.Statement>,
 ): Matcher<t.ForInStatement> {
   return new ForInStatementMatcher(left, right, body)
 }
@@ -3572,14 +3572,14 @@ export class ForOfStatementMatcher extends Matcher<t.ForOfStatement> {
     private readonly left?: Matcher<t.VariableDeclaration | t.LVal>,
     private readonly right?: Matcher<t.Expression>,
     private readonly body?: Matcher<t.Statement>,
-    private readonly _await?: Matcher<boolean> | boolean
+    private readonly _await?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ForOfStatement {
     if (!t.isNode(node) || !t.isForOfStatement(node)) {
       return false
@@ -3621,7 +3621,7 @@ export function forOfStatement(
   left?: Matcher<t.VariableDeclaration | t.LVal>,
   right?: Matcher<t.Expression>,
   body?: Matcher<t.Statement>,
-  _await?: Matcher<boolean> | boolean
+  _await?: Matcher<boolean> | boolean,
 ): Matcher<t.ForOfStatement> {
   return new ForOfStatementMatcher(left, right, body, _await)
 }
@@ -3633,14 +3633,14 @@ export class ForStatementMatcher extends Matcher<t.ForStatement> {
     > | null,
     private readonly test?: Matcher<t.Expression> | null,
     private readonly update?: Matcher<t.Expression> | null,
-    private readonly body?: Matcher<t.Statement>
+    private readonly body?: Matcher<t.Statement>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ForStatement {
     if (!t.isNode(node) || !t.isForStatement(node)) {
       return false
@@ -3699,7 +3699,7 @@ export function forStatement(
   init?: Matcher<t.VariableDeclaration | t.Expression> | null,
   test?: Matcher<t.Expression> | null,
   update?: Matcher<t.Expression> | null,
-  body?: Matcher<t.Statement>
+  body?: Matcher<t.Statement>,
 ): Matcher<t.ForStatement> {
   return new ForStatementMatcher(init, test, update, body)
 }
@@ -3714,14 +3714,14 @@ export class FunctionDeclarationMatcher extends Matcher<t.FunctionDeclaration> {
         >,
     private readonly body?: Matcher<t.BlockStatement>,
     private readonly generator?: Matcher<boolean> | boolean,
-    private readonly async?: Matcher<boolean> | boolean
+    private readonly async?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.FunctionDeclaration {
     if (!t.isNode(node) || !t.isFunctionDeclaration(node)) {
       return false
@@ -3796,7 +3796,7 @@ export function functionDeclaration(
       >,
   body?: Matcher<t.BlockStatement>,
   generator?: Matcher<boolean> | boolean,
-  async?: Matcher<boolean> | boolean
+  async?: Matcher<boolean> | boolean,
 ): Matcher<t.FunctionDeclaration> {
   return new FunctionDeclarationMatcher(id, params, body, generator, async)
 }
@@ -3811,14 +3811,14 @@ export class FunctionExpressionMatcher extends Matcher<t.FunctionExpression> {
         >,
     private readonly body?: Matcher<t.BlockStatement>,
     private readonly generator?: Matcher<boolean> | boolean,
-    private readonly async?: Matcher<boolean> | boolean
+    private readonly async?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.FunctionExpression {
     if (!t.isNode(node) || !t.isFunctionExpression(node)) {
       return false
@@ -3893,7 +3893,7 @@ export function functionExpression(
       >,
   body?: Matcher<t.BlockStatement>,
   generator?: Matcher<boolean> | boolean,
-  async?: Matcher<boolean> | boolean
+  async?: Matcher<boolean> | boolean,
 ): Matcher<t.FunctionExpression> {
   return new FunctionExpressionMatcher(id, params, body, generator, async)
 }
@@ -3905,14 +3905,14 @@ export class FunctionTypeAnnotationMatcher extends Matcher<t.FunctionTypeAnnotat
       | Matcher<Array<t.FunctionTypeParam>>
       | Array<Matcher<t.FunctionTypeParam>>,
     private readonly rest?: Matcher<t.FunctionTypeParam> | null,
-    private readonly returnType?: Matcher<t.FlowType>
+    private readonly returnType?: Matcher<t.FlowType>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.FunctionTypeAnnotation {
     if (!t.isNode(node) || !t.isFunctionTypeAnnotation(node)) {
       return false
@@ -3982,27 +3982,27 @@ export function functionTypeAnnotation(
     | Matcher<Array<t.FunctionTypeParam>>
     | Array<Matcher<t.FunctionTypeParam>>,
   rest?: Matcher<t.FunctionTypeParam> | null,
-  returnType?: Matcher<t.FlowType>
+  returnType?: Matcher<t.FlowType>,
 ): Matcher<t.FunctionTypeAnnotation> {
   return new FunctionTypeAnnotationMatcher(
     typeParameters,
     params,
     rest,
-    returnType
+    returnType,
   )
 }
 
 export class FunctionTypeParamMatcher extends Matcher<t.FunctionTypeParam> {
   constructor(
     private readonly name?: Matcher<t.Identifier> | null,
-    private readonly typeAnnotation?: Matcher<t.FlowType>
+    private readonly typeAnnotation?: Matcher<t.FlowType>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.FunctionTypeParam {
     if (!t.isNode(node) || !t.isFunctionTypeParam(node)) {
       return false
@@ -4038,7 +4038,7 @@ export class FunctionTypeParamMatcher extends Matcher<t.FunctionTypeParam> {
 
 export function functionTypeParam(
   name?: Matcher<t.Identifier> | null,
-  typeAnnotation?: Matcher<t.FlowType>
+  typeAnnotation?: Matcher<t.FlowType>,
 ): Matcher<t.FunctionTypeParam> {
   return new FunctionTypeParamMatcher(name, typeAnnotation)
 }
@@ -4046,14 +4046,14 @@ export function functionTypeParam(
 export class GenericTypeAnnotationMatcher extends Matcher<t.GenericTypeAnnotation> {
   constructor(
     private readonly id?: Matcher<t.Identifier | t.QualifiedTypeIdentifier>,
-    private readonly typeParameters?: Matcher<t.TypeParameterInstantiation> | null
+    private readonly typeParameters?: Matcher<t.TypeParameterInstantiation> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.GenericTypeAnnotation {
     if (!t.isNode(node) || !t.isGenericTypeAnnotation(node)) {
       return false
@@ -4089,7 +4089,7 @@ export class GenericTypeAnnotationMatcher extends Matcher<t.GenericTypeAnnotatio
 
 export function genericTypeAnnotation(
   id?: Matcher<t.Identifier | t.QualifiedTypeIdentifier>,
-  typeParameters?: Matcher<t.TypeParameterInstantiation> | null
+  typeParameters?: Matcher<t.TypeParameterInstantiation> | null,
 ): Matcher<t.GenericTypeAnnotation> {
   return new GenericTypeAnnotationMatcher(id, typeParameters)
 }
@@ -4101,7 +4101,7 @@ export class IdentifierMatcher extends Matcher<t.Identifier> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.Identifier {
     if (!t.isNode(node) || !t.isIdentifier(node)) {
       return false
@@ -4122,7 +4122,7 @@ export class IdentifierMatcher extends Matcher<t.Identifier> {
 }
 
 export function identifier(
-  name?: Matcher<string> | string
+  name?: Matcher<string> | string,
 ): Matcher<t.Identifier> {
   return new IdentifierMatcher(name)
 }
@@ -4131,14 +4131,14 @@ export class IfStatementMatcher extends Matcher<t.IfStatement> {
   constructor(
     private readonly test?: Matcher<t.Expression>,
     private readonly consequent?: Matcher<t.Statement>,
-    private readonly alternate?: Matcher<t.Statement> | null
+    private readonly alternate?: Matcher<t.Statement> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.IfStatement {
     if (!t.isNode(node) || !t.isIfStatement(node)) {
       return false
@@ -4180,7 +4180,7 @@ export class IfStatementMatcher extends Matcher<t.IfStatement> {
 export function ifStatement(
   test?: Matcher<t.Expression>,
   consequent?: Matcher<t.Statement>,
-  alternate?: Matcher<t.Statement> | null
+  alternate?: Matcher<t.Statement> | null,
 ): Matcher<t.IfStatement> {
   return new IfStatementMatcher(test, consequent, alternate)
 }
@@ -4192,7 +4192,7 @@ export class ImportMatcher extends Matcher<t.Import> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.Import {
     if (!t.isNode(node) || !t.isImport(node)) {
       return false
@@ -4209,14 +4209,14 @@ export function Import(): Matcher<t.Import> {
 export class ImportAttributeMatcher extends Matcher<t.ImportAttribute> {
   constructor(
     private readonly key?: Matcher<t.Identifier | t.StringLiteral>,
-    private readonly value?: Matcher<t.StringLiteral>
+    private readonly value?: Matcher<t.StringLiteral>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ImportAttribute {
     if (!t.isNode(node) || !t.isImportAttribute(node)) {
       return false
@@ -4240,7 +4240,7 @@ export class ImportAttributeMatcher extends Matcher<t.ImportAttribute> {
 
 export function importAttribute(
   key?: Matcher<t.Identifier | t.StringLiteral>,
-  value?: Matcher<t.StringLiteral>
+  value?: Matcher<t.StringLiteral>,
 ): Matcher<t.ImportAttribute> {
   return new ImportAttributeMatcher(key, value)
 }
@@ -4260,14 +4260,14 @@ export class ImportDeclarationMatcher extends Matcher<t.ImportDeclaration> {
           | Matcher<t.ImportDefaultSpecifier>
           | Matcher<t.ImportNamespaceSpecifier>
         >,
-    private readonly source?: Matcher<t.StringLiteral>
+    private readonly source?: Matcher<t.StringLiteral>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ImportDeclaration {
     if (!t.isNode(node) || !t.isImportDeclaration(node)) {
       return false
@@ -4314,7 +4314,7 @@ export function importDeclaration(
         | Matcher<t.ImportDefaultSpecifier>
         | Matcher<t.ImportNamespaceSpecifier>
       >,
-  source?: Matcher<t.StringLiteral>
+  source?: Matcher<t.StringLiteral>,
 ): Matcher<t.ImportDeclaration> {
   return new ImportDeclarationMatcher(specifiers, source)
 }
@@ -4326,7 +4326,7 @@ export class ImportDefaultSpecifierMatcher extends Matcher<t.ImportDefaultSpecif
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ImportDefaultSpecifier {
     if (!t.isNode(node) || !t.isImportDefaultSpecifier(node)) {
       return false
@@ -4343,7 +4343,7 @@ export class ImportDefaultSpecifierMatcher extends Matcher<t.ImportDefaultSpecif
 }
 
 export function importDefaultSpecifier(
-  local?: Matcher<t.Identifier>
+  local?: Matcher<t.Identifier>,
 ): Matcher<t.ImportDefaultSpecifier> {
   return new ImportDefaultSpecifierMatcher(local)
 }
@@ -4355,7 +4355,7 @@ export class ImportNamespaceSpecifierMatcher extends Matcher<t.ImportNamespaceSp
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ImportNamespaceSpecifier {
     if (!t.isNode(node) || !t.isImportNamespaceSpecifier(node)) {
       return false
@@ -4372,7 +4372,7 @@ export class ImportNamespaceSpecifierMatcher extends Matcher<t.ImportNamespaceSp
 }
 
 export function importNamespaceSpecifier(
-  local?: Matcher<t.Identifier>
+  local?: Matcher<t.Identifier>,
 ): Matcher<t.ImportNamespaceSpecifier> {
   return new ImportNamespaceSpecifierMatcher(local)
 }
@@ -4380,14 +4380,14 @@ export function importNamespaceSpecifier(
 export class ImportSpecifierMatcher extends Matcher<t.ImportSpecifier> {
   constructor(
     private readonly local?: Matcher<t.Identifier>,
-    private readonly imported?: Matcher<t.Identifier | t.StringLiteral>
+    private readonly imported?: Matcher<t.Identifier | t.StringLiteral>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ImportSpecifier {
     if (!t.isNode(node) || !t.isImportSpecifier(node)) {
       return false
@@ -4413,7 +4413,7 @@ export class ImportSpecifierMatcher extends Matcher<t.ImportSpecifier> {
 
 export function importSpecifier(
   local?: Matcher<t.Identifier>,
-  imported?: Matcher<t.Identifier | t.StringLiteral>
+  imported?: Matcher<t.Identifier | t.StringLiteral>,
 ): Matcher<t.ImportSpecifier> {
   return new ImportSpecifierMatcher(local, imported)
 }
@@ -4421,14 +4421,14 @@ export function importSpecifier(
 export class IndexedAccessTypeMatcher extends Matcher<t.IndexedAccessType> {
   constructor(
     private readonly objectType?: Matcher<t.FlowType>,
-    private readonly indexType?: Matcher<t.FlowType>
+    private readonly indexType?: Matcher<t.FlowType>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.IndexedAccessType {
     if (!t.isNode(node) || !t.isIndexedAccessType(node)) {
       return false
@@ -4456,7 +4456,7 @@ export class IndexedAccessTypeMatcher extends Matcher<t.IndexedAccessType> {
 
 export function indexedAccessType(
   objectType?: Matcher<t.FlowType>,
-  indexType?: Matcher<t.FlowType>
+  indexType?: Matcher<t.FlowType>,
 ): Matcher<t.IndexedAccessType> {
   return new IndexedAccessTypeMatcher(objectType, indexType)
 }
@@ -4468,7 +4468,7 @@ export class InferredPredicateMatcher extends Matcher<t.InferredPredicate> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.InferredPredicate {
     if (!t.isNode(node) || !t.isInferredPredicate(node)) {
       return false
@@ -4490,14 +4490,14 @@ export class InterfaceDeclarationMatcher extends Matcher<t.InterfaceDeclaration>
       | Matcher<Array<t.InterfaceExtends>>
       | Array<Matcher<t.InterfaceExtends>>
       | null,
-    private readonly body?: Matcher<t.ObjectTypeAnnotation>
+    private readonly body?: Matcher<t.ObjectTypeAnnotation>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.InterfaceDeclaration {
     if (!t.isNode(node) || !t.isInterfaceDeclaration(node)) {
       return false
@@ -4566,7 +4566,7 @@ export function interfaceDeclaration(
     | Matcher<Array<t.InterfaceExtends>>
     | Array<Matcher<t.InterfaceExtends>>
     | null,
-  body?: Matcher<t.ObjectTypeAnnotation>
+  body?: Matcher<t.ObjectTypeAnnotation>,
 ): Matcher<t.InterfaceDeclaration> {
   return new InterfaceDeclarationMatcher(id, typeParameters, _extends, body)
 }
@@ -4574,14 +4574,14 @@ export function interfaceDeclaration(
 export class InterfaceExtendsMatcher extends Matcher<t.InterfaceExtends> {
   constructor(
     private readonly id?: Matcher<t.Identifier | t.QualifiedTypeIdentifier>,
-    private readonly typeParameters?: Matcher<t.TypeParameterInstantiation> | null
+    private readonly typeParameters?: Matcher<t.TypeParameterInstantiation> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.InterfaceExtends {
     if (!t.isNode(node) || !t.isInterfaceExtends(node)) {
       return false
@@ -4617,7 +4617,7 @@ export class InterfaceExtendsMatcher extends Matcher<t.InterfaceExtends> {
 
 export function interfaceExtends(
   id?: Matcher<t.Identifier | t.QualifiedTypeIdentifier>,
-  typeParameters?: Matcher<t.TypeParameterInstantiation> | null
+  typeParameters?: Matcher<t.TypeParameterInstantiation> | null,
 ): Matcher<t.InterfaceExtends> {
   return new InterfaceExtendsMatcher(id, typeParameters)
 }
@@ -4628,14 +4628,14 @@ export class InterfaceTypeAnnotationMatcher extends Matcher<t.InterfaceTypeAnnot
       | Matcher<Array<t.InterfaceExtends>>
       | Array<Matcher<t.InterfaceExtends>>
       | null,
-    private readonly body?: Matcher<t.ObjectTypeAnnotation>
+    private readonly body?: Matcher<t.ObjectTypeAnnotation>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.InterfaceTypeAnnotation {
     if (!t.isNode(node) || !t.isInterfaceTypeAnnotation(node)) {
       return false
@@ -4678,7 +4678,7 @@ export function interfaceTypeAnnotation(
     | Matcher<Array<t.InterfaceExtends>>
     | Array<Matcher<t.InterfaceExtends>>
     | null,
-  body?: Matcher<t.ObjectTypeAnnotation>
+  body?: Matcher<t.ObjectTypeAnnotation>,
 ): Matcher<t.InterfaceTypeAnnotation> {
   return new InterfaceTypeAnnotationMatcher(_extends, body)
 }
@@ -4690,7 +4690,7 @@ export class InterpreterDirectiveMatcher extends Matcher<t.InterpreterDirective>
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.InterpreterDirective {
     if (!t.isNode(node) || !t.isInterpreterDirective(node)) {
       return false
@@ -4711,7 +4711,7 @@ export class InterpreterDirectiveMatcher extends Matcher<t.InterpreterDirective>
 }
 
 export function interpreterDirective(
-  value?: Matcher<string> | string
+  value?: Matcher<string> | string,
 ): Matcher<t.InterpreterDirective> {
   return new InterpreterDirectiveMatcher(value)
 }
@@ -4720,14 +4720,14 @@ export class IntersectionTypeAnnotationMatcher extends Matcher<t.IntersectionTyp
   constructor(
     private readonly types?:
       | Matcher<Array<t.FlowType>>
-      | Array<Matcher<t.FlowType>>
+      | Array<Matcher<t.FlowType>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.IntersectionTypeAnnotation {
     if (!t.isNode(node) || !t.isIntersectionTypeAnnotation(node)) {
       return false
@@ -4753,7 +4753,7 @@ export class IntersectionTypeAnnotationMatcher extends Matcher<t.IntersectionTyp
 }
 
 export function intersectionTypeAnnotation(
-  types?: Matcher<Array<t.FlowType>> | Array<Matcher<t.FlowType>>
+  types?: Matcher<Array<t.FlowType>> | Array<Matcher<t.FlowType>>,
 ): Matcher<t.IntersectionTypeAnnotation> {
   return new IntersectionTypeAnnotationMatcher(types)
 }
@@ -4763,14 +4763,14 @@ export class JSXAttributeMatcher extends Matcher<t.JSXAttribute> {
     private readonly name?: Matcher<t.JSXIdentifier | t.JSXNamespacedName>,
     private readonly value?: Matcher<
       t.JSXElement | t.JSXFragment | t.StringLiteral | t.JSXExpressionContainer
-    > | null
+    > | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.JSXAttribute {
     if (!t.isNode(node) || !t.isJSXAttribute(node)) {
       return false
@@ -4803,7 +4803,7 @@ export function jsxAttribute(
   name?: Matcher<t.JSXIdentifier | t.JSXNamespacedName>,
   value?: Matcher<
     t.JSXElement | t.JSXFragment | t.StringLiteral | t.JSXExpressionContainer
-  > | null
+  > | null,
 ): Matcher<t.JSXAttribute> {
   return new JSXAttributeMatcher(name, value)
 }
@@ -4812,14 +4812,14 @@ export class JSXClosingElementMatcher extends Matcher<t.JSXClosingElement> {
   constructor(
     private readonly name?: Matcher<
       t.JSXIdentifier | t.JSXMemberExpression | t.JSXNamespacedName
-    >
+    >,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.JSXClosingElement {
     if (!t.isNode(node) || !t.isJSXClosingElement(node)) {
       return false
@@ -4836,7 +4836,7 @@ export class JSXClosingElementMatcher extends Matcher<t.JSXClosingElement> {
 }
 
 export function jsxClosingElement(
-  name?: Matcher<t.JSXIdentifier | t.JSXMemberExpression | t.JSXNamespacedName>
+  name?: Matcher<t.JSXIdentifier | t.JSXMemberExpression | t.JSXNamespacedName>,
 ): Matcher<t.JSXClosingElement> {
   return new JSXClosingElementMatcher(name)
 }
@@ -4848,7 +4848,7 @@ export class JSXClosingFragmentMatcher extends Matcher<t.JSXClosingFragment> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.JSXClosingFragment {
     if (!t.isNode(node) || !t.isJSXClosingFragment(node)) {
       return false
@@ -4883,14 +4883,14 @@ export class JSXElementMatcher extends Matcher<t.JSXElement> {
           | Matcher<t.JSXElement>
           | Matcher<t.JSXFragment>
         >,
-    private readonly selfClosing?: Matcher<boolean> | boolean | null
+    private readonly selfClosing?: Matcher<boolean> | boolean | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.JSXElement {
     if (!t.isNode(node) || !t.isJSXElement(node)) {
       return false
@@ -4985,13 +4985,13 @@ export function jsxElement(
         | Matcher<t.JSXElement>
         | Matcher<t.JSXFragment>
       >,
-  selfClosing?: Matcher<boolean> | boolean | null
+  selfClosing?: Matcher<boolean> | boolean | null,
 ): Matcher<t.JSXElement> {
   return new JSXElementMatcher(
     openingElement,
     closingElement,
     children,
-    selfClosing
+    selfClosing,
   )
 }
 
@@ -5002,7 +5002,7 @@ export class JSXEmptyExpressionMatcher extends Matcher<t.JSXEmptyExpression> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.JSXEmptyExpression {
     if (!t.isNode(node) || !t.isJSXEmptyExpression(node)) {
       return false
@@ -5018,14 +5018,14 @@ export function jsxEmptyExpression(): Matcher<t.JSXEmptyExpression> {
 
 export class JSXExpressionContainerMatcher extends Matcher<t.JSXExpressionContainer> {
   constructor(
-    private readonly expression?: Matcher<t.Expression | t.JSXEmptyExpression>
+    private readonly expression?: Matcher<t.Expression | t.JSXEmptyExpression>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.JSXExpressionContainer {
     if (!t.isNode(node) || !t.isJSXExpressionContainer(node)) {
       return false
@@ -5044,7 +5044,7 @@ export class JSXExpressionContainerMatcher extends Matcher<t.JSXExpressionContai
 }
 
 export function jsxExpressionContainer(
-  expression?: Matcher<t.Expression | t.JSXEmptyExpression>
+  expression?: Matcher<t.Expression | t.JSXEmptyExpression>,
 ): Matcher<t.JSXExpressionContainer> {
   return new JSXExpressionContainerMatcher(expression)
 }
@@ -5069,14 +5069,14 @@ export class JSXFragmentMatcher extends Matcher<t.JSXFragment> {
           | Matcher<t.JSXSpreadChild>
           | Matcher<t.JSXElement>
           | Matcher<t.JSXFragment>
-        >
+        >,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.JSXFragment {
     if (!t.isNode(node) || !t.isJSXFragment(node)) {
       return false
@@ -5144,7 +5144,7 @@ export function jsxFragment(
         | Matcher<t.JSXSpreadChild>
         | Matcher<t.JSXElement>
         | Matcher<t.JSXFragment>
-      >
+      >,
 ): Matcher<t.JSXFragment> {
   return new JSXFragmentMatcher(openingFragment, closingFragment, children)
 }
@@ -5156,7 +5156,7 @@ export class JSXIdentifierMatcher extends Matcher<t.JSXIdentifier> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.JSXIdentifier {
     if (!t.isNode(node) || !t.isJSXIdentifier(node)) {
       return false
@@ -5177,7 +5177,7 @@ export class JSXIdentifierMatcher extends Matcher<t.JSXIdentifier> {
 }
 
 export function jsxIdentifier(
-  name?: Matcher<string> | string
+  name?: Matcher<string> | string,
 ): Matcher<t.JSXIdentifier> {
   return new JSXIdentifierMatcher(name)
 }
@@ -5185,14 +5185,14 @@ export function jsxIdentifier(
 export class JSXMemberExpressionMatcher extends Matcher<t.JSXMemberExpression> {
   constructor(
     private readonly object?: Matcher<t.JSXMemberExpression | t.JSXIdentifier>,
-    private readonly property?: Matcher<t.JSXIdentifier>
+    private readonly property?: Matcher<t.JSXIdentifier>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.JSXMemberExpression {
     if (!t.isNode(node) || !t.isJSXMemberExpression(node)) {
       return false
@@ -5218,7 +5218,7 @@ export class JSXMemberExpressionMatcher extends Matcher<t.JSXMemberExpression> {
 
 export function jsxMemberExpression(
   object?: Matcher<t.JSXMemberExpression | t.JSXIdentifier>,
-  property?: Matcher<t.JSXIdentifier>
+  property?: Matcher<t.JSXIdentifier>,
 ): Matcher<t.JSXMemberExpression> {
   return new JSXMemberExpressionMatcher(object, property)
 }
@@ -5226,14 +5226,14 @@ export function jsxMemberExpression(
 export class JSXNamespacedNameMatcher extends Matcher<t.JSXNamespacedName> {
   constructor(
     private readonly namespace?: Matcher<t.JSXIdentifier>,
-    private readonly name?: Matcher<t.JSXIdentifier>
+    private readonly name?: Matcher<t.JSXIdentifier>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.JSXNamespacedName {
     if (!t.isNode(node) || !t.isJSXNamespacedName(node)) {
       return false
@@ -5259,7 +5259,7 @@ export class JSXNamespacedNameMatcher extends Matcher<t.JSXNamespacedName> {
 
 export function jsxNamespacedName(
   namespace?: Matcher<t.JSXIdentifier>,
-  name?: Matcher<t.JSXIdentifier>
+  name?: Matcher<t.JSXIdentifier>,
 ): Matcher<t.JSXNamespacedName> {
   return new JSXNamespacedNameMatcher(namespace, name)
 }
@@ -5272,14 +5272,14 @@ export class JSXOpeningElementMatcher extends Matcher<t.JSXOpeningElement> {
     private readonly attributes?:
       | Matcher<Array<t.JSXAttribute | t.JSXSpreadAttribute>>
       | Array<Matcher<t.JSXAttribute> | Matcher<t.JSXSpreadAttribute>>,
-    private readonly selfClosing?: Matcher<boolean> | boolean
+    private readonly selfClosing?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.JSXOpeningElement {
     if (!t.isNode(node) || !t.isJSXOpeningElement(node)) {
       return false
@@ -5329,7 +5329,7 @@ export function jsxOpeningElement(
   attributes?:
     | Matcher<Array<t.JSXAttribute | t.JSXSpreadAttribute>>
     | Array<Matcher<t.JSXAttribute> | Matcher<t.JSXSpreadAttribute>>,
-  selfClosing?: Matcher<boolean> | boolean
+  selfClosing?: Matcher<boolean> | boolean,
 ): Matcher<t.JSXOpeningElement> {
   return new JSXOpeningElementMatcher(name, attributes, selfClosing)
 }
@@ -5341,7 +5341,7 @@ export class JSXOpeningFragmentMatcher extends Matcher<t.JSXOpeningFragment> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.JSXOpeningFragment {
     if (!t.isNode(node) || !t.isJSXOpeningFragment(node)) {
       return false
@@ -5362,7 +5362,7 @@ export class JSXSpreadAttributeMatcher extends Matcher<t.JSXSpreadAttribute> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.JSXSpreadAttribute {
     if (!t.isNode(node) || !t.isJSXSpreadAttribute(node)) {
       return false
@@ -5381,7 +5381,7 @@ export class JSXSpreadAttributeMatcher extends Matcher<t.JSXSpreadAttribute> {
 }
 
 export function jsxSpreadAttribute(
-  argument?: Matcher<t.Expression>
+  argument?: Matcher<t.Expression>,
 ): Matcher<t.JSXSpreadAttribute> {
   return new JSXSpreadAttributeMatcher(argument)
 }
@@ -5393,7 +5393,7 @@ export class JSXSpreadChildMatcher extends Matcher<t.JSXSpreadChild> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.JSXSpreadChild {
     if (!t.isNode(node) || !t.isJSXSpreadChild(node)) {
       return false
@@ -5412,7 +5412,7 @@ export class JSXSpreadChildMatcher extends Matcher<t.JSXSpreadChild> {
 }
 
 export function jsxSpreadChild(
-  expression?: Matcher<t.Expression>
+  expression?: Matcher<t.Expression>,
 ): Matcher<t.JSXSpreadChild> {
   return new JSXSpreadChildMatcher(expression)
 }
@@ -5424,7 +5424,7 @@ export class JSXTextMatcher extends Matcher<t.JSXText> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.JSXText {
     if (!t.isNode(node) || !t.isJSXText(node)) {
       return false
@@ -5451,14 +5451,14 @@ export function jsxText(value?: Matcher<string> | string): Matcher<t.JSXText> {
 export class LabeledStatementMatcher extends Matcher<t.LabeledStatement> {
   constructor(
     private readonly label?: Matcher<t.Identifier>,
-    private readonly body?: Matcher<t.Statement>
+    private readonly body?: Matcher<t.Statement>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.LabeledStatement {
     if (!t.isNode(node) || !t.isLabeledStatement(node)) {
       return false
@@ -5482,7 +5482,7 @@ export class LabeledStatementMatcher extends Matcher<t.LabeledStatement> {
 
 export function labeledStatement(
   label?: Matcher<t.Identifier>,
-  body?: Matcher<t.Statement>
+  body?: Matcher<t.Statement>,
 ): Matcher<t.LabeledStatement> {
   return new LabeledStatementMatcher(label, body)
 }
@@ -5491,14 +5491,14 @@ export class LogicalExpressionMatcher extends Matcher<t.LogicalExpression> {
   constructor(
     private readonly operator?: Matcher<'||' | '&&' | '??'> | string,
     private readonly left?: Matcher<t.Expression>,
-    private readonly right?: Matcher<t.Expression>
+    private readonly right?: Matcher<t.Expression>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.LogicalExpression {
     if (!t.isNode(node) || !t.isLogicalExpression(node)) {
       return false
@@ -5535,7 +5535,7 @@ export class LogicalExpressionMatcher extends Matcher<t.LogicalExpression> {
 export function logicalExpression(
   operator?: Matcher<'||' | '&&' | '??'> | string,
   left?: Matcher<t.Expression>,
-  right?: Matcher<t.Expression>
+  right?: Matcher<t.Expression>,
 ): Matcher<t.LogicalExpression> {
   return new LogicalExpressionMatcher(operator, left, right)
 }
@@ -5547,14 +5547,14 @@ export class MemberExpressionMatcher extends Matcher<t.MemberExpression> {
       t.Expression | t.Identifier | t.PrivateName
     >,
     private readonly computed?: Matcher<boolean> | boolean,
-    private readonly optional?: Matcher<true | false> | boolean | null
+    private readonly optional?: Matcher<true | false> | boolean | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.MemberExpression {
     if (!t.isNode(node) || !t.isMemberExpression(node)) {
       return false
@@ -5613,7 +5613,7 @@ export function memberExpression(
   object?: Matcher<t.Expression | t.Super>,
   property?: Matcher<t.Expression | t.Identifier | t.PrivateName>,
   computed?: Matcher<boolean> | boolean,
-  optional?: Matcher<true | false> | boolean | null
+  optional?: Matcher<true | false> | boolean | null,
 ): Matcher<t.MemberExpression> {
   return new MemberExpressionMatcher(object, property, computed, optional)
 }
@@ -5621,14 +5621,14 @@ export function memberExpression(
 export class MetaPropertyMatcher extends Matcher<t.MetaProperty> {
   constructor(
     private readonly meta?: Matcher<t.Identifier>,
-    private readonly property?: Matcher<t.Identifier>
+    private readonly property?: Matcher<t.Identifier>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.MetaProperty {
     if (!t.isNode(node) || !t.isMetaProperty(node)) {
       return false
@@ -5654,7 +5654,7 @@ export class MetaPropertyMatcher extends Matcher<t.MetaProperty> {
 
 export function metaProperty(
   meta?: Matcher<t.Identifier>,
-  property?: Matcher<t.Identifier>
+  property?: Matcher<t.Identifier>,
 ): Matcher<t.MetaProperty> {
   return new MetaPropertyMatcher(meta, property)
 }
@@ -5666,7 +5666,7 @@ export class MixedTypeAnnotationMatcher extends Matcher<t.MixedTypeAnnotation> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.MixedTypeAnnotation {
     if (!t.isNode(node) || !t.isMixedTypeAnnotation(node)) {
       return false
@@ -5687,7 +5687,7 @@ export class ModuleExpressionMatcher extends Matcher<t.ModuleExpression> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ModuleExpression {
     if (!t.isNode(node) || !t.isModuleExpression(node)) {
       return false
@@ -5704,7 +5704,7 @@ export class ModuleExpressionMatcher extends Matcher<t.ModuleExpression> {
 }
 
 export function moduleExpression(
-  body?: Matcher<t.Program>
+  body?: Matcher<t.Program>,
 ): Matcher<t.ModuleExpression> {
   return new ModuleExpressionMatcher(body)
 }
@@ -5728,14 +5728,14 @@ export class NewExpressionMatcher extends Matcher<t.NewExpression> {
           | Matcher<t.SpreadElement>
           | Matcher<t.JSXNamespacedName>
           | Matcher<t.ArgumentPlaceholder>
-        >
+        >,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.NewExpression {
     if (!t.isNode(node) || !t.isNewExpression(node)) {
       return false
@@ -5784,7 +5784,7 @@ export function newExpression(
         | Matcher<t.SpreadElement>
         | Matcher<t.JSXNamespacedName>
         | Matcher<t.ArgumentPlaceholder>
-      >
+      >,
 ): Matcher<t.NewExpression> {
   return new NewExpressionMatcher(callee, _arguments)
 }
@@ -5814,7 +5814,7 @@ export class NullLiteralMatcher extends Matcher<t.NullLiteral> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.NullLiteral {
     if (!t.isNode(node) || !t.isNullLiteral(node)) {
       return false
@@ -5835,7 +5835,7 @@ export class NullLiteralTypeAnnotationMatcher extends Matcher<t.NullLiteralTypeA
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.NullLiteralTypeAnnotation {
     if (!t.isNode(node) || !t.isNullLiteralTypeAnnotation(node)) {
       return false
@@ -5856,7 +5856,7 @@ export class NullableTypeAnnotationMatcher extends Matcher<t.NullableTypeAnnotat
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.NullableTypeAnnotation {
     if (!t.isNode(node) || !t.isNullableTypeAnnotation(node)) {
       return false
@@ -5878,7 +5878,7 @@ export class NullableTypeAnnotationMatcher extends Matcher<t.NullableTypeAnnotat
 }
 
 export function nullableTypeAnnotation(
-  typeAnnotation?: Matcher<t.FlowType>
+  typeAnnotation?: Matcher<t.FlowType>,
 ): Matcher<t.NullableTypeAnnotation> {
   return new NullableTypeAnnotationMatcher(typeAnnotation)
 }
@@ -5890,7 +5890,7 @@ export class NumberLiteralTypeAnnotationMatcher extends Matcher<t.NumberLiteralT
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.NumberLiteralTypeAnnotation {
     if (!t.isNode(node) || !t.isNumberLiteralTypeAnnotation(node)) {
       return false
@@ -5911,7 +5911,7 @@ export class NumberLiteralTypeAnnotationMatcher extends Matcher<t.NumberLiteralT
 }
 
 export function numberLiteralTypeAnnotation(
-  value?: Matcher<number> | number
+  value?: Matcher<number> | number,
 ): Matcher<t.NumberLiteralTypeAnnotation> {
   return new NumberLiteralTypeAnnotationMatcher(value)
 }
@@ -5923,7 +5923,7 @@ export class NumberTypeAnnotationMatcher extends Matcher<t.NumberTypeAnnotation>
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.NumberTypeAnnotation {
     if (!t.isNode(node) || !t.isNumberTypeAnnotation(node)) {
       return false
@@ -5944,7 +5944,7 @@ export class NumericLiteralMatcher extends Matcher<t.NumericLiteral> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.NumericLiteral {
     if (!t.isNode(node) || !t.isNumericLiteral(node)) {
       return false
@@ -5965,7 +5965,7 @@ export class NumericLiteralMatcher extends Matcher<t.NumericLiteral> {
 }
 
 export function numericLiteral(
-  value?: Matcher<number> | number
+  value?: Matcher<number> | number,
 ): Matcher<t.NumericLiteral> {
   return new NumericLiteralMatcher(value)
 }
@@ -5978,14 +5978,14 @@ export class ObjectExpressionMatcher extends Matcher<t.ObjectExpression> {
           | Matcher<t.ObjectMethod>
           | Matcher<t.ObjectProperty>
           | Matcher<t.SpreadElement>
-        >
+        >,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ObjectExpression {
     if (!t.isNode(node) || !t.isObjectExpression(node)) {
       return false
@@ -6019,7 +6019,7 @@ export function objectExpression(
         | Matcher<t.ObjectMethod>
         | Matcher<t.ObjectProperty>
         | Matcher<t.SpreadElement>
-      >
+      >,
 ): Matcher<t.ObjectExpression> {
   return new ObjectExpressionMatcher(properties)
 }
@@ -6042,14 +6042,14 @@ export class ObjectMethodMatcher extends Matcher<t.ObjectMethod> {
     private readonly body?: Matcher<t.BlockStatement>,
     private readonly computed?: Matcher<boolean> | boolean,
     private readonly generator?: Matcher<boolean> | boolean,
-    private readonly async?: Matcher<boolean> | boolean
+    private readonly async?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ObjectMethod {
     if (!t.isNode(node) || !t.isObjectMethod(node)) {
       return false
@@ -6147,7 +6147,7 @@ export function objectMethod(
   body?: Matcher<t.BlockStatement>,
   computed?: Matcher<boolean> | boolean,
   generator?: Matcher<boolean> | boolean,
-  async?: Matcher<boolean> | boolean
+  async?: Matcher<boolean> | boolean,
 ): Matcher<t.ObjectMethod> {
   return new ObjectMethodMatcher(
     kind,
@@ -6156,7 +6156,7 @@ export function objectMethod(
     body,
     computed,
     generator,
-    async
+    async,
   )
 }
 
@@ -6164,14 +6164,14 @@ export class ObjectPatternMatcher extends Matcher<t.ObjectPattern> {
   constructor(
     private readonly properties?:
       | Matcher<Array<t.RestElement | t.ObjectProperty>>
-      | Array<Matcher<t.RestElement> | Matcher<t.ObjectProperty>>
+      | Array<Matcher<t.RestElement> | Matcher<t.ObjectProperty>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ObjectPattern {
     if (!t.isNode(node) || !t.isObjectPattern(node)) {
       return false
@@ -6201,7 +6201,7 @@ export class ObjectPatternMatcher extends Matcher<t.ObjectPattern> {
 export function objectPattern(
   properties?:
     | Matcher<Array<t.RestElement | t.ObjectProperty>>
-    | Array<Matcher<t.RestElement> | Matcher<t.ObjectProperty>>
+    | Array<Matcher<t.RestElement> | Matcher<t.ObjectProperty>>,
 ): Matcher<t.ObjectPattern> {
   return new ObjectPatternMatcher(properties)
 }
@@ -6223,14 +6223,14 @@ export class ObjectPropertyMatcher extends Matcher<t.ObjectProperty> {
     private readonly decorators?:
       | Matcher<Array<t.Decorator>>
       | Array<Matcher<t.Decorator>>
-      | null
+      | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ObjectProperty {
     if (!t.isNode(node) || !t.isObjectProperty(node)) {
       return false
@@ -6313,7 +6313,7 @@ export function objectProperty(
   value?: Matcher<t.Expression | t.PatternLike>,
   computed?: Matcher<boolean> | boolean,
   shorthand?: Matcher<boolean> | boolean,
-  decorators?: Matcher<Array<t.Decorator>> | Array<Matcher<t.Decorator>> | null
+  decorators?: Matcher<Array<t.Decorator>> | Array<Matcher<t.Decorator>> | null,
 ): Matcher<t.ObjectProperty> {
   return new ObjectPropertyMatcher(key, value, computed, shorthand, decorators)
 }
@@ -6337,14 +6337,14 @@ export class ObjectTypeAnnotationMatcher extends Matcher<t.ObjectTypeAnnotation>
       | Matcher<Array<t.ObjectTypeInternalSlot>>
       | Array<Matcher<t.ObjectTypeInternalSlot>>
       | null,
-    private readonly exact?: Matcher<boolean> | boolean
+    private readonly exact?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ObjectTypeAnnotation {
     if (!t.isNode(node) || !t.isObjectTypeAnnotation(node)) {
       return false
@@ -6404,7 +6404,7 @@ export class ObjectTypeAnnotationMatcher extends Matcher<t.ObjectTypeAnnotation>
       if (
         !tupleOf<unknown>(...this.callProperties).matchValue(
           node.callProperties,
-          [...keys, 'callProperties']
+          [...keys, 'callProperties'],
         )
       ) {
         return false
@@ -6431,7 +6431,7 @@ export class ObjectTypeAnnotationMatcher extends Matcher<t.ObjectTypeAnnotation>
       if (
         !tupleOf<unknown>(...this.internalSlots).matchValue(
           node.internalSlots,
-          [...keys, 'internalSlots']
+          [...keys, 'internalSlots'],
         )
       ) {
         return false
@@ -6477,14 +6477,14 @@ export function objectTypeAnnotation(
     | Matcher<Array<t.ObjectTypeInternalSlot>>
     | Array<Matcher<t.ObjectTypeInternalSlot>>
     | null,
-  exact?: Matcher<boolean> | boolean
+  exact?: Matcher<boolean> | boolean,
 ): Matcher<t.ObjectTypeAnnotation> {
   return new ObjectTypeAnnotationMatcher(
     properties,
     indexers,
     callProperties,
     internalSlots,
-    exact
+    exact,
   )
 }
 
@@ -6495,7 +6495,7 @@ export class ObjectTypeCallPropertyMatcher extends Matcher<t.ObjectTypeCallPrope
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ObjectTypeCallProperty {
     if (!t.isNode(node) || !t.isObjectTypeCallProperty(node)) {
       return false
@@ -6512,7 +6512,7 @@ export class ObjectTypeCallPropertyMatcher extends Matcher<t.ObjectTypeCallPrope
 }
 
 export function objectTypeCallProperty(
-  value?: Matcher<t.FlowType>
+  value?: Matcher<t.FlowType>,
 ): Matcher<t.ObjectTypeCallProperty> {
   return new ObjectTypeCallPropertyMatcher(value)
 }
@@ -6522,14 +6522,14 @@ export class ObjectTypeIndexerMatcher extends Matcher<t.ObjectTypeIndexer> {
     private readonly id?: Matcher<t.Identifier> | null,
     private readonly key?: Matcher<t.FlowType>,
     private readonly value?: Matcher<t.FlowType>,
-    private readonly variance?: Matcher<t.Variance> | null
+    private readonly variance?: Matcher<t.Variance> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ObjectTypeIndexer {
     if (!t.isNode(node) || !t.isObjectTypeIndexer(node)) {
       return false
@@ -6583,7 +6583,7 @@ export function objectTypeIndexer(
   id?: Matcher<t.Identifier> | null,
   key?: Matcher<t.FlowType>,
   value?: Matcher<t.FlowType>,
-  variance?: Matcher<t.Variance> | null
+  variance?: Matcher<t.Variance> | null,
 ): Matcher<t.ObjectTypeIndexer> {
   return new ObjectTypeIndexerMatcher(id, key, value, variance)
 }
@@ -6594,14 +6594,14 @@ export class ObjectTypeInternalSlotMatcher extends Matcher<t.ObjectTypeInternalS
     private readonly value?: Matcher<t.FlowType>,
     private readonly optional?: Matcher<boolean> | boolean,
     private readonly _static?: Matcher<boolean> | boolean,
-    private readonly method?: Matcher<boolean> | boolean
+    private readonly method?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ObjectTypeInternalSlot {
     if (!t.isNode(node) || !t.isObjectTypeInternalSlot(node)) {
       return false
@@ -6660,7 +6660,7 @@ export function objectTypeInternalSlot(
   value?: Matcher<t.FlowType>,
   optional?: Matcher<boolean> | boolean,
   _static?: Matcher<boolean> | boolean,
-  method?: Matcher<boolean> | boolean
+  method?: Matcher<boolean> | boolean,
 ): Matcher<t.ObjectTypeInternalSlot> {
   return new ObjectTypeInternalSlotMatcher(id, value, optional, _static, method)
 }
@@ -6669,14 +6669,14 @@ export class ObjectTypePropertyMatcher extends Matcher<t.ObjectTypeProperty> {
   constructor(
     private readonly key?: Matcher<t.Identifier | t.StringLiteral>,
     private readonly value?: Matcher<t.FlowType>,
-    private readonly variance?: Matcher<t.Variance> | null
+    private readonly variance?: Matcher<t.Variance> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ObjectTypeProperty {
     if (!t.isNode(node) || !t.isObjectTypeProperty(node)) {
       return false
@@ -6716,7 +6716,7 @@ export class ObjectTypePropertyMatcher extends Matcher<t.ObjectTypeProperty> {
 export function objectTypeProperty(
   key?: Matcher<t.Identifier | t.StringLiteral>,
   value?: Matcher<t.FlowType>,
-  variance?: Matcher<t.Variance> | null
+  variance?: Matcher<t.Variance> | null,
 ): Matcher<t.ObjectTypeProperty> {
   return new ObjectTypePropertyMatcher(key, value, variance)
 }
@@ -6728,7 +6728,7 @@ export class ObjectTypeSpreadPropertyMatcher extends Matcher<t.ObjectTypeSpreadP
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ObjectTypeSpreadProperty {
     if (!t.isNode(node) || !t.isObjectTypeSpreadProperty(node)) {
       return false
@@ -6747,7 +6747,7 @@ export class ObjectTypeSpreadPropertyMatcher extends Matcher<t.ObjectTypeSpreadP
 }
 
 export function objectTypeSpreadProperty(
-  argument?: Matcher<t.FlowType>
+  argument?: Matcher<t.FlowType>,
 ): Matcher<t.ObjectTypeSpreadProperty> {
   return new ObjectTypeSpreadPropertyMatcher(argument)
 }
@@ -6757,14 +6757,14 @@ export class OpaqueTypeMatcher extends Matcher<t.OpaqueType> {
     private readonly id?: Matcher<t.Identifier>,
     private readonly typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
     private readonly supertype?: Matcher<t.FlowType> | null,
-    private readonly impltype?: Matcher<t.FlowType>
+    private readonly impltype?: Matcher<t.FlowType>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.OpaqueType {
     if (!t.isNode(node) || !t.isOpaqueType(node)) {
       return false
@@ -6825,7 +6825,7 @@ export function opaqueType(
   id?: Matcher<t.Identifier>,
   typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
   supertype?: Matcher<t.FlowType> | null,
-  impltype?: Matcher<t.FlowType>
+  impltype?: Matcher<t.FlowType>,
 ): Matcher<t.OpaqueType> {
   return new OpaqueTypeMatcher(id, typeParameters, supertype, impltype)
 }
@@ -6848,14 +6848,14 @@ export class OptionalCallExpressionMatcher extends Matcher<t.OptionalCallExpress
           | Matcher<t.JSXNamespacedName>
           | Matcher<t.ArgumentPlaceholder>
         >,
-    private readonly optional?: Matcher<boolean> | boolean
+    private readonly optional?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.OptionalCallExpression {
     if (!t.isNode(node) || !t.isOptionalCallExpression(node)) {
       return false
@@ -6917,7 +6917,7 @@ export function optionalCallExpression(
         | Matcher<t.JSXNamespacedName>
         | Matcher<t.ArgumentPlaceholder>
       >,
-  optional?: Matcher<boolean> | boolean
+  optional?: Matcher<boolean> | boolean,
 ): Matcher<t.OptionalCallExpression> {
   return new OptionalCallExpressionMatcher(callee, _arguments, optional)
 }
@@ -6925,14 +6925,14 @@ export function optionalCallExpression(
 export class OptionalIndexedAccessTypeMatcher extends Matcher<t.OptionalIndexedAccessType> {
   constructor(
     private readonly objectType?: Matcher<t.FlowType>,
-    private readonly indexType?: Matcher<t.FlowType>
+    private readonly indexType?: Matcher<t.FlowType>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.OptionalIndexedAccessType {
     if (!t.isNode(node) || !t.isOptionalIndexedAccessType(node)) {
       return false
@@ -6960,7 +6960,7 @@ export class OptionalIndexedAccessTypeMatcher extends Matcher<t.OptionalIndexedA
 
 export function optionalIndexedAccessType(
   objectType?: Matcher<t.FlowType>,
-  indexType?: Matcher<t.FlowType>
+  indexType?: Matcher<t.FlowType>,
 ): Matcher<t.OptionalIndexedAccessType> {
   return new OptionalIndexedAccessTypeMatcher(objectType, indexType)
 }
@@ -6970,14 +6970,14 @@ export class OptionalMemberExpressionMatcher extends Matcher<t.OptionalMemberExp
     private readonly object?: Matcher<t.Expression>,
     private readonly property?: Matcher<t.Expression | t.Identifier>,
     private readonly computed?: Matcher<boolean> | boolean,
-    private readonly optional?: Matcher<boolean> | boolean
+    private readonly optional?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.OptionalMemberExpression {
     if (!t.isNode(node) || !t.isOptionalMemberExpression(node)) {
       return false
@@ -7029,13 +7029,13 @@ export function optionalMemberExpression(
   object?: Matcher<t.Expression>,
   property?: Matcher<t.Expression | t.Identifier>,
   computed?: Matcher<boolean> | boolean,
-  optional?: Matcher<boolean> | boolean
+  optional?: Matcher<boolean> | boolean,
 ): Matcher<t.OptionalMemberExpression> {
   return new OptionalMemberExpressionMatcher(
     object,
     property,
     computed,
-    optional
+    optional,
   )
 }
 
@@ -7046,7 +7046,7 @@ export class ParenthesizedExpressionMatcher extends Matcher<t.ParenthesizedExpre
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ParenthesizedExpression {
     if (!t.isNode(node) || !t.isParenthesizedExpression(node)) {
       return false
@@ -7065,7 +7065,7 @@ export class ParenthesizedExpressionMatcher extends Matcher<t.ParenthesizedExpre
 }
 
 export function parenthesizedExpression(
-  expression?: Matcher<t.Expression>
+  expression?: Matcher<t.Expression>,
 ): Matcher<t.ParenthesizedExpression> {
   return new ParenthesizedExpressionMatcher(expression)
 }
@@ -7077,7 +7077,7 @@ export class PipelineBareFunctionMatcher extends Matcher<t.PipelineBareFunction>
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.PipelineBareFunction {
     if (!t.isNode(node) || !t.isPipelineBareFunction(node)) {
       return false
@@ -7094,7 +7094,7 @@ export class PipelineBareFunctionMatcher extends Matcher<t.PipelineBareFunction>
 }
 
 export function pipelineBareFunction(
-  callee?: Matcher<t.Expression>
+  callee?: Matcher<t.Expression>,
 ): Matcher<t.PipelineBareFunction> {
   return new PipelineBareFunctionMatcher(callee)
 }
@@ -7106,7 +7106,7 @@ export class PipelinePrimaryTopicReferenceMatcher extends Matcher<t.PipelinePrim
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.PipelinePrimaryTopicReference {
     if (!t.isNode(node) || !t.isPipelinePrimaryTopicReference(node)) {
       return false
@@ -7127,7 +7127,7 @@ export class PipelineTopicExpressionMatcher extends Matcher<t.PipelineTopicExpre
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.PipelineTopicExpression {
     if (!t.isNode(node) || !t.isPipelineTopicExpression(node)) {
       return false
@@ -7146,7 +7146,7 @@ export class PipelineTopicExpressionMatcher extends Matcher<t.PipelineTopicExpre
 }
 
 export function pipelineTopicExpression(
-  expression?: Matcher<t.Expression>
+  expression?: Matcher<t.Expression>,
 ): Matcher<t.PipelineTopicExpression> {
   return new PipelineTopicExpressionMatcher(expression)
 }
@@ -7165,14 +7165,14 @@ export class PlaceholderMatcher extends Matcher<t.Placeholder> {
           | 'Pattern'
         >
       | string,
-    private readonly name?: Matcher<t.Identifier>
+    private readonly name?: Matcher<t.Identifier>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.Placeholder {
     if (!t.isNode(node) || !t.isPlaceholder(node)) {
       return false
@@ -7216,7 +7216,7 @@ export function placeholder(
         | 'Pattern'
       >
     | string,
-  name?: Matcher<t.Identifier>
+  name?: Matcher<t.Identifier>,
 ): Matcher<t.Placeholder> {
   return new PlaceholderMatcher(expectedNode, name)
 }
@@ -7228,7 +7228,7 @@ export class PrivateNameMatcher extends Matcher<t.PrivateName> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.PrivateName {
     if (!t.isNode(node) || !t.isPrivateName(node)) {
       return false
@@ -7245,7 +7245,7 @@ export class PrivateNameMatcher extends Matcher<t.PrivateName> {
 }
 
 export function privateName(
-  id?: Matcher<t.Identifier>
+  id?: Matcher<t.Identifier>,
 ): Matcher<t.PrivateName> {
   return new PrivateNameMatcher(id)
 }
@@ -7259,14 +7259,14 @@ export class ProgramMatcher extends Matcher<t.Program> {
       | Matcher<Array<t.Directive>>
       | Array<Matcher<t.Directive>>,
     private readonly sourceType?: Matcher<'script' | 'module'> | string,
-    private readonly interpreter?: Matcher<t.InterpreterDirective> | null
+    private readonly interpreter?: Matcher<t.InterpreterDirective> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.Program {
     if (!t.isNode(node) || !t.isProgram(node)) {
       return false
@@ -7336,7 +7336,7 @@ export function program(
   body?: Matcher<Array<t.Statement>> | Array<Matcher<t.Statement>>,
   directives?: Matcher<Array<t.Directive>> | Array<Matcher<t.Directive>>,
   sourceType?: Matcher<'script' | 'module'> | string,
-  interpreter?: Matcher<t.InterpreterDirective> | null
+  interpreter?: Matcher<t.InterpreterDirective> | null,
 ): Matcher<t.Program> {
   return new ProgramMatcher(body, directives, sourceType, interpreter)
 }
@@ -7346,14 +7346,14 @@ export class QualifiedTypeIdentifierMatcher extends Matcher<t.QualifiedTypeIdent
     private readonly id?: Matcher<t.Identifier>,
     private readonly qualification?: Matcher<
       t.Identifier | t.QualifiedTypeIdentifier
-    >
+    >,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.QualifiedTypeIdentifier {
     if (!t.isNode(node) || !t.isQualifiedTypeIdentifier(node)) {
       return false
@@ -7382,7 +7382,7 @@ export class QualifiedTypeIdentifierMatcher extends Matcher<t.QualifiedTypeIdent
 
 export function qualifiedTypeIdentifier(
   id?: Matcher<t.Identifier>,
-  qualification?: Matcher<t.Identifier | t.QualifiedTypeIdentifier>
+  qualification?: Matcher<t.Identifier | t.QualifiedTypeIdentifier>,
 ): Matcher<t.QualifiedTypeIdentifier> {
   return new QualifiedTypeIdentifierMatcher(id, qualification)
 }
@@ -7391,14 +7391,14 @@ export class RecordExpressionMatcher extends Matcher<t.RecordExpression> {
   constructor(
     private readonly properties?:
       | Matcher<Array<t.ObjectProperty | t.SpreadElement>>
-      | Array<Matcher<t.ObjectProperty> | Matcher<t.SpreadElement>>
+      | Array<Matcher<t.ObjectProperty> | Matcher<t.SpreadElement>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.RecordExpression {
     if (!t.isNode(node) || !t.isRecordExpression(node)) {
       return false
@@ -7428,7 +7428,7 @@ export class RecordExpressionMatcher extends Matcher<t.RecordExpression> {
 export function recordExpression(
   properties?:
     | Matcher<Array<t.ObjectProperty | t.SpreadElement>>
-    | Array<Matcher<t.ObjectProperty> | Matcher<t.SpreadElement>>
+    | Array<Matcher<t.ObjectProperty> | Matcher<t.SpreadElement>>,
 ): Matcher<t.RecordExpression> {
   return new RecordExpressionMatcher(properties)
 }
@@ -7436,14 +7436,14 @@ export function recordExpression(
 export class RegExpLiteralMatcher extends Matcher<t.RegExpLiteral> {
   constructor(
     private readonly pattern?: Matcher<string> | string,
-    private readonly flags?: Matcher<string> | string
+    private readonly flags?: Matcher<string> | string,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.RegExpLiteral {
     if (!t.isNode(node) || !t.isRegExpLiteral(node)) {
       return false
@@ -7475,7 +7475,7 @@ export class RegExpLiteralMatcher extends Matcher<t.RegExpLiteral> {
 
 export function regExpLiteral(
   pattern?: Matcher<string> | string,
-  flags?: Matcher<string> | string
+  flags?: Matcher<string> | string,
 ): Matcher<t.RegExpLiteral> {
   return new RegExpLiteralMatcher(pattern, flags)
 }
@@ -7487,7 +7487,7 @@ export class RestElementMatcher extends Matcher<t.RestElement> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.RestElement {
     if (!t.isNode(node) || !t.isRestElement(node)) {
       return false
@@ -7506,7 +7506,7 @@ export class RestElementMatcher extends Matcher<t.RestElement> {
 }
 
 export function restElement(
-  argument?: Matcher<t.LVal>
+  argument?: Matcher<t.LVal>,
 ): Matcher<t.RestElement> {
   return new RestElementMatcher(argument)
 }
@@ -7518,7 +7518,7 @@ export class ReturnStatementMatcher extends Matcher<t.ReturnStatement> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ReturnStatement {
     if (!t.isNode(node) || !t.isReturnStatement(node)) {
       return false
@@ -7544,7 +7544,7 @@ export class ReturnStatementMatcher extends Matcher<t.ReturnStatement> {
 }
 
 export function returnStatement(
-  argument?: Matcher<t.Expression> | null
+  argument?: Matcher<t.Expression> | null,
 ): Matcher<t.ReturnStatement> {
   return new ReturnStatementMatcher(argument)
 }
@@ -7553,14 +7553,14 @@ export class SequenceExpressionMatcher extends Matcher<t.SequenceExpression> {
   constructor(
     private readonly expressions?:
       | Matcher<Array<t.Expression>>
-      | Array<Matcher<t.Expression>>
+      | Array<Matcher<t.Expression>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.SequenceExpression {
     if (!t.isNode(node) || !t.isSequenceExpression(node)) {
       return false
@@ -7588,7 +7588,7 @@ export class SequenceExpressionMatcher extends Matcher<t.SequenceExpression> {
 }
 
 export function sequenceExpression(
-  expressions?: Matcher<Array<t.Expression>> | Array<Matcher<t.Expression>>
+  expressions?: Matcher<Array<t.Expression>> | Array<Matcher<t.Expression>>,
 ): Matcher<t.SequenceExpression> {
   return new SequenceExpressionMatcher(expressions)
 }
@@ -7600,7 +7600,7 @@ export class SpreadElementMatcher extends Matcher<t.SpreadElement> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.SpreadElement {
     if (!t.isNode(node) || !t.isSpreadElement(node)) {
       return false
@@ -7619,7 +7619,7 @@ export class SpreadElementMatcher extends Matcher<t.SpreadElement> {
 }
 
 export function spreadElement(
-  argument?: Matcher<t.Expression>
+  argument?: Matcher<t.Expression>,
 ): Matcher<t.SpreadElement> {
   return new SpreadElementMatcher(argument)
 }
@@ -7628,14 +7628,14 @@ export class StaticBlockMatcher extends Matcher<t.StaticBlock> {
   constructor(
     private readonly body?:
       | Matcher<Array<t.Statement>>
-      | Array<Matcher<t.Statement>>
+      | Array<Matcher<t.Statement>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.StaticBlock {
     if (!t.isNode(node) || !t.isStaticBlock(node)) {
       return false
@@ -7658,7 +7658,7 @@ export class StaticBlockMatcher extends Matcher<t.StaticBlock> {
 }
 
 export function staticBlock(
-  body?: Matcher<Array<t.Statement>> | Array<Matcher<t.Statement>>
+  body?: Matcher<Array<t.Statement>> | Array<Matcher<t.Statement>>,
 ): Matcher<t.StaticBlock> {
   return new StaticBlockMatcher(body)
 }
@@ -7670,7 +7670,7 @@ export class StringLiteralMatcher extends Matcher<t.StringLiteral> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.StringLiteral {
     if (!t.isNode(node) || !t.isStringLiteral(node)) {
       return false
@@ -7691,7 +7691,7 @@ export class StringLiteralMatcher extends Matcher<t.StringLiteral> {
 }
 
 export function stringLiteral(
-  value?: Matcher<string> | string
+  value?: Matcher<string> | string,
 ): Matcher<t.StringLiteral> {
   return new StringLiteralMatcher(value)
 }
@@ -7703,7 +7703,7 @@ export class StringLiteralTypeAnnotationMatcher extends Matcher<t.StringLiteralT
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.StringLiteralTypeAnnotation {
     if (!t.isNode(node) || !t.isStringLiteralTypeAnnotation(node)) {
       return false
@@ -7724,7 +7724,7 @@ export class StringLiteralTypeAnnotationMatcher extends Matcher<t.StringLiteralT
 }
 
 export function stringLiteralTypeAnnotation(
-  value?: Matcher<string> | string
+  value?: Matcher<string> | string,
 ): Matcher<t.StringLiteralTypeAnnotation> {
   return new StringLiteralTypeAnnotationMatcher(value)
 }
@@ -7736,7 +7736,7 @@ export class StringTypeAnnotationMatcher extends Matcher<t.StringTypeAnnotation>
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.StringTypeAnnotation {
     if (!t.isNode(node) || !t.isStringTypeAnnotation(node)) {
       return false
@@ -7773,14 +7773,14 @@ export class SwitchCaseMatcher extends Matcher<t.SwitchCase> {
     private readonly test?: Matcher<t.Expression> | null,
     private readonly consequent?:
       | Matcher<Array<t.Statement>>
-      | Array<Matcher<t.Statement>>
+      | Array<Matcher<t.Statement>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.SwitchCase {
     if (!t.isNode(node) || !t.isSwitchCase(node)) {
       return false
@@ -7822,7 +7822,7 @@ export class SwitchCaseMatcher extends Matcher<t.SwitchCase> {
 
 export function switchCase(
   test?: Matcher<t.Expression> | null,
-  consequent?: Matcher<Array<t.Statement>> | Array<Matcher<t.Statement>>
+  consequent?: Matcher<Array<t.Statement>> | Array<Matcher<t.Statement>>,
 ): Matcher<t.SwitchCase> {
   return new SwitchCaseMatcher(test, consequent)
 }
@@ -7832,14 +7832,14 @@ export class SwitchStatementMatcher extends Matcher<t.SwitchStatement> {
     private readonly discriminant?: Matcher<t.Expression>,
     private readonly cases?:
       | Matcher<Array<t.SwitchCase>>
-      | Array<Matcher<t.SwitchCase>>
+      | Array<Matcher<t.SwitchCase>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.SwitchStatement {
     if (!t.isNode(node) || !t.isSwitchStatement(node)) {
       return false
@@ -7877,7 +7877,7 @@ export class SwitchStatementMatcher extends Matcher<t.SwitchStatement> {
 
 export function switchStatement(
   discriminant?: Matcher<t.Expression>,
-  cases?: Matcher<Array<t.SwitchCase>> | Array<Matcher<t.SwitchCase>>
+  cases?: Matcher<Array<t.SwitchCase>> | Array<Matcher<t.SwitchCase>>,
 ): Matcher<t.SwitchStatement> {
   return new SwitchStatementMatcher(discriminant, cases)
 }
@@ -7889,7 +7889,7 @@ export class SymbolTypeAnnotationMatcher extends Matcher<t.SymbolTypeAnnotation>
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.SymbolTypeAnnotation {
     if (!t.isNode(node) || !t.isSymbolTypeAnnotation(node)) {
       return false
@@ -7910,7 +7910,7 @@ export class TSAnyKeywordMatcher extends Matcher<t.TSAnyKeyword> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSAnyKeyword {
     if (!t.isNode(node) || !t.isTSAnyKeyword(node)) {
       return false
@@ -7931,7 +7931,7 @@ export class TSArrayTypeMatcher extends Matcher<t.TSArrayType> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSArrayType {
     if (!t.isNode(node) || !t.isTSArrayType(node)) {
       return false
@@ -7950,7 +7950,7 @@ export class TSArrayTypeMatcher extends Matcher<t.TSArrayType> {
 }
 
 export function tsArrayType(
-  elementType?: Matcher<t.TSType>
+  elementType?: Matcher<t.TSType>,
 ): Matcher<t.TSArrayType> {
   return new TSArrayTypeMatcher(elementType)
 }
@@ -7958,14 +7958,14 @@ export function tsArrayType(
 export class TSAsExpressionMatcher extends Matcher<t.TSAsExpression> {
   constructor(
     private readonly expression?: Matcher<t.Expression>,
-    private readonly typeAnnotation?: Matcher<t.TSType>
+    private readonly typeAnnotation?: Matcher<t.TSType>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSAsExpression {
     if (!t.isNode(node) || !t.isTSAsExpression(node)) {
       return false
@@ -7996,7 +7996,7 @@ export class TSAsExpressionMatcher extends Matcher<t.TSAsExpression> {
 
 export function tsAsExpression(
   expression?: Matcher<t.Expression>,
-  typeAnnotation?: Matcher<t.TSType>
+  typeAnnotation?: Matcher<t.TSType>,
 ): Matcher<t.TSAsExpression> {
   return new TSAsExpressionMatcher(expression, typeAnnotation)
 }
@@ -8008,7 +8008,7 @@ export class TSBigIntKeywordMatcher extends Matcher<t.TSBigIntKeyword> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSBigIntKeyword {
     if (!t.isNode(node) || !t.isTSBigIntKeyword(node)) {
       return false
@@ -8029,7 +8029,7 @@ export class TSBooleanKeywordMatcher extends Matcher<t.TSBooleanKeyword> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSBooleanKeyword {
     if (!t.isNode(node) || !t.isTSBooleanKeyword(node)) {
       return false
@@ -8049,14 +8049,14 @@ export class TSCallSignatureDeclarationMatcher extends Matcher<t.TSCallSignature
     private readonly parameters?:
       | Matcher<Array<t.Identifier | t.RestElement>>
       | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
-    private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
+    private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSCallSignatureDeclaration {
     if (!t.isNode(node) || !t.isTSCallSignatureDeclaration(node)) {
       return false
@@ -8124,12 +8124,12 @@ export function tsCallSignatureDeclaration(
   parameters?:
     | Matcher<Array<t.Identifier | t.RestElement>>
     | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
-  typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
+  typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
 ): Matcher<t.TSCallSignatureDeclaration> {
   return new TSCallSignatureDeclarationMatcher(
     typeParameters,
     parameters,
-    typeAnnotation
+    typeAnnotation,
   )
 }
 
@@ -8138,14 +8138,14 @@ export class TSConditionalTypeMatcher extends Matcher<t.TSConditionalType> {
     private readonly checkType?: Matcher<t.TSType>,
     private readonly extendsType?: Matcher<t.TSType>,
     private readonly trueType?: Matcher<t.TSType>,
-    private readonly falseType?: Matcher<t.TSType>
+    private readonly falseType?: Matcher<t.TSType>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSConditionalType {
     if (!t.isNode(node) || !t.isTSConditionalType(node)) {
       return false
@@ -8191,13 +8191,13 @@ export function tsConditionalType(
   checkType?: Matcher<t.TSType>,
   extendsType?: Matcher<t.TSType>,
   trueType?: Matcher<t.TSType>,
-  falseType?: Matcher<t.TSType>
+  falseType?: Matcher<t.TSType>,
 ): Matcher<t.TSConditionalType> {
   return new TSConditionalTypeMatcher(
     checkType,
     extendsType,
     trueType,
-    falseType
+    falseType,
   )
 }
 
@@ -8207,14 +8207,14 @@ export class TSConstructSignatureDeclarationMatcher extends Matcher<t.TSConstruc
     private readonly parameters?:
       | Matcher<Array<t.Identifier | t.RestElement>>
       | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
-    private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
+    private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSConstructSignatureDeclaration {
     if (!t.isNode(node) || !t.isTSConstructSignatureDeclaration(node)) {
       return false
@@ -8282,12 +8282,12 @@ export function tsConstructSignatureDeclaration(
   parameters?:
     | Matcher<Array<t.Identifier | t.RestElement>>
     | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
-  typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
+  typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
 ): Matcher<t.TSConstructSignatureDeclaration> {
   return new TSConstructSignatureDeclarationMatcher(
     typeParameters,
     parameters,
-    typeAnnotation
+    typeAnnotation,
   )
 }
 
@@ -8297,14 +8297,14 @@ export class TSConstructorTypeMatcher extends Matcher<t.TSConstructorType> {
     private readonly parameters?:
       | Matcher<Array<t.Identifier | t.RestElement>>
       | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
-    private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
+    private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSConstructorType {
     if (!t.isNode(node) || !t.isTSConstructorType(node)) {
       return false
@@ -8372,12 +8372,12 @@ export function tsConstructorType(
   parameters?:
     | Matcher<Array<t.Identifier | t.RestElement>>
     | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
-  typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
+  typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
 ): Matcher<t.TSConstructorType> {
   return new TSConstructorTypeMatcher(
     typeParameters,
     parameters,
-    typeAnnotation
+    typeAnnotation,
   )
 }
 
@@ -8392,14 +8392,14 @@ export class TSDeclareFunctionMatcher extends Matcher<t.TSDeclareFunction> {
       | Array<
           Matcher<t.Identifier> | Matcher<t.Pattern> | Matcher<t.RestElement>
         >,
-    private readonly returnType?: Matcher<t.TSTypeAnnotation | t.Noop> | null
+    private readonly returnType?: Matcher<t.TSTypeAnnotation | t.Noop> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSDeclareFunction {
     if (!t.isNode(node) || !t.isTSDeclareFunction(node)) {
       return false
@@ -8478,7 +8478,7 @@ export function tsDeclareFunction(
     | Array<
         Matcher<t.Identifier> | Matcher<t.Pattern> | Matcher<t.RestElement>
       >,
-  returnType?: Matcher<t.TSTypeAnnotation | t.Noop> | null
+  returnType?: Matcher<t.TSTypeAnnotation | t.Noop> | null,
 ): Matcher<t.TSDeclareFunction> {
   return new TSDeclareFunctionMatcher(id, typeParameters, params, returnType)
 }
@@ -8511,14 +8511,14 @@ export class TSDeclareMethodMatcher extends Matcher<t.TSDeclareMethod> {
           | Matcher<t.RestElement>
           | Matcher<t.TSParameterProperty>
         >,
-    private readonly returnType?: Matcher<t.TSTypeAnnotation | t.Noop> | null
+    private readonly returnType?: Matcher<t.TSTypeAnnotation | t.Noop> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSDeclareMethod {
     if (!t.isNode(node) || !t.isTSDeclareMethod(node)) {
       return false
@@ -8626,14 +8626,14 @@ export function tsDeclareMethod(
         | Matcher<t.RestElement>
         | Matcher<t.TSParameterProperty>
       >,
-  returnType?: Matcher<t.TSTypeAnnotation | t.Noop> | null
+  returnType?: Matcher<t.TSTypeAnnotation | t.Noop> | null,
 ): Matcher<t.TSDeclareMethod> {
   return new TSDeclareMethodMatcher(
     decorators,
     key,
     typeParameters,
     params,
-    returnType
+    returnType,
   )
 }
 
@@ -8642,14 +8642,14 @@ export class TSEnumDeclarationMatcher extends Matcher<t.TSEnumDeclaration> {
     private readonly id?: Matcher<t.Identifier>,
     private readonly members?:
       | Matcher<Array<t.TSEnumMember>>
-      | Array<Matcher<t.TSEnumMember>>
+      | Array<Matcher<t.TSEnumMember>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSEnumDeclaration {
     if (!t.isNode(node) || !t.isTSEnumDeclaration(node)) {
       return false
@@ -8682,7 +8682,7 @@ export class TSEnumDeclarationMatcher extends Matcher<t.TSEnumDeclaration> {
 
 export function tsEnumDeclaration(
   id?: Matcher<t.Identifier>,
-  members?: Matcher<Array<t.TSEnumMember>> | Array<Matcher<t.TSEnumMember>>
+  members?: Matcher<Array<t.TSEnumMember>> | Array<Matcher<t.TSEnumMember>>,
 ): Matcher<t.TSEnumDeclaration> {
   return new TSEnumDeclarationMatcher(id, members)
 }
@@ -8690,14 +8690,14 @@ export function tsEnumDeclaration(
 export class TSEnumMemberMatcher extends Matcher<t.TSEnumMember> {
   constructor(
     private readonly id?: Matcher<t.Identifier | t.StringLiteral>,
-    private readonly initializer?: Matcher<t.Expression> | null
+    private readonly initializer?: Matcher<t.Expression> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSEnumMember {
     if (!t.isNode(node) || !t.isTSEnumMember(node)) {
       return false
@@ -8730,7 +8730,7 @@ export class TSEnumMemberMatcher extends Matcher<t.TSEnumMember> {
 
 export function tsEnumMember(
   id?: Matcher<t.Identifier | t.StringLiteral>,
-  initializer?: Matcher<t.Expression> | null
+  initializer?: Matcher<t.Expression> | null,
 ): Matcher<t.TSEnumMember> {
   return new TSEnumMemberMatcher(id, initializer)
 }
@@ -8742,7 +8742,7 @@ export class TSExportAssignmentMatcher extends Matcher<t.TSExportAssignment> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSExportAssignment {
     if (!t.isNode(node) || !t.isTSExportAssignment(node)) {
       return false
@@ -8761,7 +8761,7 @@ export class TSExportAssignmentMatcher extends Matcher<t.TSExportAssignment> {
 }
 
 export function tsExportAssignment(
-  expression?: Matcher<t.Expression>
+  expression?: Matcher<t.Expression>,
 ): Matcher<t.TSExportAssignment> {
   return new TSExportAssignmentMatcher(expression)
 }
@@ -8769,14 +8769,14 @@ export function tsExportAssignment(
 export class TSExpressionWithTypeArgumentsMatcher extends Matcher<t.TSExpressionWithTypeArguments> {
   constructor(
     private readonly expression?: Matcher<t.TSEntityName>,
-    private readonly typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null
+    private readonly typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSExpressionWithTypeArguments {
     if (!t.isNode(node) || !t.isTSExpressionWithTypeArguments(node)) {
       return false
@@ -8814,7 +8814,7 @@ export class TSExpressionWithTypeArgumentsMatcher extends Matcher<t.TSExpression
 
 export function tsExpressionWithTypeArguments(
   expression?: Matcher<t.TSEntityName>,
-  typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null
+  typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null,
 ): Matcher<t.TSExpressionWithTypeArguments> {
   return new TSExpressionWithTypeArgumentsMatcher(expression, typeParameters)
 }
@@ -8826,7 +8826,7 @@ export class TSExternalModuleReferenceMatcher extends Matcher<t.TSExternalModule
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSExternalModuleReference {
     if (!t.isNode(node) || !t.isTSExternalModuleReference(node)) {
       return false
@@ -8845,7 +8845,7 @@ export class TSExternalModuleReferenceMatcher extends Matcher<t.TSExternalModule
 }
 
 export function tsExternalModuleReference(
-  expression?: Matcher<t.StringLiteral>
+  expression?: Matcher<t.StringLiteral>,
 ): Matcher<t.TSExternalModuleReference> {
   return new TSExternalModuleReferenceMatcher(expression)
 }
@@ -8856,14 +8856,14 @@ export class TSFunctionTypeMatcher extends Matcher<t.TSFunctionType> {
     private readonly parameters?:
       | Matcher<Array<t.Identifier | t.RestElement>>
       | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
-    private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
+    private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSFunctionType {
     if (!t.isNode(node) || !t.isTSFunctionType(node)) {
       return false
@@ -8931,7 +8931,7 @@ export function tsFunctionType(
   parameters?:
     | Matcher<Array<t.Identifier | t.RestElement>>
     | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
-  typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
+  typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
 ): Matcher<t.TSFunctionType> {
   return new TSFunctionTypeMatcher(typeParameters, parameters, typeAnnotation)
 }
@@ -8941,14 +8941,14 @@ export class TSImportEqualsDeclarationMatcher extends Matcher<t.TSImportEqualsDe
     private readonly id?: Matcher<t.Identifier>,
     private readonly moduleReference?: Matcher<
       t.TSEntityName | t.TSExternalModuleReference
-    >
+    >,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSImportEqualsDeclaration {
     if (!t.isNode(node) || !t.isTSImportEqualsDeclaration(node)) {
       return false
@@ -8977,7 +8977,7 @@ export class TSImportEqualsDeclarationMatcher extends Matcher<t.TSImportEqualsDe
 
 export function tsImportEqualsDeclaration(
   id?: Matcher<t.Identifier>,
-  moduleReference?: Matcher<t.TSEntityName | t.TSExternalModuleReference>
+  moduleReference?: Matcher<t.TSEntityName | t.TSExternalModuleReference>,
 ): Matcher<t.TSImportEqualsDeclaration> {
   return new TSImportEqualsDeclarationMatcher(id, moduleReference)
 }
@@ -8986,14 +8986,14 @@ export class TSImportTypeMatcher extends Matcher<t.TSImportType> {
   constructor(
     private readonly argument?: Matcher<t.StringLiteral>,
     private readonly qualifier?: Matcher<t.TSEntityName> | null,
-    private readonly typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null
+    private readonly typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSImportType {
     if (!t.isNode(node) || !t.isTSImportType(node)) {
       return false
@@ -9047,7 +9047,7 @@ export class TSImportTypeMatcher extends Matcher<t.TSImportType> {
 export function tsImportType(
   argument?: Matcher<t.StringLiteral>,
   qualifier?: Matcher<t.TSEntityName> | null,
-  typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null
+  typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null,
 ): Matcher<t.TSImportType> {
   return new TSImportTypeMatcher(argument, qualifier, typeParameters)
 }
@@ -9057,14 +9057,14 @@ export class TSIndexSignatureMatcher extends Matcher<t.TSIndexSignature> {
     private readonly parameters?:
       | Matcher<Array<t.Identifier>>
       | Array<Matcher<t.Identifier>>,
-    private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
+    private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSIndexSignature {
     if (!t.isNode(node) || !t.isTSIndexSignature(node)) {
       return false
@@ -9111,7 +9111,7 @@ export class TSIndexSignatureMatcher extends Matcher<t.TSIndexSignature> {
 
 export function tsIndexSignature(
   parameters?: Matcher<Array<t.Identifier>> | Array<Matcher<t.Identifier>>,
-  typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
+  typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
 ): Matcher<t.TSIndexSignature> {
   return new TSIndexSignatureMatcher(parameters, typeAnnotation)
 }
@@ -9119,14 +9119,14 @@ export function tsIndexSignature(
 export class TSIndexedAccessTypeMatcher extends Matcher<t.TSIndexedAccessType> {
   constructor(
     private readonly objectType?: Matcher<t.TSType>,
-    private readonly indexType?: Matcher<t.TSType>
+    private readonly indexType?: Matcher<t.TSType>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSIndexedAccessType {
     if (!t.isNode(node) || !t.isTSIndexedAccessType(node)) {
       return false
@@ -9154,7 +9154,7 @@ export class TSIndexedAccessTypeMatcher extends Matcher<t.TSIndexedAccessType> {
 
 export function tsIndexedAccessType(
   objectType?: Matcher<t.TSType>,
-  indexType?: Matcher<t.TSType>
+  indexType?: Matcher<t.TSType>,
 ): Matcher<t.TSIndexedAccessType> {
   return new TSIndexedAccessTypeMatcher(objectType, indexType)
 }
@@ -9166,7 +9166,7 @@ export class TSInferTypeMatcher extends Matcher<t.TSInferType> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSInferType {
     if (!t.isNode(node) || !t.isTSInferType(node)) {
       return false
@@ -9188,7 +9188,7 @@ export class TSInferTypeMatcher extends Matcher<t.TSInferType> {
 }
 
 export function tsInferType(
-  typeParameter?: Matcher<t.TSTypeParameter>
+  typeParameter?: Matcher<t.TSTypeParameter>,
 ): Matcher<t.TSInferType> {
   return new TSInferTypeMatcher(typeParameter)
 }
@@ -9196,14 +9196,14 @@ export function tsInferType(
 export class TSInstantiationExpressionMatcher extends Matcher<t.TSInstantiationExpression> {
   constructor(
     private readonly expression?: Matcher<t.Expression>,
-    private readonly typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null
+    private readonly typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSInstantiationExpression {
     if (!t.isNode(node) || !t.isTSInstantiationExpression(node)) {
       return false
@@ -9241,7 +9241,7 @@ export class TSInstantiationExpressionMatcher extends Matcher<t.TSInstantiationE
 
 export function tsInstantiationExpression(
   expression?: Matcher<t.Expression>,
-  typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null
+  typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null,
 ): Matcher<t.TSInstantiationExpression> {
   return new TSInstantiationExpressionMatcher(expression, typeParameters)
 }
@@ -9250,14 +9250,14 @@ export class TSInterfaceBodyMatcher extends Matcher<t.TSInterfaceBody> {
   constructor(
     private readonly body?:
       | Matcher<Array<t.TSTypeElement>>
-      | Array<Matcher<t.TSTypeElement>>
+      | Array<Matcher<t.TSTypeElement>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSInterfaceBody {
     if (!t.isNode(node) || !t.isTSInterfaceBody(node)) {
       return false
@@ -9280,7 +9280,7 @@ export class TSInterfaceBodyMatcher extends Matcher<t.TSInterfaceBody> {
 }
 
 export function tsInterfaceBody(
-  body?: Matcher<Array<t.TSTypeElement>> | Array<Matcher<t.TSTypeElement>>
+  body?: Matcher<Array<t.TSTypeElement>> | Array<Matcher<t.TSTypeElement>>,
 ): Matcher<t.TSInterfaceBody> {
   return new TSInterfaceBodyMatcher(body)
 }
@@ -9293,14 +9293,14 @@ export class TSInterfaceDeclarationMatcher extends Matcher<t.TSInterfaceDeclarat
       | Matcher<Array<t.TSExpressionWithTypeArguments>>
       | Array<Matcher<t.TSExpressionWithTypeArguments>>
       | null,
-    private readonly body?: Matcher<t.TSInterfaceBody>
+    private readonly body?: Matcher<t.TSInterfaceBody>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSInterfaceDeclaration {
     if (!t.isNode(node) || !t.isTSInterfaceDeclaration(node)) {
       return false
@@ -9369,21 +9369,23 @@ export function tsInterfaceDeclaration(
     | Matcher<Array<t.TSExpressionWithTypeArguments>>
     | Array<Matcher<t.TSExpressionWithTypeArguments>>
     | null,
-  body?: Matcher<t.TSInterfaceBody>
+  body?: Matcher<t.TSInterfaceBody>,
 ): Matcher<t.TSInterfaceDeclaration> {
   return new TSInterfaceDeclarationMatcher(id, typeParameters, _extends, body)
 }
 
 export class TSIntersectionTypeMatcher extends Matcher<t.TSIntersectionType> {
   constructor(
-    private readonly types?: Matcher<Array<t.TSType>> | Array<Matcher<t.TSType>>
+    private readonly types?:
+      | Matcher<Array<t.TSType>>
+      | Array<Matcher<t.TSType>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSIntersectionType {
     if (!t.isNode(node) || !t.isTSIntersectionType(node)) {
       return false
@@ -9409,7 +9411,7 @@ export class TSIntersectionTypeMatcher extends Matcher<t.TSIntersectionType> {
 }
 
 export function tsIntersectionType(
-  types?: Matcher<Array<t.TSType>> | Array<Matcher<t.TSType>>
+  types?: Matcher<Array<t.TSType>> | Array<Matcher<t.TSType>>,
 ): Matcher<t.TSIntersectionType> {
   return new TSIntersectionTypeMatcher(types)
 }
@@ -9421,7 +9423,7 @@ export class TSIntrinsicKeywordMatcher extends Matcher<t.TSIntrinsicKeyword> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSIntrinsicKeyword {
     if (!t.isNode(node) || !t.isTSIntrinsicKeyword(node)) {
       return false
@@ -9444,14 +9446,14 @@ export class TSLiteralTypeMatcher extends Matcher<t.TSLiteralType> {
       | t.BigIntLiteral
       | t.TemplateLiteral
       | t.UnaryExpression
-    >
+    >,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSLiteralType {
     if (!t.isNode(node) || !t.isTSLiteralType(node)) {
       return false
@@ -9475,7 +9477,7 @@ export function tsLiteralType(
     | t.BigIntLiteral
     | t.TemplateLiteral
     | t.UnaryExpression
-  >
+  >,
 ): Matcher<t.TSLiteralType> {
   return new TSLiteralTypeMatcher(literal)
 }
@@ -9484,14 +9486,14 @@ export class TSMappedTypeMatcher extends Matcher<t.TSMappedType> {
   constructor(
     private readonly typeParameter?: Matcher<t.TSTypeParameter>,
     private readonly typeAnnotation?: Matcher<t.TSType> | null,
-    private readonly nameType?: Matcher<t.TSType> | null
+    private readonly nameType?: Matcher<t.TSType> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSMappedType {
     if (!t.isNode(node) || !t.isTSMappedType(node)) {
       return false
@@ -9548,7 +9550,7 @@ export class TSMappedTypeMatcher extends Matcher<t.TSMappedType> {
 export function tsMappedType(
   typeParameter?: Matcher<t.TSTypeParameter>,
   typeAnnotation?: Matcher<t.TSType> | null,
-  nameType?: Matcher<t.TSType> | null
+  nameType?: Matcher<t.TSType> | null,
 ): Matcher<t.TSMappedType> {
   return new TSMappedTypeMatcher(typeParameter, typeAnnotation, nameType)
 }
@@ -9560,14 +9562,14 @@ export class TSMethodSignatureMatcher extends Matcher<t.TSMethodSignature> {
     private readonly parameters?:
       | Matcher<Array<t.Identifier | t.RestElement>>
       | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
-    private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
+    private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSMethodSignature {
     if (!t.isNode(node) || !t.isTSMethodSignature(node)) {
       return false
@@ -9642,13 +9644,13 @@ export function tsMethodSignature(
   parameters?:
     | Matcher<Array<t.Identifier | t.RestElement>>
     | Array<Matcher<t.Identifier> | Matcher<t.RestElement>>,
-  typeAnnotation?: Matcher<t.TSTypeAnnotation> | null
+  typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
 ): Matcher<t.TSMethodSignature> {
   return new TSMethodSignatureMatcher(
     key,
     typeParameters,
     parameters,
-    typeAnnotation
+    typeAnnotation,
   )
 }
 
@@ -9656,14 +9658,14 @@ export class TSModuleBlockMatcher extends Matcher<t.TSModuleBlock> {
   constructor(
     private readonly body?:
       | Matcher<Array<t.Statement>>
-      | Array<Matcher<t.Statement>>
+      | Array<Matcher<t.Statement>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSModuleBlock {
     if (!t.isNode(node) || !t.isTSModuleBlock(node)) {
       return false
@@ -9686,7 +9688,7 @@ export class TSModuleBlockMatcher extends Matcher<t.TSModuleBlock> {
 }
 
 export function tsModuleBlock(
-  body?: Matcher<Array<t.Statement>> | Array<Matcher<t.Statement>>
+  body?: Matcher<Array<t.Statement>> | Array<Matcher<t.Statement>>,
 ): Matcher<t.TSModuleBlock> {
   return new TSModuleBlockMatcher(body)
 }
@@ -9694,14 +9696,14 @@ export function tsModuleBlock(
 export class TSModuleDeclarationMatcher extends Matcher<t.TSModuleDeclaration> {
   constructor(
     private readonly id?: Matcher<t.Identifier | t.StringLiteral>,
-    private readonly body?: Matcher<t.TSModuleBlock | t.TSModuleDeclaration>
+    private readonly body?: Matcher<t.TSModuleBlock | t.TSModuleDeclaration>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSModuleDeclaration {
     if (!t.isNode(node) || !t.isTSModuleDeclaration(node)) {
       return false
@@ -9725,7 +9727,7 @@ export class TSModuleDeclarationMatcher extends Matcher<t.TSModuleDeclaration> {
 
 export function tsModuleDeclaration(
   id?: Matcher<t.Identifier | t.StringLiteral>,
-  body?: Matcher<t.TSModuleBlock | t.TSModuleDeclaration>
+  body?: Matcher<t.TSModuleBlock | t.TSModuleDeclaration>,
 ): Matcher<t.TSModuleDeclaration> {
   return new TSModuleDeclarationMatcher(id, body)
 }
@@ -9734,14 +9736,14 @@ export class TSNamedTupleMemberMatcher extends Matcher<t.TSNamedTupleMember> {
   constructor(
     private readonly label?: Matcher<t.Identifier>,
     private readonly elementType?: Matcher<t.TSType>,
-    private readonly optional?: Matcher<boolean> | boolean
+    private readonly optional?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSNamedTupleMember {
     if (!t.isNode(node) || !t.isTSNamedTupleMember(node)) {
       return false
@@ -9780,7 +9782,7 @@ export class TSNamedTupleMemberMatcher extends Matcher<t.TSNamedTupleMember> {
 export function tsNamedTupleMember(
   label?: Matcher<t.Identifier>,
   elementType?: Matcher<t.TSType>,
-  optional?: Matcher<boolean> | boolean
+  optional?: Matcher<boolean> | boolean,
 ): Matcher<t.TSNamedTupleMember> {
   return new TSNamedTupleMemberMatcher(label, elementType, optional)
 }
@@ -9792,7 +9794,7 @@ export class TSNamespaceExportDeclarationMatcher extends Matcher<t.TSNamespaceEx
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSNamespaceExportDeclaration {
     if (!t.isNode(node) || !t.isTSNamespaceExportDeclaration(node)) {
       return false
@@ -9809,7 +9811,7 @@ export class TSNamespaceExportDeclarationMatcher extends Matcher<t.TSNamespaceEx
 }
 
 export function tsNamespaceExportDeclaration(
-  id?: Matcher<t.Identifier>
+  id?: Matcher<t.Identifier>,
 ): Matcher<t.TSNamespaceExportDeclaration> {
   return new TSNamespaceExportDeclarationMatcher(id)
 }
@@ -9821,7 +9823,7 @@ export class TSNeverKeywordMatcher extends Matcher<t.TSNeverKeyword> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSNeverKeyword {
     if (!t.isNode(node) || !t.isTSNeverKeyword(node)) {
       return false
@@ -9842,7 +9844,7 @@ export class TSNonNullExpressionMatcher extends Matcher<t.TSNonNullExpression> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSNonNullExpression {
     if (!t.isNode(node) || !t.isTSNonNullExpression(node)) {
       return false
@@ -9861,7 +9863,7 @@ export class TSNonNullExpressionMatcher extends Matcher<t.TSNonNullExpression> {
 }
 
 export function tsNonNullExpression(
-  expression?: Matcher<t.Expression>
+  expression?: Matcher<t.Expression>,
 ): Matcher<t.TSNonNullExpression> {
   return new TSNonNullExpressionMatcher(expression)
 }
@@ -9873,7 +9875,7 @@ export class TSNullKeywordMatcher extends Matcher<t.TSNullKeyword> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSNullKeyword {
     if (!t.isNode(node) || !t.isTSNullKeyword(node)) {
       return false
@@ -9894,7 +9896,7 @@ export class TSNumberKeywordMatcher extends Matcher<t.TSNumberKeyword> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSNumberKeyword {
     if (!t.isNode(node) || !t.isTSNumberKeyword(node)) {
       return false
@@ -9915,7 +9917,7 @@ export class TSObjectKeywordMatcher extends Matcher<t.TSObjectKeyword> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSObjectKeyword {
     if (!t.isNode(node) || !t.isTSObjectKeyword(node)) {
       return false
@@ -9936,7 +9938,7 @@ export class TSOptionalTypeMatcher extends Matcher<t.TSOptionalType> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSOptionalType {
     if (!t.isNode(node) || !t.isTSOptionalType(node)) {
       return false
@@ -9958,21 +9960,21 @@ export class TSOptionalTypeMatcher extends Matcher<t.TSOptionalType> {
 }
 
 export function tsOptionalType(
-  typeAnnotation?: Matcher<t.TSType>
+  typeAnnotation?: Matcher<t.TSType>,
 ): Matcher<t.TSOptionalType> {
   return new TSOptionalTypeMatcher(typeAnnotation)
 }
 
 export class TSParameterPropertyMatcher extends Matcher<t.TSParameterProperty> {
   constructor(
-    private readonly parameter?: Matcher<t.Identifier | t.AssignmentPattern>
+    private readonly parameter?: Matcher<t.Identifier | t.AssignmentPattern>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSParameterProperty {
     if (!t.isNode(node) || !t.isTSParameterProperty(node)) {
       return false
@@ -9991,7 +9993,7 @@ export class TSParameterPropertyMatcher extends Matcher<t.TSParameterProperty> {
 }
 
 export function tsParameterProperty(
-  parameter?: Matcher<t.Identifier | t.AssignmentPattern>
+  parameter?: Matcher<t.Identifier | t.AssignmentPattern>,
 ): Matcher<t.TSParameterProperty> {
   return new TSParameterPropertyMatcher(parameter)
 }
@@ -10003,7 +10005,7 @@ export class TSParenthesizedTypeMatcher extends Matcher<t.TSParenthesizedType> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSParenthesizedType {
     if (!t.isNode(node) || !t.isTSParenthesizedType(node)) {
       return false
@@ -10025,7 +10027,7 @@ export class TSParenthesizedTypeMatcher extends Matcher<t.TSParenthesizedType> {
 }
 
 export function tsParenthesizedType(
-  typeAnnotation?: Matcher<t.TSType>
+  typeAnnotation?: Matcher<t.TSType>,
 ): Matcher<t.TSParenthesizedType> {
   return new TSParenthesizedTypeMatcher(typeAnnotation)
 }
@@ -10034,14 +10036,14 @@ export class TSPropertySignatureMatcher extends Matcher<t.TSPropertySignature> {
   constructor(
     private readonly key?: Matcher<t.Expression>,
     private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
-    private readonly initializer?: Matcher<t.Expression> | null
+    private readonly initializer?: Matcher<t.Expression> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSPropertySignature {
     if (!t.isNode(node) || !t.isTSPropertySignature(node)) {
       return false
@@ -10093,7 +10095,7 @@ export class TSPropertySignatureMatcher extends Matcher<t.TSPropertySignature> {
 export function tsPropertySignature(
   key?: Matcher<t.Expression>,
   typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
-  initializer?: Matcher<t.Expression> | null
+  initializer?: Matcher<t.Expression> | null,
 ): Matcher<t.TSPropertySignature> {
   return new TSPropertySignatureMatcher(key, typeAnnotation, initializer)
 }
@@ -10101,14 +10103,14 @@ export function tsPropertySignature(
 export class TSQualifiedNameMatcher extends Matcher<t.TSQualifiedName> {
   constructor(
     private readonly left?: Matcher<t.TSEntityName>,
-    private readonly right?: Matcher<t.Identifier>
+    private readonly right?: Matcher<t.Identifier>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSQualifiedName {
     if (!t.isNode(node) || !t.isTSQualifiedName(node)) {
       return false
@@ -10132,7 +10134,7 @@ export class TSQualifiedNameMatcher extends Matcher<t.TSQualifiedName> {
 
 export function tsQualifiedName(
   left?: Matcher<t.TSEntityName>,
-  right?: Matcher<t.Identifier>
+  right?: Matcher<t.Identifier>,
 ): Matcher<t.TSQualifiedName> {
   return new TSQualifiedNameMatcher(left, right)
 }
@@ -10144,7 +10146,7 @@ export class TSRestTypeMatcher extends Matcher<t.TSRestType> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSRestType {
     if (!t.isNode(node) || !t.isTSRestType(node)) {
       return false
@@ -10166,7 +10168,7 @@ export class TSRestTypeMatcher extends Matcher<t.TSRestType> {
 }
 
 export function tsRestType(
-  typeAnnotation?: Matcher<t.TSType>
+  typeAnnotation?: Matcher<t.TSType>,
 ): Matcher<t.TSRestType> {
   return new TSRestTypeMatcher(typeAnnotation)
 }
@@ -10174,14 +10176,14 @@ export function tsRestType(
 export class TSSatisfiesExpressionMatcher extends Matcher<t.TSSatisfiesExpression> {
   constructor(
     private readonly expression?: Matcher<t.Expression>,
-    private readonly typeAnnotation?: Matcher<t.TSType>
+    private readonly typeAnnotation?: Matcher<t.TSType>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSSatisfiesExpression {
     if (!t.isNode(node) || !t.isTSSatisfiesExpression(node)) {
       return false
@@ -10212,7 +10214,7 @@ export class TSSatisfiesExpressionMatcher extends Matcher<t.TSSatisfiesExpressio
 
 export function tsSatisfiesExpression(
   expression?: Matcher<t.Expression>,
-  typeAnnotation?: Matcher<t.TSType>
+  typeAnnotation?: Matcher<t.TSType>,
 ): Matcher<t.TSSatisfiesExpression> {
   return new TSSatisfiesExpressionMatcher(expression, typeAnnotation)
 }
@@ -10224,7 +10226,7 @@ export class TSStringKeywordMatcher extends Matcher<t.TSStringKeyword> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSStringKeyword {
     if (!t.isNode(node) || !t.isTSStringKeyword(node)) {
       return false
@@ -10245,7 +10247,7 @@ export class TSSymbolKeywordMatcher extends Matcher<t.TSSymbolKeyword> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSSymbolKeyword {
     if (!t.isNode(node) || !t.isTSSymbolKeyword(node)) {
       return false
@@ -10266,7 +10268,7 @@ export class TSThisTypeMatcher extends Matcher<t.TSThisType> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSThisType {
     if (!t.isNode(node) || !t.isTSThisType(node)) {
       return false
@@ -10284,14 +10286,14 @@ export class TSTupleTypeMatcher extends Matcher<t.TSTupleType> {
   constructor(
     private readonly elementTypes?:
       | Matcher<Array<t.TSType | t.TSNamedTupleMember>>
-      | Array<Matcher<t.TSType> | Matcher<t.TSNamedTupleMember>>
+      | Array<Matcher<t.TSType> | Matcher<t.TSNamedTupleMember>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSTupleType {
     if (!t.isNode(node) || !t.isTSTupleType(node)) {
       return false
@@ -10324,7 +10326,7 @@ export class TSTupleTypeMatcher extends Matcher<t.TSTupleType> {
 export function tsTupleType(
   elementTypes?:
     | Matcher<Array<t.TSType | t.TSNamedTupleMember>>
-    | Array<Matcher<t.TSType> | Matcher<t.TSNamedTupleMember>>
+    | Array<Matcher<t.TSType> | Matcher<t.TSNamedTupleMember>>,
 ): Matcher<t.TSTupleType> {
   return new TSTupleTypeMatcher(elementTypes)
 }
@@ -10333,14 +10335,14 @@ export class TSTypeAliasDeclarationMatcher extends Matcher<t.TSTypeAliasDeclarat
   constructor(
     private readonly id?: Matcher<t.Identifier>,
     private readonly typeParameters?: Matcher<t.TSTypeParameterDeclaration> | null,
-    private readonly typeAnnotation?: Matcher<t.TSType>
+    private readonly typeAnnotation?: Matcher<t.TSType>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSTypeAliasDeclaration {
     if (!t.isNode(node) || !t.isTSTypeAliasDeclaration(node)) {
       return false
@@ -10388,7 +10390,7 @@ export class TSTypeAliasDeclarationMatcher extends Matcher<t.TSTypeAliasDeclarat
 export function tsTypeAliasDeclaration(
   id?: Matcher<t.Identifier>,
   typeParameters?: Matcher<t.TSTypeParameterDeclaration> | null,
-  typeAnnotation?: Matcher<t.TSType>
+  typeAnnotation?: Matcher<t.TSType>,
 ): Matcher<t.TSTypeAliasDeclaration> {
   return new TSTypeAliasDeclarationMatcher(id, typeParameters, typeAnnotation)
 }
@@ -10400,7 +10402,7 @@ export class TSTypeAnnotationMatcher extends Matcher<t.TSTypeAnnotation> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSTypeAnnotation {
     if (!t.isNode(node) || !t.isTSTypeAnnotation(node)) {
       return false
@@ -10422,7 +10424,7 @@ export class TSTypeAnnotationMatcher extends Matcher<t.TSTypeAnnotation> {
 }
 
 export function tsTypeAnnotation(
-  typeAnnotation?: Matcher<t.TSType>
+  typeAnnotation?: Matcher<t.TSType>,
 ): Matcher<t.TSTypeAnnotation> {
   return new TSTypeAnnotationMatcher(typeAnnotation)
 }
@@ -10430,14 +10432,14 @@ export function tsTypeAnnotation(
 export class TSTypeAssertionMatcher extends Matcher<t.TSTypeAssertion> {
   constructor(
     private readonly typeAnnotation?: Matcher<t.TSType>,
-    private readonly expression?: Matcher<t.Expression>
+    private readonly expression?: Matcher<t.Expression>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSTypeAssertion {
     if (!t.isNode(node) || !t.isTSTypeAssertion(node)) {
       return false
@@ -10468,7 +10470,7 @@ export class TSTypeAssertionMatcher extends Matcher<t.TSTypeAssertion> {
 
 export function tsTypeAssertion(
   typeAnnotation?: Matcher<t.TSType>,
-  expression?: Matcher<t.Expression>
+  expression?: Matcher<t.Expression>,
 ): Matcher<t.TSTypeAssertion> {
   return new TSTypeAssertionMatcher(typeAnnotation, expression)
 }
@@ -10477,14 +10479,14 @@ export class TSTypeLiteralMatcher extends Matcher<t.TSTypeLiteral> {
   constructor(
     private readonly members?:
       | Matcher<Array<t.TSTypeElement>>
-      | Array<Matcher<t.TSTypeElement>>
+      | Array<Matcher<t.TSTypeElement>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSTypeLiteral {
     if (!t.isNode(node) || !t.isTSTypeLiteral(node)) {
       return false
@@ -10510,7 +10512,7 @@ export class TSTypeLiteralMatcher extends Matcher<t.TSTypeLiteral> {
 }
 
 export function tsTypeLiteral(
-  members?: Matcher<Array<t.TSTypeElement>> | Array<Matcher<t.TSTypeElement>>
+  members?: Matcher<Array<t.TSTypeElement>> | Array<Matcher<t.TSTypeElement>>,
 ): Matcher<t.TSTypeLiteral> {
   return new TSTypeLiteralMatcher(members)
 }
@@ -10522,7 +10524,7 @@ export class TSTypeOperatorMatcher extends Matcher<t.TSTypeOperator> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSTypeOperator {
     if (!t.isNode(node) || !t.isTSTypeOperator(node)) {
       return false
@@ -10544,7 +10546,7 @@ export class TSTypeOperatorMatcher extends Matcher<t.TSTypeOperator> {
 }
 
 export function tsTypeOperator(
-  typeAnnotation?: Matcher<t.TSType>
+  typeAnnotation?: Matcher<t.TSType>,
 ): Matcher<t.TSTypeOperator> {
   return new TSTypeOperatorMatcher(typeAnnotation)
 }
@@ -10553,14 +10555,14 @@ export class TSTypeParameterMatcher extends Matcher<t.TSTypeParameter> {
   constructor(
     private readonly constraint?: Matcher<t.TSType> | null,
     private readonly _default?: Matcher<t.TSType> | null,
-    private readonly name?: Matcher<string> | string
+    private readonly name?: Matcher<string> | string,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSTypeParameter {
     if (!t.isNode(node) || !t.isTSTypeParameter(node)) {
       return false
@@ -10611,7 +10613,7 @@ export class TSTypeParameterMatcher extends Matcher<t.TSTypeParameter> {
 export function tsTypeParameter(
   constraint?: Matcher<t.TSType> | null,
   _default?: Matcher<t.TSType> | null,
-  name?: Matcher<string> | string
+  name?: Matcher<string> | string,
 ): Matcher<t.TSTypeParameter> {
   return new TSTypeParameterMatcher(constraint, _default, name)
 }
@@ -10620,14 +10622,14 @@ export class TSTypeParameterDeclarationMatcher extends Matcher<t.TSTypeParameter
   constructor(
     private readonly params?:
       | Matcher<Array<t.TSTypeParameter>>
-      | Array<Matcher<t.TSTypeParameter>>
+      | Array<Matcher<t.TSTypeParameter>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSTypeParameterDeclaration {
     if (!t.isNode(node) || !t.isTSTypeParameterDeclaration(node)) {
       return false
@@ -10653,7 +10655,9 @@ export class TSTypeParameterDeclarationMatcher extends Matcher<t.TSTypeParameter
 }
 
 export function tsTypeParameterDeclaration(
-  params?: Matcher<Array<t.TSTypeParameter>> | Array<Matcher<t.TSTypeParameter>>
+  params?:
+    | Matcher<Array<t.TSTypeParameter>>
+    | Array<Matcher<t.TSTypeParameter>>,
 ): Matcher<t.TSTypeParameterDeclaration> {
   return new TSTypeParameterDeclarationMatcher(params)
 }
@@ -10662,14 +10666,14 @@ export class TSTypeParameterInstantiationMatcher extends Matcher<t.TSTypeParamet
   constructor(
     private readonly params?:
       | Matcher<Array<t.TSType>>
-      | Array<Matcher<t.TSType>>
+      | Array<Matcher<t.TSType>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSTypeParameterInstantiation {
     if (!t.isNode(node) || !t.isTSTypeParameterInstantiation(node)) {
       return false
@@ -10695,7 +10699,7 @@ export class TSTypeParameterInstantiationMatcher extends Matcher<t.TSTypeParamet
 }
 
 export function tsTypeParameterInstantiation(
-  params?: Matcher<Array<t.TSType>> | Array<Matcher<t.TSType>>
+  params?: Matcher<Array<t.TSType>> | Array<Matcher<t.TSType>>,
 ): Matcher<t.TSTypeParameterInstantiation> {
   return new TSTypeParameterInstantiationMatcher(params)
 }
@@ -10704,14 +10708,14 @@ export class TSTypePredicateMatcher extends Matcher<t.TSTypePredicate> {
   constructor(
     private readonly parameterName?: Matcher<t.Identifier | t.TSThisType>,
     private readonly typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
-    private readonly asserts?: Matcher<boolean> | boolean | null
+    private readonly asserts?: Matcher<boolean> | boolean | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSTypePredicate {
     if (!t.isNode(node) || !t.isTSTypePredicate(node)) {
       return false
@@ -10770,7 +10774,7 @@ export class TSTypePredicateMatcher extends Matcher<t.TSTypePredicate> {
 export function tsTypePredicate(
   parameterName?: Matcher<t.Identifier | t.TSThisType>,
   typeAnnotation?: Matcher<t.TSTypeAnnotation> | null,
-  asserts?: Matcher<boolean> | boolean | null
+  asserts?: Matcher<boolean> | boolean | null,
 ): Matcher<t.TSTypePredicate> {
   return new TSTypePredicateMatcher(parameterName, typeAnnotation, asserts)
 }
@@ -10778,14 +10782,14 @@ export function tsTypePredicate(
 export class TSTypeQueryMatcher extends Matcher<t.TSTypeQuery> {
   constructor(
     private readonly exprName?: Matcher<t.TSEntityName | t.TSImportType>,
-    private readonly typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null
+    private readonly typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSTypeQuery {
     if (!t.isNode(node) || !t.isTSTypeQuery(node)) {
       return false
@@ -10823,7 +10827,7 @@ export class TSTypeQueryMatcher extends Matcher<t.TSTypeQuery> {
 
 export function tsTypeQuery(
   exprName?: Matcher<t.TSEntityName | t.TSImportType>,
-  typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null
+  typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null,
 ): Matcher<t.TSTypeQuery> {
   return new TSTypeQueryMatcher(exprName, typeParameters)
 }
@@ -10831,14 +10835,14 @@ export function tsTypeQuery(
 export class TSTypeReferenceMatcher extends Matcher<t.TSTypeReference> {
   constructor(
     private readonly typeName?: Matcher<t.TSEntityName>,
-    private readonly typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null
+    private readonly typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSTypeReference {
     if (!t.isNode(node) || !t.isTSTypeReference(node)) {
       return false
@@ -10876,7 +10880,7 @@ export class TSTypeReferenceMatcher extends Matcher<t.TSTypeReference> {
 
 export function tsTypeReference(
   typeName?: Matcher<t.TSEntityName>,
-  typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null
+  typeParameters?: Matcher<t.TSTypeParameterInstantiation> | null,
 ): Matcher<t.TSTypeReference> {
   return new TSTypeReferenceMatcher(typeName, typeParameters)
 }
@@ -10888,7 +10892,7 @@ export class TSUndefinedKeywordMatcher extends Matcher<t.TSUndefinedKeyword> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSUndefinedKeyword {
     if (!t.isNode(node) || !t.isTSUndefinedKeyword(node)) {
       return false
@@ -10904,14 +10908,16 @@ export function tsUndefinedKeyword(): Matcher<t.TSUndefinedKeyword> {
 
 export class TSUnionTypeMatcher extends Matcher<t.TSUnionType> {
   constructor(
-    private readonly types?: Matcher<Array<t.TSType>> | Array<Matcher<t.TSType>>
+    private readonly types?:
+      | Matcher<Array<t.TSType>>
+      | Array<Matcher<t.TSType>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSUnionType {
     if (!t.isNode(node) || !t.isTSUnionType(node)) {
       return false
@@ -10937,7 +10943,7 @@ export class TSUnionTypeMatcher extends Matcher<t.TSUnionType> {
 }
 
 export function tsUnionType(
-  types?: Matcher<Array<t.TSType>> | Array<Matcher<t.TSType>>
+  types?: Matcher<Array<t.TSType>> | Array<Matcher<t.TSType>>,
 ): Matcher<t.TSUnionType> {
   return new TSUnionTypeMatcher(types)
 }
@@ -10949,7 +10955,7 @@ export class TSUnknownKeywordMatcher extends Matcher<t.TSUnknownKeyword> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSUnknownKeyword {
     if (!t.isNode(node) || !t.isTSUnknownKeyword(node)) {
       return false
@@ -10970,7 +10976,7 @@ export class TSVoidKeywordMatcher extends Matcher<t.TSVoidKeyword> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TSVoidKeyword {
     if (!t.isNode(node) || !t.isTSVoidKeyword(node)) {
       return false
@@ -10987,14 +10993,14 @@ export function tsVoidKeyword(): Matcher<t.TSVoidKeyword> {
 export class TaggedTemplateExpressionMatcher extends Matcher<t.TaggedTemplateExpression> {
   constructor(
     private readonly tag?: Matcher<t.Expression>,
-    private readonly quasi?: Matcher<t.TemplateLiteral>
+    private readonly quasi?: Matcher<t.TemplateLiteral>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TaggedTemplateExpression {
     if (!t.isNode(node) || !t.isTaggedTemplateExpression(node)) {
       return false
@@ -11018,7 +11024,7 @@ export class TaggedTemplateExpressionMatcher extends Matcher<t.TaggedTemplateExp
 
 export function taggedTemplateExpression(
   tag?: Matcher<t.Expression>,
-  quasi?: Matcher<t.TemplateLiteral>
+  quasi?: Matcher<t.TemplateLiteral>,
 ): Matcher<t.TaggedTemplateExpression> {
   return new TaggedTemplateExpressionMatcher(tag, quasi)
 }
@@ -11026,14 +11032,14 @@ export function taggedTemplateExpression(
 export class TemplateElementMatcher extends Matcher<t.TemplateElement> {
   constructor(
     private readonly value?: Matcher<any>,
-    private readonly tail?: Matcher<boolean> | boolean
+    private readonly tail?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TemplateElement {
     if (!t.isNode(node) || !t.isTemplateElement(node)) {
       return false
@@ -11061,7 +11067,7 @@ export class TemplateElementMatcher extends Matcher<t.TemplateElement> {
 
 export function templateElement(
   value?: Matcher<any>,
-  tail?: Matcher<boolean> | boolean
+  tail?: Matcher<boolean> | boolean,
 ): Matcher<t.TemplateElement> {
   return new TemplateElementMatcher(value, tail)
 }
@@ -11073,14 +11079,14 @@ export class TemplateLiteralMatcher extends Matcher<t.TemplateLiteral> {
       | Array<Matcher<t.TemplateElement>>,
     private readonly expressions?:
       | Matcher<Array<t.Expression | t.TSType>>
-      | Array<Matcher<t.Expression> | Matcher<t.TSType>>
+      | Array<Matcher<t.Expression> | Matcher<t.TSType>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TemplateLiteral {
     if (!t.isNode(node) || !t.isTemplateLiteral(node)) {
       return false
@@ -11128,7 +11134,7 @@ export function templateLiteral(
     | Array<Matcher<t.TemplateElement>>,
   expressions?:
     | Matcher<Array<t.Expression | t.TSType>>
-    | Array<Matcher<t.Expression> | Matcher<t.TSType>>
+    | Array<Matcher<t.Expression> | Matcher<t.TSType>>,
 ): Matcher<t.TemplateLiteral> {
   return new TemplateLiteralMatcher(quasis, expressions)
 }
@@ -11140,7 +11146,7 @@ export class ThisExpressionMatcher extends Matcher<t.ThisExpression> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ThisExpression {
     if (!t.isNode(node) || !t.isThisExpression(node)) {
       return false
@@ -11161,7 +11167,7 @@ export class ThisTypeAnnotationMatcher extends Matcher<t.ThisTypeAnnotation> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ThisTypeAnnotation {
     if (!t.isNode(node) || !t.isThisTypeAnnotation(node)) {
       return false
@@ -11182,7 +11188,7 @@ export class ThrowStatementMatcher extends Matcher<t.ThrowStatement> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.ThrowStatement {
     if (!t.isNode(node) || !t.isThrowStatement(node)) {
       return false
@@ -11201,7 +11207,7 @@ export class ThrowStatementMatcher extends Matcher<t.ThrowStatement> {
 }
 
 export function throwStatement(
-  argument?: Matcher<t.Expression>
+  argument?: Matcher<t.Expression>,
 ): Matcher<t.ThrowStatement> {
   return new ThrowStatementMatcher(argument)
 }
@@ -11213,7 +11219,7 @@ export class TopicReferenceMatcher extends Matcher<t.TopicReference> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TopicReference {
     if (!t.isNode(node) || !t.isTopicReference(node)) {
       return false
@@ -11231,14 +11237,14 @@ export class TryStatementMatcher extends Matcher<t.TryStatement> {
   constructor(
     private readonly block?: Matcher<t.BlockStatement>,
     private readonly handler?: Matcher<t.CatchClause> | null,
-    private readonly finalizer?: Matcher<t.BlockStatement> | null
+    private readonly finalizer?: Matcher<t.BlockStatement> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TryStatement {
     if (!t.isNode(node) || !t.isTryStatement(node)) {
       return false
@@ -11285,7 +11291,7 @@ export class TryStatementMatcher extends Matcher<t.TryStatement> {
 export function tryStatement(
   block?: Matcher<t.BlockStatement>,
   handler?: Matcher<t.CatchClause> | null,
-  finalizer?: Matcher<t.BlockStatement> | null
+  finalizer?: Matcher<t.BlockStatement> | null,
 ): Matcher<t.TryStatement> {
   return new TryStatementMatcher(block, handler, finalizer)
 }
@@ -11294,14 +11300,14 @@ export class TupleExpressionMatcher extends Matcher<t.TupleExpression> {
   constructor(
     private readonly elements?:
       | Matcher<Array<t.Expression | t.SpreadElement>>
-      | Array<Matcher<t.Expression> | Matcher<t.SpreadElement>>
+      | Array<Matcher<t.Expression> | Matcher<t.SpreadElement>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TupleExpression {
     if (!t.isNode(node) || !t.isTupleExpression(node)) {
       return false
@@ -11331,7 +11337,7 @@ export class TupleExpressionMatcher extends Matcher<t.TupleExpression> {
 export function tupleExpression(
   elements?:
     | Matcher<Array<t.Expression | t.SpreadElement>>
-    | Array<Matcher<t.Expression> | Matcher<t.SpreadElement>>
+    | Array<Matcher<t.Expression> | Matcher<t.SpreadElement>>,
 ): Matcher<t.TupleExpression> {
   return new TupleExpressionMatcher(elements)
 }
@@ -11340,14 +11346,14 @@ export class TupleTypeAnnotationMatcher extends Matcher<t.TupleTypeAnnotation> {
   constructor(
     private readonly types?:
       | Matcher<Array<t.FlowType>>
-      | Array<Matcher<t.FlowType>>
+      | Array<Matcher<t.FlowType>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TupleTypeAnnotation {
     if (!t.isNode(node) || !t.isTupleTypeAnnotation(node)) {
       return false
@@ -11373,7 +11379,7 @@ export class TupleTypeAnnotationMatcher extends Matcher<t.TupleTypeAnnotation> {
 }
 
 export function tupleTypeAnnotation(
-  types?: Matcher<Array<t.FlowType>> | Array<Matcher<t.FlowType>>
+  types?: Matcher<Array<t.FlowType>> | Array<Matcher<t.FlowType>>,
 ): Matcher<t.TupleTypeAnnotation> {
   return new TupleTypeAnnotationMatcher(types)
 }
@@ -11382,14 +11388,14 @@ export class TypeAliasMatcher extends Matcher<t.TypeAlias> {
   constructor(
     private readonly id?: Matcher<t.Identifier>,
     private readonly typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
-    private readonly right?: Matcher<t.FlowType>
+    private readonly right?: Matcher<t.FlowType>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TypeAlias {
     if (!t.isNode(node) || !t.isTypeAlias(node)) {
       return false
@@ -11432,7 +11438,7 @@ export class TypeAliasMatcher extends Matcher<t.TypeAlias> {
 export function typeAlias(
   id?: Matcher<t.Identifier>,
   typeParameters?: Matcher<t.TypeParameterDeclaration> | null,
-  right?: Matcher<t.FlowType>
+  right?: Matcher<t.FlowType>,
 ): Matcher<t.TypeAlias> {
   return new TypeAliasMatcher(id, typeParameters, right)
 }
@@ -11444,7 +11450,7 @@ export class TypeAnnotationMatcher extends Matcher<t.TypeAnnotation> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TypeAnnotation {
     if (!t.isNode(node) || !t.isTypeAnnotation(node)) {
       return false
@@ -11466,7 +11472,7 @@ export class TypeAnnotationMatcher extends Matcher<t.TypeAnnotation> {
 }
 
 export function typeAnnotation(
-  typeAnnotation?: Matcher<t.FlowType>
+  typeAnnotation?: Matcher<t.FlowType>,
 ): Matcher<t.TypeAnnotation> {
   return new TypeAnnotationMatcher(typeAnnotation)
 }
@@ -11474,14 +11480,14 @@ export function typeAnnotation(
 export class TypeCastExpressionMatcher extends Matcher<t.TypeCastExpression> {
   constructor(
     private readonly expression?: Matcher<t.Expression>,
-    private readonly typeAnnotation?: Matcher<t.TypeAnnotation>
+    private readonly typeAnnotation?: Matcher<t.TypeAnnotation>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TypeCastExpression {
     if (!t.isNode(node) || !t.isTypeCastExpression(node)) {
       return false
@@ -11512,7 +11518,7 @@ export class TypeCastExpressionMatcher extends Matcher<t.TypeCastExpression> {
 
 export function typeCastExpression(
   expression?: Matcher<t.Expression>,
-  typeAnnotation?: Matcher<t.TypeAnnotation>
+  typeAnnotation?: Matcher<t.TypeAnnotation>,
 ): Matcher<t.TypeCastExpression> {
   return new TypeCastExpressionMatcher(expression, typeAnnotation)
 }
@@ -11521,14 +11527,14 @@ export class TypeParameterMatcher extends Matcher<t.TypeParameter> {
   constructor(
     private readonly bound?: Matcher<t.TypeAnnotation> | null,
     private readonly _default?: Matcher<t.FlowType> | null,
-    private readonly variance?: Matcher<t.Variance> | null
+    private readonly variance?: Matcher<t.Variance> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TypeParameter {
     if (!t.isNode(node) || !t.isTypeParameter(node)) {
       return false
@@ -11582,7 +11588,7 @@ export class TypeParameterMatcher extends Matcher<t.TypeParameter> {
 export function typeParameter(
   bound?: Matcher<t.TypeAnnotation> | null,
   _default?: Matcher<t.FlowType> | null,
-  variance?: Matcher<t.Variance> | null
+  variance?: Matcher<t.Variance> | null,
 ): Matcher<t.TypeParameter> {
   return new TypeParameterMatcher(bound, _default, variance)
 }
@@ -11591,14 +11597,14 @@ export class TypeParameterDeclarationMatcher extends Matcher<t.TypeParameterDecl
   constructor(
     private readonly params?:
       | Matcher<Array<t.TypeParameter>>
-      | Array<Matcher<t.TypeParameter>>
+      | Array<Matcher<t.TypeParameter>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TypeParameterDeclaration {
     if (!t.isNode(node) || !t.isTypeParameterDeclaration(node)) {
       return false
@@ -11624,7 +11630,7 @@ export class TypeParameterDeclarationMatcher extends Matcher<t.TypeParameterDecl
 }
 
 export function typeParameterDeclaration(
-  params?: Matcher<Array<t.TypeParameter>> | Array<Matcher<t.TypeParameter>>
+  params?: Matcher<Array<t.TypeParameter>> | Array<Matcher<t.TypeParameter>>,
 ): Matcher<t.TypeParameterDeclaration> {
   return new TypeParameterDeclarationMatcher(params)
 }
@@ -11633,14 +11639,14 @@ export class TypeParameterInstantiationMatcher extends Matcher<t.TypeParameterIn
   constructor(
     private readonly params?:
       | Matcher<Array<t.FlowType>>
-      | Array<Matcher<t.FlowType>>
+      | Array<Matcher<t.FlowType>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TypeParameterInstantiation {
     if (!t.isNode(node) || !t.isTypeParameterInstantiation(node)) {
       return false
@@ -11666,7 +11672,7 @@ export class TypeParameterInstantiationMatcher extends Matcher<t.TypeParameterIn
 }
 
 export function typeParameterInstantiation(
-  params?: Matcher<Array<t.FlowType>> | Array<Matcher<t.FlowType>>
+  params?: Matcher<Array<t.FlowType>> | Array<Matcher<t.FlowType>>,
 ): Matcher<t.TypeParameterInstantiation> {
   return new TypeParameterInstantiationMatcher(params)
 }
@@ -11678,7 +11684,7 @@ export class TypeofTypeAnnotationMatcher extends Matcher<t.TypeofTypeAnnotation>
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.TypeofTypeAnnotation {
     if (!t.isNode(node) || !t.isTypeofTypeAnnotation(node)) {
       return false
@@ -11697,7 +11703,7 @@ export class TypeofTypeAnnotationMatcher extends Matcher<t.TypeofTypeAnnotation>
 }
 
 export function typeofTypeAnnotation(
-  argument?: Matcher<t.FlowType>
+  argument?: Matcher<t.FlowType>,
 ): Matcher<t.TypeofTypeAnnotation> {
   return new TypeofTypeAnnotationMatcher(argument)
 }
@@ -11708,14 +11714,14 @@ export class UnaryExpressionMatcher extends Matcher<t.UnaryExpression> {
       | Matcher<'void' | 'throw' | 'delete' | '!' | '+' | '-' | '~' | 'typeof'>
       | string,
     private readonly argument?: Matcher<t.Expression>,
-    private readonly prefix?: Matcher<boolean> | boolean
+    private readonly prefix?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.UnaryExpression {
     if (!t.isNode(node) || !t.isUnaryExpression(node)) {
       return false
@@ -11760,7 +11766,7 @@ export function unaryExpression(
     | Matcher<'void' | 'throw' | 'delete' | '!' | '+' | '-' | '~' | 'typeof'>
     | string,
   argument?: Matcher<t.Expression>,
-  prefix?: Matcher<boolean> | boolean
+  prefix?: Matcher<boolean> | boolean,
 ): Matcher<t.UnaryExpression> {
   return new UnaryExpressionMatcher(operator, argument, prefix)
 }
@@ -11769,14 +11775,14 @@ export class UnionTypeAnnotationMatcher extends Matcher<t.UnionTypeAnnotation> {
   constructor(
     private readonly types?:
       | Matcher<Array<t.FlowType>>
-      | Array<Matcher<t.FlowType>>
+      | Array<Matcher<t.FlowType>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.UnionTypeAnnotation {
     if (!t.isNode(node) || !t.isUnionTypeAnnotation(node)) {
       return false
@@ -11802,7 +11808,7 @@ export class UnionTypeAnnotationMatcher extends Matcher<t.UnionTypeAnnotation> {
 }
 
 export function unionTypeAnnotation(
-  types?: Matcher<Array<t.FlowType>> | Array<Matcher<t.FlowType>>
+  types?: Matcher<Array<t.FlowType>> | Array<Matcher<t.FlowType>>,
 ): Matcher<t.UnionTypeAnnotation> {
   return new UnionTypeAnnotationMatcher(types)
 }
@@ -11811,14 +11817,14 @@ export class UpdateExpressionMatcher extends Matcher<t.UpdateExpression> {
   constructor(
     private readonly operator?: Matcher<'++' | '--'> | string,
     private readonly argument?: Matcher<t.Expression>,
-    private readonly prefix?: Matcher<boolean> | boolean
+    private readonly prefix?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.UpdateExpression {
     if (!t.isNode(node) || !t.isUpdateExpression(node)) {
       return false
@@ -11861,7 +11867,7 @@ export class UpdateExpressionMatcher extends Matcher<t.UpdateExpression> {
 export function updateExpression(
   operator?: Matcher<'++' | '--'> | string,
   argument?: Matcher<t.Expression>,
-  prefix?: Matcher<boolean> | boolean
+  prefix?: Matcher<boolean> | boolean,
 ): Matcher<t.UpdateExpression> {
   return new UpdateExpressionMatcher(operator, argument, prefix)
 }
@@ -11873,7 +11879,7 @@ export class V8IntrinsicIdentifierMatcher extends Matcher<t.V8IntrinsicIdentifie
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.V8IntrinsicIdentifier {
     if (!t.isNode(node) || !t.isV8IntrinsicIdentifier(node)) {
       return false
@@ -11894,7 +11900,7 @@ export class V8IntrinsicIdentifierMatcher extends Matcher<t.V8IntrinsicIdentifie
 }
 
 export function v8IntrinsicIdentifier(
-  name?: Matcher<string> | string
+  name?: Matcher<string> | string,
 ): Matcher<t.V8IntrinsicIdentifier> {
   return new V8IntrinsicIdentifierMatcher(name)
 }
@@ -11904,14 +11910,14 @@ export class VariableDeclarationMatcher extends Matcher<t.VariableDeclaration> {
     private readonly kind?: Matcher<'var' | 'let' | 'const' | 'using'> | string,
     private readonly declarations?:
       | Matcher<Array<t.VariableDeclarator>>
-      | Array<Matcher<t.VariableDeclarator>>
+      | Array<Matcher<t.VariableDeclarator>>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.VariableDeclaration {
     if (!t.isNode(node) || !t.isVariableDeclaration(node)) {
       return false
@@ -11955,7 +11961,7 @@ export function variableDeclaration(
   kind?: Matcher<'var' | 'let' | 'const' | 'using'> | string,
   declarations?:
     | Matcher<Array<t.VariableDeclarator>>
-    | Array<Matcher<t.VariableDeclarator>>
+    | Array<Matcher<t.VariableDeclarator>>,
 ): Matcher<t.VariableDeclaration> {
   return new VariableDeclarationMatcher(kind, declarations)
 }
@@ -11963,14 +11969,14 @@ export function variableDeclaration(
 export class VariableDeclaratorMatcher extends Matcher<t.VariableDeclarator> {
   constructor(
     private readonly id?: Matcher<t.LVal>,
-    private readonly init?: Matcher<t.Expression> | null
+    private readonly init?: Matcher<t.Expression> | null,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.VariableDeclarator {
     if (!t.isNode(node) || !t.isVariableDeclarator(node)) {
       return false
@@ -12001,7 +12007,7 @@ export class VariableDeclaratorMatcher extends Matcher<t.VariableDeclarator> {
 
 export function variableDeclarator(
   id?: Matcher<t.LVal>,
-  init?: Matcher<t.Expression> | null
+  init?: Matcher<t.Expression> | null,
 ): Matcher<t.VariableDeclarator> {
   return new VariableDeclaratorMatcher(id, init)
 }
@@ -12013,7 +12019,7 @@ export class VarianceMatcher extends Matcher<t.Variance> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.Variance {
     if (!t.isNode(node) || !t.isVariance(node)) {
       return false
@@ -12034,7 +12040,7 @@ export class VarianceMatcher extends Matcher<t.Variance> {
 }
 
 export function variance(
-  kind?: Matcher<'minus' | 'plus'> | string
+  kind?: Matcher<'minus' | 'plus'> | string,
 ): Matcher<t.Variance> {
   return new VarianceMatcher(kind)
 }
@@ -12046,7 +12052,7 @@ export class VoidTypeAnnotationMatcher extends Matcher<t.VoidTypeAnnotation> {
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.VoidTypeAnnotation {
     if (!t.isNode(node) || !t.isVoidTypeAnnotation(node)) {
       return false
@@ -12063,14 +12069,14 @@ export function voidTypeAnnotation(): Matcher<t.VoidTypeAnnotation> {
 export class WhileStatementMatcher extends Matcher<t.WhileStatement> {
   constructor(
     private readonly test?: Matcher<t.Expression>,
-    private readonly body?: Matcher<t.Statement>
+    private readonly body?: Matcher<t.Statement>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.WhileStatement {
     if (!t.isNode(node) || !t.isWhileStatement(node)) {
       return false
@@ -12094,7 +12100,7 @@ export class WhileStatementMatcher extends Matcher<t.WhileStatement> {
 
 export function whileStatement(
   test?: Matcher<t.Expression>,
-  body?: Matcher<t.Statement>
+  body?: Matcher<t.Statement>,
 ): Matcher<t.WhileStatement> {
   return new WhileStatementMatcher(test, body)
 }
@@ -12102,14 +12108,14 @@ export function whileStatement(
 export class WithStatementMatcher extends Matcher<t.WithStatement> {
   constructor(
     private readonly object?: Matcher<t.Expression>,
-    private readonly body?: Matcher<t.Statement>
+    private readonly body?: Matcher<t.Statement>,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.WithStatement {
     if (!t.isNode(node) || !t.isWithStatement(node)) {
       return false
@@ -12133,7 +12139,7 @@ export class WithStatementMatcher extends Matcher<t.WithStatement> {
 
 export function withStatement(
   object?: Matcher<t.Expression>,
-  body?: Matcher<t.Statement>
+  body?: Matcher<t.Statement>,
 ): Matcher<t.WithStatement> {
   return new WithStatementMatcher(object, body)
 }
@@ -12141,14 +12147,14 @@ export function withStatement(
 export class YieldExpressionMatcher extends Matcher<t.YieldExpression> {
   constructor(
     private readonly argument?: Matcher<t.Expression> | null,
-    private readonly delegate?: Matcher<boolean> | boolean
+    private readonly delegate?: Matcher<boolean> | boolean,
   ) {
     super()
   }
 
   matchValue(
     node: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): node is t.YieldExpression {
     if (!t.isNode(node) || !t.isYieldExpression(node)) {
       return false
@@ -12187,7 +12193,7 @@ export class YieldExpressionMatcher extends Matcher<t.YieldExpression> {
 
 export function yieldExpression(
   argument?: Matcher<t.Expression> | null,
-  delegate?: Matcher<boolean> | boolean
+  delegate?: Matcher<boolean> | boolean,
 ): Matcher<t.YieldExpression> {
   return new YieldExpressionMatcher(argument, delegate)
 }

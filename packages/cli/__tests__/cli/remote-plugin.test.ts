@@ -13,14 +13,14 @@ test('can load and run with a remote plugin', async () => {
     res.end(
       await fs.readFile(plugin('increment-export-default'), {
         encoding: 'utf8',
-      })
+      }),
     )
   })
 
   try {
     const { status, stdout, stderr } = await runCodemodCLI(
       [afile, '--remote-plugin', server.requestURL('/plugin.js').toString()],
-      { cwd: dirname(afile) }
+      { cwd: dirname(afile) },
     )
 
     expect({ status, stdout, stderr }).toEqual({

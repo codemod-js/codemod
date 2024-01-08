@@ -5,7 +5,7 @@ import * as m from '@codemod/matchers'
 import { expression, js, t } from '@codemod/utils'
 import convertQUnitAssertExpectToAssertAsync from '../examples/convert-qunit-assert-expect-to-assert-async'
 import convertStaticClassToNamedExports from '../examples/convert-static-class-to-named-exports'
-import dedent = require('dedent')
+import dedent from 'dedent'
 
 /**
  * This test demonstrates using captures to extract parts of an AST for use in
@@ -48,9 +48,9 @@ test('codemod: unwrap unneeded IIFE', () => {
     m.callExpression(
       m.function(
         [],
-        (body = m.capture(m.or(m.anyExpression(), m.blockStatement())))
-      ) as m.Matcher<t.Expression>
-    )
+        (body = m.capture(m.or(m.anyExpression(), m.blockStatement()))),
+      ) as m.Matcher<t.Expression>,
+    ),
   )
 
   traverse(ast, {
@@ -97,10 +97,10 @@ test('codemod: remove return labels', () => {
             m.oneOf(
               m.variableDeclarator(
                 m.identifier((label = m.capture(m.anyString()))),
-                null
-              )
-            )
-          )
+                null,
+              ),
+            ),
+          ),
         )),
         m.zeroOrMore(),
         (returnStatement = m.capture(
@@ -108,13 +108,13 @@ test('codemod: remove return labels', () => {
             m.assignmentExpression(
               '=',
               m.identifier(m.fromCapture(label)),
-              (value = m.capture())
-            )
-          )
+              (value = m.capture()),
+            ),
+          ),
         )),
-        m.zeroOrMore()
-      )
-    )
+        m.zeroOrMore(),
+      ),
+    ),
   )
 
   function processFunction(path: NodePath<t.Function>): void {
@@ -134,7 +134,7 @@ test('codemod: remove return labels', () => {
           }
         }
         returnStatement.argument = value
-      }
+      },
     )
   }
 
@@ -166,24 +166,24 @@ test('codemod: assert to jest expect', () => {
   const assertEqualMatcher = m.callExpression(
     m.memberExpression(
       m.identifier('assert'),
-      m.identifier(m.or('strictEqual', 'deepEqual'))
+      m.identifier(m.or('strictEqual', 'deepEqual')),
     ),
     [
       (actual = m.capture(m.anyExpression())),
       (expected = m.capture(m.anyExpression())),
-    ]
+    ],
   )
 
   let falsyValue: m.CapturedMatcher<t.Expression>
   const assertFalsyMatcher = m.callExpression(
     m.memberExpression(m.identifier('assert'), m.identifier('ok')),
-    [m.unaryExpression('!', (falsyValue = m.capture(m.anyExpression())))]
+    [m.unaryExpression('!', (falsyValue = m.capture(m.anyExpression())))],
   )
 
   let truthValue: m.CapturedMatcher<t.Expression>
   const assertTruthyMatcher = m.callExpression(
     m.memberExpression(m.identifier('assert'), m.identifier('ok')),
-    [(truthValue = m.capture())]
+    [(truthValue = m.capture())],
   )
 
   traverse(ast, {
@@ -198,12 +198,12 @@ test('codemod: assert to jest expect', () => {
             t.callExpression(
               t.memberExpression(
                 t.callExpression(t.identifier('expect'), [actual]),
-                t.identifier('toEqual')
+                t.identifier('toEqual'),
               ),
-              [expected]
-            )
+              [expected],
+            ),
           )
-        }
+        },
       )
 
       // replace e.g. `assert.ok(!a)` with `expect(a).toBeFalsy()`
@@ -216,12 +216,12 @@ test('codemod: assert to jest expect', () => {
             t.callExpression(
               t.memberExpression(
                 t.callExpression(t.identifier('expect'), [falsyValue]),
-                t.identifier('toBeFalsy')
+                t.identifier('toBeFalsy'),
               ),
-              []
-            )
+              [],
+            ),
           )
-        }
+        },
       )
 
       // replace e.g. `assert.ok(a)` with `expect(a).toBeTruthy()`
@@ -234,12 +234,12 @@ test('codemod: assert to jest expect', () => {
             t.callExpression(
               t.memberExpression(
                 t.callExpression(t.identifier('expect'), [truthValue]),
-                t.identifier('toBeTruthy')
+                t.identifier('toBeTruthy'),
               ),
-              []
-            )
+              [],
+            ),
           )
-        }
+        },
       )
     },
   })

@@ -16,7 +16,7 @@ export class FromCaptureMatcher<T> extends Matcher<T> {
 }
 
 export function fromCapture<T>(
-  capturedMatcher: CapturedMatcher<T>
+  capturedMatcher: CapturedMatcher<T>,
 ): Matcher<T> {
   return new FromCaptureMatcher(capturedMatcher)
 }

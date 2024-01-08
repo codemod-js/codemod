@@ -6,7 +6,7 @@ export class Matcher<T> {
   matchValue(
     /* eslint-disable @typescript-eslint/no-unused-vars */
     value: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
     /* eslint-enable @typescript-eslint/no-unused-vars */
   ): value is T {
     throw new Error(`${this.constructor.name}#matchValue is not implemented`)

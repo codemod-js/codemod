@@ -9,7 +9,7 @@ import { CapturedMatcher } from './capture'
  */
 export class ContainerOfMatcher<
   C extends t.Node,
-  M extends t.Node = C
+  M extends t.Node = C,
 > extends CapturedMatcher<C, M> {
   constructor(private readonly containedMatcher: Matcher<C>) {
     super()
@@ -43,7 +43,7 @@ export class ContainerOfMatcher<
 }
 
 export function containerOf<C extends t.Node, M extends t.Node = C>(
-  containedMatcher: Matcher<C>
+  containedMatcher: Matcher<C>,
 ): ContainerOfMatcher<C, M> {
   return new ContainerOfMatcher(containedMatcher)
 }

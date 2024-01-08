@@ -1,5 +1,5 @@
 import { join } from 'path'
-import { BUILDER_KEYS, NodeField, NODE_FIELDS, t } from '@codemod/utils'
+import { BUILDER_KEYS, type NodeField, NODE_FIELDS, t } from '@codemod/utils'
 import format from './format'
 import {
   isValidatorOfType,
@@ -8,11 +8,11 @@ import {
   toFunctionName,
   typeForValidator,
 } from './ast'
-import dedent = require('dedent')
+import dedent from 'dedent'
 
 export const MATCHERS_FILE_PATH = join(
   __dirname,
-  '../../../matchers/src/matchers/generated.ts'
+  '../../../matchers/src/matchers/generated.ts',
 )
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,7 +45,7 @@ function stringifyMatcherForField(field: NodeField): string {
         ) {
           return `Matcher<${value}>`
         }
-      })
+      }),
     )
   }
 
@@ -58,7 +58,7 @@ function stringifyMatcherForField(field: NodeField): string {
 
 function possiblePrimitiveTypesForField(field: NodeField): Array<string> {
   return ['string', 'number', 'boolean'].filter((type) =>
-    isValidatorOfType(type, field.validate)
+    isValidatorOfType(type, field.validate),
   )
 }
 
@@ -115,8 +115,8 @@ function rebuildTo(out: SimpleWriter): string | void {
       const binding = toBindingIdentifierName(key)
       out.write(
         `    private readonly ${binding}?: ${stringifyMatcherForField(
-          field
-        )},\n`
+          field,
+        )},\n`,
       )
     }
     out.write(`  ) {\n`)
@@ -124,7 +124,7 @@ function rebuildTo(out: SimpleWriter): string | void {
     out.write(`  }\n`)
     out.write(`\n`)
     out.write(
-      `  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.${type} {\n`
+      `  matchValue(node: unknown, keys: ReadonlyArray<PropertyKey>): node is t.${type} {\n`,
     )
     out.write(`    if (\n`)
     out.write(`      !t.isNode(node) ||\n`)
@@ -157,13 +157,13 @@ function rebuildTo(out: SimpleWriter): string | void {
       if (isValidatorOfType('array', field.validate)) {
         out.write(`    } else if (Array.isArray(${binding})) {\n`)
         out.write(
-          `      if (!tupleOf<unknown>(...${binding}).matchValue(node.${key}, [...keys, ${keyString}])) {\n`
+          `      if (!tupleOf<unknown>(...${binding}).matchValue(node.${key}, [...keys, ${keyString}])) {\n`,
         )
         out.write(`        return false;\n`)
         out.write(`      }\n`)
       }
       out.write(
-        `    } else if (!${binding}.matchValue(node.${key}, [...keys, ${keyString}])) {\n`
+        `    } else if (!${binding}.matchValue(node.${key}, [...keys, ${keyString}])) {\n`,
       )
       out.write(`      return false;\n`)
       out.write(`    }\n`)

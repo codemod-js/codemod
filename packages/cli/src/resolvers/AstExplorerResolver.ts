@@ -12,7 +12,7 @@ const EDITOR_HASH_PATTERN = /^#\/gist\/(\w+)(?:\/(\w+))?$/
  */
 export class AstExplorerResolver extends NetworkResolver {
   constructor(
-    private readonly baseURL: URL = new URL('https://astexplorer.net/')
+    private readonly baseURL: URL = new URL('https://astexplorer.net/'),
   ) {
     super()
   }
@@ -23,7 +23,7 @@ export class AstExplorerResolver extends NetworkResolver {
       const canResolve =
         this.matchesHost(url) &&
         /^\/api\/v1\/gist\/[a-f0-9]+(\/(?:[a-f0-9]+|latest))?$/.test(
-          url.pathname
+          url.pathname,
         )
       return canResolve
     }
@@ -40,7 +40,7 @@ export class AstExplorerResolver extends NetworkResolver {
       data = JSON.parse(text)
     } catch {
       throw new Error(
-        `data loaded from ${source} is not JSON: ${text.slice(0, 100)}`
+        `data loaded from ${source} is not JSON: ${text.slice(0, 100)}`,
       )
     }
 
@@ -51,7 +51,7 @@ export class AstExplorerResolver extends NetworkResolver {
       !data.files['transform.js'].content
     ) {
       throw new Error(
-        "'transform.js' could not be found, perhaps transform is disabled"
+        "'transform.js' could not be found, perhaps transform is disabled",
       )
     }
 

@@ -36,22 +36,22 @@ test('includes "typescript" plugin when `sourceFilename` is not present', () => 
 test('includes "flow" plugin when `sourceFilename` is not TypeScript', () => {
   expect(buildOptions({ sourceFilename: 'index.js' }).plugins).toContain('flow')
   expect(buildOptions({ sourceFilename: 'index.jsx' }).plugins).toContain(
-    'flow'
+    'flow',
   )
 })
 
 test('includes "typescript" plugin when `sourceFilename` is TypeScript', () => {
   expect(buildOptions({ sourceFilename: 'index.ts' }).plugins).toContain(
-    'typescript'
+    'typescript',
   )
   expect(buildOptions({ sourceFilename: 'index.tsx' }).plugins).toContain(
-    'typescript'
+    'typescript',
   )
 })
 
 test('does not include "typescript" plugin when "flow" is already enabled', () => {
   expect(
-    buildOptions({ plugins: [['flow', { all: true }]] }).plugins
+    buildOptions({ plugins: [['flow', { all: true }]] }).plugins,
   ).not.toContain('typescript')
 })
 
@@ -59,28 +59,28 @@ test('does not mix conflicting "recordAndTuple" and "pipelineOperator" plugins',
   // adding recordAndTuple to existing plugins
   expect(
     buildOptions({ plugins: [['pipelineOperator', { proposal: 'smart' }]] })
-      .plugins
+      .plugins,
   ).not.toContainEqual(['recordAndTuple', expect.anything()])
   expect(
     buildOptions({
       plugins: [['pipelineOperator', { proposal: 'hack', topicToken: '#' }]],
-    }).plugins
+    }).plugins,
   ).not.toContainEqual(['recordAndTuple', expect.anything()])
   expect(
     buildOptions({
       plugins: [['pipelineOperator', { proposal: 'hack', topicToken: '%' }]],
-    }).plugins
+    }).plugins,
   ).toContainEqual(['recordAndTuple', { syntaxType: 'hash' }])
 
   // adding pipelineOperator to existing plugins
   expect(
     buildOptions({ plugins: [['recordAndTuple', { syntaxType: 'hash' }]] })
-      .plugins
+      .plugins,
   ).toContainEqual(['pipelineOperator', { proposal: 'minimal' }])
 })
 
 test('does not mutate `plugins` array', () => {
-  const plugins = []
+  const plugins: Array<PluginConfig> = []
   buildOptions({ plugins })
   expect(plugins).toHaveLength(0)
 })
@@ -99,9 +99,9 @@ test('includes "decorators" plugin with options by default', () => {
 })
 
 test('does not include "decorators" plugin if "decorators-legacy" is already enabled', () => {
-  expect(buildOptions({ plugins: ['decorators-legacy'] })).not.toContain(
-    'decorators'
-  )
+  expect(
+    buildOptions({ plugins: ['decorators-legacy'] }).plugins,
+  ).not.toContain('decorators')
 })
 
 test('enables `topLevelAwait` even if `allowAwaitOutsideFunction` is disabled', () => {
@@ -109,7 +109,7 @@ test('enables `topLevelAwait` even if `allowAwaitOutsideFunction` is disabled', 
   expect(options.plugins).toContain('topLevelAwait')
   expect(
     (parse('await 0', options).program.body[0] as t.ExpressionStatement)
-      .expression.type
+      .expression.type,
   ).toEqual('AwaitExpression')
 })
 
@@ -131,8 +131,8 @@ test('parses with a very broad set of options', () => {
       // demonstrate 'pipelineOperator' plugin with proposal=minimal
       x |> y
   `).program.body.map((node) =>
-      t.isExpressionStatement(node) ? node.expression.type : node.type
-    )
+      t.isExpressionStatement(node) ? node.expression.type : node.type,
+    ),
   ).toEqual([
     'ReturnStatement',
     'ExportNamedDeclaration',
@@ -164,7 +164,7 @@ test('allows parsing records and tuples with "bar" syntax', () => {
   ).expression
   expect(t.isTupleExpression(tuple)).toBe(true)
   expect(t.isRecordExpression((tuple as t.TupleExpression).elements[2])).toBe(
-    true
+    true,
   )
 })
 
@@ -174,6 +174,6 @@ test('allows parsing of abstract classes with abstract methods', () => {
       abstract class Foo {
         abstract bar(): void;
       }
-    `).program.body[0].type
+    `).program.body[0].type,
   ).toBe('ClassDeclaration')
 })

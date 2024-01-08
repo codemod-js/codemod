@@ -35,7 +35,7 @@ it('reads from a file, processes with plugins, then writes to that file', async 
   expect(
     await runCodemodCLI([afile, '-p', plugin('increment')], {
       cwd: dirname(afile),
-    })
+    }),
   ).toEqual({
     status: 0,
     stdout: `a-file.js\n1 file(s), 1 modified, 0 errors\n`,
@@ -49,12 +49,12 @@ it('processes all matching files in a directory', async function () {
     ['file1.js', '3 + 4;'],
     ['file2.ts', '0;'],
     ['sub-dir/file3.jsx', '99;'],
-    ['ignored.css', '* {}']
+    ['ignored.css', '* {}'],
   )
   expect(
     await runCodemodCLI([dirname(file1), '-p', plugin('increment')], {
       cwd: dirname(file1),
-    })
+    }),
   ).toEqual({
     status: 0,
     stdout: `file1.js\nfile2.ts\nsub-dir/file3.jsx\n3 file(s), 3 modified, 0 errors\n`,
@@ -79,13 +79,13 @@ it('prints files not processed in dim colors', async function () {
 it('can rewrite TypeScript files ending in `.ts`', async function () {
   const afile = await createTemporaryFile(
     'a-file.ts',
-    'type A = any;\nlet a = {} as any;'
+    'type A = any;\nlet a = {} as any;',
   )
   expect(
     await runCodemodCLI(
       [afile, '-p', plugin('replace-any-with-object', '.ts')],
-      { cwd: dirname(afile) }
-    )
+      { cwd: dirname(afile) },
+    ),
   ).toEqual({
     status: 0,
     stdout: `a-file.ts\n1 file(s), 1 modified, 0 errors\n`,
@@ -93,14 +93,14 @@ it('can rewrite TypeScript files ending in `.ts`', async function () {
   })
 
   expect(await fs.readFile(afile, 'utf8')).toEqual(
-    'type A = object;\nlet a = {} as object;'
+    'type A = object;\nlet a = {} as object;',
   )
 })
 
 it('can rewrite TypeScript files ending in `.tsx`', async function () {
   const afile = await createTemporaryFile(
     'a-file.tsx',
-    'export default () => (<div/>);'
+    'export default () => (<div/>);',
   )
   expect(await runCodemodCLI([afile], { cwd: dirname(afile) })).toEqual({
     status: 0,
@@ -109,7 +109,7 @@ it('can rewrite TypeScript files ending in `.tsx`', async function () {
   })
 
   expect(await fs.readFile(afile, 'utf8')).toEqual(
-    'export default () => (<div/>);'
+    'export default () => (<div/>);',
   )
 })
 
@@ -123,8 +123,8 @@ it('can pass options to a plugin without naming it', async function () {
         `${JSON.stringify({ a: 4 })}`,
         '--stdio',
       ],
-      { stdin: '' }
-    )
+      { stdin: '' },
+    ),
   ).toEqual({
     status: 0,
     stdout: `${JSON.stringify(JSON.stringify({ a: 4 }))};`,

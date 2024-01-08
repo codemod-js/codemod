@@ -12,7 +12,7 @@ test('can resolve files by inferring an extension from a configurable set of ext
   const packageJsonWithoutExtension = join(__dirname, '../../../package')
   expect(await resolver.canResolve(packageJsonWithoutExtension)).toBeTruthy()
   expect(await resolver.resolve(packageJsonWithoutExtension)).toEqual(
-    `${packageJsonWithoutExtension}.json`
+    `${packageJsonWithoutExtension}.json`,
   )
 })
 
@@ -21,7 +21,7 @@ test('can resolve files by inferring an dot-less extension from a configurable s
   const packageJsonWithoutExtension = join(__dirname, '../../../package')
   expect(await resolver.canResolve(packageJsonWithoutExtension)).toBeTruthy()
   expect(await resolver.resolve(packageJsonWithoutExtension)).toEqual(
-    `${packageJsonWithoutExtension}.json`
+    `${packageJsonWithoutExtension}.json`,
   )
 })
 
@@ -30,8 +30,8 @@ test('fails to resolve a non-existent file', async function () {
   expect(!(await resolver.canResolve('/this/file/is/not/there'))).toBeTruthy()
 
   await expect(
-    resolver.resolve('/this/file/is/not/there')
+    resolver.resolve('/this/file/is/not/there'),
   ).rejects.toThrowError(
-    'unable to resolve file from source: /this/file/is/not/there'
+    'unable to resolve file from source: /this/file/is/not/there',
   )
 })

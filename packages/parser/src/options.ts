@@ -1,4 +1,4 @@
-import {
+import type {
   DecoratorsPluginOptions,
   FlowPluginOptions,
   ParserOptions as BabelParserOptions,
@@ -106,7 +106,7 @@ export function buildOptions({
  *   typePluginForSourceFileName('index.jsx'); // 'flow'
  */
 function typePluginForSourceFileName(
-  sourceFileName?: string
+  sourceFileName?: string,
 ): 'flow' | 'typescript' {
   if (typeof sourceFileName === 'string' && !/\.tsx?$/i.test(sourceFileName)) {
     return 'flow'
@@ -117,31 +117,31 @@ function typePluginForSourceFileName(
 
 function getPluginOptions(
   plugins: Array<ParserPlugin>,
-  name: 'decorators'
+  name: 'decorators',
 ): DecoratorsPluginOptions | undefined
 function getPluginOptions(
   plugins: Array<ParserPlugin>,
-  name: 'pipelineOperator'
+  name: 'pipelineOperator',
 ): PipelineOperatorPluginOptions | undefined
 function getPluginOptions(
   plugins: Array<ParserPlugin>,
-  name: 'recordAndTuple'
+  name: 'recordAndTuple',
 ): RecordAndTuplePluginOptions | undefined
 function getPluginOptions(
   plugins: Array<ParserPlugin>,
-  name: 'flow'
+  name: 'flow',
 ): FlowPluginOptions | undefined
 function getPluginOptions(
   plugins: Array<ParserPlugin>,
-  name: 'typescript'
+  name: 'typescript',
 ): TypeScriptPluginOptions | undefined
 function getPluginOptions(
   plugins: Array<ParserPlugin>,
-  name: ParserPluginName
+  name: ParserPluginName,
 ): ParserPluginOptions | undefined
 function getPluginOptions(
   plugins: Array<ParserPlugin>,
-  name: ParserPluginName
+  name: ParserPluginName,
 ): ParserPluginOptions | undefined {
   for (const plugin of plugins) {
     if (Array.isArray(plugin)) {
@@ -165,7 +165,7 @@ function getPluginOptions(
  */
 function shouldAddPlugin(
   plugins: Array<ParserPlugin>,
-  plugin: ParserPlugin
+  plugin: ParserPlugin,
 ): boolean {
   const name = getPluginName(plugin)
 
@@ -235,7 +235,7 @@ function shouldAddPlugin(
  */
 function pluginListIncludesPlugin(
   plugins: Array<ParserPlugin>,
-  name: ParserPluginName
+  name: ParserPluginName,
 ): boolean {
   return plugins.some((entry) => getPluginName(entry) === name)
 }

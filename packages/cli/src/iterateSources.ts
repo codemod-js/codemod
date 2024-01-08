@@ -1,10 +1,10 @@
 import { strict as assert } from 'assert'
 import { promises as fs } from 'fs'
-import ignore, { Ignore } from 'ignore'
+import ignore, { type Ignore } from 'ignore'
 import { basename, dirname, extname, isAbsolute, join, relative } from 'path'
 import { Source } from './TransformRunner'
-import globby = require('globby')
-import findUp = require('find-up')
+import globby from 'globby'
+import findUp from 'find-up'
 
 export interface Options {
   extensions?: Set<string>
@@ -58,7 +58,7 @@ class FileFilter {
   }
 
   async addGitignoreFilesTraversingUpToGitRoot(
-    start = this.cwd
+    start = this.cwd,
   ): Promise<this> {
     const gitroot = await findGitroot(start)
 
@@ -87,7 +87,7 @@ class FileFilter {
     if (!this.ignoresByGitignoreDirectory.has(dirname(gitignorePath))) {
       this.ignoresByGitignoreDirectory.set(
         dirname(gitignorePath),
-        await readIgnoreFile(gitignorePath)
+        await readIgnoreFile(gitignorePath),
       )
     }
   }
@@ -120,7 +120,7 @@ class FileFilter {
 
 async function* iterateDirectory(
   root: string,
-  { extensions }: Options = {}
+  { extensions }: Options = {},
 ): AsyncGenerator<Source> {
   assert(isAbsolute(root), `expected absolute path: ${root}`)
 
@@ -157,7 +157,7 @@ async function* iterateDirectory(
 
 async function* iterateFiles(
   paths: Array<string>,
-  { extensions, cwd }: { extensions?: Set<string>; cwd: string }
+  { extensions, cwd }: { extensions?: Set<string>; cwd: string },
 ): AsyncGenerator<Source> {
   const filter = await FileFilter.build({ cwd, extensions })
 
@@ -179,7 +179,7 @@ export async function* iterateSources(
   {
     extensions,
     cwd = process.cwd(),
-  }: { extensions?: Set<string>; cwd?: string } = {}
+  }: { extensions?: Set<string>; cwd?: string } = {},
 ): AsyncGenerator<Source> {
   assert(isAbsolute(cwd), `expected absolute path: ${cwd}`)
 

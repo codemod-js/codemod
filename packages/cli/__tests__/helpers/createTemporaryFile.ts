@@ -1,11 +1,11 @@
 import { promises as fs } from 'fs'
 import { dirname, join } from 'path'
-import tempy = require('tempy')
+import tempy from 'tempy'
 import createTemporaryDirectory from './createTemporaryDirectory'
 
 export default async function createTemporaryFile(
   name: string,
-  content: string
+  content: string,
 ): Promise<string> {
   const fullPath = tempy.file({ name })
   await fs.writeFile(fullPath, content, 'utf8')
@@ -23,6 +23,6 @@ export async function createTemporaryFiles(
       await fs.mkdir(dirname(fullPath), { recursive: true })
       await fs.writeFile(fullPath, content)
       return fullPath
-    })
+    }),
   )
 }

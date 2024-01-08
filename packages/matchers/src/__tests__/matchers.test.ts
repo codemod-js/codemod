@@ -85,7 +85,7 @@ test('tupleOf matches a fixed-length array', () => {
   const stringNumberAnything = m.tupleOf<unknown>(
     m.anyString(),
     m.anyNumber(),
-    m.anything()
+    m.anything(),
   )
 
   // happy path
@@ -133,7 +133,7 @@ test('anyExpression matches any known AST expression node type', () => {
   expect(
     m
       .anyExpression()
-      .match(t.functionExpression(null, [], t.blockStatement([])))
+      .match(t.functionExpression(null, [], t.blockStatement([]))),
   ).toBeTruthy()
 
   expect(m.anyExpression().match(t.file(t.program([]), [], []))).toBeFalsy()
@@ -156,13 +156,13 @@ test('anyStatement matches any known AST statement node type', () => {
 
 test('m.function( matches any known function node type', () => {
   expect(
-    m.function().match(t.functionDeclaration(null, [], t.blockStatement([])))
+    m.function().match(t.functionDeclaration(null, [], t.blockStatement([]))),
   ).toBeTruthy()
   expect(
-    m.function().match(t.functionExpression(null, [], t.blockStatement([])))
+    m.function().match(t.functionExpression(null, [], t.blockStatement([]))),
   ).toBeTruthy()
   expect(
-    m.function().match(t.arrowFunctionExpression([], t.blockStatement([])))
+    m.function().match(t.arrowFunctionExpression([], t.blockStatement([]))),
   ).toBeTruthy()
 
   expect(m.function().match(t.thisExpression())).toBeFalsy()
@@ -172,7 +172,7 @@ test('m.function( matches any known function node type', () => {
 test('anyList reduces to tupleOf without any slices', () => {
   expect(m.anyList().match([])).toBeTruthy()
   expect(
-    m.anyList<number | string>(m.anyString(), m.anyNumber()).match(['', 0])
+    m.anyList<number | string>(m.anyString(), m.anyNumber()).match(['', 0]),
   ).toBeTruthy()
 })
 
@@ -186,7 +186,7 @@ test('anyList with a fixed-width leading slice', () => {
 test('anyList with slices with specific matchers', () => {
   const list = m.anyList<number | string>(
     m.slice({ min: 1, max: 2, matcher: m.anyNumber() }),
-    m.anyString()
+    m.anyString(),
   )
   expect(list.match([''])).toBeFalsy()
   expect(list.match([0, ''])).toBeTruthy()
@@ -196,7 +196,7 @@ test('anyList with slices with specific matchers', () => {
   const matcher = m.anyList<string | number>(
     m.anyString(),
     m.oneOrMore(m.anyNumber()),
-    m.anyString()
+    m.anyString(),
   )
   expect(matcher.match(['', 1, 1, ''])).toBeTruthy()
   expect(matcher.match(['', 1, null, ''])).toBeFalsy()
@@ -229,7 +229,7 @@ test('anyList with multiple fixed slices', () => {
     m.anyString(),
     m.slice(1),
     m.anyNumber(),
-    m.slice(1)
+    m.slice(1),
   )
   expect(list.match([])).toBeFalsy()
   expect(list.match([1, '', 2, 3, ''])).toBeTruthy()
@@ -240,7 +240,7 @@ test('anyList with multiple dynamic slices', () => {
   const list = m.anyList<t.Statement>(
     m.zeroOrMore(),
     m.returnStatement(),
-    m.oneOrMore()
+    m.oneOrMore(),
   )
   expect(list.match(js('return;').program.body)).toBeFalsy()
   expect(list.match(js('return; foo();').program.body)).toBeTruthy()
@@ -285,13 +285,13 @@ test('containerOf recurses to find a node matching the pattern', () => {
   expect(
     m
       .containerOf(m.binaryExpression('+', m.identifier(), m.numericLiteral()))
-      .match(js('return a + 1'))
+      .match(js('return a + 1')),
   ).toBeTruthy()
   expect(
-    m.containerOf(m.numericLiteral()).match(js('return a + 1'))
+    m.containerOf(m.numericLiteral()).match(js('return a + 1')),
   ).toBeTruthy()
   expect(
-    m.containerOf(m.numericLiteral()).match(js('return a + b'))
+    m.containerOf(m.numericLiteral()).match(js('return a + b')),
   ).toBeFalsy()
 })
 
@@ -307,7 +307,7 @@ test('containerOf captures the first matching value', () => {
     current: t.binaryExpression(
       '+',
       t.binaryExpression('+', t.identifier('a'), t.identifier('b')),
-      t.identifier('c')
+      t.identifier('c'),
     ),
   })
 })
@@ -319,16 +319,16 @@ test('containerOf can be used in a nested matcher', () => {
         m.functionDeclaration(
           m.anything(),
           m.anything(),
-          m.containerOf(m.thisExpression())
-        )
+          m.containerOf(m.thisExpression()),
+        ),
       )
-      .match(js('function returnThis() { return this; }'))
+      .match(js('function returnThis() { return this; }')),
   ).toBeTruthy()
 })
 
 test('matcher builds a matcher based on a predicate', () => {
   const matcher = m.matcher(
-    (value) => typeof value === 'string' && value.startsWith('no')
+    (value) => typeof value === 'string' && value.startsWith('no'),
   )
 
   expect(matcher.match('no')).toBeTruthy()

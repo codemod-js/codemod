@@ -5,31 +5,35 @@
   "repository": "https://github.com/codemod-js/codemod",
   "license": "Apache-2.0",
   "author": "Brian Donovan",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "type": "module",
+  "exports": {
+    "bun": "./src/index.ts",
+    "default": "./dist/index.js"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "build"
+    "dist"
   ],
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
-    "clean": "rm -rf build tsconfig.build.tsbuildinfo",
+    "clean": "rimraf dist tsconfig.build.tsbuildinfo",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepublishOnly": "pnpm clean && pnpm build",
     "test": "is-ci test:coverage test:watch",
-    "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test:coverage": "bun test --coverage",
+    "test:watch": "bun test --watch"
   },
   "dependencies": {
-    "@babel/parser": "^7.20.15"
+    "@babel/parser": "esm"
   },
   "devDependencies": {
     "@babel/types": "^7.20.7",
-    "@types/jest": "^25.1.0",
-    "@types/node": "^18.14.0",
+    "@types/jest": "^29",
+    "@types/node": "^20",
     "is-ci-cli": "^2.2.0",
-    "jest": "^27.3.1",
-    "typescript": "^4.9.5"
+    "typescript": "^5.3"
   },
   "publishConfig": {
     "access": "public"

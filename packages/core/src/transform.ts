@@ -1,6 +1,6 @@
 import {
-  BabelFileResult,
-  TransformOptions as BabelTransformOptions,
+  type BabelFileResult,
+  type TransformOptions as BabelTransformOptions,
   transformSync,
 } from '@babel/core'
 import { strict as assert } from 'assert'
@@ -15,7 +15,7 @@ export type TransformOptions = BabelTransformOptions
  */
 export function transform(
   code: string,
-  options: TransformOptions = {}
+  options: TransformOptions = {},
 ): BabelFileResult {
   const result = transformSync(code, {
     ...options,

@@ -2,12 +2,12 @@ import { deepEqual } from 'assert'
 import {
   TransformRunner,
   Source,
-  SourceTransformResult,
+  type SourceTransformResult,
   SourceTransformResultKind,
 } from '../../src/TransformRunner'
 
 async function run(
-  runner: TransformRunner
+  runner: TransformRunner,
 ): Promise<Array<SourceTransformResult>> {
   const result: Array<SourceTransformResult> = []
 

@@ -10,7 +10,7 @@ async function asyncCollect<T>(iter: AsyncIterable<T>): Promise<Array<T>> {
   for await (const element of iter) {
     result.push(element)
   }
-  return result
+  return result.toSorted()
 }
 
 test('empty directory', async () => {
@@ -31,11 +31,13 @@ test('single file', async () => {
 test('selecting extensions', async () => {
   const [js] = await createTemporaryFiles(
     ['js-files/file.js', 'JS file'],
-    ['ts-files/file.ts', 'TS file']
+    ['ts-files/file.ts', 'TS file'],
   )
   const root = dirname(dirname(js))
   expect(
-    await asyncCollect(iterateSources([root], { extensions: new Set(['.js']) }))
+    await asyncCollect(
+      iterateSources([root], { extensions: new Set(['.js']) }),
+    ),
   ).toEqual([
     {
       path: js,
@@ -53,21 +55,21 @@ test('globbing', async () => {
     ['subdir/utils.test.ts', ''],
     ['subdir/.gitignore', 'ignored.test.ts'],
     ['subdir/ignored.test.ts', ''],
-    ['.git/config', '']
+    ['.git/config', ''],
   )
 
   expect(
     await asyncCollect(
-      iterateSources(['**/*.test.ts'], { cwd: dirname(paths[0]) })
-    )
+      iterateSources(['**/*.test.ts'], { cwd: dirname(paths[0]) }),
+    ),
   ).toEqual(
     paths
       .filter((path) => path.endsWith('.test.ts') && !path.includes('ignored'))
       .map((path) =>
         expect.objectContaining({
           path,
-        })
-      )
+        }),
+      ),
   )
 })
 
@@ -82,7 +84,7 @@ test('gitignore', async () => {
     ['subdir/ignored-by-subdir.js', ''],
     ['subdir/subdir2/.gitignore', ''],
     ['subdir/subdir2/ignored-by-root.d.ts', ''],
-    ['subdir/subdir2/ignored-by-subdir.js', '']
+    ['subdir/subdir2/ignored-by-subdir.js', ''],
   )
 
   const root = dirname(main)

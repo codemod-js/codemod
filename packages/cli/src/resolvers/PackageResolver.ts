@@ -1,5 +1,5 @@
-import { sync as resolveSync } from 'resolve'
-import Resolver from './Resolver'
+import resolve from 'resolve'
+import type Resolver from './Resolver'
 
 /**
  * Resolves node modules by name relative to the working directory.
@@ -18,6 +18,6 @@ export class PackageResolver implements Resolver {
   }
 
   async resolve(source: string): Promise<string> {
-    return resolveSync(source, { basedir: process.cwd() })
+    return resolve.sync(source, { basedir: process.cwd() })
   }
 }

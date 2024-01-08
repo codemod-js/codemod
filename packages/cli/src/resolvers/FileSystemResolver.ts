@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs'
 import { resolve } from 'path'
 import { PluginExtensions } from '../extensions'
-import Resolver from './Resolver'
+import type Resolver from './Resolver'
 
 async function isFile(path: string): Promise<boolean> {
   try {
@@ -16,7 +16,7 @@ async function isFile(path: string): Promise<boolean> {
  */
 export class FileSystemResolver implements Resolver {
   constructor(
-    private readonly optionalExtensions: Set<string> = PluginExtensions
+    private readonly optionalExtensions: Set<string> = PluginExtensions,
   ) {}
 
   private *enumerateCandidateSources(source: string): IterableIterator<string> {

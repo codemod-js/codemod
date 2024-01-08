@@ -7,19 +7,19 @@ test('allocates nothing given an empty list of slices', () => {
 
 test('allocates available to a single slice within its bounds', () => {
   expect(
-    Array.from(distributeAcrossSlices([slice({ min: 0, max: 3 })], 2))
+    Array.from(distributeAcrossSlices([slice({ min: 0, max: 3 })], 2)),
   ).toEqual([[2]])
   expect(
-    Array.from(distributeAcrossSlices([slice({ min: 2, max: 4 })], 3))
+    Array.from(distributeAcrossSlices([slice({ min: 2, max: 4 })], 3)),
   ).toEqual([[3]])
 })
 
 test('allocates nothing if available is outside single slice bounds', () => {
   expect(
-    Array.from(distributeAcrossSlices([slice({ min: 2, max: 4 })], 1))
+    Array.from(distributeAcrossSlices([slice({ min: 2, max: 4 })], 1)),
   ).toEqual([])
   expect(
-    Array.from(distributeAcrossSlices([slice({ min: 2, max: 4 })], 5))
+    Array.from(distributeAcrossSlices([slice({ min: 2, max: 4 })], 5)),
   ).toEqual([])
 })
 
@@ -28,9 +28,9 @@ test('allocates a single space across multiple slices', () => {
     Array.from(
       distributeAcrossSlices(
         [slice({ min: 0, max: 1 }), slice({ min: 0, max: 1 })],
-        1
-      )
-    )
+        1,
+      ),
+    ),
   ).toEqual([
     [1, 0],
     [0, 1],
@@ -46,9 +46,9 @@ test('allocates multiple spaces across multiple slices', () => {
           slice({ min: 0, max: 1 }),
           slice({ min: 2, max: 3 }),
         ],
-        5
-      )
-    )
+        5,
+      ),
+    ),
   ).toEqual([
     [2, 1, 2],
     [2, 0, 3],
@@ -61,9 +61,9 @@ test('never allocates to empty slices', () => {
     Array.from(
       distributeAcrossSlices(
         [slice(0), slice({ min: 0, max: 1 }), slice({ min: 0, max: 1 })],
-        1
-      )
-    )
+        1,
+      ),
+    ),
   ).toEqual([
     [0, 1, 0],
     [0, 0, 1],
@@ -76,13 +76,19 @@ test('allocates correctly when slices have no upper bound', () => {
 
 test('allocates correctly with a trailing unbounded slice', () => {
   expect(
-    Array.from(distributeAcrossSlices([zeroOrMore(), slice(1), oneOrMore()], 1))
+    Array.from(
+      distributeAcrossSlices([zeroOrMore(), slice(1), oneOrMore()], 1),
+    ),
   ).toEqual([])
   expect(
-    Array.from(distributeAcrossSlices([zeroOrMore(), slice(1), oneOrMore()], 2))
+    Array.from(
+      distributeAcrossSlices([zeroOrMore(), slice(1), oneOrMore()], 2),
+    ),
   ).toEqual([[0, 1, 1]])
   expect(
-    Array.from(distributeAcrossSlices([zeroOrMore(), slice(1), oneOrMore()], 3))
+    Array.from(
+      distributeAcrossSlices([zeroOrMore(), slice(1), oneOrMore()], 3),
+    ),
   ).toEqual([
     [1, 1, 1],
     [0, 1, 2],

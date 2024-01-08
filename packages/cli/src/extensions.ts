@@ -1,5 +1,7 @@
 function union<T>(...sets: Array<Set<T>>): Set<T> {
-  return new Set(sets.reduce((result, set) => [...result, ...set], []))
+  return new Set(
+    sets.reduce((result: Array<T>, set) => [...result, ...set], []),
+  )
 }
 
 export const TypeScriptExtensions = new Set([
@@ -22,13 +24,13 @@ export const JavaScriptExtensions = new Set([
 ])
 export const PluginExtensions = union(
   TypeScriptExtensions,
-  JavaScriptExtensions
+  JavaScriptExtensions,
 )
 export const RequireableExtensions = union(
   TypeScriptExtensions,
-  JavaScriptExtensions
+  JavaScriptExtensions,
 )
 export const TransformableExtensions = union(
   TypeScriptExtensions,
-  JavaScriptExtensions
+  JavaScriptExtensions,
 )

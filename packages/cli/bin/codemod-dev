@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-
-export CODEMOD_RUN_WITH_ESBUILD=1
-exec "${SCRIPT_DIR}/codemod" $@

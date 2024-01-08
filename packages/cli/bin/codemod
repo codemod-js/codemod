@@ -1,31 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
+import { run } from '..'
 
-if (process.env.CODEMOD_RUN_WITH_ESBUILD) {
-  require('esbuild-runner/register')
-}
-
-const run = (() => {
-  try {
-    return require('../src').default
-  } catch {
-    // ignore
-  }
-
-  try {
-    return require('../').default
-  } catch {
-    process.stderr.write(
-      'codemod does not seem to be built and the development files could not be loaded'
-    )
-    process.exit(1)
-  }
-})()
-
-run(process.argv)
-  .then((status) => {
-    process.exit(status)
-  })
-  .catch((err) => {
-    console.error(err.stack)
-    process.exit(-1)
-  })
+process.exit(await run(process.argv))

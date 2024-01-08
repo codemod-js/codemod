@@ -1,16 +1,21 @@
 import {
   parse as babelParse,
-  ParserOptions as BabelParserOptions,
+  type ParserOptions as BabelParserOptions,
 } from '@babel/parser'
-import { File } from '@babel/types'
+import { type File } from '@babel/types'
 import {
   buildOptions,
   isParserPluginName,
-  ParserOptions,
-  ParserPluginName,
+  type ParserOptions,
+  type ParserPluginName,
 } from './options'
 
-export { buildOptions, isParserPluginName, ParserOptions, ParserPluginName }
+export {
+  buildOptions,
+  isParserPluginName,
+  type ParserOptions,
+  type ParserPluginName,
+}
 
 /**
  * Wraps `parse` from `@babel/parser`, but sets default options such that as few

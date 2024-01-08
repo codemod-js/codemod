@@ -35,7 +35,7 @@ export type Validator =
 
 export function isValidatorOfType(
   type: string,
-  validator: Validator | undefined
+  validator: Validator | undefined,
 ): boolean {
   if (!validator) {
     return false
@@ -96,15 +96,15 @@ export function typeForValidator(validator?: Validator): t.TSType {
         } else {
           throw new Error(`unexpected 'oneOf' value: ${type}`)
         }
-      })
+      }),
     )
   }
 
   if ('oneOfNodeTypes' in validator) {
     return t.tsUnionType(
       validator.oneOfNodeTypes.map((type) =>
-        t.tsTypeReference(t.identifier(type))
-      )
+        t.tsTypeReference(t.identifier(type)),
+      ),
     )
   }
 
@@ -129,7 +129,7 @@ function stringifyQualifiedName(type: t.TSQualifiedName): string {
 
 export function stringifyType(
   type: t.TSType,
-  replacer?: (type: t.TSType, value: string) => string | undefined
+  replacer?: (type: t.TSType, value: string) => string | undefined,
 ): string {
   function withReplacer(value: string): string {
     return (replacer && replacer(type, value)) || value
@@ -137,7 +137,7 @@ export function stringifyType(
 
   if (t.isTSUnionType(type)) {
     return withReplacer(
-      type.types.map((child) => stringifyType(child, replacer)).join(' | ')
+      type.types.map((child) => stringifyType(child, replacer)).join(' | '),
     )
   } else if (t.isTSAnyKeyword(type)) {
     return withReplacer('any')
@@ -163,7 +163,7 @@ export function stringifyType(
 export function stringifyValidator(
   validator: Validator | undefined,
   nodePrefix: string,
-  nodeSuffix: string
+  nodeSuffix: string,
 ): string {
   return stringifyType(typeForValidator(validator), (type, value) => {
     if (t.isTSTypeReference(type)) {

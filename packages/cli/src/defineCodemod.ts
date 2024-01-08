@@ -15,13 +15,13 @@ export function defineCodemod<T>(
       m: typeof matchers
       t: typeof utils.types
     },
-    options?: T
-  ) => utils.Babel.PluginItem
+    options?: T,
+  ) => utils.Babel.PluginItem,
 ) {
   return function (_?: unknown, options?: T) {
     return fn(
       { utils, matchers, types: utils.types, m: matchers, t: utils.types },
-      options
+      options,
     )
   }
 }
