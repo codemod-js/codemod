@@ -5,42 +5,42 @@
   "repository": "https://github.com/codemod-js/codemod.git",
   "license": "Apache-2.0",
   "author": "Brian Donovan",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "type": "module",
+  "exports": {
+    "bun": "./src/index.ts",
+    "default": "./dist/index.js"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
     "codemod": "./bin/codemod"
   },
   "files": [
     "bin",
-    "build"
+    "dist"
   ],
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
-    "clean": "rm -rf build tsconfig.build.tsbuildinfo",
+    "clean": "rimraf dist tsconfig.build.tsbuildinfo",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepublishOnly": "pnpm clean && pnpm build",
     "test": "is-ci test:coverage test:watch",
-    "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test:coverage": "bun test --coverage",
+    "test:watch": "bun test --watch"
   },
   "dependencies": {
-    "@babel/core": "^7.20.12",
-    "@babel/generator": "^7.20.14",
-    "@babel/parser": "^7.20.15",
-    "@babel/plugin-proposal-class-properties": "^7.18.6",
-    "@babel/preset-env": "^7.20.2",
-    "@babel/preset-typescript": "^7.18.6",
-    "@babel/traverse": "^7.20.13",
-    "@babel/types": "^7.20.7",
-    "@codemod/core": "^2.2.0",
-    "@codemod/matchers": "^1.6.0",
-    "@codemod/parser": "^1.4.0",
-    "@codemod/utils": "^1.1.0",
-    "core-js": "^3.1.4",
+    "@babel/core": "esm",
+    "@babel/generator": "esm",
+    "@babel/parser": "esm",
+    "@babel/traverse": "esm",
+    "@babel/types": "esm",
+    "@codemod/core": "workspace:^",
+    "@codemod/matchers": "workspace:^",
+    "@codemod/parser": "workspace:^",
+    "@codemod/utils": "workspace:^",
+    "commonjs-extension-resolution-loader": "^0.1.0",
     "cross-fetch": "^3.1.5",
-    "esbuild": "^0.13.13",
-    "esbuild-runner": "^2.2.1",
     "find-up": "^5.0.0",
     "get-stream": "^5.1.0",
     "globby": "^11.0.0",
@@ -59,25 +59,25 @@
     "@types/babel__traverse": "^7.18.3",
     "@types/glob": "^7.1.0",
     "@types/got": "^9.6.7",
-    "@types/jest": "^27.0.2",
-    "@types/node": "^18.14.0",
-    "@types/resolve": "^1.17.1",
+    "@types/jest": "^29",
+    "@types/node": "^20",
+    "@types/resolve": "^1.20.6",
     "@types/rimraf": "3.0.0",
     "@types/semver": "^7.1.0",
     "@types/source-map-support": "^0.5.0",
     "@types/tmp": "^0.2.0",
-    "commitlint": "^14.1.0",
+    "commitlint": "^18",
+    "dedent": "^1.5",
     "get-port": "^5.0.0",
-    "jest": "^27.3.1",
     "make-dir": "^3.1.0",
-    "prettier": "^2.4.1",
+    "prettier": "^3",
     "rimraf": "3.0.2",
     "semver": "^7.3.5",
     "tempy": "^1",
-    "typescript": "^4.9.5"
+    "typescript": "^5.3"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=18"
   },
   "publishConfig": {
     "access": "public"

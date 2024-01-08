@@ -1,7 +1,10 @@
-import Transformer from './Transformer'
+import type Transformer from './Transformer'
 
 export class Source {
-  constructor(readonly path: string, readonly content: string) {}
+  constructor(
+    readonly path: string,
+    readonly content: string,
+  ) {}
 }
 
 export enum SourceTransformResultKind {
@@ -20,7 +23,7 @@ export type SourceTransformResult =
 export class TransformRunner {
   constructor(
     readonly sources: AsyncGenerator<Source>,
-    readonly transformer: Transformer
+    readonly transformer: Transformer,
   ) {}
 
   async *run(): AsyncIterableIterator<SourceTransformResult> {
@@ -30,7 +33,7 @@ export class TransformRunner {
       try {
         const output = await this.transformer.transform(
           source.path,
-          source.content
+          source.content,
         )
         result = {
           kind: SourceTransformResultKind.Transformed,
@@ -38,6 +41,7 @@ export class TransformRunner {
           output,
         }
       } catch (error) {
+        // @ts-expect-error NodeJS Error
         result = { kind: SourceTransformResultKind.Error, source, error }
       }
 

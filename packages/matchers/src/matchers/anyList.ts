@@ -17,7 +17,7 @@ export class AnyListMatcher<T> extends Matcher<Array<T>> {
 
   matchValue(
     array: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): array is Array<T> {
     if (!Array.isArray(array)) {
       return false
@@ -29,7 +29,7 @@ export class AnyListMatcher<T> extends Matcher<Array<T>> {
 
     const spacerAllocations = distributeAcrossSlices(
       this.sliceMatchers,
-      array.length - this.matchers.length + this.sliceMatchers.length
+      array.length - this.matchers.length + this.sliceMatchers.length,
     )
 
     for (const allocations of spacerAllocations) {
@@ -61,7 +61,7 @@ export class AnyListMatcher<T> extends Matcher<Array<T>> {
       if (matchedAll) {
         if (valuesToMatch.length > 0) {
           throw new Error(
-            `expected to consume all elements to match but ${valuesToMatch.length} remain!`
+            `expected to consume all elements to match but ${valuesToMatch.length} remain!`,
           )
         }
 

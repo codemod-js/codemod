@@ -28,7 +28,7 @@ test('associates plugin options based on declared name', async function () {
 
   if (!Array.isArray(babelPlugin)) {
     throw new Error(
-      `expected plugin to be [plugin, options] tuple: ${inspect(babelPlugin)}`
+      `expected plugin to be [plugin, options] tuple: ${inspect(babelPlugin)}`,
     )
   }
 

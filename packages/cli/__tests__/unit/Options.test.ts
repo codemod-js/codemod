@@ -3,7 +3,7 @@ import { readFile } from 'fs/promises'
 import { join } from 'path'
 import { inspect } from 'util'
 import { Config } from '../../src/Config'
-import { Options, Command } from '../../src/Options'
+import { Options, type Command } from '../../src/Options'
 
 test('has sensible defaults', function () {
   const config = getRunConfig(new Options([]).parse())
@@ -39,7 +39,7 @@ test('--add-extension adds to the default extensions', function () {
 
 test('fails to parse unknown options', function () {
   expect(() => new Options(['--wtf']).parse()).toThrow(
-    new Error('unexpected option: --wtf')
+    new Error('unexpected option: --wtf'),
   )
 })
 
@@ -55,7 +55,7 @@ test('interprets `--stdio` as reading/writing stdin/stdout', function () {
 
 test('can parse inline plugin options as JSON', function () {
   const config = getRunConfig(
-    new Options(['-o', 'my-plugin={"foo": true}']).parse()
+    new Options(['-o', 'my-plugin={"foo": true}']).parse(),
   )
   expect(config.pluginOptions.get('my-plugin')).toEqual({ foo: true })
 })
@@ -67,7 +67,7 @@ test('associates plugin options based on declared name', async function () {
       join(__dirname, '../fixtures/plugin/index.js'),
       '--plugin-options',
       'basic-plugin={"a": true}',
-    ]).parse()
+    ]).parse(),
   )
 
   expect(config.pluginOptions.get('basic-plugin')).toEqual({ a: true })
@@ -80,11 +80,11 @@ test('assigns anonymous options to the most recent plugin', async function () {
       join(__dirname, '../fixtures/plugin/index.js'),
       '--plugin-options',
       '{"a": true}',
-    ]).parse()
+    ]).parse(),
   )
 
   expect(
-    config.pluginOptions.get(join(__dirname, '../fixtures/plugin/index.js'))
+    config.pluginOptions.get(join(__dirname, '../fixtures/plugin/index.js')),
   ).toEqual({
     a: true,
   })
@@ -115,7 +115,7 @@ test('associates plugin options based on inferred name', async function () {
       join(__dirname, '../fixtures/plugin/index.js'),
       '--plugin-options',
       'index={"a": true}',
-    ]).parse()
+    ]).parse(),
   )
 
   // "index" is the name of the file
@@ -125,7 +125,7 @@ test('associates plugin options based on inferred name', async function () {
 
   if (!Array.isArray(babelPlugin)) {
     throw new Error(
-      `expected plugin to be [plugin, options] tuple: ${inspect(babelPlugin)}`
+      `expected plugin to be [plugin, options] tuple: ${inspect(babelPlugin)}`,
     )
   }
 
@@ -135,7 +135,7 @@ test('associates plugin options based on inferred name', async function () {
 test('can parse a JSON file for plugin options', function () {
   // You wouldn't actually use package.json, but it's a convenient JSON file.
   const config = getRunConfig(
-    new Options(['-o', 'my-plugin=@package.json']).parse()
+    new Options(['-o', 'my-plugin=@package.json']).parse(),
   )
   const pluginOpts = config.pluginOptions.get('my-plugin')
   expect(pluginOpts && pluginOpts['name']).toEqual('@codemod/cli')

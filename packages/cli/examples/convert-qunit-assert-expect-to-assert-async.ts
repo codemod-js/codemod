@@ -39,27 +39,27 @@ export default defineCodemod(({ m, utils }) => {
       m.callExpression(
         m.memberExpression(
           m.fromCapture(assertBinding),
-          m.identifier('expect')
+          m.identifier('expect'),
         ),
-        [m.numericLiteral()]
-      )
-    )
+        [m.numericLiteral()],
+      ),
+    ),
   )
 
   // capture `assert.<method>(…);` inside the callback
   const callbackAssertion = m.capture(
     m.expressionStatement(
       m.callExpression(
-        m.memberExpression(m.fromCapture(assertBinding), m.identifier())
-      )
-    )
+        m.memberExpression(m.fromCapture(assertBinding), m.identifier()),
+      ),
+    ),
   )
 
   // callback function body
   const callbackFunctionBody = m.containerOf(
     m.blockStatement(
-      m.anyList(m.zeroOrMore(), callbackAssertion, m.zeroOrMore())
-    )
+      m.anyList(m.zeroOrMore(), callbackAssertion, m.zeroOrMore()),
+    ),
   )
 
   // async test function body
@@ -75,13 +75,13 @@ export default defineCodemod(({ m, utils }) => {
             m.zeroOrMore(),
             m.or(
               m.functionExpression(undefined, undefined, callbackFunctionBody),
-              m.arrowFunctionExpression(undefined, callbackFunctionBody)
-            )
-          )
-        )
+              m.arrowFunctionExpression(undefined, callbackFunctionBody),
+            ),
+          ),
+        ),
       ),
-      m.zeroOrMore()
-    )
+      m.zeroOrMore(),
+    ),
   )
 
   // match the whole `test('description', function(assert) { … })`
@@ -91,7 +91,7 @@ export default defineCodemod(({ m, utils }) => {
   ])
 
   const makeDone = utils.statement<{ assert: t.Identifier }>(
-    'const done = %%assert%%.async();'
+    'const done = %%assert%%.async();',
   )
   const callDone = utils.statement('done();')
 
@@ -109,7 +109,7 @@ export default defineCodemod(({ m, utils }) => {
           ({ assertExpect, callbackAssertion, assertBinding }) => {
             assertExpect.replaceWith(makeDone({ assert: assertBinding.node }))
             callbackAssertion.insertAfter(callDone())
-          }
+          },
         )
       },
     },

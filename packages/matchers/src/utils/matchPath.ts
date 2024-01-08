@@ -1,4 +1,4 @@
-import { NodePath } from '@babel/core'
+import type { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import * as m from '../matchers'
 
@@ -41,19 +41,19 @@ export function matchPath<Node extends t.Node, C extends m.CaptureBase>(
   matcher: m.Matcher<Node>,
   captures: CapturedMatchers<C>,
   value: NodePath<Node>,
-  callback: (paths: CapturedNodePaths<C>) => void
+  callback: (paths: CapturedNodePaths<C>) => void,
 ): void
 export function matchPath<Node extends t.Node, C extends m.CaptureBase>(
   matcher: m.Matcher<Array<Node>>,
   captures: CapturedMatchers<C>,
   value: Array<NodePath<Node>>,
-  callback: (paths: CapturedNodePaths<C>) => void
+  callback: (paths: CapturedNodePaths<C>) => void,
 ): void
 export function matchPath<Node extends t.Node, C extends m.CaptureBase>(
   matcher: m.Matcher<Node | Array<Node>>,
   captures: CapturedMatchers<C>,
   value: NodePath<Node> | Array<NodePath<Node>>,
-  callback: (paths: CapturedNodePaths<C>) => void
+  callback: (paths: CapturedNodePaths<C>) => void,
 ): void {
   const toMatch = Array.isArray(value)
     ? value.map((element) => element.node)
@@ -67,7 +67,7 @@ export function matchPath<Node extends t.Node, C extends m.CaptureBase>(
         if (current !== undefined && currentKeys !== undefined) {
           capturedPaths[key as keyof C] = extractCapturedPath(
             value,
-            currentKeys
+            currentKeys,
           )
         }
       }
@@ -79,7 +79,7 @@ export function matchPath<Node extends t.Node, C extends m.CaptureBase>(
 
 function extractCapturedPath<C extends m.CaptureBase>(
   value: NodePath<t.Node> | Array<NodePath<t.Node>>,
-  keys: ReadonlyArray<PropertyKey>
+  keys: ReadonlyArray<PropertyKey>,
 ): C[keyof C] extends t.Node ? NodePath<C[keyof C]> : C[keyof C] {
   let capturedPath: NodePath<t.Node> | Array<NodePath<t.Node>> = value
 
@@ -89,7 +89,7 @@ function extractCapturedPath<C extends m.CaptureBase>(
         throw new Error(
           `failed to get '${keys.join('.')}'; at '${keys
             .slice(0, i + 1)
-            .join('.')}' expected a NodePath but got an array`
+            .join('.')}' expected a NodePath but got an array`,
         )
       }
 
@@ -99,7 +99,7 @@ function extractCapturedPath<C extends m.CaptureBase>(
         throw new Error(
           `failed to get '${keys.join('.')}'; at '${keys
             .slice(0, i + 1)
-            .join('.')}' expected an array but got a NodePath`
+            .join('.')}' expected an array but got a NodePath`,
         )
       }
 
@@ -107,8 +107,8 @@ function extractCapturedPath<C extends m.CaptureBase>(
     } else {
       throw new Error(
         `failed to get '${keys.join('.')}'; key '${String(
-          key
-        )}' is neither a string nor a number, not ${typeof key}`
+          key,
+        )}' is neither a string nor a number, not ${typeof key}`,
       )
     }
   }

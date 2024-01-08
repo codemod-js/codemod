@@ -5,7 +5,7 @@ export class SliceMatcher<T> extends Matcher<T> {
   constructor(
     readonly min: number,
     readonly max: number,
-    readonly matcher: Matcher<T>
+    readonly matcher: Matcher<T>,
   ) {
     super()
   }
@@ -26,7 +26,7 @@ export class SliceMatcher<T> extends Matcher<T> {
  * ```
  */
 export function zeroOrMore<T>(
-  matcher: Matcher<T> = anything()
+  matcher: Matcher<T> = anything(),
 ): SliceMatcher<T> {
   return new SliceMatcher(0, Infinity, matcher)
 }
@@ -42,7 +42,7 @@ export function zeroOrMore<T>(
  * ```
  */
 export function oneOrMore<T>(
-  matcher: Matcher<T> = anything()
+  matcher: Matcher<T> = anything(),
 ): SliceMatcher<T> {
   return new SliceMatcher(1, Infinity, matcher)
 }
@@ -66,11 +66,7 @@ export interface SliceOptions<T> {
  * m.anyList([m.anyString(), m.slice({ min: 1, max: 2 })])
  * ```
  */
-export function slice<T>({
-  min = 0,
-  max = min,
-  matcher = anything(),
-}: SliceOptions<T>): SliceMatcher<T>
+export function slice<T>(options: SliceOptions<T>): SliceMatcher<T>
 
 /**
  * Match a slice of an array of the given length. For use with `anyList`.
@@ -96,7 +92,7 @@ export function slice<T>(length: number, matcher?: Matcher<T>): SliceMatcher<T>
  */
 export function slice<T>(
   optionsOrLength: SliceOptions<T> | number,
-  matcherOrUndefined?: Matcher<T>
+  matcherOrUndefined?: Matcher<T>,
 ): SliceMatcher<T> {
   let min: number
   let max: number

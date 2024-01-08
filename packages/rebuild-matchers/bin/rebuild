@@ -1,13 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
+import { main } from '..'
 
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-env node */
-
-require('esbuild-runner/register')
-
-require('../src/rebuild')
-  .main()
-  .catch((error) => {
-    console.error(error.stack)
-    process.exit(1)
-  })
+await main()

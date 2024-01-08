@@ -1,12 +1,12 @@
-import { ParserOptions } from '@codemod/parser'
-import { File } from '@babel/types'
+import type { ParserOptions } from '@codemod/parser'
+import type { File } from '@babel/types'
 import * as recast from 'recast'
-import { PluginObj } from './BabelPluginTypes'
+import type { PluginObj } from './BabelPluginTypes'
 
 export function parse(
   code: string,
   options: ParserOptions,
-  parse: (code: string, options: ParserOptions) => File
+  parse: (code: string, options: ParserOptions) => File,
 ): File {
   return recast.parse(code, {
     parser: {

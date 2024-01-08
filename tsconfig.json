@@ -1,11 +1,21 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2015",
-    "lib": ["es2015", "es2016"],
-    "noImplicitAny": false,
-    "sourceMap": true,
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": [
+      "esnext"
+    ],
+    "moduleDetection": "force",
+    "noEmit": true,
+    "verbatimModuleSyntax": true,
+    "esModuleInterop": true,
+    "composite": true,
     "strict": true,
-    "declaration": true
+    "downlevelIteration": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true
   }
 }

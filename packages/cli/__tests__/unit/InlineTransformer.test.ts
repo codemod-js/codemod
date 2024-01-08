@@ -48,7 +48,7 @@ test('allows running plugins with options', async function () {
         visitor: {
           NumericLiteral(
             path: NodePath<NumericLiteral>,
-            state: { opts: { value?: number } }
+            state: { opts: { value?: number } },
           ) {
             if (state.opts.value === path.node.value) {
               path.node.value++
@@ -76,7 +76,7 @@ test('passes the filename', async function () {
           path: NodePath<Program>,
           state: {
             file: { opts: { filename: string } }
-          }
+          },
         ) {
           filename = state.file.opts.filename
         },

@@ -16,7 +16,7 @@ test('can load data from a URL', async function () {
     const filename = await resolver.resolve(url.toString())
 
     expect(await fs.readFile(filename, { encoding: 'utf8' })).toEqual(
-      'here you go!'
+      'here you go!',
     )
   } finally {
     await server.stop()
@@ -30,7 +30,7 @@ test('only resolves absolute HTTP URLs', async function () {
   expect(await resolver.canResolve('https://example.com/')).toBeTruthy()
   expect(await resolver.canResolve('/')).toBeFalsy()
   expect(
-    await resolver.canResolve('afp://192.168.0.1/volume/folder/file.js')
+    await resolver.canResolve('afp://192.168.0.1/volume/folder/file.js'),
   ).toBeFalsy()
   expect(await resolver.canResolve('data:,Hello%2C%20World!')).toBeFalsy()
 })
@@ -53,7 +53,7 @@ test('follows redirects', async function () {
     const filename = await resolver.resolve(server.requestURL('/').toString())
 
     expect(await fs.readFile(filename, { encoding: 'utf8' })).toEqual(
-      'redirected successfully!'
+      'redirected successfully!',
     )
   } finally {
     await server.stop()
@@ -71,7 +71,7 @@ test('throws if it gets a non-200 response', async function () {
     const url = server.requestURL('/')
 
     await expect(resolver.resolve(url.toString())).rejects.toThrowError(
-      'failed to load plugin'
+      'failed to load plugin',
     )
   } finally {
     await server.stop()

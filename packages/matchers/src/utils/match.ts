@@ -36,7 +36,7 @@ export function match<T, C extends m.CaptureBase>(
   matcher: m.Matcher<T>,
   captures: { [K in keyof C]: m.CapturedMatcher<C[K]> },
   value: T,
-  callback: (captures: C) => void
+  callback: (captures: C) => void,
 ): void {
   if (matcher.match(value)) {
     const capturedValues = {} as C

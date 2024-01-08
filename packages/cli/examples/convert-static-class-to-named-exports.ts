@@ -76,21 +76,21 @@ export default defineCodemod(({ t, m }) => {
                 m.assignmentPattern(),
                 m.objectPattern(),
                 m.arrayPattern(),
-                m.restElement()
-              )
+                m.restElement(),
+              ),
             ),
             m.anything(),
             false,
-            true
-          )
-        )
-      )
-    )
+            true,
+          ),
+        ),
+      ),
+    ),
   )
 
   // capture the export, making sure to match the class name
   const exportDeclaration = m.capture(
-    m.exportDefaultDeclaration(m.fromCapture(classId))
+    m.exportDefaultDeclaration(m.fromCapture(classId)),
   )
 
   // match a program that contains a matching class and export declaration
@@ -100,15 +100,15 @@ export default defineCodemod(({ t, m }) => {
       classDeclaration,
       m.zeroOrMore(),
       exportDeclaration,
-      m.zeroOrMore()
-    )
+      m.zeroOrMore(),
+    ),
   )
 
   // match `this.*`, used internally
   const thisPropertyAccessMatcher = m.memberExpression(
     m.thisExpression(),
     m.identifier(),
-    false
+    false,
   )
 
   return {
@@ -125,7 +125,7 @@ export default defineCodemod(({ t, m }) => {
             for (const property of classBody.get('body')) {
               if (!property.isClassMethod()) {
                 throw new Error(
-                  `unexpected ${property.type} while looking for ClassMethod`
+                  `unexpected ${property.type} while looking for ClassMethod`,
                 )
               }
 
@@ -133,7 +133,7 @@ export default defineCodemod(({ t, m }) => {
                 throw new Error(
                   `unexpected ${
                     property.get('key').type
-                  } while looking for Identifier`
+                  } while looking for Identifier`,
                 )
               }
 
@@ -152,10 +152,10 @@ export default defineCodemod(({ t, m }) => {
                     >,
                     property.node.body,
                     property.node.generator,
-                    property.node.async
+                    property.node.async,
                   ),
-                  []
-                )
+                  [],
+                ),
               )
 
               property.get('body').traverse({
@@ -176,7 +176,7 @@ export default defineCodemod(({ t, m }) => {
 
             exportDeclaration.remove()
             classDeclaration.replaceWithMultiple(replacements)
-          }
+          },
         )
       },
     },

@@ -9,16 +9,15 @@ export interface CLIResult {
 
 export async function runCodemodCLI(
   args: Array<string>,
-  { stdin = '', cwd }: { stdin?: string; cwd?: string } = {}
+  { stdin = '', cwd }: { stdin?: string; cwd?: string } = {},
 ): Promise<CLIResult> {
   const child = spawn(
-    process.env.NODE ?? process.argv0,
-    [join(__dirname, '../../bin/codemod'), ...args],
+    join(__dirname, '../../bin/codemod'),
+    ['codemod', ...args],
     {
       stdio: 'pipe',
       cwd,
-      env: { CODEMOD_RUN_WITH_ESBUILD: '1' },
-    }
+    },
   )
 
   child.stdin.end(stdin)

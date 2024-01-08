@@ -1,17 +1,27 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["src"],
-  "exclude": ["src/__tests__"],
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "src/__tests__"
+  ],
   "compilerOptions": {
     "noEmit": false,
     "rootDir": "src",
-    "outDir": "build",
+    "outDir": "dist",
     "declaration": true,
     "sourceMap": true
   },
   "references": [
-    { "path": "../core/tsconfig.build.json" },
-    { "path": "../parser/tsconfig.build.json" },
-    { "path": "../utils/tsconfig.build.json" }
+    {
+      "path": "../core/tsconfig.build.json"
+    },
+    {
+      "path": "../parser/tsconfig.build.json"
+    },
+    {
+      "path": "../utils/tsconfig.build.json"
+    }
   ]
 }

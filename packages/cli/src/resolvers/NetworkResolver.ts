@@ -2,7 +2,7 @@ import { promises as fs } from 'fs'
 import { fetch } from 'cross-fetch'
 import { tmpNameSync as tmp } from 'tmp'
 import { URL } from 'url'
-import Resolver from './Resolver'
+import type Resolver from './Resolver'
 
 export class NetworkLoadError extends Error {
   constructor(readonly response: Response) {

@@ -1,11 +1,11 @@
 import { promises as fs } from 'fs'
 import { dirname, join, relative } from 'path'
 import { iterateSources } from '../../src/iterateSources'
-import mkdirp = require('make-dir')
+import mkdirp from 'make-dir'
 
 export default async function copyFixturesInto(
   fixture: string,
-  destination: string
+  destination: string,
 ): Promise<string> {
   const fixturePath = join('test/fixtures', fixture)
 

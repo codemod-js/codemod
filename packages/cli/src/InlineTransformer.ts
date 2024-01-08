@@ -1,12 +1,12 @@
-import { PluginItem } from '@babel/core'
-import { ParserPlugin } from '@babel/parser'
-import { transform, TransformOptions } from '@codemod/core'
-import Transformer from './Transformer'
+import { type PluginItem } from '@babel/core'
+import { type ParserPlugin } from '@babel/parser'
+import { transform, type TransformOptions } from '@codemod/core'
+import type Transformer from './Transformer'
 
 export class InlineTransformer implements Transformer {
   constructor(
     private readonly plugins: Iterable<PluginItem>,
-    private readonly parserPlugins: Iterable<ParserPlugin> = []
+    private readonly parserPlugins: Iterable<ParserPlugin> = [],
   ) {}
 
   async transform(filepath: string, content: string): Promise<string> {

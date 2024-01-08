@@ -13,7 +13,7 @@ export interface ReplacementsBase {
 }
 
 export function program<R extends ReplacementsBase>(
-  template: string
+  template: string,
 ): (replacements?: R) => t.File {
   const ast = parse(template, {
     plugins: ['placeholders'],
@@ -29,7 +29,7 @@ export function program<R extends ReplacementsBase>(
 
         if (!replacement) {
           throw new Error(
-            `no replacement found for placeholder with name: ${name}`
+            `no replacement found for placeholder with name: ${name}`,
           )
         }
 
@@ -54,7 +54,7 @@ export function program<R extends ReplacementsBase>(
 }
 
 export function statement<R extends ReplacementsBase>(
-  template: string
+  template: string,
 ): (replacements?: R) => t.Statement {
   const builder = program(template)
   return (replacements) =>
@@ -62,7 +62,7 @@ export function statement<R extends ReplacementsBase>(
 }
 
 export function expression<R extends ReplacementsBase>(
-  template: string
+  template: string,
 ): (replacements?: R) => t.Expression {
   const builder = program(template)
   return (replacements) =>
@@ -72,7 +72,7 @@ export function expression<R extends ReplacementsBase>(
 function getSingleStatement(statements: Array<t.Statement>): t.Statement {
   if (statements.length !== 1) {
     throw new TypeError(
-      `expected a single statement but ${statements.length} statements`
+      `expected a single statement but ${statements.length} statements`,
     )
   }
 
@@ -82,7 +82,7 @@ function getSingleStatement(statements: Array<t.Statement>): t.Statement {
 function getSingleExpression(statements: Array<t.Statement>): t.Expression {
   if (statements.length !== 1) {
     throw new TypeError(
-      `expected a single expression but ${statements.length} statements`
+      `expected a single expression but ${statements.length} statements`,
     )
   }
 
@@ -90,7 +90,7 @@ function getSingleExpression(statements: Array<t.Statement>): t.Expression {
 
   if (!t.isExpressionStatement(statement)) {
     throw new TypeError(
-      `expected a single expression but got a single ${statement.type}`
+      `expected a single expression but got a single ${statement.type}`,
     )
   }
 

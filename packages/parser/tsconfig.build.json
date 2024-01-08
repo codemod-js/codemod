@@ -7,6 +7,6 @@
     "sourceMap": true,
     "declaration": true,
     "rootDir": "src",
-    "outDir": "build"
+    "outDir": "dist"
   }
 }

@@ -1,4 +1,4 @@
-import getPort = require('get-port')
+import getPort from 'get-port'
 import { createServer, IncomingMessage, Server, ServerResponse } from 'http'
 import { URL } from 'url'
 
@@ -10,7 +10,10 @@ export class RealTestServer {
   readonly protocol: string = 'http:'
   readonly hostname: string = '127.0.0.1'
 
-  constructor(readonly port: number, readonly handler: RequestHandler) {
+  constructor(
+    readonly port: number,
+    readonly handler: RequestHandler,
+  ) {
     this.server = createServer(handler)
   }
 
@@ -33,7 +36,7 @@ export class RealTestServer {
 }
 
 export async function startServer(
-  handler: RequestHandler
+  handler: RequestHandler,
 ): Promise<RealTestServer> {
   const port = await getPort()
   const server = new RealTestServer(port, handler)

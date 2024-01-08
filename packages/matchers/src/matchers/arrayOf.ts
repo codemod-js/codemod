@@ -7,7 +7,7 @@ export class ArrayOfMatcher<T> extends Matcher<Array<T>> {
 
   matchValue(
     value: unknown,
-    keys: ReadonlyArray<PropertyKey>
+    keys: ReadonlyArray<PropertyKey>,
   ): value is Array<T> {
     if (!Array.isArray(value)) {
       return false

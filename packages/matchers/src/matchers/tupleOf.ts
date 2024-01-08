@@ -2,7 +2,7 @@ import { Matcher } from './Matcher'
 
 export class TupleOfMatcher<
   T,
-  A extends Array<T> = Array<T>
+  A extends Array<T> = Array<T>,
 > extends Matcher<A> {
   private readonly matchers: Array<Matcher<T>>
 

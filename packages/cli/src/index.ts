@@ -1,9 +1,9 @@
 import { basename, relative } from 'path'
 import { CLIEngine } from './CLIEngine'
 import { Config } from './Config'
-import { Options, Command } from './Options'
+import { Options, type Command } from './Options'
 import {
-  SourceTransformResult,
+  type SourceTransformResult,
   SourceTransformResultKind,
 } from './TransformRunner'
 import * as matchers from '@codemod/matchers'
@@ -13,7 +13,7 @@ export { t, types } from '@codemod/utils'
 export { matchers, matchers as m }
 
 function optionAnnotation(
-  value: boolean | Array<string> | Map<string, object> | string
+  value: boolean | Array<string> | Map<string, object> | string,
 ): string {
   if (Array.isArray(value) || value instanceof Map) {
     return ' (allows multiple)'
@@ -36,34 +36,34 @@ ${$0} [OPTIONS] [PATH … | --stdio]
 
 OPTIONS
   -p, --plugin PLUGIN               Transform sources with PLUGIN${optionAnnotation(
-    defaults.localPlugins
+    defaults.localPlugins,
   )}.
       --remote-plugin URL           Fetch a plugin from URL${optionAnnotation(
-        defaults.remotePlugins
+        defaults.remotePlugins,
       )}.
   -o, --plugin-options OPTS         JSON-encoded OPTS for the last plugin provided${optionAnnotation(
-    defaults.pluginOptions
+    defaults.pluginOptions,
   )}.
       --parser-plugins PLUGINS      Comma-separated PLUGINS to use with @babel/parser.
   -r, --require PATH                Require PATH before transform${optionAnnotation(
-    defaults.requires
+    defaults.requires,
   )}.
       --add-extension EXT           Add an extension to the list of supported extensions.
       --extensions EXTS             Comma-separated extensions to process (default: "${Array.from(
-        defaults.extensions
+        defaults.extensions,
       ).join(',')}").
       --source-type                 Parse as "module", "script", or "unambiguous" (meaning babel
                                     will try to guess, default: "${
                                       defaults.sourceType
                                     }").
       --[no-]transpile-plugins      Transpile plugins to enable future syntax${optionAnnotation(
-        defaults.transpilePlugins
+        defaults.transpilePlugins,
       )}.
   -s, --stdio                       Read source from stdin and print to stdout${optionAnnotation(
-    defaults.stdio
+    defaults.stdio,
   )}.
   -d, --dry                         Run plugins without modifying files on disk${optionAnnotation(
-    defaults.dry
+    defaults.dry,
   )}.
       --version                     Print the version of ${$0}.
   -h, --help                        Show this help message.
@@ -99,14 +99,17 @@ EXAMPLES
 
   # Run with a plugin written in TypeScript.
   $ ${$0} -p ./some-plugin.ts src/
-  `.trim()
+  `.trim(),
   )
   out.write('\n')
 }
 
-function printVersion(argv: Array<string>, out: NodeJS.WritableStream): void {
+async function printVersion(
+  argv: Array<string>,
+  out: NodeJS.WritableStream,
+): Promise<void> {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  out.write(require('../package.json').version)
+  out.write((await import('../package.json', { with: { type: 'json' } })).default.version)
   out.write('\n')
 }
 
@@ -116,6 +119,7 @@ export async function run(argv: Array<string>): Promise<number> {
   try {
     command = new Options(argv.slice(2)).parse()
   } catch (error) {
+    // @ts-expect-error NodeJS Error
     process.stderr.write(`ERROR: ${error.message}\n`)
     printHelp(argv, process.stderr)
     return 1
@@ -127,7 +131,7 @@ export async function run(argv: Array<string>): Promise<number> {
   }
 
   if (command.kind === 'version') {
-    printVersion(argv, process.stdout)
+    await printVersion(argv, process.stdout)
     return 0
   }
 
@@ -148,7 +152,7 @@ export async function run(argv: Array<string>): Promise<number> {
     } else if (result.error) {
       if (!config.stdio) {
         process.stderr.write(
-          `Encountered an error while processing ${relativePath}:\n`
+          `Encountered an error while processing ${relativePath}:\n`,
         )
       }
 
@@ -164,7 +168,7 @@ export async function run(argv: Array<string>): Promise<number> {
     }
 
     process.stdout.write(
-      `${stats.total} file(s), ${stats.modified} modified, ${stats.errors} errors\n`
+      `${stats.total} file(s), ${stats.modified} modified, ${stats.errors} errors\n`,
     )
   }
 

@@ -5,7 +5,7 @@ import { SliceMatcher } from '../matchers/slice'
  */
 export function* distributeAcrossSlices(
   slices: Array<SliceMatcher<unknown>>,
-  available: number
+  available: number,
 ): IterableIterator<Array<number>> {
   if (slices.length === 0) {
     yield []
@@ -27,7 +27,7 @@ export function* distributeAcrossSlices(
 
       for (const allButLastAllocations of distributeAcrossSlices(
         allButLast,
-        available - allocateToLast
+        available - allocateToLast,
       )) {
         yield [...allButLastAllocations, allocateToLast]
       }

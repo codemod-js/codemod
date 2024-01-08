@@ -5,8 +5,8 @@ it('can load a plugin that uses class properties', async function () {
   expect(
     await runCodemodCLI(
       ['--plugin', plugin('class-properties', '.ts'), '--stdio'],
-      { stdin: '' }
-    )
+      { stdin: '' },
+    ),
   ).toEqual({
     status: 0,
     stdout: '',
@@ -18,7 +18,7 @@ it('can load a plugin that uses generators', async function () {
   expect(
     await runCodemodCLI(['--plugin', plugin('generators', '.ts'), '--stdio'], {
       stdin: '',
-    })
+    }),
   ).toEqual({
     status: 0,
     stdout: '',

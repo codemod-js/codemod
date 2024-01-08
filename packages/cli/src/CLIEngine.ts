@@ -1,4 +1,4 @@
-import { PluginItem } from '@babel/core'
+import type { PluginItem } from '@babel/core'
 import { promises as fs } from 'fs'
 import { Config } from './Config'
 import { InlineTransformer } from './InlineTransformer'
@@ -6,10 +6,10 @@ import { iterateSources } from './iterateSources'
 import {
   TransformRunner,
   Source,
-  SourceTransformResult,
+  type SourceTransformResult,
   SourceTransformResultKind,
 } from './TransformRunner'
-import getStream = require('get-stream')
+import getStream from 'get-stream'
 
 export class RunResult {
   constructor(readonly stats: RunStats) {}
@@ -19,7 +19,7 @@ export class RunStats {
   constructor(
     readonly modified: number = 0,
     readonly errors: number = 0,
-    readonly total: number = 0
+    readonly total: number = 0,
   ) {}
 }
 
@@ -28,7 +28,7 @@ export class CLIEngine {
     readonly config: Config,
     readonly onTransform: (result: SourceTransformResult) => void = () => {
       // do nothing by default
-    }
+    },
   ) {}
 
   private async loadPlugins(): Promise<Array<PluginItem>> {
@@ -57,7 +57,7 @@ export class CLIEngine {
 
     const runner = new TransformRunner(
       sources,
-      new InlineTransformer(plugins, this.config.parserPlugins)
+      new InlineTransformer(plugins, this.config.parserPlugins),
     )
 
     for await (const result of runner.run()) {

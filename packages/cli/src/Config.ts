@@ -1,5 +1,5 @@
 import * as Babel from '@babel/core'
-import { ParserOptions, ParserPluginName } from '@codemod/parser'
+import type { ParserOptions, ParserPluginName } from '@codemod/parser'
 import { basename, extname } from 'path'
 import { TransformableExtensions } from './extensions'
 import { PluginLoader } from './PluginLoader'
@@ -15,7 +15,7 @@ export class Plugin {
     readonly rawPlugin: (babel: typeof Babel) => Babel.PluginObj,
     readonly inferredName: string,
     readonly source?: string,
-    readonly resolvedPath?: string
+    readonly resolvedPath?: string,
   ) {
     try {
       const instance = rawPlugin(Babel)
@@ -41,7 +41,7 @@ export class Config {
     readonly requires: Array<string> = [],
     readonly transpilePlugins: boolean = true,
     readonly stdio: boolean = false,
-    readonly dry: boolean = false
+    readonly dry: boolean = false,
   ) {}
 
   private pluginLoader = new PluginLoader([
@@ -61,27 +61,25 @@ export class Config {
       const localPlugins = Promise.all(
         this.localPlugins.map(async (localPlugin) => {
           const pluginExports = await this.pluginLoader.load(localPlugin)
-          const defaultExport = pluginExports['default'] || pluginExports
 
           return new Plugin(
-            defaultExport,
+            pluginExports,
             basename(localPlugin, extname(localPlugin)),
-            localPlugin
+            localPlugin,
           )
-        })
+        }),
       )
 
       const remotePlugins = Promise.all(
         this.remotePlugins.map(async (remotePlugin) => {
           const pluginExports = await this.remotePluginLoader.load(remotePlugin)
-          const defaultExport = pluginExports['default'] || pluginExports
 
           return new Plugin(
-            defaultExport,
+            pluginExports,
             basename(remotePlugin, extname(remotePlugin)),
-            remotePlugin
+            remotePlugin,
           )
-        })
+        }),
       )
 
       this._pluginCache = [...(await localPlugins), ...(await remotePlugins)]
@@ -90,16 +88,14 @@ export class Config {
     return this._pluginCache
   }
 
-  loadRequires(): void {
-    for (const modulePath of this.requires) {
-      require(modulePath)
+  async loadRequires(): Promise<void> {
+    for await (const modulePath of this.requires) {
+      await import(modulePath)
     }
   }
 
   async loadBabelTranspile(): Promise<void> {
-    if (this.transpilePlugins && !require.extensions['.ts']) {
-      await import('esbuild-runner/register.js')
-    }
+    return
   }
 
   async getPlugin(name: string): Promise<Plugin | null> {
@@ -287,7 +283,7 @@ export class ConfigBuilder {
       this._requires,
       this._transpilePlugins,
       this._stdio,
-      this._dry
+      this._dry,
     )
   }
 }

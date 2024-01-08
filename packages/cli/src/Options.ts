@@ -1,7 +1,7 @@
 import { isParserPluginName } from '@codemod/parser'
 import { existsSync, readFileSync } from 'fs'
-import { resolve } from 'path'
-import { sync as resolveSync } from 'resolve'
+import path from 'path'
+import resolve from 'resolve'
 import { Config, ConfigBuilder } from './Config'
 import { RequireableExtensions } from './extensions'
 
@@ -55,7 +55,7 @@ export class Options {
           if (value.startsWith('@')) {
             if (!lastPlugin) {
               throw new Error(
-                `${arg} must follow --plugin or --remote-plugin if no name is given`
+                `${arg} must follow --plugin or --remote-plugin if no name is given`,
               )
             }
 
@@ -64,7 +64,7 @@ export class Options {
           } else if (/^\s*{/.test(value)) {
             if (!lastPlugin) {
               throw new Error(
-                `${arg} must follow --plugin or --remote-plugin if no name is given`
+                `${arg} must follow --plugin or --remote-plugin if no name is given`,
               )
             }
 
@@ -84,7 +84,7 @@ export class Options {
             config.setOptionsForPlugin(JSON.parse(optionsRaw), name)
           } catch (err) {
             throw new Error(
-              `unable to parse JSON config for ${name}: ${optionsRaw}`
+              `unable to parse JSON config for ${name}: ${optionsRaw}`,
             )
           }
           break
@@ -123,8 +123,8 @@ export class Options {
             new Set(
               this.args[i]
                 .split(',')
-                .map((ext) => (ext[0] === '.' ? ext : `.${ext}`))
-            )
+                .map((ext) => (ext[0] === '.' ? ext : `.${ext}`)),
+            ),
           )
           break
 
@@ -145,7 +145,7 @@ export class Options {
           } else {
             throw new Error(
               `expected '--source-type' to be one of "module", "script", ` +
-                `or "unambiguous" but got: "${sourceType}"`
+                `or "unambiguous" but got: "${sourceType}"`,
             )
           }
           break
@@ -190,14 +190,14 @@ export class Options {
  */
 function getRequirableModulePath(modulePath: string): string {
   if (existsSync(modulePath)) {
-    return resolve(modulePath)
+    return path.resolve(modulePath)
   }
 
   for (const ext of RequireableExtensions) {
     if (existsSync(modulePath + ext)) {
-      return resolve(modulePath + ext)
+      return path.resolve(modulePath + ext)
     }
   }
 
-  return resolveSync(modulePath, { basedir: process.cwd() })
+  return resolve.sync(modulePath, { basedir: process.cwd() })
 }
