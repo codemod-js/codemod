@@ -9,10 +9,11 @@ import {
   typeForValidator,
 } from './ast'
 import dedent = require('dedent')
+import { getRepoRoot } from './git'
 
 export const MATCHERS_FILE_PATH = join(
-  __dirname,
-  '../../../matchers/src/matchers/generated.ts'
+  getRepoRoot(),
+  'packages/matchers/src/matchers/generated.ts'
 )
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -151,8 +152,6 @@ function rebuildTo(out: SimpleWriter): string | void {
         out.write(`      if (node.${key} !== null) {\n`)
         out.write(`        return false;\n`)
         out.write(`      }\n`)
-        out.write(`    } else if (node.${key} === null) {\n`)
-        out.write(`      return false;\n`)
       }
       if (isValidatorOfType('array', field.validate)) {
         out.write(`    } else if (Array.isArray(${binding})) {\n`)
