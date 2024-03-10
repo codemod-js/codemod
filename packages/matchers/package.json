@@ -1,6 +1,6 @@
 {
   "name": "@codemod/matchers",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Matchers for JavaScript & TypeScript codemods.",
   "repository": "https://github.com/codemod-js/codemod",
   "license": "Apache-2.0",
