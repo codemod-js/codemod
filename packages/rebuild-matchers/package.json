@@ -1,6 +1,6 @@
 {
   "name": "@codemod/rebuild-matchers",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Rebuilds the bulk of `@codemod/matchers` based on the Babel AST.",
   "repository": "https://github.com/codemod-js/codemod",
@@ -23,14 +23,14 @@
   },
   "dependencies": {
     "@babel/types": "^7.20.7",
-    "@codemod/utils": "^1.1.0"
+    "@codemod/utils": "^1.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
     "@babel/generator": "^7.20.14",
     "@babel/traverse": "^7.20.13",
-    "@codemod/core": "^2.2.0",
-    "@codemod/parser": "^1.4.0",
+    "@codemod/core": "^2.2.1",
+    "@codemod/parser": "^1.4.2",
     "@types/babel__core": "^7.20.0",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__template": "^7.4.1",

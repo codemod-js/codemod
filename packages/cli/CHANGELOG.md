@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.1](https://github.com/codemod-js/codemod/compare/@codemod/cli@3.3.0...@codemod/cli@3.3.1) (2024-03-10)
+
+**Note:** Version bump only for package @codemod/cli
+
+
+
+
+
 # [3.3.0](https://github.com/codemod-js/codemod/compare/@codemod/cli@3.2.0...@codemod/cli@3.3.0) (2023-02-18)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@codemod/utils",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "codemod rewrites JavaScript and TypeScript",
   "repository": "https://github.com/codemod-js/codemod.git",
   "license": "Apache-2.0",
@@ -24,7 +24,7 @@
     "@babel/core": "^7.20.12",
     "@babel/traverse": "^7.20.13",
     "@babel/types": "^7.20.7",
-    "@codemod/parser": "^1.4.0"
+    "@codemod/parser": "^1.4.2"
   },
   "devDependencies": {
     "@types/babel__core": "^7.20.0",

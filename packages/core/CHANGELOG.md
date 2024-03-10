@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.1](https://github.com/codemod-js/codemod/compare/@codemod/core@2.2.0...@codemod/core@2.2.1) (2024-03-10)
+
+**Note:** Version bump only for package @codemod/core
+
+
+
+
+
 # [2.2.0](https://github.com/codemod-js/codemod/compare/@codemod/core@2.1.0...@codemod/core@2.2.0) (2023-02-18)
 
 
