@@ -1,7 +1,7 @@
 {
   "name": "@codemod-esm/parser",
   "type": "module",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Wrapper around @babel/parser that allows parsing everything.",
   "author": "Brian Donovan",
   "license": "Apache-2.0",
@@ -23,7 +23,7 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@babel/parser": "7.21.4-esm.4"
+    "@babel/parser": "latest"
   },
   "devDependencies": {
     "@babel/types": "^7.26.3",

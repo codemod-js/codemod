@@ -1,7 +1,7 @@
 {
   "name": "@codemod-esm/core",
   "type": "module",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Runs babel plugins for codemods, i.e. by preserving formatting using Recast.",
   "author": "Brian Donovan",
   "license": "Apache-2.0",

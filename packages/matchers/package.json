@@ -1,7 +1,7 @@
 {
   "name": "@codemod-esm/matchers",
   "type": "module",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Matchers for JavaScript & TypeScript codemods.",
   "author": "Brian Donovan",
   "license": "Apache-2.0",

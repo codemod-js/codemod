@@ -1,7 +1,7 @@
 {
   "name": "@codemod-esm/utils",
   "type": "module",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "codemod rewrites JavaScript and TypeScript",
   "author": "Brian Donovan",
   "license": "Apache-2.0",

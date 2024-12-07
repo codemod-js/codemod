@@ -134,8 +134,8 @@ importers:
   packages/parser:
     dependencies:
       '@babel/parser':
-        specifier: 7.21.4-esm.4
-        version: 7.21.4-esm.4
+        specifier: latest
+        version: 7.26.3
     devDependencies:
       '@babel/types':
         specifier: ^7.26.3
@@ -333,11 +333,6 @@ packages:
   '@babel/helpers@7.26.0':
     resolution: {integrity: sha512-tbhNuIxNcVb21pInl3ZSjksLCvgdZy9KwJ8brv993QtIVKJBBkYXz4q4ZbAv31GdnC+R90np23L5FbEBlthAEw==}
     engines: {node: '>=6.9.0'}
-
-  '@babel/parser@7.21.4-esm.4':
-    resolution: {integrity: sha512-vhp82JhMLIz2djtPV8lGfwTCHdlfTYdvFKntgoR5dpji3twb/lEJJOFlgXaRX+zeyNWzssmz/weEt5jfEa0z4g==}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
 
   '@babel/parser@7.26.3':
     resolution: {integrity: sha512-WJ/CvmY8Mea8iDXo6a7RK2wbmJITT5fN3BEkRuFlxVyNx8jOKIIhmC4fSkTcPcf8JyavbBwIe6OpiCOBXt/IcA==}
@@ -4159,8 +4154,6 @@ snapshots:
     dependencies:
       '@babel/template': 7.25.9
       '@babel/types': 7.26.3
-
-  '@babel/parser@7.21.4-esm.4': {}
 
   '@babel/parser@7.26.3':
     dependencies:
