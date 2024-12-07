@@ -1,11 +1,11 @@
 import { oneOrMore, slice, spacer, zeroOrMore } from '../matchers/slice'
 import { distributeAcrossSlices } from '../utils/distributeAcrossSlices'
 
-test('allocates nothing given an empty list of slices', () => {
+it('allocates nothing given an empty list of slices', () => {
   expect(Array.from(distributeAcrossSlices([], 1))).toEqual([[]])
 })
 
-test('allocates available to a single slice within its bounds', () => {
+it('allocates available to a single slice within its bounds', () => {
   expect(
     Array.from(distributeAcrossSlices([slice({ min: 0, max: 3 })], 2)),
   ).toEqual([[2]])
@@ -14,7 +14,7 @@ test('allocates available to a single slice within its bounds', () => {
   ).toEqual([[3]])
 })
 
-test('allocates nothing if available is outside single slice bounds', () => {
+it('allocates nothing if available is outside single slice bounds', () => {
   expect(
     Array.from(distributeAcrossSlices([slice({ min: 2, max: 4 })], 1)),
   ).toEqual([])
@@ -23,7 +23,7 @@ test('allocates nothing if available is outside single slice bounds', () => {
   ).toEqual([])
 })
 
-test('allocates a single space across multiple slices', () => {
+it('allocates a single space across multiple slices', () => {
   expect(
     Array.from(
       distributeAcrossSlices(
@@ -37,7 +37,7 @@ test('allocates a single space across multiple slices', () => {
   ])
 })
 
-test('allocates multiple spaces across multiple slices', () => {
+it('allocates multiple spaces across multiple slices', () => {
   expect(
     Array.from(
       distributeAcrossSlices(
@@ -56,7 +56,7 @@ test('allocates multiple spaces across multiple slices', () => {
   ])
 })
 
-test('never allocates to empty slices', () => {
+it('never allocates to empty slices', () => {
   expect(
     Array.from(
       distributeAcrossSlices(
@@ -70,11 +70,11 @@ test('never allocates to empty slices', () => {
   ])
 })
 
-test('allocates correctly when slices have no upper bound', () => {
+it('allocates correctly when slices have no upper bound', () => {
   expect(Array.from(distributeAcrossSlices([zeroOrMore()], 2))).toEqual([[2]])
 })
 
-test('allocates correctly with a trailing unbounded slice', () => {
+it('allocates correctly with a trailing unbounded slice', () => {
   expect(
     Array.from(
       distributeAcrossSlices([zeroOrMore(), slice(1), oneOrMore()], 1),
@@ -95,6 +95,6 @@ test('allocates correctly with a trailing unbounded slice', () => {
   ])
 })
 
-test('deprecated spacer() is an alias for slice(1)', () => {
+it('deprecated spacer() is an alias for slice(1)', () => {
   expect(spacer()).toEqual(slice(1))
 })

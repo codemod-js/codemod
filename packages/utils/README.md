@@ -22,7 +22,7 @@ directly:
 ```ts
 // `m` is `@codemod/matchers`, a library of useful matchers
 // `t` is `@babel/types`, babel AST type predicates and builders
-import { t, m } from '@codemod/utils'
+import { m, t } from '@codemod-esm/utils'
 ```
 
 ## Contributing

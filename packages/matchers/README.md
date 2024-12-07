@@ -18,7 +18,7 @@ The easiest way to use this package is to use `@codemod/cli` like so:
 
 ```ts
 // `t` is `@babel/types`
-import { defineCodemod, t } from '@codemod/cli'
+import { defineCodemod, t } from '@codemod-esm/cli'
 
 // `m` is the `@codemod/matchers` module
 export default defineCodemod(({ m }) => ({
@@ -37,8 +37,8 @@ Just as you can build AST nodes with `@babel/types`, you can build AST node
 matchers to match an exact node with `@codemod/matchers`:
 
 ```ts
-import * as m from '@codemod/matchers'
 import * as t from '@babel/types'
+import * as m from '@codemod-esm/matchers'
 
 // `matcher` only matches Identifier nodes named 'test'
 const matcher = m.identifier('test')
@@ -52,8 +52,8 @@ matcher.match(t.identifier('test2')) // false
 Matching exact nodes is not usually what you want, however. `@codemod/matchers` can build matchers where only part of the data is specified:
 
 ```ts
-import * as m from '@codemod/matchers'
 import * as t from '@babel/types'
+import * as m from '@codemod-esm/matchers'
 
 // `matcher` matches any Identifier, regardless of name
 const matcher = m.identifier()
@@ -66,7 +66,7 @@ matcher.match(t.emptyStatement()) // false
 Here's a more complex example that matches any `console.log` calls. Assume that `expr` parses the given JS as an expression:
 
 ```ts
-import * as m from '@codemod/matchers'
+import * as m from '@codemod-esm/matchers'
 
 // `matcher` matches any `console.log(…)` call
 const matcher = m.callExpression(
@@ -82,7 +82,7 @@ matcher.match(expr('console.log')) // false
 There are a variety of fuzzy matchers that come with `@codemod/matchers`:
 
 ```ts
-import * as m from '@codemod/matchers'
+import * as m from '@codemod-esm/matchers'
 
 m.anyString().match('a string') // true
 m.anyString().match(1) // false
@@ -106,7 +106,7 @@ m.anyNode().match('a string') // false
 Often you'll want to capture part of the node that you've matched so that you can extract information from it or edit it.
 
 ```ts
-import * as m from '@codemod/matchers'
+import * as m from '@codemod-esm/matchers'
 
 // matches `console.<consoleMethod>(…)` calls
 const consoleMethod = m.capture(m.identifier())
@@ -137,7 +137,7 @@ if (matcher.match(expr('notAConsoleCall()'))) {
 Sometimes you'll want to refer to an earlier captured value in a later part of the matcher. For example, let's say you want to match a function expression which returns its argument:
 
 ```ts
-import * as m from '@codemod/matchers'
+import * as m from '@codemod-esm/matchers'
 
 const argumentMatcher = m.capture(m.identifier())
 const matcher = m.functionExpression(
@@ -158,6 +158,8 @@ matcher.match(expr('function(a) { return a + a; })')) // false
 All the previous examples have matchers testing a specific AST node. This is useful for illustration, but is not typically how you'd use them. Codemods written for `@codemod/cli` are [Babel plugins](https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/plugin-handbook.md) and therefore use the visitor pattern to process ASTs. Here's the above example that identifies functions that do nothing but return their argument again, this time as a Babel plugin that replaces such functions with a global `IDENTITY` reference:
 
 ```ts
+import { NodePath } from '@babel/traverse'
+import * as t from '@babel/types'
 /**
  * Replaces identity functions with `IDENTITY`:
  *
@@ -167,9 +169,7 @@ All the previous examples have matchers testing a specific AST node. This is use
  *
  *   list.filter(IDENTITY);
  */
-import * as m from '@codemod/matchers'
-import * as t from '@babel/types'
-import { NodePath } from '@babel/traverse'
+import * as m from '@codemod-esm/matchers'
 
 export default function () {
   return {
@@ -194,6 +194,7 @@ export default function () {
 Here is the same plugin again without using `@codemod/matchers`:
 
 ```ts
+import { NodePath } from '@babel/traverse'
 /**
  * Replaces identity functions with `IDENTITY`:
  *
@@ -204,7 +205,6 @@ Here is the same plugin again without using `@codemod/matchers`:
  *   list.filter(IDENTITY);
  */
 import * as t from '@babel/types'
-import { NodePath } from '@babel/traverse'
 
 export default function () {
   return {
@@ -262,7 +262,7 @@ export default function () {
 Sometimes you know you want to match a node but don't know its depth in the tree, and thus can't hardcode a whole matching tree. To deal with this situation you can use the `containerOf` matcher. For example, this matcher will find the first `done` call inside a mocha test, accounting for whatever name might have been used for the parameter:
 
 ```ts
-import * as m from '@codemod/matchers'
+import * as m from '@codemod-esm/matchers'
 
 const doneParam = m.capture(m.identifier())
 const matcher = m.callExpression(m.identifier('test'), [
@@ -303,8 +303,8 @@ matcher.match(
 The easiest way to build custom matchers is simply by composing existing ones:
 
 ```ts
-import * as m from '@codemod/matchers'
 import * as t from '@babel/types'
+import * as m from '@codemod-esm/matchers'
 
 function plusEqualOne() {
   return m.assignmentExpression(
@@ -325,10 +325,10 @@ matcher.match(expr('a += 2')) // false
 You can build simple custom matchers easily using a predicate:
 
 ```ts
-import * as m from '@codemod/matchers'
+import * as m from '@codemod-esm/matchers'
 
 const oddNumberMatcher = m.matcher(
-  (value) => typeof value === 'number' && Math.abs(number % 2) === 1
+  value => typeof value === 'number' && Math.abs(number % 2) === 1
 )
 
 oddNumberMatcher.match(expr('-1')) // true
@@ -343,29 +343,29 @@ oddNumberMatcher.match(expr('NaN')) // false
 Such matchers are easily parameterized by wrapping it in a function:
 
 ```ts
-import * as m from '@codemod/matchers';
+import * as m from '@codemod-esm/matchers'
 
 function stringMatching(pattern: RegExp) {
   return m.matcher(
     value => typeof value === 'string' && pattern.test(value)
-  );
-)
+  )
+}
 
-const startsWithRun = stringMatching(/^run/);
+const startsWithRun = stringMatching(/^run/)
 
-startsWithRun.match('run');     // true
-startsWithRun.match('runner');  // true
-startsWithRun.match('running'); // true
-startsWithRun.match('ruining'); // false
-startsWithRun.match(' run');    // false
-startsWithRun.match('');        // false
-startsWithRun.match(1);         // false
+startsWithRun.match('run') // true
+startsWithRun.match('runner') // true
+startsWithRun.match('running') // true
+startsWithRun.match('ruining') // false
+startsWithRun.match(' run') // false
+startsWithRun.match('') // false
+startsWithRun.match(1) // false
 ```
 
 A common case where you think you'd need a custom matcher is when you want one of a few possible values. In such cases you can use the `or` matcher:
 
 ```ts
-import * as m from '@codemod/matchers'
+import * as m from '@codemod-esm/matchers'
 
 const matcher = m.or(m.anyString(), m.anyNumber())
 
@@ -378,6 +378,8 @@ matcher.match(expr('1')) // false
 Matching one of a few values is common when dealing with things such as functions, which could be arrow functions, function expressions, or function declarations. Here's a more general version of the `IDENTITY` codemod which uses the `or` matcher to also replace arrow functions:
 
 ```ts
+import { NodePath } from '@babel/traverse'
+import * as t from '@babel/types'
 /**
  * Replaces identity functions with `IDENTITY`:
  *
@@ -389,9 +391,7 @@ Matching one of a few values is common when dealing with things such as function
  *   list.filter(IDENTITY);
  *   list2.filter(IDENTITY);
  */
-import * as m from '@codemod/matchers'
-import * as t from '@babel/types'
-import { NodePath } from '@babel/traverse'
+import * as m from '@codemod-esm/matchers'
 
 export default function () {
   return {
@@ -418,8 +418,8 @@ export default function () {
 You probably won't need it, but you can build your own by subclassing `Matcher`. Here's the same `stringMatching` but as a subclass of `Matcher`:
 
 ```ts
-import * as m from '@codemod/matchers'
 import * as t from '@babel/types'
+import * as m from '@codemod-esm/matchers'
 
 // This is more ceremony than the simple predicate-based one above.
 class StringMatching extends m.Matcher<string> {

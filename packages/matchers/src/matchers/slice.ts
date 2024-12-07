@@ -1,5 +1,5 @@
-import { Matcher } from './Matcher'
 import { anything } from './anything'
+import { Matcher } from './Matcher'
 
 export class SliceMatcher<T> extends Matcher<T> {
   constructor(
@@ -102,15 +102,17 @@ export function slice<T>(
     min = optionsOrLength
     max = optionsOrLength
     matcher = matcherOrUndefined ?? anything()
-  } else if (
-    typeof optionsOrLength === 'object' &&
-    typeof matcherOrUndefined === 'undefined'
+  }
+  else if (
+    typeof optionsOrLength === 'object'
+    && typeof matcherOrUndefined === 'undefined'
   ) {
     min = optionsOrLength.min ?? 0
     max = optionsOrLength.max ?? Infinity
     matcher = optionsOrLength.matcher ?? anything()
-  } else {
-    throw new Error('Invalid arguments')
+  }
+  else {
+    throw new TypeError('Invalid arguments')
   }
 
   return new SliceMatcher(min, max, matcher)

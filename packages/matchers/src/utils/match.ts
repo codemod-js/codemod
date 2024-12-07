@@ -1,4 +1,4 @@
-import * as m from '../matchers'
+import type * as m from '../matchers'
 
 /**
  * This helper makes it easier to use a matcher together with captured values,
@@ -13,7 +13,7 @@ import * as m from '../matchers'
  *
  * @example
  *
- * import * as m from '@codemod/matchers';
+ * import * as m from '@codemod-esm/matchers';
  *
  * let id: m.CapturedMatcher<t.Identifier>;
  * const idPlusIdMatcher = m.binaryExpression(

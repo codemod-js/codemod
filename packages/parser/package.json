@@ -1,11 +1,11 @@
 {
-  "name": "@codemod/parser",
+  "name": "@codemod-esm/parser",
+  "type": "module",
   "version": "1.4.1",
   "description": "Wrapper around @babel/parser that allows parsing everything.",
-  "repository": "https://github.com/codemod-js/codemod",
-  "license": "Apache-2.0",
   "author": "Brian Donovan",
-  "type": "module",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/codemod-js/codemod",
   "exports": {
     "bun": "./src/index.ts",
     "default": "./dist/index.js"
@@ -21,19 +21,16 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepublishOnly": "pnpm clean && pnpm build",
-    "test": "is-ci test:coverage test:watch",
-    "test:coverage": "bun test --coverage",
-    "test:watch": "bun test --watch"
+    "test": "bun test"
   },
   "dependencies": {
-    "@babel/parser": "esm"
+    "@babel/parser": "7.21.4-esm.4"
   },
   "devDependencies": {
-    "@babel/types": "^7.20.7",
-    "@types/jest": "^29",
-    "@types/node": "^20",
-    "is-ci-cli": "^2.2.0",
-    "typescript": "^5.3"
+    "@babel/types": "^7.26.3",
+    "@types/bun": "^1.1.14",
+    "@types/node": "^20.17.9",
+    "typescript": "^5.7.2"
   },
   "publishConfig": {
     "access": "public"

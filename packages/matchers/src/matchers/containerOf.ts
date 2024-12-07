@@ -1,5 +1,5 @@
+import type { Matcher } from './Matcher'
 import * as t from '@babel/types'
-import { Matcher } from './Matcher'
 import { CapturedMatcher } from './capture'
 
 /**
@@ -33,7 +33,8 @@ export class ContainerOfMatcher<
             return true
           }
         }
-      } else if (this.matchValue(valueAtKey, [...keys, key])) {
+      }
+      else if (this.matchValue(valueAtKey, [...keys, key])) {
         return true
       }
     }

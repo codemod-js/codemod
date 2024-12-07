@@ -14,7 +14,8 @@ export class OrMatcher<T, A extends Array<Matcher<T> | T>> extends Matcher<T> {
         if (matcherOrValue.matchValue(value, keys)) {
           return true
         }
-      } else if (matcherOrValue === value) {
+      }
+      else if (matcherOrValue === value) {
         return true
       }
     }

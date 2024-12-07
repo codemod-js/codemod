@@ -2,7 +2,7 @@ import { anything } from './anything'
 import { Matcher } from './Matcher'
 
 export interface CaptureBase {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   [key: string]: any
 }
 
@@ -26,7 +26,8 @@ export class CapturedMatcher<C, M = C> extends Matcher<M> {
     if (this.matcher.matchValue(value, keys)) {
       this.capture(value as unknown as C, keys)
       return true
-    } else {
+    }
+    else {
       return false
     }
   }

@@ -1,5 +1,5 @@
-import { nodesEquivalent, t } from '@codemod/utils'
-import { CapturedMatcher } from './capture'
+import type { CapturedMatcher } from './capture'
+import { nodesEquivalent, t } from '@codemod-esm/utils'
 import { Matcher } from './Matcher'
 
 export class FromCaptureMatcher<T> extends Matcher<T> {

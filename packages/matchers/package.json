@@ -1,11 +1,11 @@
 {
-  "name": "@codemod/matchers",
+  "name": "@codemod-esm/matchers",
+  "type": "module",
   "version": "1.7.0",
   "description": "Matchers for JavaScript & TypeScript codemods.",
-  "repository": "https://github.com/codemod-js/codemod",
-  "license": "Apache-2.0",
   "author": "Brian Donovan",
-  "type": "module",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/codemod-js/codemod",
   "exports": {
     "bun": "./src/index.ts",
     "default": "./dist/index.js"
@@ -21,29 +21,26 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepublishOnly": "pnpm clean && pnpm build",
-    "test": "is-ci test:coverage test:watch",
-    "test:coverage": "bun test --coverage",
-    "test:watch": "bun test --watch"
+    "test": "bun test"
   },
   "dependencies": {
-    "@babel/types": "esm",
-    "@codemod/utils": "workspace:^"
+    "@babel/types": "^7.26.3",
+    "@codemod-esm/utils": "workspace:^"
   },
   "devDependencies": {
-    "@babel/core": "esm",
-    "@babel/generator": "esm",
-    "@babel/traverse": "esm",
-    "@codemod/core": "workspace:^",
-    "@codemod/parser": "workspace:^",
-    "@types/babel__core": "^7.20.0",
-    "@types/babel__generator": "^7.6.4",
-    "@types/babel__template": "^7.4.1",
-    "@types/babel__traverse": "^7.18.3",
-    "@types/jest": "^29",
-    "@types/node": "^20",
-    "dedent": "^1.5",
-    "is-ci-cli": "^2.2.0",
-    "typescript": "^5.3"
+    "@babel/core": "^7.26.0",
+    "@babel/generator": "^7.26.3",
+    "@babel/traverse": "^7.26.4",
+    "@codemod-esm/core": "workspace:^",
+    "@codemod-esm/parser": "workspace:^",
+    "@types/babel__core": "^7.20.5",
+    "@types/babel__generator": "^7.6.8",
+    "@types/babel__template": "^7.4.4",
+    "@types/babel__traverse": "^7.20.6",
+    "@types/bun": "^1.1.14",
+    "@types/node": "^20.17.9",
+    "dedent": "^1.5.3",
+    "typescript": "^5.7.2"
   },
   "publishConfig": {
     "access": "public"

@@ -1,6 +1,6 @@
-import { buildOptions, type ParserOptions } from '@codemod/parser'
-import { type TransformOptions } from '.'
+import type { TransformOptions } from '.'
 import type { BabelPlugin, PluginObj } from './BabelPluginTypes'
+import { buildOptions, type ParserOptions } from '@codemod-esm/parser'
 
 export function buildPlugin(
   sourceType: ParserOptions['sourceType'],
@@ -8,7 +8,7 @@ export function buildPlugin(
   return function (): PluginObj {
     return {
       manipulateOptions(
-        opts: TransformOptions,
+        _opts: TransformOptions,
         parserOpts: ParserOptions,
       ): void {
         const options = buildOptions({
@@ -17,10 +17,7 @@ export function buildPlugin(
           plugins: parserOpts.plugins,
         })
 
-        for (const key of Object.keys(options)) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          ;(parserOpts as any)[key] = (options as any)[key]
-        }
+        Object.assign(parserOpts, options)
       },
     }
   }

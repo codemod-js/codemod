@@ -1,7 +1,7 @@
-import type { ParserOptions } from '@codemod/parser'
 import type { File } from '@babel/types'
-import * as recast from 'recast'
+import type { ParserOptions } from '@codemod-esm/parser'
 import type { PluginObj } from './BabelPluginTypes'
+import recast from 'recast'
 
 export function parse(
   code: string,
@@ -14,10 +14,11 @@ export function parse(
         return parse(code, { ...options, tokens: true })
       },
     },
-  })
+  }) as File
+  // Type guarded by parser.parse
 }
 
-export function generate(ast: File): { code: string; map?: object } {
+export function generate(ast: File): { code: string, map?: object } {
   return recast.print(ast, { sourceMapName: 'map.json' })
 }
 

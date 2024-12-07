@@ -1,8 +1,8 @@
+import type { File } from '@babel/types'
 import {
   parse as babelParse,
   type ParserOptions as BabelParserOptions,
 } from '@babel/parser'
-import { type File } from '@babel/types'
 import {
   buildOptions,
   isParserPluginName,

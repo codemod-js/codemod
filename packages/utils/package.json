@@ -1,11 +1,11 @@
 {
-  "name": "@codemod/utils",
+  "name": "@codemod-esm/utils",
+  "type": "module",
   "version": "1.1.0",
   "description": "codemod rewrites JavaScript and TypeScript",
-  "repository": "https://github.com/codemod-js/codemod.git",
-  "license": "Apache-2.0",
   "author": "Brian Donovan",
-  "type": "module",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/codemod-js/codemod.git",
   "exports": {
     "bun": "./src/index.ts",
     "default": "./dist/index.js"
@@ -21,23 +21,20 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepublishOnly": "pnpm clean && pnpm build",
-    "test": "is-ci test:coverage test:watch",
-    "test:coverage": "bun test --coverage",
-    "test:watch": "bun test --watch"
+    "test": "bun test"
   },
   "dependencies": {
-    "@babel/core": "esm",
-    "@babel/traverse": "esm",
-    "@babel/types": "esm",
-    "@codemod/parser": "workspace:^"
+    "@babel/core": "^7.26.0",
+    "@babel/traverse": "^7.26.4",
+    "@babel/types": "^7.26.3",
+    "@codemod-esm/parser": "workspace:^"
   },
   "devDependencies": {
-    "@types/babel__core": "^7.20.0",
-    "@types/babel__generator": "^7.6.4",
-    "@types/babel__traverse": "^7.18.3",
-    "@types/jest": "^29",
-    "@types/node": "^20",
-    "is-ci-cli": "^2.2.0"
+    "@types/babel__core": "^7.20.5",
+    "@types/babel__generator": "^7.6.8",
+    "@types/babel__traverse": "^7.20.6",
+    "@types/bun": "^1.1.14",
+    "@types/node": "^20.17.9"
   },
   "publishConfig": {
     "access": "public"

@@ -1,4 +1,4 @@
-import { SliceMatcher } from '../matchers/slice'
+import type { SliceMatcher } from '../matchers/slice'
 
 /**
  * Iterates through the possible allocations of `available` across `slices`.
@@ -9,13 +9,15 @@ export function* distributeAcrossSlices(
 ): IterableIterator<Array<number>> {
   if (slices.length === 0) {
     yield []
-  } else if (slices.length === 1) {
+  }
+  else if (slices.length === 1) {
     const spacer = slices[0]
 
     if (spacer.min <= available && available <= spacer.max) {
       yield [available]
     }
-  } else {
+  }
+  else {
     const last = slices[slices.length - 1]
 
     for (

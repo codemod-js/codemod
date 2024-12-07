@@ -1,6 +1,6 @@
-import { join } from 'path'
-import { BUILDER_KEYS, type NodeField, NODE_FIELDS, t } from '@codemod/utils'
-import format from './format'
+import { join } from 'node:path'
+import { BUILDER_KEYS, NODE_FIELDS, type NodeField, t } from '@codemod-esm/utils'
+import dedent from 'dedent'
 import {
   isValidatorOfType,
   stringifyType,
@@ -8,16 +8,12 @@ import {
   toFunctionName,
   typeForValidator,
 } from './ast'
-import dedent from 'dedent'
+import format from './format'
 
 export const MATCHERS_FILE_PATH = join(
-  __dirname,
+  import.meta.dirname,
   '../../../matchers/src/matchers/generated.ts',
 )
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const toBindingIdentifierName: (name: string) => string = (t as any)
-  .toBindingIdentifierName
 
 function stringifyMatcherForField(field: NodeField): string {
   const types = [
@@ -26,8 +22,8 @@ function stringifyMatcherForField(field: NodeField): string {
   ]
 
   if (
-    isValidatorOfType('array', field.validate) &&
-    'chainOf' in field.validate
+    isValidatorOfType('array', field.validate)
+    && 'chainOf' in field.validate
   ) {
     const elementType = typeForValidator(field.validate.chainOf[1])
 
@@ -35,13 +31,14 @@ function stringifyMatcherForField(field: NodeField): string {
       stringifyType(elementType, (type, value) => {
         if (t.isTSTypeReference(type)) {
           return `Matcher<t.${value}>`
-        } else if (
-          t.isTSLiteralType(type) ||
-          t.isTSBooleanKeyword(type) ||
-          t.isTSNumberKeyword(type) ||
-          t.isTSStringKeyword(type) ||
-          t.isTSUndefinedKeyword(type) ||
-          t.isTSNullKeyword(type)
+        }
+        else if (
+          t.isTSLiteralType(type)
+          || t.isTSBooleanKeyword(type)
+          || t.isTSNumberKeyword(type)
+          || t.isTSStringKeyword(type)
+          || t.isTSUndefinedKeyword(type)
+          || t.isTSNullKeyword(type)
         ) {
           return `Matcher<${value}>`
         }
@@ -57,13 +54,13 @@ function stringifyMatcherForField(field: NodeField): string {
 }
 
 function possiblePrimitiveTypesForField(field: NodeField): Array<string> {
-  return ['string', 'number', 'boolean'].filter((type) =>
+  return ['string', 'number', 'boolean'].filter(type =>
     isValidatorOfType(type, field.validate),
   )
 }
 
 interface SimpleWriter {
-  write(data: string): void
+  write: (data: string) => void
 }
 
 function writeToString(write: (writer: SimpleWriter) => void): string {
@@ -112,7 +109,7 @@ function rebuildTo(out: SimpleWriter): string | void {
     out.write(`  constructor(\n`)
     for (const key of keys) {
       const field = fields[key]
-      const binding = toBindingIdentifierName(key)
+      const binding = t.toBindingIdentifierName(key)
       out.write(
         `    private readonly ${binding}?: ${stringifyMatcherForField(
           field,
@@ -136,7 +133,7 @@ function rebuildTo(out: SimpleWriter): string | void {
     for (const key of keys) {
       const field = fields[key]
       const keyString = `'${key}'`
-      const binding = `this.${toBindingIdentifierName(key)}`
+      const binding = `this.${t.toBindingIdentifierName(key)}`
       out.write(`    if (typeof ${binding} === 'undefined') {\n`)
       out.write(`      // undefined matcher means anything matches\n`)
       for (const type of possiblePrimitiveTypesForField(field)) {
@@ -174,13 +171,13 @@ function rebuildTo(out: SimpleWriter): string | void {
     out.write(`export function ${name}(\n`)
     for (const key of keys) {
       const field = fields[key]
-      const binding = toBindingIdentifierName(key)
+      const binding = t.toBindingIdentifierName(key)
       out.write(`  ${binding}?: ${stringifyMatcherForField(field)},\n`)
     }
     out.write(`): Matcher<t.${type}> {\n`)
     out.write(`  return new ${type}Matcher(\n`)
     for (const key of keys) {
-      const binding = toBindingIdentifierName(key)
+      const binding = t.toBindingIdentifierName(key)
       out.write(`    ${binding},\n`)
     }
     out.write(`  );\n`)
@@ -189,5 +186,5 @@ function rebuildTo(out: SimpleWriter): string | void {
 }
 
 export async function rebuild(): Promise<string> {
-  return await format(writeToString(rebuildTo), MATCHERS_FILE_PATH)
+  return format(writeToString(rebuildTo), MATCHERS_FILE_PATH)
 }

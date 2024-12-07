@@ -1,9 +1,9 @@
+import { strict as assert } from 'node:assert'
 import {
   type BabelFileResult,
   type TransformOptions as BabelTransformOptions,
   transformSync,
 } from '@babel/core'
-import { strict as assert } from 'assert'
 import { buildPlugin } from './AllSyntaxPlugin'
 import RecastPlugin from './RecastPlugin'
 

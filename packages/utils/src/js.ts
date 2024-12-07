@@ -1,5 +1,5 @@
 import * as t from '@babel/types'
-import { parse } from '@codemod/parser'
+import { parse } from '@codemod-esm/parser'
 import { NODE_FIELDS } from './NodeTypes'
 
 function fieldsForNodeType(nodeType: string): Set<string> {
@@ -15,22 +15,18 @@ function stripExtras<N extends t.Node>(node: N): N {
   const allFields = Object.keys(node)
 
   for (const field of allFields) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const nodeObj = node as any
+    const nodeObj = node as unknown as { [key: string]: any }
 
     if (!fieldsToKeep.has(field)) {
       delete nodeObj[field]
-    } else {
+    }
+    else {
       const children = Array.isArray(nodeObj[field])
         ? nodeObj[field]
         : [nodeObj[field]]
 
       for (const child of children) {
-        if (
-          child &&
-          typeof child === 'object' &&
-          typeof child.type === 'string'
-        ) {
+        if (t.isNode(child)) {
           stripExtras(child)
         }
       }

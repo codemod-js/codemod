@@ -1,5 +1,6 @@
 {
-  "name": "codemod",
+  "name": "codemod-esm",
+  "type": "module",
   "private": true,
   "workspaces": {
     "packages": [
@@ -10,7 +11,23 @@
     ]
   },
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^3.11.2",
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^20.17.9",
+    "bun": "^1.1.38",
+    "esbuild": "^0.24.0",
+    "eslint": "^9.16.0",
+    "husky": "^9.1.7",
+    "lerna": "^8.1.9",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.4.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2"
   },
   "husky": {
     "hooks": {
@@ -20,37 +37,13 @@
   },
   "lint-staged": {
     "*.md": [
-      "prettier --write"
+      "eslint --fix"
     ],
     "*.ts": [
       "eslint --fix"
     ],
-    "package.json": [
-      "sort-package-json"
+    "*.json": [
+      "eslint --fix"
     ]
-  },
-  "prettier": {
-    "semi": false,
-    "singleQuote": true
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^18",
-    "@commitlint/config-conventional": "^18",
-    "@types/jest": "^29",
-    "@types/node": "^20",
-    "@typescript-eslint/eslint-plugin": "^6",
-    "@typescript-eslint/parser": "^6",
-    "bun": "^1.0.21",
-    "esbuild": "^0.19",
-    "eslint": "^8",
-    "eslint-config-prettier": "^9",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-prettier": "^5",
-    "husky": "^8",
-    "lerna": "^8",
-    "lint-staged": "^13.1.2",
-    "prettier": "^3",
-    "sort-package-json": "^1.53.1",
-    "typescript": "^5.3"
   }
 }

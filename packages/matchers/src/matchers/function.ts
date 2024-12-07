@@ -25,7 +25,8 @@ export class FunctionMatcher extends Matcher<t.Function> {
         ) {
           return false
         }
-      } else if (!this.params.matchValue(value.params, [...keys, 'params'])) {
+      }
+      else if (!this.params.matchValue(value.params, [...keys, 'params'])) {
         return false
       }
     }

@@ -13,7 +13,7 @@ $ npm install @codemod/core
 ## Usage
 
 ```ts
-import { transform } from '@codemod/core'
+import { transform } from '@codemod-esm/core'
 
 const result = transform('a ?? b', {
   plugins: ['@babel/plugin-proposal-nullish-coalescing-operator'],

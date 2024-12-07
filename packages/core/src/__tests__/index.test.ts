@@ -1,4 +1,4 @@
-import { type PluginItem } from '@babel/core'
+import type { PluginItem } from '@babel/core'
 import { transform } from '../transform'
 
 const incrementNumbersPlugin: PluginItem = {
@@ -9,11 +9,11 @@ const incrementNumbersPlugin: PluginItem = {
   },
 }
 
-test('preserves formatting', () => {
+it('preserves formatting', () => {
   expect(transform('var a=1;').code).toBe('var a=1;')
 })
 
-test('transforms using a custom babel plugin', () => {
+it('transforms using a custom babel plugin', () => {
   expect(
     transform('var a=1', {
       plugins: [incrementNumbersPlugin],
@@ -21,6 +21,6 @@ test('transforms using a custom babel plugin', () => {
   ).toBe('var a=2')
 })
 
-test('parses with as many parser plugins as possible', () => {
+it('parses with as many parser plugins as possible', () => {
   expect(() => transform('a ?? b').code).not.toThrow()
 })

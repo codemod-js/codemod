@@ -41,7 +41,7 @@ export function nodesEquivalent(a: t.Node, b: t.Node): boolean {
       }
 
       for (let i = 0; i < aVal.length; i++) {
-        if (!nodesEquivalent(aVal[i], bVal[i])) {
+        if (!nodesEquivalent(aVal[i] as t.Node, bVal[i] as t.Node)) {
           return false
         }
       }

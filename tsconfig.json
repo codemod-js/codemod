@@ -1,21 +1,20 @@
 {
   "compilerOptions": {
+    "composite": true,
     "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "bundler",
     "lib": [
       "esnext"
     ],
-    "moduleDetection": "force",
-    "noEmit": true,
-    "verbatimModuleSyntax": true,
-    "esModuleInterop": true,
-    "composite": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "allowJs": true,
     "strict": true,
     "downlevelIteration": true,
-    "skipLibCheck": true,
+    "noEmit": true,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "allowJs": true
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true
   }
 }

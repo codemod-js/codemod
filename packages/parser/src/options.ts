@@ -1,7 +1,7 @@
 import type {
+  ParserOptions as BabelParserOptions,
   DecoratorsPluginOptions,
   FlowPluginOptions,
-  ParserOptions as BabelParserOptions,
   ParserPlugin,
   PipelineOperatorPluginOptions,
   RecordAndTuplePluginOptions,
@@ -110,7 +110,8 @@ function typePluginForSourceFileName(
 ): 'flow' | 'typescript' {
   if (typeof sourceFileName === 'string' && !/\.tsx?$/i.test(sourceFileName)) {
     return 'flow'
-  } else {
+  }
+  else {
     return 'typescript'
   }
 }
@@ -148,7 +149,8 @@ function getPluginOptions(
       if (plugin[0] === name) {
         return plugin[1]
       }
-    } else if (plugin === name) {
+    }
+    else if (plugin === name) {
       return {}
     }
   }
@@ -173,6 +175,7 @@ function shouldAddPlugin(
     return false
   }
 
+  // eslint-disable-next-line ts/switch-exhaustiveness-check
   switch (name) {
     case 'flow':
     case 'flowComments':
@@ -180,8 +183,8 @@ function shouldAddPlugin(
 
     case 'typescript':
       return !(
-        getPluginOptions(plugins, 'flow') ||
-        getPluginOptions(plugins, 'flowComments')
+        getPluginOptions(plugins, 'flow')
+        || getPluginOptions(plugins, 'flowComments')
       )
 
     case 'decorators':
@@ -192,12 +195,12 @@ function shouldAddPlugin(
 
     case 'recordAndTuple':
     case 'pipelineOperator': {
-      const recordAndTupleOptions =
-        name === 'recordAndTuple'
+      const recordAndTupleOptions
+        = name === 'recordAndTuple'
           ? (plugin[1] as RecordAndTuplePluginOptions)
           : getPluginOptions(plugins, 'recordAndTuple')
-      const pipelineOperatorOptions =
-        name === 'pipelineOperator'
+      const pipelineOperatorOptions
+        = name === 'pipelineOperator'
           ? (plugin[1] as PipelineOperatorPluginOptions)
           : getPluginOptions(plugins, 'pipelineOperator')
 
@@ -209,8 +212,8 @@ function shouldAddPlugin(
 
         // https://github.com/babel/babel/blob/15f2f171ab13b224757ca43483a456e409f12a0a/packages/babel-parser/src/plugin-utils.js#L119-L123
         if (
-          pipelineOperatorOptions?.proposal === 'hack' &&
-          pipelineOperatorOptions.topicToken === '#'
+          pipelineOperatorOptions?.proposal === 'hack'
+          && pipelineOperatorOptions.topicToken === '#'
         ) {
           return false
         }
@@ -237,7 +240,7 @@ function pluginListIncludesPlugin(
   plugins: Array<ParserPlugin>,
   name: ParserPluginName,
 ): boolean {
-  return plugins.some((entry) => getPluginName(entry) === name)
+  return plugins.some(entry => getPluginName(entry) === name)
 }
 
 /**

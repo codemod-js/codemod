@@ -1,46 +1,46 @@
-import { parse, buildOptions } from '..'
 import * as t from '@babel/types'
+import { buildOptions, parse } from '..'
 
-test('defaults `sourceType` to "unambiguous"', () => {
+it('defaults `sourceType` to "unambiguous"', () => {
   expect(buildOptions().sourceType).toBe('unambiguous')
 })
 
-test('defaults `allowAwaitOutsideFunction` to true', () => {
+it('defaults `allowAwaitOutsideFunction` to true', () => {
   expect(buildOptions().allowAwaitOutsideFunction).toBe(true)
 })
 
-test('defaults `allowImportExportEverywhere` to true', () => {
+it('defaults `allowImportExportEverywhere` to true', () => {
   expect(buildOptions().allowImportExportEverywhere).toBe(true)
 })
 
-test('defaults `allowReturnOutsideFunction` to true', () => {
+it('defaults `allowReturnOutsideFunction` to true', () => {
   expect(buildOptions().allowReturnOutsideFunction).toBe(true)
 })
 
-test('defaults `allowSuperOutsideMethod` to true', () => {
+it('defaults `allowSuperOutsideMethod` to true', () => {
   expect(buildOptions().allowSuperOutsideMethod).toBe(true)
 })
 
-test('defaults `allowUndeclaredExports` to true', () => {
+it('defaults `allowUndeclaredExports` to true', () => {
   expect(buildOptions().allowUndeclaredExports).toBe(true)
 })
 
-test('includes various plugins by default', () => {
+it('includes various plugins by default', () => {
   expect(buildOptions().plugins).toBeInstanceOf(Array)
 })
 
-test('includes "typescript" plugin when `sourceFilename` is not present', () => {
+it('includes "typescript" plugin when `sourceFilename` is not present', () => {
   expect(buildOptions().plugins).toContain('typescript')
 })
 
-test('includes "flow" plugin when `sourceFilename` is not TypeScript', () => {
+it('includes "flow" plugin when `sourceFilename` is not TypeScript', () => {
   expect(buildOptions({ sourceFilename: 'index.js' }).plugins).toContain('flow')
   expect(buildOptions({ sourceFilename: 'index.jsx' }).plugins).toContain(
     'flow',
   )
 })
 
-test('includes "typescript" plugin when `sourceFilename` is TypeScript', () => {
+it('includes "typescript" plugin when `sourceFilename` is TypeScript', () => {
   expect(buildOptions({ sourceFilename: 'index.ts' }).plugins).toContain(
     'typescript',
   )
@@ -49,13 +49,13 @@ test('includes "typescript" plugin when `sourceFilename` is TypeScript', () => {
   )
 })
 
-test('does not include "typescript" plugin when "flow" is already enabled', () => {
+it('does not include "typescript" plugin when "flow" is already enabled', () => {
   expect(
     buildOptions({ plugins: [['flow', { all: true }]] }).plugins,
   ).not.toContain('typescript')
 })
 
-test('does not mix conflicting "recordAndTuple" and "pipelineOperator" plugins', () => {
+it('does not mix conflicting "recordAndTuple" and "pipelineOperator" plugins', () => {
   // adding recordAndTuple to existing plugins
   expect(
     buildOptions({ plugins: [['pipelineOperator', { proposal: 'smart' }]] })
@@ -79,32 +79,32 @@ test('does not mix conflicting "recordAndTuple" and "pipelineOperator" plugins',
   ).toContainEqual(['pipelineOperator', { proposal: 'minimal' }])
 })
 
-test('does not mutate `plugins` array', () => {
+it('does not mutate `plugins` array', () => {
   const plugins: Array<PluginConfig> = []
   buildOptions({ plugins })
   expect(plugins).toHaveLength(0)
 })
 
-test('does not mutate options', () => {
+it('does not mutate options', () => {
   const options = {}
   buildOptions(options)
   expect(options).toEqual({})
 })
 
-test('includes "decorators" plugin with options by default', () => {
+it('includes "decorators" plugin with options by default', () => {
   expect(buildOptions().plugins).toContainEqual([
     'decorators',
     { decoratorsBeforeExport: true },
   ])
 })
 
-test('does not include "decorators" plugin if "decorators-legacy" is already enabled', () => {
+it('does not include "decorators" plugin if "decorators-legacy" is already enabled', () => {
   expect(
     buildOptions({ plugins: ['decorators-legacy'] }).plugins,
   ).not.toContain('decorators')
 })
 
-test('enables `topLevelAwait` even if `allowAwaitOutsideFunction` is disabled', () => {
+it('enables `topLevelAwait` even if `allowAwaitOutsideFunction` is disabled', () => {
   const options = buildOptions({ allowAwaitOutsideFunction: false })
   expect(options.plugins).toContain('topLevelAwait')
   expect(
@@ -113,7 +113,7 @@ test('enables `topLevelAwait` even if `allowAwaitOutsideFunction` is disabled', 
   ).toEqual('AwaitExpression')
 })
 
-test('parses with a very broad set of options', () => {
+it('parses with a very broad set of options', () => {
   expect(
     parse(`
       // demonstrate 'allowReturnOutsideFunction' option and 'throwExpressions' plugin
@@ -130,7 +130,7 @@ test('parses with a very broad set of options', () => {
       #[1, 2, #{a: 3}]
       // demonstrate 'pipelineOperator' plugin with proposal=minimal
       x |> y
-  `).program.body.map((node) =>
+  `).program.body.map(node =>
       t.isExpressionStatement(node) ? node.expression.type : node.type,
     ),
   ).toEqual([
@@ -144,19 +144,18 @@ test('parses with a very broad set of options', () => {
   ])
 })
 
-test('does not parse placeholders by default as they conflict with TypeScript', () => {
+it('does not parse placeholders by default as they conflict with TypeScript', () => {
   const placeholderCode = `
     // demonstrate 'placeholders' plugin
     %%statement%%
   `
 
   expect(() => parse(placeholderCode)).toThrowError()
-  const node = parse(placeholderCode, { plugins: ['placeholders'] }).program
-    .body[0]
+  const node = parse(placeholderCode, { plugins: ['placeholders'] }).program.body[0]
   expect(node.type).toBe('Placeholder')
 })
 
-test('allows parsing records and tuples with "bar" syntax', () => {
+it('allows parsing records and tuples with "bar" syntax', () => {
   const tuple = (
     parse(`[|1, 2, {|a: 1|}|]`, {
       plugins: [['recordAndTuple', { syntaxType: 'bar' }]],
@@ -168,7 +167,7 @@ test('allows parsing records and tuples with "bar" syntax', () => {
   )
 })
 
-test('allows parsing of abstract classes with abstract methods', () => {
+it('allows parsing of abstract classes with abstract methods', () => {
   expect(
     parse(`
       abstract class Foo {

@@ -1,6 +1,7 @@
-import traverse, { NodePath } from '@babel/traverse'
+import type { NodePath } from '@babel/traverse'
+import traverse from '@babel/traverse'
 import * as t from '@babel/types'
-import { parse } from '@codemod/parser'
+import { parse } from '@codemod-esm/parser'
 
 export type Replacement =
   | t.Statement
@@ -27,7 +28,7 @@ export function program<R extends ReplacementsBase>(
         const name = path.node.name.name
         const replacement = replacements[name]
 
-        if (!replacement) {
+        if (replacement !== undefined) {
           throw new Error(
             `no replacement found for placeholder with name: ${name}`,
           )
@@ -35,7 +36,8 @@ export function program<R extends ReplacementsBase>(
 
         if (Array.isArray(replacement)) {
           path.replaceWithMultiple(replacement)
-        } else {
+        }
+        else {
           path.replaceWith(replacement)
         }
 
@@ -57,7 +59,7 @@ export function statement<R extends ReplacementsBase>(
   template: string,
 ): (replacements?: R) => t.Statement {
   const builder = program(template)
-  return (replacements) =>
+  return replacements =>
     getSingleStatement(builder(replacements).program.body)
 }
 
@@ -65,7 +67,7 @@ export function expression<R extends ReplacementsBase>(
   template: string,
 ): (replacements?: R) => t.Expression {
   const builder = program(template)
-  return (replacements) =>
+  return replacements =>
     getSingleExpression(builder(replacements).program.body)
 }
 

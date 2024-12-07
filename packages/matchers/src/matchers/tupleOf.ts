@@ -22,7 +22,7 @@ export class TupleOfMatcher<
 
     for (let i = 0; i < this.matchers.length; i++) {
       const matcher = this.matchers[i]
-      const element = value[i]
+      const element: unknown = value[i]
 
       if (!matcher.matchValue(element, [...keys, i])) {
         return false

@@ -1,5 +1,5 @@
-import * as t from '@babel/types'
 import generate from '@babel/generator'
+import * as t from '@babel/types'
 
 export interface ArrayValidator {
   each: Validator
@@ -42,11 +42,12 @@ export function isValidatorOfType(
   }
 
   if ('chainOf' in validator) {
-    return validator.chainOf.some((child) => isValidatorOfType(type, child))
+    return validator.chainOf.some(child => isValidatorOfType(type, child))
   }
 
   if ('oneOf' in validator) {
-    return validator.oneOf.some((child) => typeof child === type)
+    /* eslint valid-typeof: ["error", { "requireStringLiterals": false }] */
+    return validator.oneOf.some(child => typeof child === type)
   }
 
   return 'type' in validator && validator.type === type
@@ -89,12 +90,15 @@ export function typeForValidator(validator?: Validator): t.TSType {
       validator.oneOf.map((type) => {
         if (typeof type === 'string') {
           return t.tsLiteralType(t.stringLiteral(type))
-        } else if (typeof type === 'boolean') {
+        }
+        else if (typeof type === 'boolean') {
           return t.tsLiteralType(t.booleanLiteral(type))
-        } else if (typeof type === 'number') {
+        }
+        else if (typeof type === 'number') {
           return t.tsLiteralType(t.numericLiteral(type))
-        } else {
-          throw new Error(`unexpected 'oneOf' value: ${type}`)
+        }
+        else {
+          throw new TypeError(`unexpected 'oneOf' value: ${type as string}`)
         }
       }),
     )
@@ -102,7 +106,7 @@ export function typeForValidator(validator?: Validator): t.TSType {
 
   if ('oneOfNodeTypes' in validator) {
     return t.tsUnionType(
-      validator.oneOfNodeTypes.map((type) =>
+      validator.oneOfNodeTypes.map(type =>
         t.tsTypeReference(t.identifier(type)),
       ),
     )
@@ -122,7 +126,8 @@ export function typeForValidator(validator?: Validator): t.TSType {
 function stringifyQualifiedName(type: t.TSQualifiedName): string {
   if (t.isIdentifier(type.left)) {
     return `${type.left.name}.${type.right.name}`
-  } else {
+  }
+  else {
     return `${stringifyQualifiedName(type.left)}.${type.right.name}`
   }
 }
@@ -132,30 +137,38 @@ export function stringifyType(
   replacer?: (type: t.TSType, value: string) => string | undefined,
 ): string {
   function withReplacer(value: string): string {
-    return (replacer && replacer(type, value)) || value
+    return (replacer && replacer(type, value)) ?? value
   }
 
   if (t.isTSUnionType(type)) {
     return withReplacer(
-      type.types.map((child) => stringifyType(child, replacer)).join(' | '),
+      type.types.map(child => stringifyType(child, replacer)).join(' | '),
     )
-  } else if (t.isTSAnyKeyword(type)) {
+  }
+  else if (t.isTSAnyKeyword(type)) {
     return withReplacer('any')
-  } else if (t.isTSNumberKeyword(type)) {
+  }
+  else if (t.isTSNumberKeyword(type)) {
     return withReplacer('number')
-  } else if (t.isTSStringKeyword(type)) {
+  }
+  else if (t.isTSStringKeyword(type)) {
     return withReplacer('string')
-  } else if (t.isTSUndefinedKeyword(type)) {
+  }
+  else if (t.isTSUndefinedKeyword(type)) {
     return withReplacer('undefined')
-  } else if (t.isTSTypeReference(type)) {
+  }
+  else if (t.isTSTypeReference(type)) {
     if (t.isIdentifier(type.typeName)) {
       return withReplacer(type.typeName.name)
-    } else {
+    }
+    else {
       return withReplacer(stringifyQualifiedName(type.typeName))
     }
-  } else if (t.isTSArrayType(type)) {
+  }
+  else if (t.isTSArrayType(type)) {
     return withReplacer(`Array<${stringifyType(type.elementType, replacer)}>`)
-  } else {
+  }
+  else {
     return withReplacer(generate(type).code)
   }
 }
@@ -168,7 +181,8 @@ export function stringifyValidator(
   return stringifyType(typeForValidator(validator), (type, value) => {
     if (t.isTSTypeReference(type)) {
       return nodePrefix + value + nodeSuffix
-    } else {
+    }
+    else {
       return value
     }
   })

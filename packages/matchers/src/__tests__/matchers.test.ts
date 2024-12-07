@@ -1,16 +1,15 @@
-import { js, t } from '@codemod/utils'
+import { js, t } from '@codemod-esm/utils'
 import * as m from '../matchers'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function expectType<T>(value: T): void {
+function expectType<T>(_value: T): void {
   // nothing to do
 }
 
-test('anyString matches strings', () => {
+it('anyString matches strings', () => {
   expect(m.anyString().match('')).toBeTruthy()
   expect(m.anyString().match('abc')).toBeTruthy()
   expect(m.anyString().match('hi\nthere')).toBeTruthy()
-  expect(m.anyString().match(new String('even this'))).toBeTruthy()
+  expect(m.anyString().match(String('even this'))).toBeTruthy()
 
   expect(m.anyString().match(0)).toBeFalsy()
   expect(m.anyString().match(null)).toBeFalsy()
@@ -21,14 +20,14 @@ test('anyString matches strings', () => {
   // verify `match` acts as a type assertion
   const value: unknown = undefined
   if (m.anyString().match(value)) {
-    ;() => value.toLowerCase()
+    void (() => value.toLowerCase())
   }
 })
 
-test('anyNumber matches numbers', () => {
+it('anyNumber matches numbers', () => {
   expect(m.anyNumber().match(0)).toBeTruthy()
-  expect(m.anyNumber().match(NaN)).toBeTruthy()
-  expect(m.anyNumber().match(new Number(1))).toBeTruthy()
+  expect(m.anyNumber().match(Number.NaN)).toBeTruthy()
+  expect(m.anyNumber().match(Number(1))).toBeTruthy()
   expect(m.anyNumber().match(Infinity)).toBeTruthy()
   expect(m.anyNumber().match(Number.MAX_VALUE)).toBeTruthy()
 
@@ -41,11 +40,11 @@ test('anyNumber matches numbers', () => {
   // verify `match` acts as a type assertion
   const value: unknown = undefined
   if (m.anyNumber().match(value)) {
-    ;() => value.toFixed()
+    void (() => value.toFixed())
   }
 })
 
-test('anything matches everything', () => {
+it('anything matches everything', () => {
   expect(m.anything().match(0)).toBeTruthy()
   expect(m.anything().match('')).toBeTruthy()
   expect(m.anything().match([])).toBeTruthy()
@@ -57,11 +56,11 @@ test('anything matches everything', () => {
   // verify `match` acts as a type assertion
   const value: unknown = undefined
   if (m.anything<number>().match(value)) {
-    ;() => value.toFixed()
+    void (() => value.toFixed())
   }
 })
 
-test('arrayOf matches a variable-length homogenous array', () => {
+it('arrayOf matches a variable-length homogenous array', () => {
   expect(m.arrayOf(m.anyString()).match([])).toBeTruthy()
   expect(m.arrayOf(m.anyString()).match(['a', 'b'])).toBeTruthy()
   expect(m.arrayOf(m.arrayOf(m.anyString())).match([[], ['a']])).toBeTruthy()
@@ -77,11 +76,11 @@ test('arrayOf matches a variable-length homogenous array', () => {
   // verify `match` acts as a type assertion
   const value: unknown = undefined
   if (m.arrayOf(m.anyString()).match(value)) {
-    ;() => value.push('element')
+    void (() => value.push('element'))
   }
 })
 
-test('tupleOf matches a fixed-length array', () => {
+it('tupleOf matches a fixed-length array', () => {
   const stringNumberAnything = m.tupleOf<unknown>(
     m.anyString(),
     m.anyNumber(),
@@ -103,11 +102,11 @@ test('tupleOf matches a fixed-length array', () => {
   // verify `match` acts as a type assertion
   const value: unknown = undefined
   if (stringNumberAnything.match(value)) {
-    ;() => value.length
+    void (() => value.length)
   }
 })
 
-test('oneOf matches a single-element array', () => {
+it('oneOf matches a single-element array', () => {
   expect(m.oneOf(m.anyString()).match([''])).toBeTruthy()
   expect(m.oneOf(m.anything()).match([{}])).toBeTruthy()
 
@@ -116,7 +115,7 @@ test('oneOf matches a single-element array', () => {
   expect(m.oneOf(m.anyString()).match([])).toBeFalsy()
 })
 
-test('anyNode matches any known AST node type', () => {
+it('anyNode matches any known AST node type', () => {
   expect(m.anyNode().match(t.identifier('abc'))).toBeTruthy()
   expect(m.anyNode().match(t.blockStatement([]))).toBeTruthy()
 
@@ -128,7 +127,7 @@ test('anyNode matches any known AST node type', () => {
   expect(m.anyNode().match(undefined)).toBeFalsy()
 })
 
-test('anyExpression matches any known AST expression node type', () => {
+it('anyExpression matches any known AST expression node type', () => {
   expect(m.anyExpression().match(t.identifier('abc'))).toBeTruthy()
   expect(
     m
@@ -143,7 +142,7 @@ test('anyExpression matches any known AST expression node type', () => {
   expect(m.anyExpression().match(t.blockStatement([]))).toBeFalsy()
 })
 
-test('anyStatement matches any known AST statement node type', () => {
+it('anyStatement matches any known AST statement node type', () => {
   expect(m.anyStatement().match(t.emptyStatement())).toBeTruthy()
   expect(m.anyStatement().match(t.returnStatement())).toBeTruthy()
   expect(m.anyStatement().match(t.blockStatement([]))).toBeTruthy()
@@ -154,7 +153,7 @@ test('anyStatement matches any known AST statement node type', () => {
   expect(m.anyStatement().match(t.program([]))).toBeFalsy()
 })
 
-test('m.function( matches any known function node type', () => {
+it('m.function( matches any known function node type', () => {
   expect(
     m.function().match(t.functionDeclaration(null, [], t.blockStatement([]))),
   ).toBeTruthy()
@@ -169,21 +168,21 @@ test('m.function( matches any known function node type', () => {
   expect(m.function().match(t.blockStatement([]))).toBeFalsy()
 })
 
-test('anyList reduces to tupleOf without any slices', () => {
+it('anyList reduces to tupleOf without any slices', () => {
   expect(m.anyList().match([])).toBeTruthy()
   expect(
     m.anyList<number | string>(m.anyString(), m.anyNumber()).match(['', 0]),
   ).toBeTruthy()
 })
 
-test('anyList with a fixed-width leading slice', () => {
+it('anyList with a fixed-width leading slice', () => {
   const list = m.anyList(m.slice(1), m.anyString())
   expect(list.match([''])).toBeFalsy()
   expect(list.match([{}, ''])).toBeTruthy()
   expect(list.match([{}, {}, ''])).toBeFalsy()
 })
 
-test('anyList with slices with specific matchers', () => {
+it('anyList with slices with specific matchers', () => {
   const list = m.anyList<number | string>(
     m.slice({ min: 1, max: 2, matcher: m.anyNumber() }),
     m.anyString(),
@@ -202,28 +201,28 @@ test('anyList with slices with specific matchers', () => {
   expect(matcher.match(['', 1, null, ''])).toBeFalsy()
 })
 
-test('anyList with a variable-width leading slice', () => {
+it('anyList with a variable-width leading slice', () => {
   const list = m.anyList(m.slice({ min: 0, max: 1 }), m.anyString())
   expect(list.match([''])).toBeTruthy()
   expect(list.match([{}, ''])).toBeTruthy()
   expect(list.match([{}, {}, ''])).toBeFalsy()
 })
 
-test('anyList with a zero-width leading slice', () => {
+it('anyList with a zero-width leading slice', () => {
   const list = m.anyList(m.slice(0), m.anyString())
   expect(list.match([''])).toBeTruthy()
   expect(list.match([{}, ''])).toBeFalsy()
   expect(list.match([{}, {}, ''])).toBeFalsy()
 })
 
-test('anyList with a fixed-width trailing slice', () => {
+it('anyList with a fixed-width trailing slice', () => {
   const list = m.anyList(m.anyString(), m.slice(1))
   expect(list.match([''])).toBeFalsy()
   expect(list.match(['', ''])).toBeTruthy()
   expect(list.match(['', '', ''])).toBeFalsy()
 })
 
-test('anyList with multiple fixed slices', () => {
+it('anyList with multiple fixed slices', () => {
   const list = m.anyList<number | string>(
     m.slice(1),
     m.anyString(),
@@ -236,7 +235,7 @@ test('anyList with multiple fixed slices', () => {
   expect(list.match([1, {}, 2, 3, ''])).toBeFalsy()
 })
 
-test('anyList with multiple dynamic slices', () => {
+it('anyList with multiple dynamic slices', () => {
   const list = m.anyList<t.Statement>(
     m.zeroOrMore(),
     m.returnStatement(),
@@ -246,7 +245,7 @@ test('anyList with multiple dynamic slices', () => {
   expect(list.match(js('return; foo();').program.body)).toBeTruthy()
 })
 
-test('or matches one of the values', () => {
+it('or matches one of the values', () => {
   const mString = m.or(m.anyString())
   const mStringOrNumber = m.or(m.anyString(), m.anyNumber())
   const mStringOrNumberOrNull = m.or(m.anyString(), m.anyNumber(), null)
@@ -262,7 +261,7 @@ test('or matches one of the values', () => {
   expect(mStringOrNumber.match({})).toBeFalsy()
 })
 
-test('or matches literal values', () => {
+it('or matches literal values', () => {
   const m1 = m.or(1)
   const m1or2 = m.or(1, 2)
   expectType<m.Matcher<number>>(m1)
@@ -275,13 +274,13 @@ test('or matches literal values', () => {
   expect(m1or2.match({})).toBeFalsy()
 })
 
-test('or matches mixed literal values and matchers', () => {
+it('or matches mixed literal values and matchers', () => {
   expect(m.or(1, m.anyString()).match(1)).toBeTruthy()
   expect(m.or(1, m.anyString()).match('')).toBeTruthy()
   expect(m.or(1, m.anyString()).match({})).toBeFalsy()
 })
 
-test('containerOf recurses to find a node matching the pattern', () => {
+it('containerOf recurses to find a node matching the pattern', () => {
   expect(
     m
       .containerOf(m.binaryExpression('+', m.identifier(), m.numericLiteral()))
@@ -295,7 +294,7 @@ test('containerOf recurses to find a node matching the pattern', () => {
   ).toBeFalsy()
 })
 
-test('containerOf captures the first matching value', () => {
+it('containerOf captures the first matching value', () => {
   const plusMatcher = m.containerOf(m.binaryExpression('+'))
 
   expect(plusMatcher.match(js('console.log(a + b + c);'))).toBeTruthy()
@@ -312,7 +311,7 @@ test('containerOf captures the first matching value', () => {
   })
 })
 
-test('containerOf can be used in a nested matcher', () => {
+it('containerOf can be used in a nested matcher', () => {
   expect(
     m
       .containerOf(
@@ -326,9 +325,9 @@ test('containerOf can be used in a nested matcher', () => {
   ).toBeTruthy()
 })
 
-test('matcher builds a matcher based on a predicate', () => {
+it('matcher builds a matcher based on a predicate', () => {
   const matcher = m.matcher(
-    (value) => typeof value === 'string' && value.startsWith('no'),
+    value => typeof value === 'string' && value.startsWith('no'),
   )
 
   expect(matcher.match('no')).toBeTruthy()
@@ -342,7 +341,7 @@ test('matcher builds a matcher based on a predicate', () => {
   expect(matcher.match(42)).toBeFalsy()
 })
 
-test('fromCapture builds a matcher based on a capturing matcher', () => {
+it('fromCapture builds a matcher based on a capturing matcher', () => {
   const capture = m.capture(m.identifier())
   const matcher = m.fromCapture(capture)
   const id = t.identifier('a')
@@ -361,10 +360,10 @@ test('fromCapture builds a matcher based on a capturing matcher', () => {
   expect(matcher.match(9)).toBeFalsy()
 })
 
-test('regression: #921', () => {
+it('regression: #921', () => {
   expect(
     m
       .functionExpression(m.anything())
-      .match(t.functionExpression(null, [], t.blockStatement([])))
+      .match(t.functionExpression(null, [], t.blockStatement([]))),
   ).toBeTruthy()
 })

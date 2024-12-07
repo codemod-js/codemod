@@ -10,7 +10,7 @@ export class AnyListMatcher<T> extends Matcher<Array<T>> {
 
     for (const matcher of matchers) {
       if (matcher instanceof SliceMatcher) {
-        this.sliceMatchers.push(matcher)
+        this.sliceMatchers.push(matcher as SliceMatcher<T>)
       }
     }
   }
@@ -33,13 +33,13 @@ export class AnyListMatcher<T> extends Matcher<Array<T>> {
     )
 
     for (const allocations of spacerAllocations) {
-      const valuesToMatch: Array<T> = array.slice()
+      const valuesToMatch: Array<T> = array.slice() as T[]
       let matchedAll = true
       let key = 0
 
       for (const matcher of this.matchers) {
         if (matcher instanceof SliceMatcher) {
-          let sliceValueCount = allocations.shift() || 0
+          let sliceValueCount = allocations.shift() ?? 0
 
           while (sliceValueCount > 0) {
             const valueToMatch = valuesToMatch.shift()
@@ -50,10 +50,12 @@ export class AnyListMatcher<T> extends Matcher<Array<T>> {
             sliceValueCount--
             key++
           }
-        } else if (!matcher.matchValue(valuesToMatch.shift(), [...keys, key])) {
+        }
+        else if (!matcher.matchValue(valuesToMatch.shift(), [...keys, key])) {
           matchedAll = false
           break
-        } else {
+        }
+        else {
           key++
         }
       }
