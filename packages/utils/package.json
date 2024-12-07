@@ -7,7 +7,6 @@
   "license": "Apache-2.0",
   "repository": "https://github.com/codemod-js/codemod.git",
   "exports": {
-    "bun": "./src/index.ts",
     "default": "./dist/index.js"
   },
   "main": "dist/index.js",
