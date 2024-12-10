@@ -1,1 +1,0 @@
-pnpx commitlint --from="$(git merge-base HEAD main)"
