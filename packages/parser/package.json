@@ -1,7 +1,7 @@
 {
   "name": "@codemod-esm/parser",
   "type": "module",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Wrapper around @babel/parser that allows parsing everything.",
   "author": "Brian Donovan",
   "license": "Apache-2.0",
