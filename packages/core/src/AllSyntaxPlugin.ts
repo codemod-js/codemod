@@ -1,6 +1,7 @@
+import type { ParserOptions } from '@codemod-esm/parser'
 import type { TransformOptions } from '.'
 import type { BabelPlugin, PluginObj } from './BabelPluginTypes'
-import { buildOptions, type ParserOptions } from '@codemod-esm/parser'
+import { buildOptions } from '@codemod-esm/parser'
 
 export function buildPlugin(
   sourceType: ParserOptions['sourceType'],

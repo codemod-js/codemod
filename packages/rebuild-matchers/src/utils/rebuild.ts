@@ -1,5 +1,6 @@
+import type { NodeField } from '@codemod-esm/utils'
 import { join } from 'node:path'
-import { BUILDER_KEYS, NODE_FIELDS, type NodeField, t } from '@codemod-esm/utils'
+import { BUILDER_KEYS, NODE_FIELDS, t } from '@codemod-esm/utils'
 import dedent from 'dedent'
 import {
   isValidatorOfType,

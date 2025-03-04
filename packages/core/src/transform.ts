@@ -1,7 +1,7 @@
+import type { BabelFileResult, TransformOptions as BabelTransformOptions } from '@babel/core'
 import { strict as assert } from 'node:assert'
 import {
-  type BabelFileResult,
-  type TransformOptions as BabelTransformOptions,
+
   transformSync,
 } from '@babel/core'
 import { buildPlugin } from './AllSyntaxPlugin'

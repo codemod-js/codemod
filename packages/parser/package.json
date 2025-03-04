@@ -23,13 +23,13 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@babel/parser": "latest"
+    "@babel/parser": "^7.26.9"
   },
   "devDependencies": {
-    "@babel/types": "^7.26.3",
-    "@types/bun": "^1.1.14",
-    "@types/node": "^20.17.9",
-    "typescript": "^5.7.2"
+    "@babel/types": "^7.26.9",
+    "@types/bun": "^1.2.4",
+    "@types/node": "^22.13.9",
+    "typescript": "^5.8.2"
   },
   "publishConfig": {
     "access": "public"

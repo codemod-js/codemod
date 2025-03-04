@@ -23,17 +23,17 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@babel/core": "^7.26.0",
-    "@babel/generator": "^7.26.3",
+    "@babel/core": "^7.26.9",
+    "@babel/generator": "^7.26.9",
     "@codemod-esm/parser": "workspace:^",
-    "recast": "^0.23.9"
+    "recast": "^0.23.11"
   },
   "devDependencies": {
-    "@babel/types": "^7.26.3",
+    "@babel/types": "^7.26.9",
     "@types/babel__core": "^7.20.5",
-    "@types/bun": "^1.1.14",
-    "@types/node": "^20.17.9",
-    "typescript": "^5.7.2"
+    "@types/bun": "^1.2.4",
+    "@types/node": "^22.13.9",
+    "typescript": "^5.8.2"
   },
   "publishConfig": {
     "access": "public"
