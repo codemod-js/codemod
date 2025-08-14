@@ -2,7 +2,7 @@ packages:
   - './packages/*'
 
 autoInstallPeers: false
-linkWorkspacePackages: true
+linkWorkspacePackages: deep
 
 onlyBuiltDependencies:
   - esbuild
