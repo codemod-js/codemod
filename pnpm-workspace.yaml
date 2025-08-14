@@ -1,2 +1,8 @@
 packages:
   - './packages/*'
+
+autoInstallPeers: false
+linkWorkspacePackages: true
+
+onlyBuiltDependencies:
+  - esbuild
