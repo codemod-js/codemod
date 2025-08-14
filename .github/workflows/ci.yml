@@ -9,13 +9,6 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-        package:
-          - cli
-          - core
-          - matchers
-          - parser
-          - rebuild-matchers
-          - utils
 
     env:
       CI: true
@@ -32,14 +25,5 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
-        working-directory: packages/${{ matrix.package }}
-        run: pnpm build
-
-      - name: Run Linter
-        working-directory: packages/${{ matrix.package }}
-        run: pnpm lint
-
-      - name: Run Tests
-        working-directory: packages/${{ matrix.package }}
-        run: pnpm test
+      - name: Check
+        run: pnpm check

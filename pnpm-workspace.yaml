@@ -4,5 +4,8 @@ packages:
 autoInstallPeers: false
 linkWorkspacePackages: deep
 
+syncInjectedDepsAfterScripts:
+  - build
+
 onlyBuiltDependencies:
   - esbuild

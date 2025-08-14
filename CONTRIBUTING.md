@@ -23,7 +23,7 @@ $ pnpm install
 Then make sure the tests pass:
 
 ```sh
-$ pnpm test
+$ pnpm check
 ```
 
 ### Running linting/testing
