@@ -20,9 +20,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepublishOnly": "pnpm clean && pnpm build",
-    "test": "is-ci test:coverage test:watch",
-    "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test": "is-ci test:coverage test:basic",
+    "test:basic": "jest",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@babel/core": "^7.20.12",
@@ -60,7 +60,7 @@
     "@types/glob": "^7.1.0",
     "@types/got": "^9.6.7",
     "@types/jest": "^27.0.2",
-    "@types/node": "^18.14.0",
+    "@types/node": "^24.2.1",
     "@types/resolve": "^1.17.1",
     "@types/rimraf": "3.0.0",
     "@types/semver": "^7.1.0",
@@ -73,7 +73,7 @@
     "rimraf": "3.0.2",
     "semver": "^7.3.5",
     "tempy": "^1",
-    "typescript": "^4.9.5"
+    "typescript": "^5.9.2"
   },
   "engines": {
     "node": ">=12.0.0"

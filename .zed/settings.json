@@ -1,0 +1,23 @@
+// Folder-specific settings
+//
+// For a full list of overridable settings, and general information on folder-specific settings,
+// see the documentation: https://zed.dev/docs/configuring-zed#settings-files
+{
+  "file_types": {
+    "JSONC": ["tsconfig*.json"]
+  },
+  "lsp": {
+    "json-language-server": {
+      "settings": {
+        "json": {
+          "schemas": [
+            {
+              "fileMatch": ["*/tsconfig*.json"],
+              "url": "https://raw.githubusercontent.com/SchemaStore/schemastore/refs/heads/master/src/schemas/json/tsconfig.json"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

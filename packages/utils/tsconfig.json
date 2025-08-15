@@ -1,14 +1,4 @@
 {
-  "compilerOptions": {
-    "target": "es2015",
-    "module": "commonjs",
-    "composite": true,
-    "noEmit": true,
-    "strict": true,
-    "esModuleInterop": true
-  },
-  "exclude": ["build"],
-  "references": [
-    { "path": "../parser/tsconfig.build.json" }
-  ]
+  "extends": "../../tsconfig-base-analyze.json",
+  "references": [{ "path": "../parser/tsconfig.build.json" }]
 }

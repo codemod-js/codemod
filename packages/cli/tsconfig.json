@@ -1,17 +1,15 @@
 {
+  "extends": "../../tsconfig-base-analyze.json",
   "compilerOptions": {
-    "target": "es2015",
-    "module": "commonjs",
-    "lib": ["es2015", "es2016"],
-    "composite": true,
-    "noEmit": true,
+    "strict": false,
     "noImplicitAny": false,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "esModuleInterop": false
   },
-  "exclude": ["__tests__/fixtures/**/*.ts", "tmp", "build"],
   "references": [
     { "path": "../core/tsconfig.build.json" },
     { "path": "../matchers/tsconfig.build.json" },
-    { "path": "../parser/tsconfig.build.json" }
+    { "path": "../parser/tsconfig.build.json" },
+    { "path": "../utils/tsconfig.build.json" }
   ]
 }
