@@ -1,0 +1,16 @@
+/**
+ * A symlink to this `tsconfig-workspace-analyze.json` file
+ * is located at `/tsconfig.json` so that analysis tooling
+ * can pick it up automatically.
+ */
+{
+  "files": [],
+  "references": [
+    { "path": "packages/cli/tsconfig.json" },
+    { "path": "packages/core/tsconfig.json" },
+    { "path": "packages/matchers/tsconfig.json" },
+    { "path": "packages/parser/tsconfig.json" },
+    { "path": "packages/rebuild-matchers/tsconfig.json" },
+    { "path": "packages/utils/tsconfig.json" }
+  ]
+}

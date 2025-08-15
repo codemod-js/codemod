@@ -1,12 +1,7 @@
 {
+  "extends": "../../tsconfig-base-analyze.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2015",
-    "lib": ["es2015", "es2016"],
-    "composite": true,
-    "noEmit": true,
     "noImplicitAny": false,
-    "strict": true
-  },
-  "exclude": ["tmp", "build"]
+    "esModuleInterop": false
+  }
 }

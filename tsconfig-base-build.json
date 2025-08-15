@@ -1,0 +1,22 @@
+/**
+ * This file intentionally does NOT extend `tsconfig-base-analyze.json`, as that
+ * would cause either default options that a package overrides in their local
+ * `tsconfig.json` file to be used instead, or the `include`, `exclude`, and `noEmit`
+ * options here to be overwritten with the versions intended for analysis, depending
+ * on which order the files were specified in.
+ *
+ * The `tsconfig.build.json` file located in each package should have an `extends`
+ * option with this value: `["./tsconfig.json", "../../tsconfig-base-build.json"]`
+ */
+{
+  "include": ["${configDir}/src"],
+  "exclude": ["${configDir}/src/__tests__"],
+  "compilerOptions": {
+    "noEmit": false,
+    "rootDir": "${configDir}/src",
+    "outDir": "${configDir}/build",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true
+  }
+}

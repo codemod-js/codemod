@@ -1,0 +1,16 @@
+{
+  "exclude": [
+    "${configDir}/build",
+    "${configDir}/tmp",
+    "${configDir}/__tests__/fixtures/**/*.ts"
+  ],
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
+    "composite": true,
+    "noEmit": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "lib": ["es2015", "es2016"]
+  }
+}

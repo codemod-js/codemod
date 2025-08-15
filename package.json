@@ -43,7 +43,7 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "build": "pnpm run --recursive build",
+    "build": "tsc --build --stopBuildOnErrors tsconfig-workspace-build.json",
     "check": "pnpm build && pnpm run --parallel --recursive '/^test$|^lint$/'",
     "cli": "pnpm build && packages/cli/bin/codemod"
   },
