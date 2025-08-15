@@ -150,7 +150,7 @@ test('does not parse placeholders by default as they conflict with TypeScript', 
     %%statement%%
   `
 
-  expect(() => parse(placeholderCode)).toThrowError()
+  expect(() => parse(placeholderCode)).toThrow()
   const node = parse(placeholderCode, { plugins: ['placeholders'] }).program
     .body[0]
   expect(node.type).toBe('Placeholder')

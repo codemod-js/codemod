@@ -70,7 +70,7 @@ test('throws if it gets a non-200 response', async function () {
     const resolver = new NetworkResolver()
     const url = server.requestURL('/')
 
-    await expect(resolver.resolve(url.toString())).rejects.toThrowError(
+    await expect(resolver.resolve(url.toString())).rejects.toThrow(
       'failed to load plugin'
     )
   } finally {
