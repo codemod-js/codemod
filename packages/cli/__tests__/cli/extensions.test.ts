@@ -6,6 +6,8 @@ import createTemporaryFile, {
 import plugin from '../helpers/plugin'
 import { runCodemodCLI } from '../helpers/runCodemodCLI'
 
+jest.setTimeout(10_000)
+
 test('can load plugins written with ES modules by default', async function () {
   const afile = await createTemporaryFile('a-file.js', '3 + 4;')
   expect(

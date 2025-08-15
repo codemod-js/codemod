@@ -16,9 +16,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepublishOnly": "pnpm clean && pnpm build",
-    "test": "is-ci test:coverage test:watch",
-    "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test": "is-ci test:coverage test:basic",
+    "test:basic": "jest",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@babel/core": "^7.20.12",
@@ -32,11 +32,11 @@
     "@babel/types": "^7.20.7",
     "@types/babel__core": "^7.1.16",
     "@types/jest": "^25.1.0",
-    "@types/node": "^18.14.0",
+    "@types/node": "^24.2.1",
     "@types/prettier": "^2.0.0",
     "@types/resolve": "^1.14.0",
     "jest": "^27.3.1",
-    "typescript": "^4.9.5"
+    "typescript": "^5.9.2"
   },
   "publishConfig": {
     "access": "public"

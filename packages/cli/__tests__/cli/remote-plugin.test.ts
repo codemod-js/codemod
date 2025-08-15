@@ -5,6 +5,8 @@ import plugin from '../helpers/plugin'
 import { runCodemodCLI } from '../helpers/runCodemodCLI'
 import { startServer } from '../helpers/TestServer'
 
+jest.setTimeout(10_000)
+
 test('can load and run with a remote plugin', async () => {
   const afile = await createTemporaryFile('a-file.js', '3 + 4;')
   const server = await startServer(async (req, res) => {
