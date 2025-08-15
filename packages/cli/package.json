@@ -20,9 +20,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepublishOnly": "pnpm clean && pnpm build",
-    "test": "is-ci test:coverage test:watch",
-    "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test": "is-ci test:coverage test:basic",
+    "test:basic": "jest",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@babel/core": "^7.20.12",

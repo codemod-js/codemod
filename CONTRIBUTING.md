@@ -9,7 +9,8 @@ This project is written with [TypeScript](https://www.typescriptlang.org/), a su
 
 ## Developing
 
-codemod expects at least node 16 and pnpm. You can check each of these with `node -v` and `pnpm -v`. Look for instructions on installing node [here](https://nodejs.org) and pnpm [here](https://pnpm.io/).
+codemod expects at least node 18 and pnpm 10. You can check each of these with `node -v` and `pnpm -v`. Look for instructions on installing node [here](https://nodejs.org) and pnpm [here](https://pnpm.io/).
+As long as you have pnpm 10 or later installed globally, pnpm will automatically run the version of pnpm specified in the `packageManager` field of `package.json`.
 
 ### Setup
 
@@ -22,7 +23,7 @@ $ pnpm install
 Then make sure the tests pass:
 
 ```sh
-$ pnpm test
+$ pnpm check
 ```
 
 ### Running linting/testing

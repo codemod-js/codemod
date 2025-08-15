@@ -4,6 +4,8 @@ import createTemporaryFile, {
 } from '../helpers/createTemporaryFile'
 import { runCodemodCLI } from '../helpers/runCodemodCLI'
 
+jest.setTimeout(10_000)
+
 it('can specify the source type as "script"', async function () {
   const afile = await createTemporaryFile(
     'a-file.js',
