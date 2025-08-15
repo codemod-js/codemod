@@ -1,5 +1,7 @@
 import { parse, buildOptions } from '..'
+import { ParserPlugin } from '@babel/parser'
 import * as t from '@babel/types'
+import 'jest-extended'
 
 test('defaults `sourceType` to "unambiguous"', () => {
   expect(buildOptions().sourceType).toBe('unambiguous')
@@ -99,9 +101,18 @@ test('includes "decorators" plugin with options by default', () => {
 })
 
 test('does not include "decorators" plugin if "decorators-legacy" is already enabled', () => {
-  expect(buildOptions({ plugins: ['decorators-legacy'] })).not.toContain(
-    'decorators'
-  )
+  function isDecoratorsPlugin(plugin: ParserPlugin): boolean {
+    return (
+      plugin === 'decorators' ||
+      (Array.isArray(plugin) && plugin[0] === 'decorators')
+    )
+  }
+
+  expect(
+    buildOptions({
+      plugins: ['decorators-legacy'],
+    }).plugins
+  ).not.toSatisfyAny(isDecoratorsPlugin)
 })
 
 test('enables `topLevelAwait` even if `allowAwaitOutsideFunction` is disabled', () => {
@@ -150,7 +161,7 @@ test('does not parse placeholders by default as they conflict with TypeScript', 
     %%statement%%
   `
 
-  expect(() => parse(placeholderCode)).toThrowError()
+  expect(() => parse(placeholderCode)).toThrow()
   const node = parse(placeholderCode, { plugins: ['placeholders'] }).program
     .body[0]
   expect(node.type).toBe('Placeholder')

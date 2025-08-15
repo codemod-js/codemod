@@ -8,23 +8,14 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x]
-        package:
-          - cli
-          - core
-          - matchers
-          - parser
-          - rebuild-matchers
-          - utils
+        node-version: [20.x, 22.x, 24.x]
 
     env:
       CI: true
 
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 7
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
 
       - uses: actions/setup-node@v3
         with:
@@ -34,14 +25,5 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
-        working-directory: packages/${{ matrix.package }}
-        run: pnpm build
-
-      - name: Run Linter
-        working-directory: packages/${{ matrix.package }}
-        run: pnpm lint
-
-      - name: Run Tests
-        working-directory: packages/${{ matrix.package }}
-        run: pnpm test
+      - name: Check
+        run: pnpm check

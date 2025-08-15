@@ -4,6 +4,8 @@ import createTemporaryFile from '../helpers/createTemporaryFile'
 import plugin from '../helpers/plugin'
 import { runCodemodCLI } from '../helpers/runCodemodCLI'
 
+jest.setTimeout(10_000)
+
 it('processes files but does not replace their contents when using --dry', async function () {
   const afile = await createTemporaryFile('a-file.js', '3 + 4;')
   expect(

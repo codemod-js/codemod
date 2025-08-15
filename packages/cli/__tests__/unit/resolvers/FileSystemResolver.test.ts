@@ -29,9 +29,7 @@ test('fails to resolve a non-existent file', async function () {
   const resolver = new FileSystemResolver()
   expect(!(await resolver.canResolve('/this/file/is/not/there'))).toBeTruthy()
 
-  await expect(
-    resolver.resolve('/this/file/is/not/there')
-  ).rejects.toThrowError(
+  await expect(resolver.resolve('/this/file/is/not/there')).rejects.toThrow(
     'unable to resolve file from source: /this/file/is/not/there'
   )
 })

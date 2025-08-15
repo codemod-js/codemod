@@ -1,13 +1,4 @@
 {
-  "extends": "./tsconfig.json",
-  "include": ["src"],
-  "exclude": ["src/__tests__"],
-  "compilerOptions": {
-    "noEmit": false,
-    "declaration": true,
-    "sourceMap": true,
-    "rootDir": "src",
-    "outDir": "build"
-  },
+  "extends": ["./tsconfig.json", "../../tsconfig-base-build.json"],
   "references": [{ "path": "../parser/tsconfig.build.json" }]
 }
